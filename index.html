@@ -264,6 +264,26 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
 .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--fg); color: var(--bg); font-family: var(--display); font-size: 15px; padding: 10px 16px; border-radius: 10px; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; max-width: calc(100% - 32px); text-align: center; z-index: 9; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 @media (prefers-reduced-motion: reduce) { .bar > i, .toast { transition: none; } }
+
+/* 성경 읽기 화면 */
+.reader { position: fixed; inset: 0; z-index: 40; background: var(--bg); display: flex; flex-direction: column; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.reader[hidden] { display: none !important; }
+.rd-top { display: flex; flex-direction: row; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.rd-x { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); font-size: 17px; cursor: pointer; }
+.rd-title { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.rd-title b { font-family: var(--display); font-weight: 400; font-size: 21px; }
+.rd-title small { font-size: 12px; color: var(--muted); }
+.rd-fs { display: flex; gap: 5px; }
+.rd-fs button { font-family: var(--display); font-size: 14px; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); border-radius: 8px; padding: 7px 9px; cursor: pointer; }
+.rd-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 18px 18px 30px; font-size: 18px; line-height: 1.9; -webkit-user-select: text; user-select: text; }
+.rd-body p { margin: 0 0 8px; word-break: keep-all; }
+.rd-body sup { font-family: var(--display); font-size: .62em; color: var(--manna); margin-right: 5px; vertical-align: .45em; }
+.rd-end { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.5; }
+.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }
+.rd-vers a { font-size: 13px; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--line); color: var(--fg); text-decoration: none; background: var(--panel-2); }
+.rd-bot { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--panel); }
+.rd-state { flex: 1; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.3; }
+.toast { z-index: 60; }
 </style>
 
 <div class="wrap">
@@ -308,6 +328,19 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
   <section id="panels"></section>
 </div>
 <div id="toast" class="toast" role="status"></div>
+<div id="reader" class="reader" hidden role="dialog" aria-label="성경 읽기">
+  <header class="rd-top">
+    <button class="rd-x" data-r="close" aria-label="닫기">✕</button>
+    <div class="rd-title"><b id="rdTitle"></b><small><span id="rdSub"></span> <span id="rdTimer" class="num"></span></small></div>
+    <div class="rd-fs"><button data-r="fs-" aria-label="글자 작게">가-</button><button data-r="fs+" aria-label="글자 크게">가+</button></div>
+  </header>
+  <div class="rd-body" id="rdBody"></div>
+  <footer class="rd-bot">
+    <button class="btn" data-r="prev">◀ 이전 장</button>
+    <span class="rd-state" id="rdState"></span>
+    <button class="btn manna" data-r="next">다음 장 ▶</button>
+  </footer>
+</div>
 
 <script>
 (() => {
@@ -3095,6 +3128,137 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
 
 /* ---------- 말씀 탭 ---------- */
 let bibleTest = "old", bibleBook = 0;
+/* ===================== 성경 읽기 (개역한글, 앱 안에서) =====================
+   장을 누르면 본문이 열리고, 끝까지 읽은 뒤 '다음 장'으로 넘기면 앞 장이 자동으로 체크된다.
+   너무 빨리 넘기면(끝까지 안 내렸거나 최소 시간 전) 한 번 알려 주고, 한 번 더 누르면 체크 없이 넘어간다. */
+const USFM = ["GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA", "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST", "JOB", "PSA", "PRO", "ECC", "SNG", "ISA", "JER", "LAM", "EZK", "DAN", "HOS", "JOL", "AMO", "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL",
+  "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH", "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV"];
+const OTHER_VERSIONS = [
+  ["개역개정", "https://bible.bskorea.or.kr/bible/NKRV/{U}.{C}"],
+  ["새번역", "https://bible.bskorea.or.kr/bible/RNKSV/{U}.{C}"],
+  ["읽기 쉬운 성경", "https://www.bible.com/ko/bible/3803/{U}.{C}.KOERV"],
+  ["현대인의 성경", "https://www.bible.com/ko/bible/86/{U}.{C}.KLB"],
+];
+var bibleText;   // 권 번호 → [[절, 절...], ...]
+let rd = null;   // 지금 열린 장 { b, c, t0, bottom, min, verses, err, warned, autoTimer }
+async function loadBook(b) {
+  bibleText = bibleText || new Map();
+  if (bibleText.has(b)) return bibleText.get(b);
+  const r = await fetch(`bible/krv/${String(b + 1).padStart(2, "0")}.json`);
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  const d = await r.json(); bibleText.set(b, d); return d;
+}
+// 최소로 머물러야 하는 시간: 글자 수 / 45 (초), 12~75초
+const minReadSec = vs => Math.max(12, Math.min(75, Math.round(vs.reduce((a, v) => a + v.length, 0) / 45)));
+function nextUnread() {
+  const p = S.bible.pos;
+  if (p && BOOKS[p.b] && p.c < BOOKS[p.b][1]) {
+    if (!isToday(p.b, p.c)) return p;
+    return p.c + 1 < BOOKS[p.b][1] ? { b: p.b, c: p.c + 1 } : { b: (p.b + 1) % 66, c: 0 };
+  }
+  for (let b = 0; b < 66; b++) { const i = bits(b).indexOf("0"); if (i >= 0) return { b, c: i }; }
+  return { b: 0, c: 0 };
+}
+function openReader(b, c) {
+  rollDay();
+  if (!rd) { rd = { autoTimer: false }; if (!S.bible.timer) { S.bible.timer = Date.now(); rd.autoTimer = true; } }
+  Object.assign(rd, { b, c, t0: Date.now(), bottom: false, min: 20, verses: null, err: false, warned: false });
+  S.bible.pos = { b, c };
+  bibleBook = b; bibleTest = b < 39 ? "old" : "new";
+  const box = $("reader"); box.hidden = false; if (document.body && document.body.style) document.body.style.overflow = "hidden";
+  const body = $("rdBody"); body.style.fontSize = (S.rdfs || 18) + "px"; body.scrollTop = 0;
+  renderReader();
+  loadBook(b).then(d => {
+    if (!rd || rd.b !== b || rd.c !== c) return;
+    rd.verses = d[c] || []; rd.min = minReadSec(rd.verses); renderReader();
+    requestAnimationFrame(() => readerScrolled());
+  }).catch(() => { if (rd && rd.b === b && rd.c === c) { rd.verses = []; rd.err = true; renderReader(); } });
+}
+function closeReader() {
+  if (!rd) return;
+  const auto = rd.autoTimer; rd = null;
+  $("reader").hidden = true; if (document.body && document.body.style) document.body.style.overflow = "";
+  if (auto && S.bible.timer) readTimerToggle();
+  updateUI(true); save();
+}
+const readEnough = () => !!(rd && rd.verses && rd.verses.length && rd.bottom && (Date.now() - rd.t0) / 1000 >= rd.min);
+function checkCurrent(manual) {
+  if (!rd) return false;
+  if (isToday(rd.b, rd.c)) return true;
+  if (!manual && !readEnough()) return false;
+  toggleChapter(rd.b, rd.c); save(); return true;
+}
+function stepReader(dir) {
+  if (!rd) return;
+  if (dir > 0 && rd.verses && rd.verses.length && !checkCurrent(false)) {
+    if (!rd.warned) {
+      rd.warned = true;
+      const left = Math.max(0, Math.ceil(rd.min - (Date.now() - rd.t0) / 1000));
+      toast(!rd.bottom ? "끝까지 읽고 넘기면 자동으로 체크돼요 · 한 번 더 누르면 체크 없이 넘어가요" : `${left}초만 더 읽으면 체크돼요 · 한 번 더 누르면 체크 없이 넘어가요`);
+      return;
+    }
+  }
+  let b = rd.b, c = rd.c + dir;
+  if (c >= BOOKS[b][1]) { b = (b + 1) % 66; c = 0; }
+  if (c < 0) { b = (b + 65) % 66; c = BOOKS[b][1] - 1; }
+  openReader(b, c);
+}
+function readerScrolled() {
+  if (!rd || !rd.verses || !rd.verses.length) return;
+  const el2 = $("rdBody");
+  if (el2.scrollTop + el2.clientHeight >= el2.scrollHeight - 80) rd.bottom = true;
+  updateReaderState();
+}
+function renderReader() {
+  if (!rd) return;
+  const b = rd.b, c = rd.c, done = isToday(b, c), before = bits(b)[c] === "1", body = $("rdBody"), st = body.scrollTop;
+  $("rdTitle").textContent = `${BOOKS[b][0]} ${c + 1}장`;
+  $("rdSub").textContent = "개역한글" + (done ? " · 오늘 읽음 ✓" : before ? " · 이번 통독에서 읽은 장" : "");
+  const links = OTHER_VERSIONS.map(([n, u]) => `<a href="${u.replace("{U}", USFM[b]).replace("{C}", c + 1)}" target="_blank" rel="noopener">${n}</a>`).join("");
+  let html;
+  if (!rd.verses) html = `<p class="muted">말씀을 불러오는 중…</p>`;
+  else if (rd.err || !rd.verses.length) html = `<p class="muted">본문을 불러오지 못했어요. 인터넷에 연결된 상태로 한 번 열면 그다음부터는 없어도 읽을 수 있어요. 아래 링크로도 읽을 수 있어요.</p>`;
+  else html = rd.verses.map((v, i) => `<p><sup>${i + 1}</sup>${escapeHtml(v)}</p>`).join("");
+  html += `<div class="rd-end">
+    <button class="btn manna" data-r="done" ${done ? "disabled" : ""}>${done ? "오늘 읽음으로 체크됨 ✓" : "이 장 다 읽음 ✓"}</button>
+    ${done ? `<button class="btn" data-r="undo">체크 취소</button>` : ""}
+    <div class="muted">같은 장을 다른 번역으로 보기 (새 창)</div><div class="rd-vers">${links}</div></div>`;
+  body.innerHTML = html; body.scrollTop = st;
+  updateReaderState();
+}
+function updateReaderState() {
+  if (!rd) return;
+  const s = $("rdState"); if (!s) return;
+  let txt = "";
+  if (isToday(rd.b, rd.c)) txt = "오늘 읽음 ✓";
+  else if (rd.verses && rd.verses.length) {
+    const left = Math.max(0, Math.ceil(rd.min - (Date.now() - rd.t0) / 1000));
+    txt = !rd.bottom ? "끝까지 읽어 주세요" : left ? `${left}초 뒤 넘기면 체크` : "다음 장으로 넘기면 체크 ✓";
+  }
+  if (s.textContent !== txt) s.textContent = txt;
+  const t = $("rdTimer"); if (t) { const v = S.bible.timer ? "읽는 중 " + mm(Date.now() - S.bible.timer) : ""; if (t.textContent !== v) t.textContent = v; }
+}
+(() => {
+  const box = $("reader");
+  box.addEventListener("click", e => {
+    let t = e.target;
+    while (t && t !== box) {
+      const a = t.dataset && t.dataset.r;
+      if (a) {
+        if (a === "close") closeReader();
+        else if (a === "prev") stepReader(-1);
+        else if (a === "next") stepReader(1);
+        else if (a === "done") { checkCurrent(true); renderReader(); }
+        else if (a === "undo") { if (rd && isToday(rd.b, rd.c)) { toggleChapter(rd.b, rd.c); save(); } renderReader(); }
+        else if (a === "fs-" || a === "fs+") { S.rdfs = Math.max(14, Math.min(28, (S.rdfs || 18) + (a === "fs+" ? 2 : -2))); $("rdBody").style.fontSize = S.rdfs + "px"; save(); }
+        return;
+      }
+      t = t.parentElement || t.parent;
+    }
+  });
+  $("rdBody").addEventListener("scroll", readerScrolled, { passive: true });
+})();
+
 (() => {
   const sum = el("div", "card");
   sum.innerHTML = `<div class="stat-grid">
@@ -3124,11 +3288,12 @@ let bibleTest = "old", bibleBook = 0;
   $("rtBtn").addEventListener("click", () => { readTimerToggle(); updateUI(true); save(); });
 
   const books = el("div", "card");
-  books.innerHTML = `<div class="seg" role="group"><button data-t="old" aria-pressed="true">구약</button><button data-t="new" aria-pressed="false">신약</button></div>
+  books.innerHTML = `<button class="btn manna" id="rdGo" style="width:100%"></button>
+    <div class="seg" role="group"><button data-t="old" aria-pressed="true">구약</button><button data-t="new" aria-pressed="false">신약</button></div>
     <div class="books" id="bookList"></div>
     <div class="sec-title" style="margin:0" id="chTitle"></div>
     <div class="chapters" id="chGrid"></div>
-    <p class="muted">장을 누르면 오늘 읽음으로 체크돼요. 초록색은 오늘 읽은 장, 파란색은 이번 통독에서 이미 읽은 장. 오늘 체크한 장을 다시 누르면 취소돼요.</p>`;
+    <p class="muted">장을 누르면 개역한글 본문이 열려요. 끝까지 읽고 '다음 장'으로 넘기면 자동으로 체크되고, 읽는 동안 읽기 타이머도 저절로 돌아가요. 초록색은 오늘 읽은 장, 파란색은 이번 통독에서 이미 읽은 장.</p>`;
   books.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
     bibleTest = b.dataset.t; bibleBook = bibleTest === "old" ? 0 : 39;
     books.querySelectorAll(".seg button").forEach(o => o.setAttribute("aria-pressed", o === b)); bookKey = ""; updateUI(true);
@@ -3136,6 +3301,8 @@ let bibleTest = "old", bibleBook = 0;
   let bookKey = "";
   addCustom("bible", books, () => {
     const from = bibleTest === "old" ? 0 : 39, to = bibleTest === "old" ? 39 : 66;
+    const go = $("rdGo");
+    if (go) { const nx = nextUnread(), lbl = `이어 읽기 · ${BOOKS[nx.b][0]} ${nx.c + 1}장`; if (go.textContent !== lbl) go.textContent = lbl; if (!go.dataset.on) { go.dataset.on = "1"; go.addEventListener("click", () => { const n2 = nextUnread(); openReader(n2.b, n2.c); }); } }
     const k = bibleTest + bibleBook + JSON.stringify(S.bible.read[bibleBook] || "") + S.bible.today.map(e => e.b + ":" + e.c).join(",") + roundCount();
     if (k === bookKey) return; bookKey = k;
     const list = $("bookList"); list.innerHTML = "";
@@ -3152,7 +3319,7 @@ let bibleTest = "old", bibleBook = 0;
       const today = isToday(bibleBook, c);
       const btn = el("button", today ? "today" : s[c] === "1" ? "read" : "", String(c + 1));
       btn.setAttribute("aria-label", `${BOOKS[bibleBook][0]} ${c + 1}장`);
-      btn.addEventListener("click", () => { toggleChapter(bibleBook, c); bookKey = ""; updateUI(true); save(); });
+      btn.addEventListener("click", () => openReader(bibleBook, c));
       grid.appendChild(btn);
     }
   });
@@ -3661,7 +3828,7 @@ function load() {
 }
 setInterval(save, 5000);
 document.addEventListener("visibilitychange", () => { if (document.hidden) save(); else { studyTick(); updateUI(true); } });
-setInterval(() => { studyTick(); updateUI(false); }, 250);
+setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); }, 250);
 
 /* ===================== 시작 ===================== */
 function start(data) {

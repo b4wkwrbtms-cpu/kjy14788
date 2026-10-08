@@ -1237,19 +1237,52 @@ let audioCtx = null, noiseBuf = null, lastSound = 0;
 function ensureAudio() {
   try { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); const n = audioCtx.sampleRate * 0.12; noiseBuf = audioCtx.createBuffer(1, n, audioCtx.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2); } if (audioCtx.state === "suspended") audioCtx.resume(); } catch (e) {}
 }
+/* 타격음: ① 순간 클릭 ② 중역 '퍽' ③ 짧은 몸통 '쿵' ④ 무기 성질별 꼬리(쇠 울림·불 파삭·얼음 챙·번개 지직·금 종소리·마법 반짝)
+   → 살짝 찌그러뜨리고(새추레이션) 압축해서 단단하고 크게 */
+var impactBus = null;
+function hitOut() {
+  if (impactBus) return impactBus;
+  if (!audioCtx || !sfxGain) return sfxOut();
+  try {
+    const sh = audioCtx.createWaveShaper(), n = 1024, curve = new Float32Array(n);
+    for (let k = 0; k < n; k++) { const x = k / (n - 1) * 2 - 1; curve[k] = Math.tanh(x * 2.2) / Math.tanh(2.2); }
+    sh.curve = curve; sh.oversample = "2x";
+    const comp = audioCtx.createDynamicsCompressor(); comp.threshold.value = -16; comp.knee.value = 6; comp.ratio.value = 5; comp.attack.value = 0.002; comp.release.value = 0.12;
+    const pre = audioCtx.createGain(); pre.gain.value = 0.9;
+    pre.connect(sh); sh.connect(comp); comp.connect(sfxGain); impactBus = pre;
+  } catch (e) { impactBus = sfxOut(); }
+  return impactBus;
+}
 function hitSound(strength) {
   if (!S.sound || !audioCtx || document.hidden) return;
-  const now = performance.now(); if (now - lastSound < 55) return; lastSound = now;
+  const now = performance.now(); if (now - lastSound < 45) return; lastSound = now;
   try {
-    const t = audioCtx.currentTime;
-    const src = audioCtx.createBufferSource(); src.buffer = noiseBuf;
-    const lp = audioCtx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1400 + strength * 900;
-    const g = audioCtx.createGain(); g.gain.setValueAtTime(0.18 + strength * 0.12, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
-    src.connect(lp); lp.connect(g); g.connect(sfxOut()); src.start(t);
-    const o = audioCtx.createOscillator(), og = audioCtx.createGain();
-    o.frequency.setValueAtTime(170 - strength * 40, t); o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
-    og.gain.setValueAtTime(0.28 + strength * 0.15, t); og.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
-    o.connect(og); og.connect(sfxOut()); o.start(t); o.stop(t + 0.15);
+    if (!masterGain) audioReady();
+    const t = audioCtx.currentTime, out = hitOut(), p = 0.92 + Math.random() * 0.16, s = Math.min(1.6, strength), big = s >= 0.95;
+    // ① 맞는 순간의 날카로운 클릭
+    noiseHit(t, 0.016, "highpass", 5000, 0.32 + 0.22 * s, 0, out);
+    // ② 찰싹·퍽: 중역 노이즈가 빠르게 떨어짐
+    noiseHit(t, 0.06 + 0.05 * s, "bandpass", 2200 * p, 0.42 + 0.3 * s, 800 * p, out);
+    // ③ 짧고 단단한 몸통 쿵
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain(); o.type = "triangle";
+    o.frequency.setValueAtTime(280 * p, t); o.frequency.exponentialRampToValueAtTime(62, t + 0.07 + 0.05 * s);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.42 + 0.25 * s, t + 0.002); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.1 + 0.08 * s);
+    o.connect(g); g.connect(out); o.start(t); o.stop(t + 0.22);
+    // 치명타·처치: 묵직한 저음 '쾅'
+    if (big) { const b = audioCtx.createOscillator(), bg = audioCtx.createGain(); b.type = "sine"; b.frequency.setValueAtTime(110, t); b.frequency.exponentialRampToValueAtTime(38, t + 0.28);
+      bg.gain.setValueAtTime(0.0001, t); bg.gain.exponentialRampToValueAtTime(0.55, t + 0.004); bg.gain.exponentialRampToValueAtTime(0.0001, t + 0.34); b.connect(bg); bg.connect(out); b.start(t); b.stop(t + 0.36);
+      noiseHit(t + 0.01, 0.14, "highpass", 2400, 0.22, 0, out); }
+    // ④ 무기 성질별 꼬리
+    const st = typeof slashStyle === "function" ? slashStyle() : "steel", L = big ? 1.8 : 1;
+    const ping = (f, d, v, dl = 0) => { const q = audioCtx.createOscillator(), qg = audioCtx.createGain(); q.type = "sine"; q.frequency.setValueAtTime(f, t + dl);
+      qg.gain.setValueAtTime(0.0001, t + dl); qg.gain.exponentialRampToValueAtTime(v, t + dl + 0.002); qg.gain.exponentialRampToValueAtTime(0.0001, t + dl + d); q.connect(qg); qg.connect(out); q.start(t + dl); q.stop(t + dl + d + 0.02); };
+    if (st === "fire") { for (let k = 0; k < (big ? 6 : 3); k++) noiseHit(t + 0.01 + Math.random() * 0.12 * L, 0.02, "highpass", 2600, 0.16, 0, out); noiseHit(t, 0.18 * L, "lowpass", 900, 0.18, 300, out); }
+    else if (st === "ice") { ping(2600 * p, 0.09 * L, 0.09); ping(3900 * p, 0.07 * L, 0.06, 0.01); ping(6200 * p, 0.05 * L, 0.04, 0.02); }
+    else if (st === "volt") { const z = audioCtx.createOscillator(), zg = audioCtx.createGain(); z.type = "square"; z.frequency.setValueAtTime(1900 * p, t); z.frequency.exponentialRampToValueAtTime(260, t + 0.09 * L);
+      zg.gain.setValueAtTime(0.07, t); zg.gain.exponentialRampToValueAtTime(0.0001, t + 0.1 * L); z.connect(zg); zg.connect(out); z.start(t); z.stop(t + 0.1 * L + 0.02); noiseHit(t, 0.05 * L, "bandpass", 4200, 0.18, 0, out); }
+    else if (st === "gold" || st === "holy") { ping(1568 * p, 0.16 * L, 0.08); ping(2349 * p, 0.12 * L, 0.05, 0.005); }
+    else if (st === "magic") { [2637, 3136, 3951].forEach((f, k) => ping(f * p, 0.06 * L, 0.05, k * 0.025)); }
+    else { ping(2100 * p, 0.08 * L, 0.07); ping(3350 * p, 0.06 * L, 0.05, 0.003); ping(5200 * p, 0.04 * L, 0.03, 0.006); }
   } catch (e) {}
 }
 
@@ -2589,9 +2622,9 @@ function sfx(name) {
   try {
     switch (name) {
       case "tick": tone(1900, 0.03, "square", 0.018); break;
-      case "swing": noiseHit(t, 0.11, "bandpass", 900, 0.09, 3800); break;
+      case "swing": noiseHit(t, 0.075, "bandpass", 2600, 0.08, 700); noiseHit(t, 0.03, "highpass", 6000, 0.03); break;
       case "crit": tone(1500, 0.14, "sawtooth", 0.045, 0, 3000); noiseHit(t, 0.16, "highpass", 3000, 0.12); tone(98, 0.22, "square", 0.06, 0, 49); break;
-      case "pop": tone(420, 0.09, "square", 0.045, 0, 900); noiseHit(t, 0.06, "lowpass", 1800, 0.08); break;
+      case "pop": noiseHit(t, 0.12, "bandpass", 1300, 0.3, 380, hitOut()); noiseHit(t, 0.025, "highpass", 5000, 0.18, 0, hitOut()); tone(360, 0.1, "square", 0.04, 0.02, 1100); break;
       case "upgrade": [784, 988, 1319].forEach((f, i) => tone(f, 0.12, "triangle", 0.07, i * 0.06)); break;
       case "bigup": [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => tone(f, 0.16, "square", 0.045, i * 0.055)); tone(2093, 0.5, "triangle", 0.05, 0.33); break;
       case "buy": tone(1568, 0.08, "square", 0.045); tone(2093, 0.28, "square", 0.045, 0.08); noiseHit(t + 0.08, 0.12, "highpass", 5000, 0.05); break;

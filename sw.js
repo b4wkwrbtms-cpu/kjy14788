@@ -1,5 +1,5 @@
 // 오프라인에서도 열리도록 앱 파일과 글꼴을 저장해 둠
-const CACHE = "yageun-v12";
+const CACHE = "yageun-v13";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const BIBLE = "yageun-bible-1";  // 성경 본문은 앱을 업데이트해도 지우지 않음

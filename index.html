@@ -435,7 +435,7 @@ body.typing .tabs { transform: translateY(130%); }
 .btn.warn { background: var(--danger) linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,0) 55%); border-color: rgba(0,0,0,.55); box-shadow: inset 0 2px 0 rgba(255,255,255,.4), 0 3px 0 #8c2c2c; }
 .btn:active:not(:disabled) { transform: translateY(2px); }
 
-#wBtn small, #wAll small { max-width: none; }
+#wBtn small, #wAuto small { max-width: none; }
 /* 소제목: 금빛 리본 */
 .panel > .sec-title { position: relative; margin: 12px 0 0; padding: 5px 10px 5px 20px; border-radius: 8px; background: linear-gradient(90deg, rgba(255,213,74,.17), rgba(255,213,74,0) 82%); text-shadow: 0 2px 0 var(--edge); }
 .panel > .sec-title::before { content: ""; position: absolute; left: 6px; top: 50%; width: 7px; height: 7px; margin-top: -4px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 6px rgba(255,213,74,.65); }
@@ -556,6 +556,33 @@ textarea, input[type=text], .refin select, .refin input { background: #0c1121; b
 .celeb-fx { position: fixed; left: 50%; top: 42%; width: 0; height: 0; pointer-events: none; }
 .celeb-fx i { position: absolute; left: -4px; top: -6px; width: 8px; height: 12px; border-radius: 2px; }
 @media (prefers-reduced-motion: reduce) { .celeb-rays, .celeb.go .celeb-card, .celeb.go .celeb-ic canvas { animation: none; } }
+/* 강화 편의: 도구줄(한 번에 ×1·×10·최대, 전부 쓰기), 자동 강화 스위치, 꾹 누르기, 초당 피해 +% */
+.th-tools { display: none; }
+.tab-head.tools { flex-wrap: wrap; row-gap: 0; }
+.tab-head.tools .th-tools { display: flex; flex-basis: 100%; align-items: center; gap: 7px; margin: 5px 0 0 1px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,.1); min-width: 0; }
+.th-tools .tl-lab { font-size: 11.5px; color: var(--muted); flex: none; }
+.th-tools .bseg { display: inline-flex; flex: none; gap: 2px; padding: 2px; border-radius: 10px; background: #0b101e; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657; }
+.th-tools .bseg button { font: 14px var(--display); color: var(--muted); background: transparent; border: 0; border-radius: 7px; padding: 4px 0; min-width: 44px; cursor: pointer; line-height: 1.1; }
+.th-tools .bseg button[aria-pressed="true"] { background: var(--acc, var(--gold)); color: #1b1406; box-shadow: inset 0 2px 0 rgba(255,255,255,.45), inset 0 -2px 0 rgba(0,0,0,.2); text-shadow: 0 1px 0 rgba(255,255,255,.3); }
+.th-tools .tl-hint { margin-left: auto; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.th-tools .spend { margin-left: auto; flex: none; display: inline-flex; flex-direction: column; align-items: center; font: 13px var(--display); line-height: 1.1; padding: 3px 10px 4px; border-radius: 9px; border: 2px solid rgba(0,0,0,.5); color: #1b1406; background: var(--acc, var(--gold)) linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0) 55%); box-shadow: inset 0 2px 0 rgba(255,255,255,.45), 0 2px 0 rgba(0,0,0,.45); cursor: pointer; }
+.th-tools .spend small { font: 10px var(--body, sans-serif); opacity: .75; }
+.th-tools .spend.armed { background-color: #ff5a4a; color: #fff; text-shadow: 0 1px 0 rgba(0,0,0,.35); box-shadow: inset 0 2px 0 rgba(255,255,255,.45), 0 2px 0 rgba(0,0,0,.45), 0 0 0 3px rgba(255,90,74,.35); }
+button[data-rep] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+.buy.holding:not(:disabled) { outline: 3px solid rgba(255,255,255,.55); outline-offset: 1px; }
+#wAuto { min-width: 92px; }
+#wAuto .act { font-size: 14px; }
+#wAuto small { display: flex; align-items: center; gap: 4px; justify-content: center; }
+#wAuto .sw { display: inline-block; width: 26px; height: 14px; border-radius: 8px; background: #0b101e; box-shadow: inset 0 0 0 2px #46548c; position: relative; }
+#wAuto .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: #7c87a6; transition: left .15s; }
+#wAuto.on { background-color: #3fb871; color: #062312; text-shadow: 0 1px 0 rgba(255,255,255,.35); box-shadow: inset 0 2px 0 rgba(255,255,255,.45), 0 3px 0 #1f7a45; }
+#wAuto.on .sw { background: #0d3a20; box-shadow: inset 0 0 0 2px #1f7a45; }
+#wAuto.on .sw::after { left: 14px; background: #eafff2; }
+.wallet .dps { position: relative; }
+.dpsfx { position: absolute; right: 2px; bottom: 100%; font: 17px var(--display); color: #7fe3a0; text-shadow: 0 2px 0 var(--edge), 0 0 10px rgba(127,227,160,.6); pointer-events: none; white-space: nowrap; opacity: 0; }
+.dpsfx.go { animation: dpsUp 1.2s ease-out forwards; }
+@keyframes dpsUp { 0% { transform: translateY(10px) scale(.7); opacity: 0; } 15% { transform: translateY(0) scale(1.2); opacity: 1; } 70% { opacity: 1; } 100% { transform: translateY(-16px) scale(1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .dpsfx.go { animation: none !important; opacity: 1; } }
 </style>
 
 <div class="wrap">
@@ -598,7 +625,7 @@ textarea, input[type=text], .refin select, .refin input { background: #0c1121; b
   </section>
 
   <nav class="tabs" role="tablist" aria-label="메뉴" id="tabs"></nav>
-  <div class="tab-head" id="tabHead"><span class="th-ic" id="thIc"></span><div class="th-t"><b id="thName"></b><small id="thSub"></small></div><div class="th-cur num" id="thCur"></div></div>
+  <div class="tab-head" id="tabHead"><span class="th-ic" id="thIc"></span><div class="th-t"><b id="thName"></b><small id="thSub"></small></div><div class="th-cur num" id="thCur"></div><div class="th-tools" id="thTools"></div></div>
   <section id="panels"></section>
 </div>
 <div id="toast" class="toast" role="status"></div>
@@ -933,7 +960,7 @@ function freshState() {
     bible: { read: {}, total: 0, rounds: 0, streak: 0, best: 0, last: "", today: [], rewarded: 0, minToday: 0, timer: 0, note: "", noteDay: "" },
     study: { running: false, lastConfirm: 0, sessionMs: 0, subject: "", today: 0, depth: 0, streak: 0, best: 0, last: "", total: 0, log: [], beeped: false },
     mem: { sets: 1, setDay: "", v: {}, streak: 0, best: 0, last: "", total: 0 },
-    sound: true, char: "choi",
+    sound: true, char: "choi", buyN: 1, autoUp: false,
     ach: {}, t: Date.now(),
   };
 }
@@ -4983,6 +5010,7 @@ function memAct(act, j) {
 let celebQ = [], celebOn = false, celebT = 0;
 /* 큰 일(새 무기, +5, 동료 합류, 새 정장, 업적...)에 뜨는 축하 카드. 몰리면 마지막 몇 개만 차례로 */
 function celebrate(o) {
+  if (typeof holdRep !== "undefined" && holdRep) { heldCeleb = o; return; }
   if (!$("celeb")) { if (o && o.title) toast(`${o.title} ${o.sub || ""}`); return; }
   celebQ.push(o); if (celebQ.length > 3) celebQ.splice(0, celebQ.length - 3);
   if (!celebOn) celebNext();
@@ -5053,6 +5081,7 @@ function renderTabHead() {
   }
   const m = TAB_META[curTab], cur = m ? m[1]() : "";
   if (cur !== thCur) { thCur = cur; $("thCur").innerHTML = cur; }
+  if (typeof renderTools === "function") renderTools();
 }
 /* 글자를 입력하는 동안에는 아래 메뉴바를 숨김 (아이폰 키보드에 겹치지 않게) */
 (() => {
@@ -5419,15 +5448,17 @@ function addRow(tab, cfg, parent) {
   let barEl = null;
   if (cfg.bar) { const b = el("div", "qbar", "<i></i>"); info.appendChild(b); barEl = b.firstChild; }
   const btn = el("button", "buy num"); if (btn.style) btn.style.animationDelay = (Math.random() * 2.4).toFixed(2) + "s";
+  if (cfg.rep && btn.setAttribute) btn.setAttribute("data-rep", "1");
   btn.addEventListener("click", () => {
-    const before = (cfg.lv ? cfg.lv() : "") + "|" + cfg.name();
-    cfg.click();
+    const before = (cfg.lv ? cfg.lv() : "") + "|" + cfg.name(), d0 = cfg.rep ? stats().dps : 0, plan = bulkPlan(tab, cfg);
+    for (let k = 0, nn = plan ? plan.n : 1; k < nn; k++) cfg.click();
     const lvNow = cfg.lv ? cfg.lv().trim() : "";
     if ((lvNow + "|" + cfg.name()) !== before.replace(/^\s+/, "")) {
       const t = /^(Lv\.|\+)/.test(lvNow) ? lvNow + "!" : /개$/.test(lvNow) ? "+1" : /보유|해금/.test(lvNow) ? "GET!" : "";
-      if (t) rowPop(row, t);
+      if (t && (!row._popT || Date.now() - row._popT > 110)) { row._popT = Date.now(); rowPop(row, plan && plan.n > 1 ? `${t.replace(/!$/, "")} (×${plan.n})` : t); }
     }
     updateUI(true); save();
+    if (cfg.rep) dpsPop(d0);
   });
   row.append(ic, info, btn); (parent || panels[tab]).appendChild(row);
   const nm = info.querySelector(".nm"), lvEl = info.querySelector(".lv"), desc = info.querySelector(".up-desc");
@@ -5439,7 +5470,9 @@ function addRow(tab, cfg, parent) {
       const lvt = cfg.lv ? cfg.lv() : "", short = /^\s*(Lv\.\s?\d+|\+\d+|\d+개)\s*$/.test(lvt);
       lvEl.textContent = short ? "" : lvt; lvb.hidden = !short; if (short && lvb.textContent !== lvt.trim()) lvb.textContent = lvt.trim();
       const d = cfg.desc(); if (force || d !== lastD) { desc.innerHTML = d; lastD = d; }
-      const b = cfg.btn();
+      let b = cfg.btn();
+      const pl = b.ok ? bulkPlan(tab, cfg) : null;
+      if (pl && pl.n > 1) b = Object.assign({}, b, { label: repLabel(cfg.rep.unit, pl.total), sub: `×${pl.n} 강화` });
       btn.className = "buy num" + (b.cls ? " " + b.cls : "") + (!b.ok && isMaxLabel(b.label) ? " max" : ""); btn.disabled = !b.ok;
       const bh = btnInner(b); if (btn._h !== bh) { btn._h = bh; btn.innerHTML = bh; }
       row.classList.toggle("locked", !!(cfg.locked && cfg.locked()));
@@ -5452,14 +5485,145 @@ function addRow(tab, cfg, parent) {
 }
 function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[tab].push({ update, ready: () => false }); return node; }
 
+/* ===================== 강화 편의 =====================
+   1) 한 번에 강화할 양: ×1 · ×10 · 최대 (탭 머리띠에서 고름, 무기·동료·정장·보물 탭)
+   2) 버튼을 꾹 누르고 있으면 계속 강화 (점점 빨라짐)
+   3) 무기 자동 강화 스위치: 월급이 모이면 무기·커피 중 싼 것부터 알아서
+   4) 동료·보물: 가진 만나·도장을 싼 것부터 전부 쓰기 (두 번 눌러 확인)
+   5) 강화로 초당 피해가 오르면 지갑 옆에 +몇 % 가 떠오름 */
+const BULK_TABS = new Set(["weapon", "pet", "suit", "treasure"]);
+const BULK_OPTS = [[1, "×1"], [10, "×10"], [0, "최대"]];
+const bulkN = () => (S.buyN === 10 || S.buyN === 0) ? S.buyN : 1;
+/* 줄 하나(rep)에 대한 계획: 몇 번 살 수 있고 모두 얼마인지 */
+function bulkPlan(tab, cfg) {
+  const N = bulkN(); if (N === 1 || !cfg.rep || !BULK_TABS.has(tab) || (cfg.rep.ok && !cfg.rep.ok())) return null;
+  const lim = N === 0 ? 1000 : N, have = cfg.rep.have(), max = cfg.rep.max ? cfg.rep.max() : Infinity;
+  let n = 0, total = 0;
+  while (n < lim && n < max) { const c = cfg.rep.cost(n); if (!(c >= 0) || total + c > have) break; total += c; n++; }
+  return n >= 1 ? { n, total } : null;
+}
+const repLabel = (unit, v) => unit === "원" ? `${fmt(v)}원` : `${unit} ${fmtR(v)}`;
+/* 무기 카드 계획: 강화와 다음 무기 사기를 이어서 */
+function weaponStepCost() { const i = S.wi; if (S.wl < 5 || i === LAST_W) return wUp(i, S.wl); const nx = i + 1; if (WEAPONS[nx].leg && !S.legUnlock[nx - LEG_START]) return null; return wBuy(nx); }
+function weaponStep() { const c = weaponStepCost(); if (c == null || S.gold < c) return 0; S.gold -= c; if (S.wl < 5 || S.wi === LAST_W) { S.wl++; return 1; } S.wi++; S.wl = 1; S.skin = -1; return 2; }
+function wPlan(limit) {
+  let i = S.wi, l = S.wl, total = 0, n = 0, newW = 0;
+  while (n < limit) {
+    let c; if (l < 5 || i === LAST_W) c = wUp(i, l); else { const nx = i + 1; if (WEAPONS[nx].leg && !S.legUnlock[nx - LEG_START]) break; c = wBuy(nx); }
+    if (total + c > S.gold) break;
+    total += c; n++; if (l < 5 || i === LAST_W) l++; else { i++; l = 1; newW++; }
+  }
+  return { n, total, newW, i, l };
+}
+/* 초당 피해가 오르면 지갑 옆에 +% (꾹 누르는 동안은 한 숫자로 모아서) */
+let dpsFx = null;
+function dpsPop(d0) {
+  const d1 = stats().dps; if (!(d0 > 0) || !(d1 > d0 * 1.0005)) return;
+  const sp = $("dps"), box = sp && sp.parentElement && sp.parentElement.parentElement; if (!box || !box.appendChild) return;
+  const now = performance.now();
+  if (!dpsFx || now - dpsFx.t > 900 || !dpsFx.el.isConnected) { const e = document.createElement("span"); e.className = "dpsfx"; box.appendChild(e); dpsFx = { el: e, base: d0, t: now }; }
+  const r = d1 / dpsFx.base; dpsFx.t = now;
+  dpsFx.el.textContent = r >= 2 ? `×${r >= 10 ? Math.round(r) : r.toFixed(1)}` : `+${Math.max(1, Math.round((r - 1) * 100))}%`;
+  dpsFx.el.classList.remove("go"); void dpsFx.el.offsetWidth; dpsFx.el.classList.add("go");
+  const el = dpsFx.el; clearTimeout(el._t); el._t = setTimeout(() => { if (el.remove) el.remove(); if (dpsFx && dpsFx.el === el) dpsFx = null; }, 1300);
+}
+/* 꾹 누르고 있으면 계속 강화: data-rep 붙은 버튼만. 누르는 동안 축하 팝업은 모아 두었다가 손을 떼면 마지막 것만 */
+var holdRep = false, heldCeleb = null;
+(() => {
+  if (typeof document === "undefined" || !document.addEventListener) return;
+  let timer = 0, btn = null, n = 0, fired = false, inStep = false, sx = 0, sy = 0, swallowUntil = 0;
+  const stop = () => {
+    clearTimeout(timer); timer = 0; if (btn && btn.classList) btn.classList.remove("holding"); btn = null;
+    if (fired) { swallowUntil = Date.now() + 400; fired = false; }
+    if (holdRep) { holdRep = false; const c = heldCeleb; heldCeleb = null; if (c) celebrate(c); }
+  };
+  const step = () => {
+    if (!btn || btn.disabled || (btn.isConnected === false)) return stop();
+    fired = true; holdRep = true; inStep = true; try { btn.click(); } finally { inStep = false; } n++;
+    if (!btn || btn.disabled) return stop();
+    timer = setTimeout(step, Math.max(50, 170 - n * 12));
+  };
+  document.addEventListener("pointerdown", e => {
+    const b = e.target && e.target.closest ? e.target.closest("button[data-rep]") : null;
+    if (btn) stop();
+    if (!b || b.disabled) return;
+    btn = b; n = 0; fired = false; sx = e.clientX; sy = e.clientY; if (b.classList) b.classList.add("holding");
+    timer = setTimeout(step, 430);
+  }, { passive: true });
+  document.addEventListener("pointermove", e => { if (btn && Math.hypot(e.clientX - sx, e.clientY - sy) > 18) stop(); }, { passive: true });
+  ["pointerup", "pointercancel"].forEach(t => document.addEventListener(t, () => { if (btn || holdRep) stop(); }, { passive: true }));
+  window.addEventListener && window.addEventListener("blur", () => { if (btn || holdRep) stop(); });
+  document.addEventListener("click", e => { if (!inStep && Date.now() < swallowUntil) { swallowUntil = 0; e.stopPropagation(); e.preventDefault(); } }, true);
+  document.addEventListener("contextmenu", e => { if (e.target && e.target.closest && e.target.closest("button[data-rep]")) e.preventDefault(); });
+})();
+/* 자동 강화 (무기·커피, 싼 것부터) */
+let autoUpT = 0, wCardEl = null;
+function autoUpgradeTick() {
+  if (!S.autoUp || (typeof document !== "undefined" && document.hidden)) return;
+  const now = Date.now(); if (now - autoUpT < 1000) return; autoUpT = now;
+  const d0 = stats().dps, i0 = S.wi, l0 = S.wl, c0 = S.coffee; let n = 0;
+  while (n < 120) {
+    const wc = weaponStepCost(), cc = S.coffee < 30 ? coffeeCost(S.coffee) : Infinity, useW = wc != null && wc <= cc, c = useW ? wc : cc;
+    if (!isFinite(c) || S.gold < c) break;
+    if (useW) weaponStep(); else { S.gold -= c; S.coffee++; }
+    n++;
+  }
+  if (!n) return;
+  if (S.wi !== i0) { if (WEAPONS[S.wi].leg) celebrate({ icon: weaponBig(S.wi, S.wl), title: "전설 무기 장착!", sub: `자동 강화 · ${WEAPONS[i0].n} +${l0} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: "rare" }); else toast(`자동 강화 · 새 무기 ${WEAPONS[S.wi].n} +${S.wl}`); if (curTab === "weapon" && wCardEl) rowPop(wCardEl, "NEW!", "#ffd54a"); }
+  else if (curTab === "weapon") { const card = wCardEl; if (S.wl !== l0) rowPop(card, `+${S.wl}!`, "#ffd54a"); else if (S.coffee !== c0) rowPop(card, `커피 Lv.${S.coffee}`, "#ffd54a"); }
+  updateUI(true); save(); dpsPop(d0);
+}
+/* 가진 재화를 싼 것부터 전부 쓰기 */
+function spendAll(tab) {
+  const d0 = stats().dps, joined = []; let n = 0, spent = 0, tierUp = 0;
+  const opts = tab === "pet"
+    ? PETS.filter(p => S.bestFloor >= p.floor).map(p => ({ cost: () => { const lv = petLv(p.id); return lv ? petUp(p, lv) : p.price; }, buy: c => { const lv = petLv(p.id); S.manna -= c; S.pets[p.id] = lv + 1; if (!lv) joined.push(p); } }))
+    : TREASURES.map(t => ({ cost: () => (t.max && S.tre[t.id] >= t.max) ? Infinity : treCost(t, S.tre[t.id]), buy: c => { S.stamp -= c; S.tre[t.id]++; if (S.tre[t.id] % 50 === 0) tierUp++; } }));
+  const have = () => tab === "pet" ? S.manna : S.stamp;
+  while (n < 3000) {
+    let best = null, bc = Infinity; opts.forEach(o => { const c = o.cost(); if (c < bc) { bc = c; best = o; } });
+    if (!best || !isFinite(bc) || bc > have()) break;
+    best.buy(bc); spent += bc; n++;
+  }
+  if (!n) { toast(tab === "pet" ? "만나가 모자라요" : "도장이 모자라요"); return; }
+  sfx("upgrade");
+  joined.forEach(p => celebrate({ icon: petBig(p.id), title: "동료 합류!", sub: `${p.n} · ${p.desc(1)}`, tone: "manna" }));
+  if (tierUp) celebrate({ ic: "treasure", title: "보물 차수 상승!", sub: `도장으로 보물 ${n}번 강화 · 차수가 올랐어요`, tone: "stamp" });
+  toast(tab === "pet" ? `만나 ${fmtR(spent)}로 동료 ${n}번 강화했어요` : `도장 ${fmtR(spent)}로 보물 ${n}번 강화했어요`);
+  updateUI(true); save(); dpsPop(d0);
+}
+/* 탭 머리띠 아래 도구줄 */
+let toolsTab = "", spendArm = 0, spendArmT = 0;
+function renderTools() {
+  const box = $("thTools"), th = $("tabHead"); if (!box || !th) return;
+  const on = BULK_TABS.has(curTab); th.classList.toggle("tools", on);
+  if (!on) { if (toolsTab) { box.innerHTML = ""; toolsTab = ""; } return; }
+  const spend = curTab === "pet" ? "만나" : curTab === "treasure" ? "도장" : "";
+  const key = curTab + "|" + bulkN() + "|" + (spendArm && Date.now() < spendArmT ? 1 : 0);
+  if (box._k === key) return; box._k = key; toolsTab = curTab;
+  box.innerHTML = `<span class="tl-lab">한 번에</span><div class="bseg" role="group" aria-label="한 번에 강화할 양">${BULK_OPTS.map(([v, l]) => `<button type="button" data-n="${v}" aria-pressed="${bulkN() === v}">${l}</button>`).join("")}</div>`
+    + (spend ? `<button type="button" class="spend${spendArm && Date.now() < spendArmT ? " armed" : ""}" id="spendAll">${spendArm && Date.now() < spendArmT ? "한 번 더 누르면 사용" : `${spend} 전부 쓰기`}<small>싼 것부터</small></button>` : `<span class="tl-hint">버튼을 꾹 누르면 계속 강화</span>`);
+}
+(() => {
+  const box = typeof document !== "undefined" ? document.getElementById("thTools") : null; if (!box || !box.addEventListener) return;
+  box.addEventListener("click", e => {
+    const t = e.target && e.target.closest ? (e.target.closest("button") || (e.target.tagName === "BUTTON" ? e.target : null)) : null; if (!t) return;
+    if (t.dataset && t.dataset.n != null) { S.buyN = +t.dataset.n; sfx("tick"); save(); renderTools(); updateUI(true); return; }
+    if (t.id === "spendAll") {
+      if (spendArm && Date.now() < spendArmT) { spendArm = 0; renderTools(); spendAll(curTab); return; }
+      spendArm = 1; spendArmT = Date.now() + 3000; renderTools(); setTimeout(() => { spendArm = 0; renderTools(); }, 3050);
+    }
+  });
+})();
+
 /* ---------- 무기 탭 ---------- */
 (() => {
-  const card = el("div", "card hero-card");
+  const card = el("div", "card hero-card"); wCardEl = card;
   card.innerHTML = `<div class="wcard"><canvas id="wPrev" width="96" height="96"></canvas><div style="min-width:0;display:flex;flex-direction:column;gap:5px">
     <div class="wname" id="wName"></div><div class="stars" id="wStars"></div><div class="muted num" id="wPow"></div></div></div>
     <p class="story" id="wStory" hidden></p>
     <p class="muted c-rare" id="wSkin" hidden></p>
-    <div class="row-btns"><button class="buy num" id="wBtn" style="flex:1"></button><button class="buy ghost num" id="wAll">한번에<small>되는 만큼</small></button></div>
+    <div class="row-btns"><button class="buy num" id="wBtn" style="flex:1" data-rep="1"></button><button class="buy ghost num" id="wAuto" aria-pressed="false"><span class="act">자동 강화</span><small><i class="sw"></i>꺼짐</small></button></div>
     <p class="muted" id="wNote"></p>`;
   let lastKey = "";
   addCustom("weapon", card, () => {
@@ -5475,9 +5639,14 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
     $("wPow").textContent = `${i + 1}번째 무기 · 무기 공격력 ${fmt(wPower(i, S.wl))}`;
     $("wStory").hidden = !w.leg; $("wStory").textContent = w.story || "";
     const sk = curSkin(), skn = $("wSkin"); if (skn) { skn.hidden = !sk; if (sk) skn.textContent = `무기 코스튬 '${sk.n}'을(를) 들고 있어요 · 성능은 이 무기 그대로`; }
-    $("wAll").disabled = (S.wl < 5 || i === LAST_W) ? S.gold < wUp(i, S.wl) : (S.gold < wBuy(i + 1) || (WEAPONS[i + 1].leg && !S.legUnlock[i + 1 - LEG_START]));
-    const b = $("wBtn");
-    if (S.wl < 5 || i === LAST_W) {
+    const ab = $("wAuto"), ah = S.autoUp ? `<span class="act">자동 강화</span><small><i class="sw"></i>켜짐</small>` : `<span class="act">자동 강화</span><small><i class="sw"></i>꺼짐</small>`;
+    if (ab._h !== ah) { ab._h = ah; ab.innerHTML = ah; ab.classList.toggle("on", !!S.autoUp); ab.setAttribute("aria-pressed", S.autoUp ? "true" : "false"); }
+    const b = $("wBtn"), N = bulkN(), wp = N === 1 ? null : wPlan(N === 0 ? 500 : N);
+    if (wp && wp.n > 1) {
+      b.className = "buy num" + (WEAPONS[wp.i].leg ? " rare" : ""); b.disabled = false;
+      const wh = btnInner({ label: `${fmt(wp.total)}원`, sub: `×${wp.n} 강화 · ${wp.newW ? `${WEAPONS[wp.i].n} +${wp.l}까지` : `+${S.wl} → +${wp.l}`}` }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
+      $("wNote").textContent = wp.newW ? `새 무기 ${wp.newW}개까지 한 번에 사요.` : "한 번에 여러 단계를 올려요. 버튼을 꾹 누르고 있으면 계속 강화해요.";
+    } else if (S.wl < 5 || i === LAST_W) {
       const c = wUp(i, S.wl);
       b.className = "buy num"; b.disabled = S.gold < c;
       const wh = btnInner({ label: `${fmt(c)}원`, sub: S.wl < 5 ? `강화 +${S.wl} → +${S.wl + 1} · 공격력 +${Math.round(0.25 / (1 + 0.25 * (S.wl - 1)) * 100)}%` : "초월 강화 · 공격력 +12%" }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
@@ -5491,33 +5660,33 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
     }
   });
   $("wBtn").addEventListener("click", () => {
-    const i = S.wi;
+    const i = S.wi, d0 = stats().dps, N = bulkN(), wp = N === 1 ? null : wPlan(N === 0 ? 500 : N);
+    if (wp && wp.n > 1) {
+      const startI = S.wi, startL = S.wl; let n = 0; while (n < wp.n && weaponStep()) n++;
+      if (S.wi !== startI) celebrate({ icon: weaponBig(S.wi, S.wl), title: WEAPONS[S.wi].leg ? "전설 무기 장착!" : "새 무기 장착!", sub: `${WEAPONS[startI].n} +${startL} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: WEAPONS[S.wi].leg ? "rare" : "gold" });
+      else if (S.wl === 5 && startL < 5) celebrate({ icon: weaponBig(S.wi, 5), title: "+5 완성!", sub: `${WEAPONS[S.wi].n} +${startL} → +5`, tone: "gold" });
+      else if (!card._popT || Date.now() - card._popT > 110) { card._popT = Date.now(); rowPop(card, `+${S.wl}! (×${n})`, "#ffd54a"); }
+      updateUI(true); save(); dpsPop(d0); return;
+    }
     if (S.wl < 5 || i === LAST_W) {
       const c = wUp(i, S.wl); if (S.gold < c) return; S.gold -= c; S.wl++;
       if (S.wl === 5) celebrate({ icon: weaponBig(i, 5), title: "+5 완성!", sub: `${WEAPONS[i].n} · 빛이 나기 시작해요`, tone: WEAPONS[i].leg ? "rare" : "gold" });
       else rowPop(card, `+${S.wl}!`, "#ffd54a");
     }
     else { const n = i + 1, nw = WEAPONS[n], c = wBuy(n); if (nw.leg && !S.legUnlock[n - LEG_START]) return; if (S.gold < c) return; S.gold -= c; S.wi = n; S.wl = 1; if (S.skin >= 0) S.skin = -1; celebrate({ icon: weaponBig(n, 1), title: nw.leg ? "전설 무기 장착!" : "새 무기 장착!", sub: `${n + 1}번째 무기 · ${nw.n}`, tone: nw.leg ? "rare" : "gold" }); }
-    updateUI(true); save();
+    updateUI(true); save(); dpsPop(d0);
   });
-  $("wAll").addEventListener("click", () => {
-    const startI = S.wi, startL = S.wl; let n = 0;
-    while (n < 500) {
-      const i = S.wi;
-      if (S.wl < 5 || i === LAST_W) { const c = wUp(i, S.wl); if (S.gold < c) break; S.gold -= c; S.wl++; }
-      else { const nx = i + 1, c = wBuy(nx); if ((WEAPONS[nx].leg && !S.legUnlock[nx - LEG_START]) || S.gold < c) break; S.gold -= c; S.wi = nx; S.wl = 1; S.skin = -1; }
-      n++;
-    }
-    if (n && S.wi !== startI) celebrate({ icon: weaponBig(S.wi, S.wl), title: WEAPONS[S.wi].leg ? "전설 무기 장착!" : "새 무기 장착!", sub: `${WEAPONS[startI].n} +${startL} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: WEAPONS[S.wi].leg ? "rare" : "gold" });
-    else if (n && S.wl === 5 && startL < 5) celebrate({ icon: weaponBig(S.wi, 5), title: "+5 완성!", sub: `${WEAPONS[S.wi].n} +${startL} → +5`, tone: "gold" });
-    else if (n) { toast(`${WEAPONS[S.wi].n} +${startL} → +${S.wl}`); rowPop(card, `+${S.wl}!`, "#ffd54a"); }
-    updateUI(true); save();
+  $("wAuto").addEventListener("click", () => {
+    S.autoUp = !S.autoUp; sfx(S.autoUp ? "upgrade" : "uncheck"); autoUpT = 0;
+    toast(S.autoUp ? "자동 강화 켬 · 월급이 모이면 무기·커피 중 싼 것부터 알아서 올려요" : "자동 강화 껐어요");
+    updateUI(true); save(); if (S.autoUp) autoUpgradeTick();
   });
   addRow("weapon", {
     icon: iconCanvas(g => drawSprite(g, SPR.cup, PAL.cup, 2, 2, 3)), name: () => "아이스 아메리카노", lv: () => ` Lv.${S.coffee}`,
     desc: () => S.coffee >= 30 ? `초당 ${stats().aps.toFixed(1)}회 공격 (최대)` : `기본 공격 속도 ${(2 + 0.1 * S.coffee).toFixed(1)} → <b>${(2 + 0.1 * (S.coffee + 1)).toFixed(1)}</b>회`,
     btn: () => S.coffee >= 30 ? { label: "최대", ok: false } : { label: fmt(coffeeCost(S.coffee)) + "원", sub: "강화", ok: S.gold >= coffeeCost(S.coffee) },
     click: () => { if (S.coffee >= 30 || S.gold < coffeeCost(S.coffee)) return; S.gold -= coffeeCost(S.coffee); S.coffee++; },
+    rep: { cost: k => coffeeCost(S.coffee + k), have: () => S.gold, max: () => 30 - S.coffee, unit: "원" },
   });
   secTitle("weapon", "무기 목록", "가진 무기는 모양만 골라 쓸 수 있어요");
   const wlist = el("div", "panel");
@@ -5832,6 +6001,7 @@ function updateReaderState() {
     desc: () => `광석 +${S.pick * 10}% → <b>+${(S.pick + 1) * 10}%</b> · 골드로 강화, 퇴사해도 유지`,
     btn: () => ({ label: fmt(pickCost(S.pick)) + "원", sub: "강화", ok: S.gold >= pickCost(S.pick) }),
     click: () => { if (S.gold < pickCost(S.pick)) return; S.gold -= pickCost(S.pick); S.pick++; },
+    rep: { cost: k => pickCost(S.pick + k), have: () => S.gold, unit: "원" },
   });
 })();
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
@@ -5997,6 +6167,7 @@ function mineTick(now) {
       return { label: `만나 ${c}`, sub: lv ? "강화" : "들이기", ok: S.manna >= c, cls: "manna" };
     },
     click: () => { if (S.bestFloor < p.floor) return; const lv = petLv(p.id), c = lv ? petUp(p, lv) : p.price; if (S.manna < c) return; S.manna -= c; S.pets[p.id] = lv + 1; if (!lv) celebrate({ icon: petBig(p.id), title: "동료 합류!", sub: `${p.n} · ${p.desc(1)}`, tone: "manna" }); },
+    rep: { ok: () => S.bestFloor >= p.floor, cost: k => { const lv = petLv(p.id) + k; return lv ? petUp(p, lv) : p.price; }, have: () => S.manna, unit: "만나" },
   }));
 })();
 
@@ -6084,6 +6255,7 @@ function mineTick(now) {
     desc: () => `${c.d} +${Math.round(charmEff(c, S.charms[c.id]) * 100)}% · 200개 넘으면 효율 80%`,
     btn: () => ({ label: `광석 ${CHARM_PRICE}`, sub: "붙이기", ok: S.ore >= CHARM_PRICE, cls: "ore" }), noDot: true,
     click: () => { if (S.ore < CHARM_PRICE) return; S.ore -= CHARM_PRICE; S.charms[c.id]++; },
+    rep: { cost: () => CHARM_PRICE, have: () => S.ore, unit: "광석" },
   }, cg));
 })();
 /* 옷방: 거울 앞에 선 곽준영 */
@@ -6140,6 +6312,7 @@ function treIcon(t) {
     },
     btn: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return { label: "최대", ok: false, cls: "stamp" }; const c = treCost(t, lv); return { label: `도장 ${fmtR(c)}`, sub: lv ? "강화" : "얻기", ok: S.stamp >= c, cls: "stamp" }; },
     click: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return; const c = treCost(t, lv); if (S.stamp < c) return; S.stamp -= c; S.tre[t.id]++; if ((lv + 1) % 50 === 0) celebrate({ ic: "treasure", title: "보물 차수 상승!", sub: `${treName(t, lv + 1)} · 효과가 크게 올라요`, tone: "stamp" }); },
+    rep: { cost: k => treCost(t, S.tre[t.id] + k), have: () => S.stamp, max: () => t.max ? t.max - S.tre[t.id] : Infinity, unit: "도장" },
   }));
 })();
 
@@ -6452,7 +6625,7 @@ function load() {
 }
 setInterval(save, 5000);
 document.addEventListener("visibilitychange", () => { if (document.hidden) save(); else { studyTick(); updateUI(true); } });
-setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); bgmUpdate(); sfxWatch(); skillAuto(); }, 250);
+setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); bgmUpdate(); sfxWatch(); skillAuto(); autoUpgradeTick(); }, 250);
 
 /* ===================== 시작 ===================== */
 function start(data) {

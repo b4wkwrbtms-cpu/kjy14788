@@ -491,6 +491,39 @@ body.typing .tabs { transform: translateY(130%); }
 .cost-head b { color: var(--fg); font-family: var(--display); font-weight: 400; font-size: 15px; }
 .c-good { color: var(--good); }
 .up:not(.locked) .qbar { display: none; }
+
+/* 스킬·버프 한 줄 (둥근 칸) */
+.actbar { display: flex; align-items: center; gap: 5px; padding: 8px 8px 10px; border-top: 2px solid var(--edge); background: linear-gradient(180deg, #161d34, #10162a); box-shadow: inset 0 1px 0 var(--hi); }
+.actbar .skills { display: flex; gap: 5px; min-width: 0; }
+.actbar .buffbar { display: flex; gap: 5px; padding: 0; border: 0; background: none; box-shadow: none; margin-left: auto; }
+.act-div { flex: none; width: 2px; align-self: stretch; margin: 2px; background: linear-gradient(180deg, rgba(52,65,106,0), #34416a, rgba(52,65,106,0)); }
+.autob { flex: 0 1 40px; width: 40px; height: 40px; min-width: 32px; border-radius: 50%; border: 2px solid var(--edge); padding: 0; font: 11.5px/1 var(--display); letter-spacing: -.6px; color: #8d99b6; background: radial-gradient(circle at 50% 35%, #2c3760, #161d33 75%); box-shadow: inset 0 0 0 2px #3a4774, 0 3px 0 rgba(0,0,0,.45); cursor: pointer; }
+.autob.on { color: #2a2206; background: radial-gradient(circle at 50% 35%, #fff3b0, #ffd54a 60%, #d9a21c); box-shadow: inset 0 0 0 2px #fff3b0, 0 0 12px rgba(255,213,74,.55), 0 3px 0 #8a6a12; animation: autoGlow 1.4s ease-in-out infinite; }
+.autob:disabled { opacity: .45; cursor: default; }
+@keyframes autoGlow { 0%, 100% { box-shadow: inset 0 0 0 2px #fff3b0, 0 0 6px rgba(255,213,74,.4), 0 3px 0 #8a6a12; } 50% { box-shadow: inset 0 0 0 2px #fff3b0, 0 0 16px rgba(255,213,74,.8), 0 3px 0 #8a6a12; } }
+.sk { position: relative; flex: 0 1 40px; width: 40px; height: 40px; min-width: 32px; border-radius: 50%; border: 2px solid var(--edge); padding: 0; display: grid; place-items: center; cursor: pointer; background: radial-gradient(circle at 50% 35%, #34407a, #19203c 72%); box-shadow: inset 0 0 0 2px #5a4a22, 0 3px 0 rgba(0,0,0,.45); }
+.sk canvas { pointer-events: none; }
+.sk-cd { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; }
+.sk-t { position: absolute; inset: 0; display: grid; place-items: center; font: 15px var(--display); color: #fff; text-shadow: 0 2px 0 var(--edge), 0 0 6px #000; pointer-events: none; }
+.sk-lk { position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); font: 10px/13px var(--display); font-style: normal; padding: 0 4px; border-radius: 6px; background: #0a0e1a; color: #8d99b6; border: 1px solid #2c3657; white-space: nowrap; pointer-events: none; }
+.sk.locked canvas { filter: grayscale(1) brightness(.5); }
+.sk.ready { box-shadow: inset 0 0 0 2px #ffd54a, 0 0 10px rgba(255,213,74,.5), 0 3px 0 rgba(0,0,0,.45); animation: skReady 1.8s ease-in-out infinite; }
+.sk.on { box-shadow: inset 0 0 0 2px #7fe3a0, 0 0 12px rgba(127,227,160,.6), 0 3px 0 rgba(0,0,0,.45); }
+.sk:active:not(.locked) { transform: translateY(2px); }
+@keyframes skReady { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+.actbar .buffbar button { flex: 0 1 40px; width: 40px; height: 40px; min-width: 32px; padding: 0; border-radius: 50%; justify-content: center; overflow: visible; background: radial-gradient(circle at 50% 35%, #34407a, #19203c 72%); box-shadow: inset 0 0 0 2px #3d4a7a, 0 3px 0 rgba(0,0,0,.45); }
+.actbar .buffbar button.empty .bf-ic canvas { filter: grayscale(.9) brightness(.55); }
+.actbar .bf-t, .actbar .bf-bar { display: none; }
+.actbar .bf-ic { width: auto; height: auto; background: none; box-shadow: none; position: static; }
+.actbar .bf-n { right: -5px; bottom: -5px; }
+.actbar .buffbar button.on { box-shadow: inset 0 0 0 2px var(--gold), 0 0 12px rgba(255,213,74,.5), 0 3px 0 rgba(0,0,0,.45); }
+.actbar .buffbar button.on::after { content: attr(data-sec); position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%; background: rgba(6,9,18,.42); font: 14px var(--display); color: #fff; text-shadow: 0 2px 0 var(--edge); }
+.hd-right { display: flex; align-items: center; gap: 8px; }
+#soundBtn { flex: none; width: 40px; height: 40px; padding: 0; display: grid; place-items: center; border-radius: 12px; border: 2px solid var(--edge); background: linear-gradient(180deg, #28325c, #1b2242); box-shadow: inset 0 0 0 1px #3d4a7a, 0 3px 0 rgba(0,0,0,.4); cursor: pointer; }
+#soundBtn .bf-t, #soundBtn .bf-bar, #soundBtn .bf-n { display: none; }
+#soundBtn .bf-ic { background: none; box-shadow: none; width: auto; height: auto; }
+.mon-name.golden { color: #ffd54a; text-shadow: 0 2px 0 var(--edge), 0 0 10px rgba(255,213,74,.6); }
+.task.week .qbar > i { background-color: var(--gold); }
 /* 입력칸 */
 textarea, input[type=text], .refin select, .refin input { background: #0c1121; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657, inset 0 3px 6px rgba(0,0,0,.35); border-radius: 10px; }
 .memv { border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657; }
@@ -529,7 +562,7 @@ textarea, input[type=text], .refin select, .refin input { background: #0c1121; b
   <header>
     <div class="title-row">
       <h1><small>말씀 읽고 공부하며 오르는 본사 타워</small>곽준영 키우기</h1>
-      <div class="floor-big num" aria-label="지금 층"><i class="fl-up" aria-hidden="true">▲</i><span id="floorChip">1</span><small>층</small></div>
+      <div class="hd-right"><span id="sndSlot"></span><div class="floor-big num" aria-label="지금 층"><i class="fl-up" aria-hidden="true">▲</i><span id="floorChip">1</span><small>층</small></div></div>
     </div>
     <div class="chips">
       <span class="chip" title="만나"><i class="ri ri-manna"></i><b id="mannaChip" class="num c-manna">0</b></span>
@@ -556,7 +589,7 @@ textarea, input[type=text], .refin select, .refin input { background: #0c1121; b
     <canvas id="cv" width="900" height="600" aria-label="화면을 눌러 공격"></canvas>
     <div id="hint" class="hint" hidden>화면을 톡톡 눌러 같이 때리세요 · 월급은 보스만 줘요</div>
     <button id="retry" class="retry" hidden>보스 재도전</button>
-    <div class="buffbar" id="buffbar"></div>
+    <div class="actbar"><button class="autob" id="autoBtn" aria-label="스킬 자동 사용">AUTO</button><div class="skills" id="skillbar"></div><i class="act-div" aria-hidden="true"></i><div class="buffbar" id="buffbar"></div></div>
   </section>
 
   <section class="wallet">
@@ -888,7 +921,7 @@ const rwText = rw => Object.entries(rw).map(([k, v]) => `${RW_NAME[k]} ${v}`).jo
 /* ===================== 상태 ===================== */
 function freshState() {
   return {
-    v: 3, gold: 0, floor: 1, k: 1, maxFloor: 1, bestFloor: 1, auto: true,
+    v: 3, gold: 0, floor: 1, k: 1, maxFloor: 1, bestFloor: 1, auto: true, skillCd: {}, autoSkill: false, goldenKills: 0,
     wi: 0, wl: 1, skin: -1, coffee: 0, pick: 0,
     manna: 0, stamp: 0, ore: 0, silver: 0, ame: 0,
     legUnlock: [false, false, false, false, false, false, false, false, false, false],
@@ -908,6 +941,7 @@ let S = freshState();
 
 function newDay() { return { key: dayKey(), att: 1, chap: 0, med: 0, study: 0, boss: 0, depth: 0, mem: 0, claimed: {}, vaultUsed: 0 }; }
 function rollDay() {
+  rollWeek();
   const k = dayKey();
   if (!S.day || S.day.key !== k) {
     S.day = newDay();
@@ -939,10 +973,10 @@ function stats() {
     * (petLv("legend") ? 2 + 0.2 * petLv("legend") : 1)
     * (own("arm", 1) ? 1 + 0.01 * Math.floor(S.floor / 5) : 1)
     * (S.active.rage > 0 ? 3 : 1) * (idolBuff.t > 0 && idolBuff.type === "rage" ? 3 : 1) * (S.promo ? 4 : 1)
-    * (1 + 0.03 * (typeof costN === "number" ? costN : 0));
+    * (1 + 0.03 * (typeof costN === "number" ? costN : 0)) * (skillOn("night") ? 3 : 1);
   const atk = wp * add * mul;
   const aps = (2 + 0.1 * S.coffee) * (1 + treVal("tumbler")) * (1 + 0.1 * legLv("shoes")) * (L >= 5 ? 1.1 : 1)
-    * (now < S.sneakerUntil ? 3 : 1) * (S.active.haste > 0 ? 2 : 1) * (idolBuff.t > 0 && idolBuff.type === "haste" ? 2 : 1);
+    * (now < S.sneakerUntil ? 3 : 1) * (S.active.haste > 0 ? 2 : 1) * (idolBuff.t > 0 && idolBuff.type === "haste" ? 2 : 1) * (skillOn("rush") ? 2 : 1);
   const crit = (idolBuff.t > 0 && idolBuff.type === "crit") ? 1 : Math.min(1, 0.05 + (own("tie", 0) ? 0.25 : 0));
   const critMul = 1.5 + 3 * legLv("tie") + (L >= 2 ? 3.5 : 0);
   const heroDps = atk * aps * (1 + crit * (critMul - 1));
@@ -1543,6 +1577,7 @@ function spawn() {
   }
   const hp = hpBase(f) * HP_MUL[kind];
   mon = Object.assign(base, { name, sprite, pal, scale, kind, hp, max: hp, crown });
+  if (kind === 0 && mode === "tower" && S.bestFloor >= 20 && Math.random() < GOLDEN_P) makeGolden();
   bossTime = bossTimeOf(kind);
   const dl = petLv("ddeok");
   if (dl) { const cut = Math.random() * Math.min(0.3, 0.1 + 0.02 * dl); if (cut > 0.02) { mon.ddeok = cut; mon.hp -= mon.max * cut; addFloat(MON_X, 110, `떡볶이 -${Math.round(cut * 100)}%`, "#ff6b3b", 20); } }
@@ -1665,6 +1700,7 @@ function hitSound(strength) {
 /* 맞을 때 반응: 빨갛게, 밀려남, 찌그러짐, 젖혀짐, 파편 */
 function hit(amount, crit, src, px, py) {
   if (!mon || mon.dying) return;
+  if ((src === "pet" || src === "clone") && skillOn("party")) amount *= 3;
   if (mon.kind > 0 && mode === "tower") amount *= stats().bossBonus;
   mon.hp -= amount;
   const heavy = src === "hero" || src === "tap";
@@ -1722,6 +1758,7 @@ function kill() {
     return;
   }
   const f = S.floor, kind = mon.kind;
+  if (mon.golden) goldenReward();
   if (kind > 0) {
     const reward = goldBase(f) * GOLD_MUL[kind] * goldMult();
     S.gold += reward; S.bossKills++; S.day.boss++;
@@ -2882,6 +2919,7 @@ function draw(t) {
       ag.addColorStop(0, `rgba(${ac},${pa})`); ag.addColorStop(1, `rgba(${ac},0)`);
       ctx.fillStyle = ag; ctx.fillRect(mxp - R, myp - h * 0.5 - R, R * 2, R * 2);
     }
+    if (mon.golden && !mon.dying && eo.a > 0) drawGoldenAura(mxp, myp, h, t);
     ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(MON_X + ox - w / 2 + 8 + mon.kb * 24 + eo.dx, GROUND - 3, w - 16, 6);
     if (!mon.dying) reflect(() => { ctx.translate(mxp, myp); ctx.rotate(-(mon.tilt * 0.22)); ctx.scale(sx * eo.s, sy * eo.s); drawSprite(ctx, map, mon.pal, -w / 2, -h, sc, so); });
     if (mon.dying && !reduceMotion) for (let g = 1; g <= 2; g++) { ctx.save(); ctx.globalAlpha *= 0.25 / g; ctx.translate(mxp - mon.vx * g * 3.2, myp - mon.vy * g * 3.2); ctx.rotate(mon.tilt * 0.22 + mon.rot - 0.25 * g); ctx.scale(sx, sy); drawSprite(ctx, map, mon.pal, -w / 2, -h, sc, { flip: true, pretty, white: true }); ctx.restore(); }
@@ -2925,7 +2963,7 @@ function draw(t) {
     else { ctx.fillStyle = s.c; ctx.fillRect(s.x, s.y, 5, 5); }
   });
   ctx.globalAlpha = 1;
-  drawCoins(); drawCritLines(MON_X + monOX() * 0.5, GROUND - 60);
+  drawSkillFx(t); drawCoins(); drawCritLines(MON_X + monOX() * 0.5, GROUND - 60);
   ctx.textAlign = "center"; ctx.textBaseline = "middle";
   floats.forEach(f => {
     const a = Math.min(1, f.life * 2.4);
@@ -3273,7 +3311,7 @@ function frame(now) {
   const dt = Math.min(100, now - last); last = now;
   const gdt = fxStep(dt); fx5Step(dt);
   if (hitStop > 0) { hitStop -= dt; shakeAmt = Math.max(0, shakeAmt - dt * 0.02); draw(now); requestAnimationFrame(frame); return; }
-  fxPhys(gdt); fx4Phys(gdt); petPhys(gdt); step(gdt); draw(now); mineTick(now); requestAnimationFrame(frame);
+  fxPhys(gdt); fx4Phys(gdt); petPhys(gdt); step(gdt); skillPhys(gdt); draw(now); mineTick(now); requestAnimationFrame(frame);
 }
 function step(dt) {
   const sec = dt / 1000;
@@ -3309,6 +3347,7 @@ function step(dt) {
     const ca = petLv("cactus");
     if (ca && mon && !mon.dying) { cactusTimer += dt; if (cactusTimer >= 2000) { cactusTimer -= 2000; fireNeedles(); hit(mon.hp * (1 + 0.1 * ca) / 100 / (mon.kind ? 5 : 1), false, "pet"); } }
     if (mode === "tower" && mon && TIME_LIMIT[mon.kind] && !mon.dying && spawnWait <= 0) { bossTime -= sec; if (bossTime <= 0) failBoss(); }
+    if (mode === "tower" && mon && mon.golden && !mon.dying && spawnWait <= 0) { goldenTime -= sec; if (goldenTime <= 0) goldenEscape(); }
   }
   if (mode === "vault") { vaultTime -= sec; if (vaultTime <= 0) endVault(); }
   petT = Math.max(0, petT - dt / 260);
@@ -3352,9 +3391,9 @@ function renderTop(full) {
     trailPct = hpPct;
   }
   $("monHp").textContent = `${fmt(Math.max(0, mon.hp))} / ${fmt(mon.max)}`;
-  const timed = mode === "vault" || TIME_LIMIT[mon.kind] > 0;
+  const timed = mode === "vault" || TIME_LIMIT[mon.kind] > 0 || !!mon.golden;
   if (timed) {
-    const left = mode === "vault" ? vaultTime : bossTime, total = mode === "vault" ? 30 : bossTimeOf(mon.kind);
+    const left = mode === "vault" ? vaultTime : mon.golden ? goldenTime : bossTime, total = mode === "vault" ? 30 : mon.golden ? GOLDEN_SEC : bossTimeOf(mon.kind);
     $("timerBar").style.width = Math.max(0, left / total * 100) + "%";
     $("timerLabel").textContent = Math.max(0, Math.ceil(left)) + "초";
   }
@@ -3362,8 +3401,8 @@ function renderTop(full) {
   $("runLine").innerHTML = mode === "vault" ? `곽준영의 <b>${S.retires + 1}번째 회사</b> · 지하 문서고 <b>${vaultRun.depth}m</b>`
     : `곽준영의 <b>${S.retires + 1}번째 회사</b> · ${cycleOf(S.floor)}${zoneOf(S.floor).n} <b>${S.floor}층</b> ${S.k}/5`;
   const n = $("monName"); n.textContent = mon.name;
-  n.className = "mon-name" + (mode === "vault" ? " vault" : mon.kind >= 2 ? " boss" : mon.kind === 1 ? " small" : "");
-  $("progLabel").textContent = mode === "vault" ? "문서고 마감까지" : mon.kind === 3 ? "큰 보스 · 회장실" : mon.kind === 2 ? "큰 보스 · 임원실" : mon.kind === 1 ? "작은 보스 · 월급 지급" : (S.auto ? `작은 보스까지 ${5 - S.k}마리` : "아래층에서 훈련 중");
+  n.className = "mon-name" + (mode === "vault" ? " vault" : mon.golden ? " golden" : mon.kind >= 2 ? " boss" : mon.kind === 1 ? " small" : "");
+  $("progLabel").textContent = mode === "vault" ? "문서고 마감까지" : mon.golden ? "황금 몹 · 도망가기 전에!" : mon.kind === 3 ? "큰 보스 · 회장실" : mon.kind === 2 ? "큰 보스 · 임원실" : mon.kind === 1 ? "작은 보스 · 월급 지급" : (S.auto ? `작은 보스까지 ${5 - S.k}마리` : "아래층에서 훈련 중");
   pipsEl.hidden = timed; $("timerWrap").hidden = !timed; $("timerLabel").hidden = !timed;
   [...pipsEl.children].forEach((p, i) => { p.classList.toggle("on", i < S.k - 1); p.classList.toggle("now", i === S.k - 1); });
   $("retry").hidden = S.auto || mode === "vault";
@@ -3382,13 +3421,14 @@ const bfParts = (b, icon, name) => {
 };
 BUFFS.forEach(([id, n, d]) => {
   const b = document.createElement("button"); bfParts(b, pixIcon(id, 22), n);
-  b.addEventListener("click", () => { if (S.buffs[id] <= 0 || S.active[id] > 0) return; S.buffs[id]--; S.active[id] = 60; toast(`${n} 사용! 1분 동안 ${d}`); updateUI(); save(); });
+  b.setAttribute("aria-label", `${n}: ${d}`);
+  b.addEventListener("click", () => { if (S.active[id] > 0) { toast(`${n} 효과 중 · ${Math.ceil(S.active[id])}초 남음`); return; } if (S.buffs[id] <= 0) { toast(`${n} (${d}) 없음 · 업무·업적 보상으로 받아요`); return; } S.buffs[id]--; S.active[id] = 60; toast(`${n} 사용! 1분 동안 ${d}`); updateUI(); save(); });
   $("buffbar").appendChild(b); buffBtns[id] = b;
 });
 const soundBtn = document.createElement("button"); soundBtn.id = "soundBtn"; bfParts(soundBtn, null, "소리");
 soundBtn.addEventListener("click", () => { if (S.sound && S.music !== false) S.music = false; else if (S.sound) S.sound = false; else { S.sound = true; S.music = true; } if (S.sound) audioReady(); bgmUpdate(); renderBuffs(); save(); toast(!S.sound ? "소리 꺼짐" : S.music === false ? "효과음만 켜짐" : "음악과 효과음 켜짐"); });
 soundBtn.setAttribute("aria-label", "소리 설정");
-$("buffbar").appendChild(soundBtn);
+($("sndSlot") || $("buffbar")).appendChild(soundBtn);
 function renderBuffs() {
   const sm = !S.sound ? "mute" : S.music === false ? "sound" : "music";
   if (soundBtn.dataset.st !== sm) {
@@ -3399,10 +3439,11 @@ function renderBuffs() {
   soundBtn.classList.toggle("on", !!S.sound);
   BUFFS.forEach(([id, n, d]) => {
     const b = buffBtns[id], on = S.active[id] > 0;
-    b.classList.toggle("on", on); b.disabled = !on && S.buffs[id] <= 0;
+    b.classList.toggle("on", on); b.classList.toggle("empty", !on && S.buffs[id] <= 0);
     const sm2 = on ? `${Math.ceil(S.active[id])}초 남음` : d, smEl = b.querySelector("small"); if (smEl.textContent !== sm2) smEl.textContent = sm2;
     const nEl = b.querySelector(".bf-n"), nv = S.buffs[id] > 0 ? String(S.buffs[id]) : ""; if (nEl.textContent !== nv) nEl.textContent = nv;
     b.querySelector(".bf-bar i").style.width = on ? Math.min(100, S.active[id] / 60 * 100) + "%" : "0%";
+    const secv = on ? String(Math.ceil(S.active[id])) : ""; if (b.dataset.sec !== secv) { b.dataset.sec = secv; if (b.setAttribute) b.setAttribute("data-sec", secv); }
   });
 }
 
@@ -3426,7 +3467,7 @@ function toggleChapter(b, c) {
   if (idx >= 0) {
     const e = B.today[idx]; B.today.splice(idx, 1);
     if (e.newRead) setBit(b, c, false);
-    B.total = Math.max(0, B.total - 1); S.day.chap = Math.max(0, S.day.chap - 1);
+    B.total = Math.max(0, B.total - 1); S.day.chap = Math.max(0, S.day.chap - 1); if (S.week) S.week.chap = Math.max(0, S.week.chap - 1);
     if (e.rw) { S.manna = Math.max(0, S.manna - e.rw.manna); S.stamp = Math.max(0, S.stamp - e.rw.stamp); B.rewarded--; }
     toast(`${BOOKS[b][0]} ${c + 1}장 체크를 취소했어요`);
     return;
@@ -3441,7 +3482,7 @@ function toggleChapter(b, c) {
     entry.rw = { manna: m, stamp: 1 }; S.manna += m; S.stamp += 1; B.rewarded++;
     toast(`${BOOKS[b][0]} ${c + 1}장 · 만나 +${m}, 도장 +1`);
   } else toast(`${BOOKS[b][0]} ${c + 1}장 기록했어요 (오늘 보상은 ${READ_CAP}장까지)`);
-  B.today.push(entry); B.total++; S.day.chap++;
+  B.today.push(entry); B.total++; S.day.chap++; if (S.week) S.week.chap++;
   if (roundCount() >= TOTAL_CH) {
     B.rounds++; B.read = {}; S.stamp += 100; S.manna += 500;
     celebrate({ ic: "bible", title: `성경 ${B.rounds}독 완료!`, sub: `<span class="rws">${rwHTML({ stamp: 100, manna: 500 })}</span>`, tone: "manna", ms: 3200 });
@@ -3473,7 +3514,7 @@ function addStudy(ms) {
   if (ms <= 0) return;
   rollDay();
   const St = S.study, before = St.today;
-  St.today += ms / 60000; St.total += ms / 60000; S.day.study = St.today;
+  St.today += ms / 60000; St.total += ms / 60000; S.day.study = St.today; if (S.week) S.week.study += ms / 60000;
   if (St.subject) { const e = St.log.find(l => l.s === St.subject); if (e) e.m += ms / 60000; else St.log.push({ s: St.subject, m: ms / 60000 }); }
   if (before < 25 && St.today >= 25 && St.last !== dayKey()) { St.streak = (St.last === yesterdayKey() ? St.streak : 0) + 1; St.last = dayKey(); St.best = Math.max(St.best, St.streak); toast(`공부 연속 ${St.streak}일째!`); }
   const nd = depthAt(St.today);
@@ -3572,7 +3613,7 @@ function memPass(v) {
   const s = r.s, rw = memReward(s);
   S.manna += rw.manna; S.stamp += rw.stamp; S.gold += rw.gold;
   r.s = Math.min(MEM_MAX, s + 1); r.n++; r.due = addDays(dayKey(), MEM_INT[r.s]); r.last = dayKey();
-  S.mem.total++; S.day.mem = (S.day.mem || 0) + 1;
+  S.mem.total++; S.day.mem = (S.day.mem || 0) + 1; if (S.week) S.week.mem = (S.week.mem || 0) + 1;
   if (S.mem.last !== dayKey()) { S.mem.streak = (S.mem.last === yesterdayKey() ? S.mem.streak : 0) + 1; S.mem.last = dayKey(); S.mem.best = Math.max(S.mem.best, S.mem.streak); }
   let bonus = "";
   if (r.s === MEM_MASTER) { S.stamp += 10; bonus = " · 암송 완료 보너스 도장 10"; }
@@ -3908,6 +3949,217 @@ function skinBig(k, css = 96) {
 }
 const outfitIcon = o => iconCanvas(g => { const lk = applyOutfit(heroLookFor(CHARS[0]), o); drawSprite(g, lk.map, lk.pal, 17, 6, 2.6, { pretty: true }); }, 80);
 const outfitBig = o => { const lk = applyOutfit(heroLookFor(curChar()), o); return bigSprite(lk.map, lk.pal, 96); };
+
+/* ===================== 새 콘텐츠: 스킬 5종 + 자동, 황금 몹, 주간 목표 ===================== */
+Object.assign(UIICON, {
+  coffee: { m: ["......s.....", "...s.s......", "....s.......", "............", ".wccccccw...", ".wccccccw...", ".wwwwywwwww.", ".wwwyywww.w.", ".wwyyyyww.w.", ".wwwwywwwww.", ".wwwywwww...", ".wwwwwwww..."], p: {"w": "#f4f6fb", "c": "#6b3f1f", "y": "#ffe14a", "W": "#ffffff", "s": "#c9d2e6"} },
+  moon: { m: ["............", "..........z.", "....yy...zzz", "..yyy.....z.", "..Yyy.......", ".Yyy........", ".Yyy........", ".yyyy...z...", ".yyyyy......", ".yyyyyy..y..", "..yyyyyyyy..", "...yyyyy...."], p: {"y": "#ffe14a", "Y": "#fff7c2", "o": "#ffb53a", "z": "#ffffff"} },
+  party: { m: ["............", "..f......f..", "fffff..fffff", "fffff..fffff", "aaaaa..aaaaa", "afaaaggafaaa", "aaaaaggaaaaa", "aaaaaggaaaaa", "aaaaaggaaaaa", "aAAAa..aAAAa", "aaaaa..aaaaa", "............"], p: {"a": "#ffb53a", "A": "#d98a1a", "f": "#fff7e6", "g": "#c9d2e6"} }
+});
+/* ---------- 스킬: 최고 층으로 해금, 쿨타임, 자동 사용 ---------- */
+const SKILLS = [
+  { id: "stamp", n: "결재 폭탄", floor: 30, cd: 30, ic: "stamp", d: "초당 피해 20배를 한 번에" },
+  { id: "rush", n: "커피 러시", floor: 80, cd: 45, dur: 10, ic: "coffee", d: "10초 동안 공격 속도 2배" },
+  { id: "night", n: "야근 모드", floor: 150, cd: 60, dur: 8, ic: "moon", d: "8초 동안 모든 피해 3배" },
+  { id: "party", n: "회식 소집", floor: 300, cd: 75, dur: 10, ic: "party", d: "동료 총공격 + 10초 동안 동료 피해 3배" },
+  { id: "resign", n: "사직서 투척", floor: 500, cd: 120, ic: "retire", d: "적 최대 체력의 25% (보스는 5%)" },
+];
+const skillUntil = {};
+const skillOn = id => (skillUntil[id] || 0) > Date.now();
+const skillUnlocked = s => S.bestFloor >= s.floor;
+const skillLeft = s => Math.max(0, (((S.skillCd || {})[s.id]) || 0) - Date.now()) / 1000;
+const canFight = () => !!(mon && !mon.dying && spawnWait <= 0 && !lift && !introBlocking());
+let skillFx = [];
+function castSkill(s, auto) {
+  if (!skillUnlocked(s)) { if (!auto) toast(`${s.n}: 최고 ${s.floor}층에 오르면 열려요 · ${s.d}`); return false; }
+  const left = skillLeft(s);
+  if (left > 0) { if (!auto) toast(`${s.n}: ${Math.ceil(left)}초 뒤에 다시 쓸 수 있어요`); return false; }
+  if (!canFight()) { if (!auto) toast("적이 나타나면 쓸 수 있어요"); return false; }
+  S.skillCd = S.skillCd || {}; S.skillCd[s.id] = Date.now() + s.cd * 1000;
+  if (s.dur) skillUntil[s.id] = Date.now() + s.dur * 1000;
+  const st = stats();
+  sfx("buff"); addFloat(HERO_X + 30, GROUND - 150, s.n + "!", "#ffd54a", 30, true);
+  if (s.id === "stamp") skillFx.push({ kind: "stamp", t: 0, dur: 900, hitAt: 260, dmg: st.dps * 20 });
+  else if (s.id === "resign") skillFx.push({ kind: "letter", t: 0, dur: 1000, hitAt: 380 });
+  else if (s.id === "rush") { rings.push({ x: HERO_X + 30, y: GROUND - 50, life: 1, crit: false, big: true }); screenFlash = Math.max(screenFlash, 0.15); flashCol = "#c98a4a"; }
+  else if (s.id === "night") { rings.push({ x: HERO_X + 30, y: GROUND - 50, life: 1, crit: true, big: true }); screenFlash = Math.max(screenFlash, 0.25); flashCol = "#5a48c8"; say("오늘은 끝장을 본다!", 2); }
+  else if (s.id === "party") {
+    let n = 0; const cl = petLv("cat"), ca = petLv("cactus"), il = petLv("idol");
+    if (cl) { n++; addSkyStrike(MON_X, true); hit(st.atk * (1.5 + 0.5 * cl) * 5, false, "pet"); }
+    if (ca && mon && !mon.dying) { n++; fireNeedles(); hit(mon.hp * (1 + 0.1 * ca) / 100 / (mon.kind ? 5 : 1) * 3, false, "pet"); }
+    if (st.clone > 0 && mon && !mon.dying) { n++; throwCloneJavelin(); hit(st.clone * 3, false, "clone"); }
+    if (il) { n++; idolBuff = { type: ["haste", "rage", "crit"][Math.floor(Math.random() * 3)], t: 4 + 0.5 * il }; cheerHearts(); }
+    say(n ? "다들 모여! 오늘 회식은 내가 쏜다!" : "...아무도 안 왔네. 동료를 들여야겠어", 2);
+  }
+  renderSkills(); save(); return true;
+}
+function skillPhys(dt) {
+  skillFx.forEach(f => {
+    const prev = f.t; f.t += dt;
+    if (prev < f.hitAt && f.t >= f.hitAt && mon && !mon.dying) {
+      const { h: mh } = monSize(), y = GROUND - mh * 0.5;
+      rings.push({ x: MON_X, y, life: 1, crit: true, big: true }); addGroundFlash(MON_X, f.kind === "stamp" ? "#ff5d5d" : "#ffffff");
+      if (!reduceMotion) shakeAmt = Math.max(shakeAmt, 16);
+      screenFlash = Math.max(screenFlash, 0.35); flashCol = f.kind === "stamp" ? "#ff2a2a" : "#ffffff";
+      triggerImpactFrame(MON_X, y, true); hitSound(1.4);
+      hit(f.kind === "stamp" ? f.dmg : mon.max * (mon.kind ? 0.05 : 0.25), true, "skill", MON_X - 10, y);
+    }
+  });
+  skillFx = skillFx.filter(f => f.t < f.dur);
+}
+function drawSkillFx(t) {
+  skillFx.forEach(f => {
+    ctx.save();
+    if (f.kind === "stamp") {
+      // 커다란 빨간 결재 도장이 위에서 쾅
+      const fall = Math.min(1, f.t / f.hitAt), y = GROUND - 70 - (1 - fall * fall) * 220, s = f.t < f.hitAt ? 1.4 - 0.4 * fall : 1 + 0.12 * Math.max(0, 1 - (f.t - f.hitAt) / 120);
+      ctx.globalAlpha = f.t < f.hitAt ? 1 : Math.max(0, 1 - (f.t - f.hitAt) / (f.dur - f.hitAt));
+      ctx.translate(MON_X - 4, y); ctx.rotate(-0.12); ctx.scale(s, s);
+      ctx.fillStyle = "rgba(10,12,20,.55)"; ctx.fillRect(-42, -38, 92, 88);
+      ctx.fillStyle = "#e0403d"; ctx.fillRect(-46, -44, 92, 88); ctx.fillStyle = "#ffb3a8"; ctx.fillRect(-40, -38, 80, 76); ctx.fillStyle = "#e0403d"; ctx.fillRect(-34, -32, 68, 64);
+      ctx.fillStyle = "#fff4f2"; ctx.font = '34px "Do Hyeon", sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("결재", 0, 2);
+    } else if (f.kind === "letter") {
+      // 사직서 봉투가 빙글빙글 날아감
+      const p = Math.min(1, f.t / f.hitAt), sx = HERO_X + 70, sy = GROUND - 90, ex = MON_X - 10, ey = GROUND - 70;
+      const x = sx + (ex - sx) * p, y = sy + (ey - sy) * p - Math.sin(p * Math.PI) * 60;
+      if (f.t < f.hitAt) {
+        ctx.translate(x, y); ctx.rotate(p * 9);
+        ctx.fillStyle = "#140f1c"; ctx.fillRect(-25, -17, 50, 34); ctx.fillStyle = "#f4f6fb"; ctx.fillRect(-23, -15, 46, 30);
+        ctx.strokeStyle = "#b9c1d6"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-23, -15); ctx.lineTo(0, 3); ctx.lineTo(23, -15); ctx.stroke();
+        ctx.fillStyle = "#e0403d"; ctx.beginPath(); ctx.arc(0, 4, 6, 0, 7); ctx.fill();
+        ctx.fillStyle = "#1b1f2a"; ctx.font = '12px "Do Hyeon", sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillText("사직서", 0, 13);
+      } else {
+        const q = (f.t - f.hitAt) / (f.dur - f.hitAt);
+        ctx.globalAlpha = Math.max(0, 1 - q); ctx.fillStyle = "#f4f6fb";
+        for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2 + 0.3; ctx.save(); ctx.translate(ex + Math.cos(a) * q * 90, ey + Math.sin(a) * q * 70 + q * q * 40); ctx.rotate(a + q * 6); ctx.fillRect(-7, -5, 14, 10); ctx.restore(); }
+      }
+    }
+    ctx.restore();
+  });
+  // 지속 스킬: 곽준영 주변 빛
+  const hx = HERO_X + 30, hy = GROUND - 45;
+  [["rush", "201,138,74"], ["night", "124,92,255"], ["party", "255,155,61"]].forEach(([id, c], i) => {
+    if (!skillOn(id)) return;
+    const a = 0.22 + 0.1 * Math.sin(t / 160 + i), R = 70 + 8 * Math.sin(t / 240 + i);
+    const g = ctx.createRadialGradient(hx, hy, 6, hx, hy, R); g.addColorStop(0, `rgba(${c},${a})`); g.addColorStop(1, `rgba(${c},0)`);
+    ctx.fillStyle = g; ctx.fillRect(hx - R, hy - R, R * 2, R * 2);
+  });
+}
+/* 스킬 칸: 자동 + 스킬 5 */
+const skillBtns = {};
+(() => {
+  const bar = $("skillbar"); if (!bar) return;
+  const auto = $("autoBtn");
+  if (auto) auto.addEventListener("click", () => { S.autoSkill = !S.autoSkill; toast(S.autoSkill ? "스킬 자동 사용 켜짐 · 사직서는 보스와 황금 몹에게만" : "스킬 자동 사용 꺼짐"); renderSkills(); save(); });
+  SKILLS.forEach(s => {
+    const b = document.createElement("button"); b.className = "sk"; b.setAttribute("aria-label", `${s.n}: ${s.d}`);
+    b.appendChild(pixIcon(s.ic, 24));
+    const cd = document.createElement("i"); cd.className = "sk-cd"; b.appendChild(cd);
+    const tx = document.createElement("span"); tx.className = "sk-t num"; b.appendChild(tx);
+    const lk = document.createElement("em"); lk.className = "sk-lk num"; lk.textContent = `${s.floor}층`; b.appendChild(lk);
+    b.addEventListener("click", () => castSkill(s, false));
+    bar.appendChild(b); skillBtns[s.id] = { b, cd, tx, lk };
+  });
+})();
+function renderSkills() {
+  const auto = $("autoBtn"); if (auto) { auto.classList.toggle("on", !!S.autoSkill); auto.disabled = !SKILLS.some(skillUnlocked); }
+  SKILLS.forEach(s => {
+    const r = skillBtns[s.id]; if (!r) return;
+    const un = skillUnlocked(s), left = un ? skillLeft(s) : 0, on = skillOn(s.id);
+    r.b.classList.toggle("locked", !un); r.b.classList.toggle("ready", un && left <= 0 && !on); r.b.classList.toggle("on", on);
+    const p = un && left > 0 ? left / s.cd : 0, bg = p > 0 ? `conic-gradient(rgba(6,9,18,.74) ${(p * 360).toFixed(1)}deg, rgba(0,0,0,0) 0)` : "none";
+    if (r.cd._bg !== bg) { r.cd._bg = bg; r.cd.style.background = bg; }
+    const t = !un ? "" : on ? `${Math.ceil(((skillUntil[s.id] || 0) - Date.now()) / 1000)}` : left > 0 ? `${Math.ceil(left)}` : "";
+    if (r.tx.textContent !== t) r.tx.textContent = t;
+    r.lk.hidden = un;
+  });
+}
+function skillAuto() {
+  if (!S.autoSkill || document.hidden || !canFight()) return;
+  for (const s of SKILLS) {
+    if (!skillUnlocked(s) || skillLeft(s) > 0) continue;
+    if (s.id === "resign" && !(mon.kind >= 1 || mon.golden)) continue;   // 사직서는 아껴서 보스·황금 몹에게
+    if (s.id === "stamp" && mon.kind === 0 && !mon.golden && mon.hp < stats().dps * 3) continue;   // 거의 쓰러진 잡몹에는 아낌
+    if (castSkill(s, true)) break;   // 한 번에 하나씩
+  }
+}
+/* ---------- 황금 몹: 일반 몹 자리에 가끔(1.5%) 나타나 12초 뒤 도망. 잡으면 작은 보스 월급 10배 + 도장 ---------- */
+const GOLDEN_P = 0.015, GOLDEN_SEC = 12;
+let goldenTime = 0;
+var goldPalCache;
+function goldPal(pal) {
+  goldPalCache = goldPalCache || new WeakMap(); if (goldPalCache.has(pal)) return goldPalCache.get(pal);
+  const ramp = ["#5a3a08", "#a8701a", "#e0a82a", "#ffd54a", "#fff3b0"], out = {};
+  Object.keys(pal).forEach(k => {
+    const v = pal[k];
+    if (k === "k") out[k] = "#2a1606"; else if (k === "W") out[k] = "#ffffff"; else if (k === "P") out[k] = "#ff9b6b";
+    else if (typeof v !== "string" || !/^#[0-9a-f]{6}$/i.test(v)) out[k] = v;
+    else { const [r, g, b] = hexRGB(v), l = 0.3 + 0.7 * (0.3 * r + 0.59 * g + 0.11 * b) / 255, x = Math.min(3.999, l * 4), i = Math.floor(x); out[k] = mixHex(ramp[i], ramp[i + 1], x - i); }
+  });
+  goldPalCache.set(pal, out); return out;
+}
+function makeGolden() {
+  if (!mon || mon.golden) return;
+  mon.golden = true; mon.name = "황금 " + mon.name; mon.pal = goldPal(mon.pal); mon.hp *= 3; mon.max = mon.hp; goldenTime = GOLDEN_SEC;
+  sfx("sparkle"); say("황금 몹이다! 도망가기 전에 잡자!", 3);
+  addFloat(MON_X - 20, 92, `황금 몹 출현! ${GOLDEN_SEC}초`, "#ffd54a", 24, true);
+}
+function goldenEscape() {
+  if (!mon || !mon.golden || mon.dying) return;
+  toast(`${mon.name}이(가) 도망갔어요! 다음엔 더 빨리 톡톡`); say("아깝다... 다음엔 꼭!", 2);
+  mon.golden = false; mon.dying = 0.0001; mon.vx = -2; mon.vy = -15; spawnWait = 520; renderTop(true);
+}
+function goldenReward() {
+  const f = S.floor, g = goldBase(f) * GOLD_MUL[1] * goldMult() * 10;
+  S.gold += g; S.stamp += 1; S.goldenKills = (S.goldenKills || 0) + 1;
+  stampFx = { t: 0, kind: 2, hit: false, text: "황금" }; spawnCoins(22); addExplosion(MON_X + monOX() * 0.5, GROUND - monSize().h * 0.5, true);
+  addFloat(MON_X, 120, `황금 보너스 +${fmt(g)}원 · 도장 +1`, "#ffd54a", 30, true);
+  say(["황금이다! 오늘은 소고기다!", "이게 바로 성과급이지!", "황금 몹 잡았다! 통장이 웃는다!"][Math.floor(Math.random() * 3)], 3);
+}
+function drawGoldenAura(mxp, myp, h, t) {
+  const a = 0.35 + 0.15 * Math.sin(t / 140), R = h * 0.95;
+  const g = ctx.createRadialGradient(mxp, myp - h * 0.5, 6, mxp, myp - h * 0.5, R); g.addColorStop(0, `rgba(255,213,74,${a})`); g.addColorStop(1, "rgba(255,213,74,0)");
+  ctx.fillStyle = g; ctx.fillRect(mxp - R, myp - h * 0.5 - R, R * 2, R * 2);
+  for (let i = 0; i < 6; i++) {
+    const ph = t / 380 + i * 1.05, r = h * (0.45 + 0.12 * Math.sin(ph * 1.7)), x = mxp + Math.cos(ph) * r, y = myp - h * 0.5 + Math.sin(ph) * r * 0.8, s = 3 + 2 * Math.max(0, Math.sin(t / 90 + i * 2));
+    ctx.fillStyle = "#fff7c2"; ctx.fillRect(x - s / 2, y - 0.75, s, 1.5); ctx.fillRect(x - 0.75, y - s / 2, 1.5, s);
+  }
+}
+/* ---------- 주간 목표 (월요일마다 새로) ---------- */
+function weekKey() { const d = new Date(); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return dayKey(d); }
+function rollWeek() { if (!S) return; const k = weekKey(); if (!S.week || S.week.key !== k) S.week = { key: k, chap: 0, study: 0, mem: 0, claimed: {} }; }
+const WEEKLY = [
+  { id: "chap", n: "말씀 20장 읽기", goal: 20, val: () => S.week.chap, f: v => `${Math.floor(v)}장`, rw: { stamp: 10, haste: 2 } },
+  { id: "study", n: "공부 5시간", goal: 300, val: () => S.week.study, f: v => `${(v / 60).toFixed(1)}시간`, fg: "5시간", rw: { ore: 600, silver: 3 } },
+  { id: "mem", n: "암송 40구절 통과", goal: 40, val: () => S.week.mem, f: v => `${Math.floor(v)}구절`, rw: { manna: 150, ame: 2 } },
+];
+const WEEK_ALL = { stamp: 20, gold2: 2, rage: 2 };
+function buildWeekly() {
+  const daysLeft = () => 7 - (new Date().getDay() + 6) % 7;
+  const head = secTitle("daily", "이번 주 목표", "월요일마다 새로");
+  updaters.daily.push({ ready: () => false, update() { const t = `월요일마다 새로 · ${daysLeft()}일 남음`, sm = head.querySelector("small"); if (sm && sm.textContent !== t) sm.textContent = t; } });
+  WEEKLY.forEach(w => {
+    const row = el("div", "task week"); row.innerHTML = `<div><div class="t-name">${w.n}</div><div class="t-sub num"></div><div class="qbar"><i></i></div></div><button class="buy num stamp"></button>`;
+    const sub = row.querySelector(".t-sub"), btn = row.querySelector("button"), qb = row.querySelector(".qbar i");
+    btn.addEventListener("click", () => { rollWeek(); if (S.week.claimed[w.id] || w.val() < w.goal) return; S.week.claimed[w.id] = 1; grant(w.rw); toast(`주간 목표 달성 · ${w.n}`); rowPop(row, "완료!", "#ffd54a"); updateUI(true); save(); });
+    updaters.daily.push({
+      ready: () => !!(S.week && !S.week.claimed[w.id] && w.val() >= w.goal),
+      update() {
+        rollWeek();
+        const v = Math.min(w.goal, w.val()), done = !!S.week.claimed[w.id];
+        const sh = `<span>${w.f(v)} / ${w.fg || w.f(w.goal)}</span><span class="rws">${rwHTML(w.rw)}</span>`; if (sub._h !== sh) { sub._h = sh; sub.innerHTML = sh; }
+        qb.style.width = (done ? 100 : v / w.goal * 100) + "%";
+        row.classList.toggle("done", done); btn.disabled = done || v < w.goal; btn.textContent = done ? "받음" : v >= w.goal ? "받기" : "진행 중";
+      },
+    });
+    panels.daily.appendChild(row);
+  });
+  const all = el("div", "task week"); all.innerHTML = `<div><div class="t-name">이번 주 목표 모두 달성</div><div class="t-sub num"><span>보상 상자</span><span class="rws">${rwHTML(WEEK_ALL)}</span></div></div><button class="buy num stamp"></button>`;
+  const ab = all.querySelector("button");
+  ab.addEventListener("click", () => { rollWeek(); if (S.week.claimed.all || !WEEKLY.every(w => S.week.claimed[w.id])) return; S.week.claimed.all = 1; grant(WEEK_ALL); celebrate({ ic: "treasure", title: "이번 주 목표 달성!", sub: `<span class="rws">${rwHTML(WEEK_ALL)}</span>`, tone: "gold", sound: "pass" }); updateUI(true); save(); });
+  updaters.daily.push({ ready: () => !!(S.week && !S.week.claimed.all && WEEKLY.every(w => S.week.claimed[w.id])), update() { rollWeek(); const ok = WEEKLY.every(w => S.week.claimed[w.id]); ab.disabled = !ok || !!S.week.claimed.all; ab.textContent = S.week.claimed.all ? "받음" : ok ? "받기" : "남음"; all.classList.toggle("done", !!S.week.claimed.all); } });
+  panels.daily.appendChild(all);
+}
 
 /* ===================== 탭 ===================== */
 const TABS = [["weapon", "무기"], ["bible", "말씀"], ["mem", "암송"], ["study", "공부"], ["pet", "동료"], ["suit", "정장"], ["treasure", "보물"], ["daily", "업무"], ["info", "정보"], ["retire", "퇴사"]];
@@ -4687,12 +4939,13 @@ function treIcon(t) {
     });
     panels.daily.appendChild(row);
   });
-  const allRow = el("div", "task"); allRow.innerHTML = `<div><div class="t-name">오늘 업무 모두 완료</div><div class="t-sub">보상 쾌속·더블월급·분노 각 1, 만나 20</div></div><button class="buy num manna"></button>`;
+  const allRow = el("div", "task"); allRow.innerHTML = `<div><div class="t-name">오늘 업무 모두 완료</div><div class="t-sub num"><span>보상</span><span class="rws">${rwHTML({ haste: 1, gold2: 1, rage: 1, manna: 20 })}</span></div></div><button class="buy num manna"></button>`;
   const allBtn = allRow.querySelector("button");
   allBtn.addEventListener("click", () => { if (S.day.claimed.all || !DAILY.every(d => S.day.claimed[d.id])) return; S.day.claimed.all = 1; grant({ haste: 1, gold2: 1, rage: 1, manna: 20 }); celebrate({ ic: "daily", title: "오늘 업무 끝!", sub: `<span class="rws">${rwHTML({ haste: 1, gold2: 1, rage: 1, manna: 20 })}</span>`, tone: "manna", sound: "pass" }); updateUI(true); save(); });
   updaters.daily.push({ ready: () => !S.day.claimed.all && DAILY.every(d => S.day.claimed[d.id]), update() { const ok = DAILY.every(d => S.day.claimed[d.id]); allBtn.disabled = !ok || !!S.day.claimed.all; allBtn.textContent = S.day.claimed.all ? "받음" : ok ? "받기" : "남음"; allRow.classList.toggle("done", !!S.day.claimed.all); } });
   panels.daily.appendChild(allRow);
 
+  buildWeekly();
   secTitle("daily", "지하 문서고", "하루 입장 제한");
   addRow("daily", {
     icon: iconCanvas(g => drawSprite(g, SPR.chest, PAL.chest, 2, 2, 3)), name: () => "지하 문서고", lv: () => ` ${Math.max(0, vaultTickets() - S.day.vaultUsed)}/${vaultTickets()}회`,
@@ -4731,7 +4984,7 @@ function treIcon(t) {
     const rows = [
       ["퇴사 횟수", S.retires + "회"], ["최고 층수", S.bestFloor + "층"], ["공격력", fmt(st.atk)], ["초당 피해", fmt(st.dps)],
       ["보스 월급", "x" + fmt(goldMult())], ["말씀 보상", "x" + readMult().toFixed(1)], ["광석 배율", "x" + oreMult().toFixed(2)],
-      ["말씀 누적", S.bible.total + "장"], ["공부 누적", (S.study.total / 60).toFixed(1) + "시간"],
+      ["말씀 누적", S.bible.total + "장"], ["공부 누적", (S.study.total / 60).toFixed(1) + "시간"], ["황금 몹", (S.goldenKills || 0) + "마리"],
     ];
     $("pfStats").innerHTML = rows.map(([a, b]) => `<span>${a}</span><b>${b}</b>`).join("");
     const g = $("pfCv").getContext("2d"); g.imageSmoothingEnabled = false; g.clearRect(0, 0, 112, 112);
@@ -4930,6 +5183,7 @@ function updateUI(force) {
   else if (S.bible.timer) { live.hidden = false; live.textContent = `말씀 ${mm(Date.now() - S.bible.timer)}`; }
   else live.hidden = true;
   renderBuffs();
+  renderSkills();
   renderTabHead();
   updaters[curTab].forEach(r => r.update(force));
   TABS.forEach(([id]) => {
@@ -4976,7 +5230,7 @@ function load() {
 }
 setInterval(save, 5000);
 document.addEventListener("visibilitychange", () => { if (document.hidden) save(); else { studyTick(); updateUI(true); } });
-setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); bgmUpdate(); sfxWatch(); }, 250);
+setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); bgmUpdate(); sfxWatch(); skillAuto(); }, 250);
 
 /* ===================== 시작 ===================== */
 function start(data) {

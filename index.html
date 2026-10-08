@@ -1097,6 +1097,41 @@ Object.assign(SPR, {
   crown: ["y.y.y.","yyyyyy","yryyry"],
 });
 
+/* 일반 몹 새 그림 (20x20, 오른쪽을 봄): 큰 눈 + 반짝 + 볼터치 + 몸통 명암.
+   공통 글자 W(눈 반짝) P(볼터치) D(몸 그림자) L(몸 밝은 면)은 구역 팔레트에서 자동으로 만든다 */
+SPR.pot = SPR.plant;   // 화분 선인장 동료는 예전 작은 그림 그대로
+Object.assign(SPR, {
+  slime: ["....................", "....................", "....................", "....................", "............s.......", "...........sL.......", "..........ssss......", ".......sssssss......", ".....shsssssssss....", "...shhLsssssssssss..", "..sshhsssssssssssss.", "..ssLsssssWksssWkss.", ".sshsssssskkssskksss", ".ssssssssskkssskksss", ".sssssssPPsssssssPss", ".sssssssssssmmsssss.", ".sssssssssssDmsssss.", ".DDssDDDDDDDDDDDssD.", ".DDDDDDDDDDDDDDDDDDD", "...DDDDDDDDDDDDDDD.."],
+  ghost: ["....................", "....................", ".......ggggggg......", "......ggggggggg.....", ".....gLggggggggg....", "....gLLgggggggggg...", "...ggLgggggggggggg..", "...gggggggWkgggWkg..", "...gggggggkkgggkkg..", "...gggggggkkgggkkg..", "...ggggggPgggggggPgD", ".gggggggggggmmggggD.", ".DDgggggggggmmgggg..", "...ggggggggggggggg..", "...ggggggggggggggg..", "...gggDDDgggDDDggg..", "...gggDDDDDDDDDggg..", "...DDDDDDDDDDDDDDD..", "...DDD...DDD...DDD..", "...DDD...DDD...DDD.."],
+  bat: ["....................", "....................", "....................", ".......b............", "w......bb...b......w", "ww.....bb..bbb....ww", "wDw....bbbbbbb...wDw", "wwDww..bLbbbbb.wwDww", "wwwww.bLbbbbbbbwwwww", "wwwww.bbbWkbWkbwwwww", "wwwwwbbbbkkbkkbwwwww", "wwwwwDbbPbbbbbPwwwww", "w..ww.DDbbmmbbDww..w", "......DDDbWDDDD.....", ".......DDDDDDD......", "........DDDDD.......", ".........b.b........", "....................", "....................", "...................."],
+  box: ["....................", "....................", "....................", "....................", "..........Dbbbbbbb..", "...bbbbbbbtbbbbbbb..", "...bbbbbbbtbbbbbbb..", "..bbbbbbbDtbbbbbbb..", "..bmwmwmwmwmwmwmmb..", "..bmmmmmmmmmmmmmmb..", "..bmmwmwmwmPPPmwmb..", "..bbbbbbbttPPPbbbb..", "..bbbWkbbttbbWkbbb..", "..bbbkkbbttbbkkbbb..", "..bbPbbbbttbbbbbPb..", "..bbbbbbbttbbbbbbb..", "..bDDDDDDttDDDDDDD..", "..DDDDDDDttDDDDDDD..", "..DDDDDDDttDDDDDDD..", "...DDD........DDD..."],
+  guard: [".........aa.........", ".........aa.........", ".........ll.........", ".........ll.........", "....rrrrrrrrrrrr....", "....rLLrrrrrrrrr....", "...lrrkkkkkkkkkrl...", "...lrrkWakkWakkrl...", "...lrrkaakkaakkrl...", "...lrrkkkkkkkkkrl...", "....rrrrmmmmmrrr....", "....rrrrrrrrrrrr....", "....llrrrrrrrrll....", "....llrrmmmmrrll....", "....llrrmammrrll....", "....llDDmmmmDDll....", "...rDDDDDDDDDDDDr...", "...DDDDDDDDDDDDDD...", "......lll..lll......", "......lll..lll......"],
+  paper: ["....................", "......Wl............", "...pppllpppppp......", "...pppllppppppl.....", "...pplllllllppll....", "...ppppppppppplll...", "...pplllllllllppp...", "...pppppppppppppp...", "...pplllllppppppp...", "...pppppppppppppp...", "...ppppWkpppWkppp...", "...ppppkkpppkkppp...", "...ppppkkpppkkppp...", "...ppPppppppppPpp...", "...ppppppkkpppppp...", "...pppppppppppllp...", "...DDDDDDDDDDDDDD...", "...DDDDDDDDDDDDDD...", "....................", ".....kk......kk....."],
+  golem: ["....................", "....................", "....dddddddddddd....", "...dddddddddddddd...", "...dddddddddddddd...", "...ddLLLLLLLLLLdd...", ".ddddbbbbbbbbbbdddd.", ".ddddbbWkbbWkbbdddd.", ".ddddbbkkbbkkbbdddd.", ".ddddbbbbbbbbbbdddd.", ".DDddbbbbbbbbbbddDD.", "mmmddddddddddddddmmm", "mmmddbbdmmmmdbbddmmm", "mmmdDdddDDDDdddDdmmm", "...DDdddDDDDdddDD...", "...DDdddDDDDdddDD...", ".....DDD....DDD.....", ".....DDD....DDD.....", ".....DDD....DDD.....", "....mmmm....mmmm...."],
+  mug: [".............L......", ".........L..L.......", "..........L.........", "....................", "....wwwwwwwwwwwww...", "....wcccccccccccw...", "....wcccccccccccw...", "....wwwwwwwwwwwww...", ".wwwwwwwwwwwwwwww...", ".wwwwwwwwWkwwWkww...", ".w..wwwwwkkwwkkww...", ".w..wwwwwkkwwkkww...", ".w..wwwPwwwwwwwPw...", ".w..wwwwwwwmmwwww...", ".DDDwwwwwwwwwwwww...", ".DDDwwwwwwwwwwwww...", "....DDDwwwwwwwDDD...", "....DDDDDDDDDDDDD...", "....DDDDDDDDDDDDD...", ".......DDDDDDD......"],
+  chair: ["....bbbbbbbbbbbb....", "....bccccccccccb....", "....bccccccccccb....", "....bccWkccWkccb....", "....bcckkcckkccb....", "....bccccccccccb....", "....bcPccmmccPcb....", "....bccccccccccb....", "....bDDDDDDDDDDb....", ".bb.bbbbbbbbbbbb.bb.", ".bb......bb......bb.", ".bbLLLLLLLLLLLLLLbb.", ".bbaaaaaaaaaaaaaabb.", "..aaaaaaaaaaaaaaaa..", ".........bb.........", ".........bb.........", ".........bb.........", "....bbbbbbbbbbbb....", "...ww....ww....ww...", "...ww....ww....ww..."],
+  bug: ["....................", "....................", "....................", ".............a....a.", "..............a..a..", "........Db....a.a...", ".....LbbDbbbbb......", "....bLbwDbbbbbbbbb..", "...wwbbwDbbbbbbWkbb.", "..bwwbbbDbbbbbbkkbb.", "..bbbbbbDbbbbbbbbbk.", "..bbbbbbDbwwbbbbbPD.", "..bbbwwbDbwwbbbbbD..", "..DbbwwbDbbbbbbDD...", "...DDbbbDbbbbbDD....", "....DDDDDDDDDDD.....", ".....DDDDDDDDD......", "....l...lD..l.......", "...l...l...l........", "..l...l...l........."],
+  rat: ["....................", "....................", "....................", "....................", "...........eee......", "..........eenee.....", "..........ennne.....", "..........ennneg....", "......gggggeeegggg..", ".....gLLgggggggWkgg.", ".t.ggggggggggggkkgg.", "t..ggggggggggggggggn", "t..gggggggggggggDDDn", ".t.gggggggggggggDP..", "..tDDgggggggggDD....", "...tDDDDggggDDDD....", ".....DDDDDDDDD......", "......eeDDDDee......", "......ee....ee......", "...................."],
+  dumbbell: ["....................", "....................", "....................", ".ddd............ddd.", "ddddd..........ddddd", "ddddd..........ddddd", "dkdddLLLLLLLLLLdddkd", "dkdddbbbbbbbbbbdddkd", "dkdddbbWkbbWkbbdddkd", "dkdddbbkkbbkkbbdddkd", "dkdddbPbbbbbbPbdddkd", "dkdddbbbbmmbbbbdddkd", "dkdddbbbbbbbbbbdddkd", "dkdddbbbbbbbbbbdddkd", "ddddd..bb..bb..ddddd", "ddddd..bb..bb..ddddd", ".ddd...bb..bb...ddd.", ".......bb..bb.......", "......ddd..ddd......", "...................."],
+  clockm: ["....................", ".........bb.........", "...bbbb..bb...bbbb..", "..bbbbbbcccccbbbbbb.", "...bbbcccccccccbbb..", "....bcccwwkwwcccb...", "....ccwwwwkwwwwcc...", "...ccwwwwwkwwwwwcc..", "...ccwwWkwwwWkwwcc..", "..ccwwwkkwwwkkwwwcc.", "..ccwwwkkwwwkkwwwcc.", "..ccwwwwwwwwwwwwwcc.", "..DcwPwwwwwwwwwPwcD.", "...DcwwwwmmwwwwwcD..", "...DDwwwwwwwwwwwDD..", "....DDwwwwwwwwwDD...", ".....DDDwwwwwDDD....", "......DDDDDDDDD.....", "....bb..DDDDD.bb....", "....bb........bb...."],
+  coin: ["....................", "........ooooo...W...", "......oooooooooW.W..", "....ooooyyyyyoooW...", "...oooLyyyyyyyyooo..", "...oLLyyyyyyyyyyoo..", "..ooLLyyyyyyyyyyyoo.", "..oLyyyyyyyyyyyyyoo.", ".ooyyyyWkyyyWkyyyyoo", ".ooyyyykkyyykkyyyyoo", ".ooyyyykkyyykkyyyyoo", ".ooyyyyyyyyyyyyyyyoo", ".ooDyPyyyyyyyyyPyDoo", "..ooDyyyymmyyyyyDoo.", "..ooDDyDyyyyyDDDDoo.", "...ooDDDDDDDDDDDoo..", "...oooDDDDDDDDDooo..", "....ooooDDDDDoooo...", "......ooooooooo.....", "........ooooo......."],
+  plant: ["..........g.........", "..........gg........", ".....gg...ggg.......", ".....gg...ggg.......", "....gggg..gg...g....", "......ggg.g..ggg....", "...........g........", "......gggggggg......", "......gggggggg......", "...LLLLLLLLLLLLLL...", "...DppppppppppppD...", "....pppppppppppp....", "....pppWkpppWkpp....", "....pppkkpppkkpp....", "....DppkkpppkkpD....", ".....PppppppppP.....", ".....ppppmmpppp.....", ".....DDDDDDDDDD.....", ".....DDDDDDDDDD.....", "...................."],
+  bird: ["....................", "....................", "....................", "....................", ".............ggg....", "............ggggg...", "...........gggWkgg..", ".......gggggggkkgooo", ".....ggggggggggggg..", "..DDDggggggnnnggP...", ".DDDDDDDgggnnnggg...", ".DDDDDDDwwwwnnggg...", ".DDDDDDwwwwwwggggD..", "...DDDDwwwwwwwggD...", "...DgwwwwwwwwwgDD...", "....DgwwwwwwwDDD....", ".....DDwwwwwDDD.....", ".......DDDDDD.......", ".......o...o........", "......oo...oo......."],
+  cloud: ["....................", "....................", ".........LLw........", ".......wwwwwww......", "....LLLwwwwwwww.....", "......wwwwwwwww.....", "...wwwwwwwwwwwwwww..", "..wwwwkwwwwwwwwwwww.", ".wwwwwwWkwwwWkwwwwww", ".wwwwwwkkwwwkkwwwwww", ".wwwwwwkkwwwkkwwwwww", ".wwwwPwwwwwwwwwPwwww", "wwwwwwwwwmmwwwwwwwww", ".wwgggggggggggggggww", ".wwgggggggggggggggww", "....ggggggggggggg...", ".........yyy........", ".........yy.........", "..........y.........", "...................."],
+  satellite: [".........aaa........", ".........aa.........", ".........aa.........", ".......bbbbbb.......", "......bbbbbbbb......", "......bbbbbbbb......", "ppppp.bbbbbbbb.ppppp", "ppppp.bbWkbWkb.ppppp", "kkkkk.bbkkbkkb.kkkkk", "pppppabbkkbkkbappppp", "pppppabbbbbbbbappppp", "kkkkk.bbbbbbbb.kkkkk", "ppppp.bbbmmbbb.ppppp", "ppppp.bDDDDDDb.ppppp", "......DDDDDDDD......", "......DDDDDDDD......", "........aaaa........", "........aaaa........", "....................", "...................."],
+  ufo: ["....................", "....................", "....................", "........ccccc.......", "......cWccccccc.....", "......ccWkcWkcc.....", ".....ccckkckkccc....", ".....ccccccccccc....", ".....ccccccccccc....", "....mmmmmmmmmmmmm...", ".mmmmmmmmmmmmmmmmmm.", ".DmyymmyymmyymmyymmD", "..DDDDDDDDDDDDDDDDD.", "....DDDDDDDDDDDDD...", ".....l........l.....", ".....l........l.....", ".....l........l.....", "....l..........l....", "....................", "...................."],
+  rabbit: ["............w.......", ".......ww..www......", ".......pw..wpw......", "......wpww.wpw......", "......wpww.wpw......", "......wpww.wpw......", ".......pw..www......", ".......wwwwwww......", "......wwwwwwwww.....", ".....wwwwWkwwWkw....", ".....wwwwkkwwkkw....", ".....wwwPwwwwwwP....", ".....wwwwwwwpwww....", "....wwwwwwwwwww.....", "...wwwwwwwwwwwww....", "...wwwwwwwwwwwww....", "...wwwwwwwwwDwwD....", "...DwwDDDDwDDDwD....", "....wDDDDDDDDDD.....", "....DDDDDDDDDDD....."],
+  alien: [".....Lg......gL.....", ".......g....g.......", "........ggggg.......", "......ggggggggg.....", "....ggggggggggggg...", "....ggggggggggggg...", "...ggkWkkgggkWkkgg..", "...ggkkkkgggkkkkgg..", "...ggkkkkgggkkkkgg..", "...DgkkkkgggkkkkgD..", "....ggggggggggggg...", "....DDgggggggggDD...", "......DggmmmggD.....", "......DggDDDggD.....", "......sssssssss.....", "....ssssssLssssss...", "....sssssssssssss...", "......sssssssss.....", "......sssssssss.....", ".......DD...DD......"],
+  astro: ["....................", "........ggggg.......", "......ggggggggg.....", ".....ggggggggggg....", ".....ggggvvvvvWg....", "....ggggWvvvvvvgg...", "....gggvvWkvWkvvg...", "....gggvvkkvkkvvg...", "....gggvvvvvvvvvg...", ".....gggvvvvvvvg....", ".....ggggvvvvvgg....", "......ggggggggg.....", "....wwwwwwwwwwwww...", "..wwwwrrrwwwwwwwwww.", "..wwwwrrrwwgggwwwww.", "..wwwwwwwwwgggwwwww.", "..DDwwwwwwwwwwwwwDD.", "....DwwwwDDDwwwwD...", ".....wwww...wwww....", ".....DDDD...DDDD...."]
+});
+const MOB_BODY = {"slime": "s", "ghost": "g", "bat": "b", "box": "b", "guard": "r", "paper": "p", "golem": "d", "mug": "w", "chair": "c", "bug": "b", "rat": "g", "dumbbell": "b", "clockm": "c", "coin": "y", "plant": "p", "bird": "g", "cloud": "w", "satellite": "b", "ufo": "m", "rabbit": "w", "alien": "g", "astro": "w"};
+ZONES.forEach(z => z.mons.forEach(([shape, pal]) => {
+  const b = pal[MOB_BODY[shape]] || "#8d97b6";
+  if (!pal.W) pal.W = "#ffffff"; if (!pal.P) pal.P = "#ff8fa3";
+  if (!pal.D) pal.D = shade(b, -0.28); if (!pal.L) pal.L = shade(b, 0.35);
+}));
+const monNorm = s => 12 / SPR[s][0].length;   // 예전 12칸 기준 크기 유지
+
 /* 주인공 캐릭터: 말씀·공부·층·퇴사 기록으로 해금 */
 /* 머리 모양은 위 HAIR에 모두 있음 */
 const CHARS = [
@@ -1183,14 +1218,14 @@ function iconCanvas(draw, size = 40) {
 }
 const petIcon = id => iconCanvas((g) => {
   if (id === "intern" || id === "idol" || id === "legend" || id === "clone") drawSprite(g, heroMap(PET_HAIR[id]), id === "clone" ? clonePal(heroPal(PAL.hero)) : petHeroPal(id), 6, 1, 1.55, { pretty: true });
-  else if (id === "cactus") drawSprite(g, SPR.plant, PAL.cactus, 2, 2, 3);
+  else if (id === "cactus") drawSprite(g, SPR.pot, PAL.cactus, 2, 2, 3);
   else drawSprite(g, SPR[id], PAL[id], 2, 2, 3);
 });
 const weaponIcon = (i, lv, size = 40) => iconCanvas((g, s) => drawWeapon(g, i, lv, s / 2, s - 3, 0.6, s / 20, 0, true), size);
 function weaponBig(i, lv, css = 88) { const d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))), s = Math.round(css * d); const c = iconCanvas(g => drawWeapon(g, i, lv, s / 2, s - 3 * d, 0.6, s / 20, 0, true), s); c.className = "pix"; if (c.style) c.style.width = c.style.height = css + "px"; return c; }
 function petBig(id, css = 84) {
   if (id === "intern" || id === "idol" || id === "legend" || id === "clone") return bigSprite(heroMap(PET_HAIR[id]), id === "clone" ? clonePal(heroPal(PAL.hero)) : petHeroPal(id), css);
-  return id === "cactus" ? bigSprite(SPR.plant, PAL.cactus, css) : bigSprite(SPR[id], PAL[id], css);
+  return id === "cactus" ? bigSprite(SPR.pot, PAL.cactus, css) : bigSprite(SPR[id], PAL[id], css);
 }
 
 /* ===================== 메뉴용 도트 아이콘 (탭·자원·버프·축하) =====================
@@ -1499,12 +1534,12 @@ function spawn() {
     sprite = "dragon2"; pal = dragonPalOf(i % DRAGON_PAL.length); scale = 5.2;
   } else if (kind === 2 && f % 50 === 0) {
     const m = z.mons[0];
-    name = `구역장 ${z.execs[4]}`; sprite = m[0]; pal = m[1]; scale = 11; crown = true;
+    name = `구역장 ${z.execs[4]}`; sprite = m[0]; pal = m[1]; scale = 11 * monNorm(m[0]); crown = true;
   } else if (kind === 2) {
     name = pre + z.execs[(f % 50) / 10 - 1]; sprite = "exec"; pal = execPalOf(z); scale = 5;
   } else {
     const m = z.mons[(f + k) % 4];
-    name = pre + (kind === 1 ? "우두머리 " : "") + m[2]; sprite = m[0]; pal = m[1]; scale = kind === 1 ? 8.5 : 6; crown = kind === 1 && false;
+    name = pre + (kind === 1 ? "우두머리 " : "") + m[2]; sprite = m[0]; pal = m[1]; scale = (kind === 1 ? 8.5 : 6) * monNorm(m[0]); crown = kind === 1 && false;
   }
   const hp = hpBase(f) * HP_MUL[kind];
   mon = Object.assign(base, { name, sprite, pal, scale, kind, hp, max: hp, crown });
@@ -2536,7 +2571,7 @@ const PET_BACK = [["intern", 212], ["idol", 244], ["legend", 276]];
 const PET_HAIR = { intern: "side", idol: "long", legend: "slick", clone: "neat" };
 var petPalCache;
 const petHeroPal = id => { petPalCache = petPalCache || {}; return petPalCache[id] || (petPalCache[id] = heroPal(PAL[id])); };
-const PET_FRONT = [["ddeok", 198, "ddeok"], ["squirrel", 232, "squirrel"], ["cactus", 266, "plant"], ["cat", 300, "cat"]];
+const PET_FRONT = [["ddeok", 198, "ddeok"], ["squirrel", 232, "squirrel"], ["cactus", 266, "pot"], ["cat", 300, "cat"]];
 let needles = [], hearts = [], cloneIdx = 0, cactusPop = 0;
 function drawPetsBack(t) {
   PET_BACK.forEach(([id, x]) => { if (!petLv(id)) return; const bob = id === "idol" ? Math.abs(Math.sin(t / 200)) * 5 : 0; drawSprite(ctx, heroMap(PET_HAIR[id]), petHeroPal(id), x, GROUND - 6 - 24 * 1.75 - bob, 1.75, { pretty: true }); });

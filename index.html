@@ -81,7 +81,7 @@ h1 small { display: block; font-family: var(--body); font-size: 12px; color: var
 .pips span.bs { outline: 1px solid var(--gold); }
 .timer { flex: 1; height: 6px; background: #0a0f1b; border-radius: 3px; overflow: hidden; }
 .timer > i { display: block; height: 100%; background: var(--gold); width: 100%; }
-#cv { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; cursor: pointer; touch-action: manipulation; }
+#cv { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; cursor: pointer; touch-action: manipulation; }
 .hint { position: absolute; left: 0; right: 0; top: 58%; text-align: center; font-size: 12px; color: rgba(233,237,246,.6); pointer-events: none; transition: opacity .6s; }
 .retry { position: absolute; right: 10px; top: 72px; font-family: var(--display); font-size: 15px; border: 0; border-radius: 8px; padding: 7px 12px; background: var(--danger); color: #fff; cursor: pointer; box-shadow: 0 3px 0 #9c3434; }
 .buffbar { display: flex; gap: 6px; padding: 8px 10px; border-top: 1px solid var(--line); }
@@ -313,7 +313,7 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
         <span id="timerLabel" class="num" hidden></span>
       </div>
     </div>
-    <canvas id="cv" width="720" height="720" aria-label="화면을 눌러 공격"></canvas>
+    <canvas id="cv" width="900" height="600" aria-label="화면을 눌러 공격"></canvas>
     <div id="hint" class="hint" hidden>화면을 톡톡 눌러 같이 때리세요 · 월급은 보스만 줘요</div>
     <button id="retry" class="retry" hidden>보스 재도전</button>
     <div class="buffbar" id="buffbar"></div>
@@ -977,7 +977,7 @@ function buildBg(floor, vault) {
       for (const px of [0, 310, 620]) { rect(px, 0, 20, 254, "#3a4058"); rect(px + 4, 0, 3, 254, "#4a5070"); }
       
       floorTiles("#3a3f55", "#323750", 40, true); for (let i = 0; i < 8; i++) rect(R() * W, 260 + R() * 90, 30, 2, "rgba(255,255,255,.08)");
-      rect(40, 214, 190, 40, "#5a4a3a"); rect(40, 210, 190, 6, "#7a6a5a"); rect(52, 222, 166, 24, "#3b3026"); g.save(); g.fillStyle = "#ffd54a"; g.font = '16px "Do Hyeon", sans-serif'; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("야근상사 본사 타워", 135, 235); g.restore();
+      rect(112, 214, 190, 40, "#5a4a3a"); rect(112, 210, 190, 6, "#7a6a5a"); rect(124, 222, 166, 24, "#3b3026"); g.save(); g.fillStyle = "#ffd54a"; g.font = '16px "Do Hyeon", sans-serif'; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("야근상사 본사 타워", 207, 235); g.restore();
       break;
     }
     case "office": {
@@ -2130,11 +2130,12 @@ function drawSprite(ctx, map, pal, x, y, sc, opts = {}) {
 const isBigBossMap = map => map === SPR.exec || map === SPR.dragon2;
 
 /* 카메라: 월드(640x360) 가운데 정사각 창을 크게 보여 줌. 보스 등장·처치 때 살짝 다가가고, 타격마다 줌이 튐 */
-const VIEW = 360, UW = 360, UH = 360;
-const CS = (window.devicePixelRatio || 1) >= 2.5 ? 1080 : 720;
-cv.width = CS; cv.height = CS;
+// 화면 비율 3:2 (가로로 긴 전투 화면). 월드 높이 360을 꽉 채우고 가로는 비율만큼 보여 줌
+const VIEW_H = 360, VIEW_A = 3 / 2, UH = 300, UW = UH * VIEW_A;
+const CSW = (window.devicePixelRatio || 1) >= 2.5 ? 1200 : 900, CSH = Math.round(CSW / VIEW_A);
+cv.width = CSW; cv.height = CSH;
 const cam = { x: 404, y: 180, z: 1, kick: 0 };
-let VX0 = 224, VY0 = 0, VW = 360, VH = 360;
+let VX0 = 100, VY0 = 0, VW = 540, VH = 360;
 function fx5Step(dt) {
   let tz = 1, tx = 404, ty = 180;
   if (intro && !intro.light) { const k = intro.t / intro.dur; if (k > 0.45 && k < 0.92) { tz = 1.14; tx = MON_X + 10; ty = 196; } }
@@ -2146,17 +2147,17 @@ function fx5Step(dt) {
   if (impactF) { impactF.t += dt; if (impactF.t > 110) impactF = null; }
 }
 function camApply() {
-  const z = cam.z * (1 + (reduceMotion ? 0 : cam.kick * 0.04)), half = VIEW / 2 / z;
-  const cx = Math.max(half, Math.min(W - half, cam.x)), cy = Math.max(half, Math.min(H - half, cam.y));
-  VX0 = cx - half; VY0 = cy - half; VW = VH = half * 2;
-  const s = CS / VW; ctx.setTransform(s, 0, 0, s, -VX0 * s, -VY0 * s);
+  const z = cam.z * (1 + (reduceMotion ? 0 : cam.kick * 0.04)), halfH = VIEW_H / 2 / z, halfW = Math.min(W / 2, halfH * VIEW_A);
+  const cx = Math.max(halfW, Math.min(W - halfW, cam.x)), cy = Math.max(halfH, Math.min(H - halfH, cam.y));
+  VX0 = cx - halfW; VY0 = cy - halfH; VW = halfW * 2; VH = halfH * 2;
+  const s = CSH / VH; ctx.setTransform(s, 0, 0, s, -VX0 * s, -VY0 * s);
 }
-const uiApply = () => { const s = CS / UW; ctx.setTransform(s, 0, 0, s, 0, 0); };
+const uiApply = () => { const s = CSH / UH; ctx.setTransform(s, 0, 0, s, 0, 0); };
 const w2u = (x, y) => [(x - VX0) / VW * UW, (y - VY0) / VH * UH];
 
 /* 동료 배치: 뒷줄(사람) / 앞줄(동물·화분) / 맨 앞 로봇 */
-const PET_BACK = [["intern", 232], ["idol", 258], ["legend", 284]];
-const PET_FRONT = [["ddeok", 226, "ddeok"], ["squirrel", 252, "squirrel"], ["cactus", 278, "plant"], ["cat", 303, "cat"]];
+const PET_BACK = [["intern", 212], ["idol", 244], ["legend", 276]];
+const PET_FRONT = [["ddeok", 198, "ddeok"], ["squirrel", 232, "squirrel"], ["cactus", 266, "plant"], ["cat", 300, "cat"]];
 let needles = [], hearts = [], cloneIdx = 0, cactusPop = 0;
 function drawPetsBack(t) {
   PET_BACK.forEach(([id, x]) => { if (!petLv(id)) return; const bob = id === "idol" ? Math.abs(Math.sin(t / 200)) * 5 : 0; drawSprite(ctx, HERO, PAL[id], x, GROUND - 6 - 14 * 2.8 - bob, 2.8, { pretty: true }); });
@@ -2167,7 +2168,7 @@ function drawPetsFront(t) {
     const jump = id === "cat" ? Math.sin(petT * Math.PI) * -12 : id === "cactus" ? -cactusPop * 5 : 0;
     drawSprite(ctx, SPR[spr], PAL[id], x, GROUND + 24 - 12 * 2.6 + jump, 2.6, { pretty: true });
   });
-  if (petLv("robot")) drawSprite(ctx, SPR.robot, PAL.robot, 262 + Math.sin(t / 1400) * 34, GROUND + 50 - 12 * 2.4, 2.4, { pretty: true });
+  if (petLv("robot")) drawSprite(ctx, SPR.robot, PAL.robot, 246 + Math.sin(t / 1400) * 50, GROUND + 50 - 12 * 2.4, 2.4, { pretty: true });
 }
 var clonePalCache;
 function clonePal(p) {
@@ -2177,7 +2178,7 @@ function clonePal(p) {
 function fireNeedles() {
   if (reduceMotion || !mon) return; cactusPop = 1;
   const { h: mh } = monSize();
-  for (let i = 0; i < 3; i++) needles.push({ x0: 293, y0: GROUND + 2, x1: MON_X - 14 + (Math.random() - .5) * 24, y1: GROUND - mh * (0.3 + Math.random() * 0.35), t: -i * 60, dur: 230, arc: 40 + Math.random() * 30 });
+  for (let i = 0; i < 3; i++) needles.push({ x0: 281, y0: GROUND + 2, x1: MON_X - 14 + (Math.random() - .5) * 24, y1: GROUND - mh * (0.3 + Math.random() * 0.35), t: -i * 60, dur: 230, arc: 40 + Math.random() * 30 });
 }
 function throwCloneJavelin() {
   if (reduceMotion || cloneIdx++ % 2) return;
@@ -2185,7 +2186,7 @@ function throwCloneJavelin() {
 }
 function cheerHearts() {
   if (reduceMotion) return;
-  for (let i = 0; i < 6; i++) hearts.push({ x: 275 + (Math.random() - .5) * 20, y: GROUND - 52, vx: (Math.random() - .5) * 1.4, vy: -1.2 - Math.random() * 1.2, life: 1, dur: 900 + Math.random() * 400, s: 2 + Math.floor(Math.random() * 2) });
+  for (let i = 0; i < 6; i++) hearts.push({ x: 261 + (Math.random() - .5) * 20, y: GROUND - 52, vx: (Math.random() - .5) * 1.4, vy: -1.2 - Math.random() * 1.2, life: 1, dur: 900 + Math.random() * 400, s: 2 + Math.floor(Math.random() * 2) });
 }
 function petPhys(dt) {
   const k = dt / 16;
@@ -2280,7 +2281,7 @@ function drawStamp() {
   if (s.t < T0) return;
   const k = Math.min(1, (s.t - T0) / (T1 - T0)), sc = 1 + (1 - k) * 1.9;
   const a = s.t > HOLD ? Math.max(0, 1 - (s.t - HOLD) / (END - HOLD)) : Math.min(1, k * 1.6);
-  let x = UW / 2, y = UH * 0.44, R = 58;
+  let x = UW / 2, y = UH * 0.42, R = 50;
   if (!big) { const p = w2u(MON_X - 30, 190); x = p[0]; y = p[1]; R = 30; }
   ctx.save(); ctx.translate(x, y); ctx.rotate(-0.22); ctx.scale(sc, sc); ctx.globalAlpha = a * 0.92;
   ctx.strokeStyle = "#e0262c"; ctx.lineWidth = R * 0.11; ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
@@ -2324,7 +2325,7 @@ function drawIntro(t) {
     ctx.fillStyle = "#ffffff"; ctx.fillText(tt, 0, 4);
     ctx.restore();
   }
-  const pk = Math.min(1, Math.max(0, (k - 0.08) / 0.15)), pw = UW * 0.8, px = UW - pw * easeIO(pk), py = UH * 0.7;
+  const pk = Math.min(1, Math.max(0, (k - 0.08) / 0.15)), pw = UW * 0.62, px = UW - pw * easeIO(pk), py = UH * 0.6;
   ctx.save(); ctx.globalAlpha = a;
   ctx.fillStyle = "rgba(10,12,22,.92)"; ctx.fillRect(px, py, pw + 20, 44);
   ctx.fillStyle = acc; ctx.fillRect(px, py, 5, 44);
@@ -2417,7 +2418,7 @@ function draw(t) {
   if (bgKey !== key) { bg = buildBg(shownFloor(), mode === "vault"); bgKey = key; }
   ambientFor(key);
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
-  ctx.fillStyle = "#05070d"; ctx.fillRect(0, 0, CS, CS);
+  ctx.fillStyle = "#05070d"; ctx.fillRect(0, 0, CSW, CSH);
   camApply();
   ctx.save();
   if (shakeAmt > 0.3) ctx.translate((Math.random() - .5) * shakeAmt * 2, (Math.random() - .5) * shakeAmt * 1.4);

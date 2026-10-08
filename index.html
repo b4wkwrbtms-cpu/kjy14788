@@ -1203,8 +1203,8 @@ function wrapText(c, text, maxW) {
   if (line) out.push(line); return out;
 }
 function drawBubble(x, y, text) {
-  ctx.font = '17px "Do Hyeon", sans-serif';
-  const lines = wrapText(ctx, text, 170), lh = 21;
+  ctx.font = '19px "Do Hyeon", sans-serif';
+  const lines = wrapText(ctx, text, 190), lh = 23;
   const w = Math.max(...lines.map(l => ctx.measureText(l).width)) + 20, h = lines.length * lh + 14;
   const bx = Math.max(VX0 + 6, Math.min(VX0 + VW - w - 6, x - w + 50)), by = Math.max(VY0 + 4, y - h - 12);
   ctx.fillStyle = "rgba(244,246,251,.95)";
@@ -1245,11 +1245,11 @@ function hitSound(strength) {
     const src = audioCtx.createBufferSource(); src.buffer = noiseBuf;
     const lp = audioCtx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1400 + strength * 900;
     const g = audioCtx.createGain(); g.gain.setValueAtTime(0.18 + strength * 0.12, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
-    src.connect(lp); lp.connect(g); g.connect(audioCtx.destination); src.start(t);
+    src.connect(lp); lp.connect(g); g.connect(sfxOut()); src.start(t);
     const o = audioCtx.createOscillator(), og = audioCtx.createGain();
     o.frequency.setValueAtTime(170 - strength * 40, t); o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
     og.gain.setValueAtTime(0.28 + strength * 0.15, t); og.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
-    o.connect(og); og.connect(audioCtx.destination); o.start(t); o.stop(t + 0.15);
+    o.connect(og); og.connect(sfxOut()); o.start(t); o.stop(t + 0.15);
   } catch (e) {}
 }
 
@@ -1277,7 +1277,7 @@ function hit(amount, crit, src, px, py) {
     addDust(HERO_X + 22, GROUND - 3, 2, -1, false); addDust(MON_X + 16, GROUND - 3, crit ? 4 : 2, 1, false);
     if (ty === "chop" && src !== "tap") { addGroundFlash(MON_X - 8); addDust(MON_X - 34, GROUND - 3, 3, -1, true); addDust(MON_X + 30, GROUND - 3, 3, 1, true); for (let i = 0; i < 5; i++) sparks.push({ x: MON_X - 30 + Math.random() * 60, y: GROUND - 4, vx: (Math.random() - .5) * 4, vy: -7 - Math.random() * 7, life: 1, c: "#fff7c2", line: true }); }
     cam.kick = Math.max(cam.kick, crit ? 1 : 0.4);
-    if (crit) { triggerImpactFrame(px ?? cx, py ?? cy); const stl = slashStyle(); if (stl === "holy" || stl === "gold") addSkyStrike(MON_X, true); }
+    if (crit) { sfx("crit"); triggerImpactFrame(px ?? cx, py ?? cy); const stl = slashStyle(); if (stl === "holy" || stl === "gold") addSkyStrike(MON_X, true); }
     const col = monColor();
     for (let i = 0; i < (crit ? 16 : 9); i++) sparks.push({ x: px ?? cx, y: py ?? cy, vx: 4 + Math.random() * 11, vy: (Math.random() - 0.65) * 12, life: 1, c: i % 3 ? "#fff7c2" : "#ffffff", line: true });
     for (let i = 0; i < (crit ? 8 : 4); i++) debris.push({ x: MON_X + (Math.random() - .5) * mw * 0.5, y: GROUND - mh * (0.3 + Math.random() * 0.5), vx: 2 + Math.random() * 6, vy: -4 - Math.random() * 6, life: 1, c: col, s: 4 + Math.random() * 5 });
@@ -1295,6 +1295,7 @@ function kill() {
   mon.dying = 0.0001; S.totalKills++;
   mon.vx = 7 + Math.random() * 5; mon.vy = -9 - Math.random() * 4;
   const boss = mon.kind >= 2;
+  if (mon.kind === 0) sfx("pop");
   spawnWait = boss ? 650 : 430;
   hitStop = Math.max(hitStop, boss ? 170 : 95);
   if (!reduceMotion) shakeAmt = Math.max(shakeAmt, boss ? 18 : 10);
@@ -1361,7 +1362,7 @@ function heroStrike(st) {
 cv.addEventListener("pointerdown", e => {
   ensureAudio();
   const r = cv.getBoundingClientRect();
-  const px = VX0 + (e.clientX - r.left) / r.width * VW, py = VY0 + (e.clientY - r.top) / r.height * VH;
+  const px = ACT_X + (VX0 + (e.clientX - r.left) / r.width * VW - ACT_X) / ACT_S, py = GROUND + (VY0 + (e.clientY - r.top) / r.height * VH - GROUND) / ACT_S;
   if (!mon || mon.dying || spawnWait > 0 || introBlocking()) return;
   const st = stats(), crit = Math.random() < st.crit;
   startSwing(true, crit);
@@ -1544,7 +1545,7 @@ function tone(freq, dur, type = "sine", vol = 0.1, delay = 0, slideTo = 0) {
     const t = audioCtx.currentTime + delay, o = audioCtx.createOscillator(), g = audioCtx.createGain();
     o.type = type; o.frequency.setValueAtTime(freq, t); if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + dur);
     g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t + dur + 0.03);
+    o.connect(g); g.connect(sfxOut()); o.start(t); o.stop(t + dur + 0.03);
   } catch (e) {}
 }
 const dingSound = () => { tone(1318, 0.55, "sine", 0.09); tone(1047, 0.8, "sine", 0.08, 0.17); };
@@ -1567,7 +1568,7 @@ function entrance(m) {
 }
 /* 떡볶이: 크게 깎이면 매운 불꽃 폭발, 아니면 작은 매운 김 */
 function ddeokFx(m) {
-  if (reduceMotion) return;
+  sfx("sizzle"); if (reduceMotion) return;
   const y = GROUND - monSize(m).h * 0.55;
   if (m.ddeok >= 0.12) explos.push({ x: MON_X, y, t: 0, dur: 380, R: 40, seed: Math.random() * 100 });
   else { for (let i = 0; i < 8; i++) sparks.push({ x: MON_X + (Math.random() - .5) * 30, y, vx: (Math.random() - .5) * 6, vy: -2 - Math.random() * 4, life: 1, c: i % 2 ? "#ff5a1f" : "#ffb13b" }); puffAt(MON_X, y, 5, "#ff8a6a"); }
@@ -1678,7 +1679,7 @@ function fxPhys(dt) {
       if (c.y > GROUND - 4) { c.y = GROUND - 4; c.vy *= -0.45; c.vx *= 0.7; }
       if (c.t > 650) c.fly = true;
     } else {
-      const tx = VX0 + 24, ty = VY0 + VH + 30, dx = tx - c.x, dy = ty - c.y, d = Math.hypot(dx, dy) || 1, sp = Math.min(d, (6 + (c.t - 650) * 0.04) * k);
+      const tx = ACT_X + (VX0 + 24 - ACT_X) / ACT_S, ty = GROUND + (VY0 + VH + 30 - GROUND) / ACT_S, dx = tx - c.x, dy = ty - c.y, d = Math.hypot(dx, dy) || 1, sp = Math.min(d, (6 + (c.t - 650) * 0.04) * k);
       c.x += dx / d * sp; c.y += dy / d * sp;
       if (d < 12 || c.y > H + 10) { c.done = true; coinSound(); bumpWallet(); }
     }
@@ -2128,6 +2129,7 @@ function drawSprite(ctx, map, pal, x, y, sc, opts = {}) {
   }
 }
 const isBigBossMap = map => map === SPR.exec || map === SPR.dragon2;
+const ACT_S = 0.85, ACT_X = 404;   // 캐릭터층 크기 배율과 기준점
 
 /* 카메라: 월드(640x360) 가운데 정사각 창을 크게 보여 줌. 보스 등장·처치 때 살짝 다가가고, 타격마다 줌이 튐 */
 // 화면 비율 3:2 (가로로 긴 전투 화면). 월드 높이 360을 꽉 채우고 가로는 비율만큼 보여 줌
@@ -2153,7 +2155,7 @@ function camApply() {
   const s = CSH / VH; ctx.setTransform(s, 0, 0, s, -VX0 * s, -VY0 * s);
 }
 const uiApply = () => { const s = CSH / UH; ctx.setTransform(s, 0, 0, s, 0, 0); };
-const w2u = (x, y) => [(x - VX0) / VW * UW, (y - VY0) / VH * UH];
+const w2u = (x, y) => { const ax = ACT_X + (x - ACT_X) * ACT_S, ay = GROUND + (y - GROUND) * ACT_S; return [(ax - VX0) / VW * UW, (ay - VY0) / VH * UH]; };
 
 /* 동료 배치: 뒷줄(사람) / 앞줄(동물·화분) / 맨 앞 로봇 */
 const PET_BACK = [["intern", 212], ["idol", 244], ["legend", 276]];
@@ -2176,16 +2178,16 @@ function clonePal(p) {
 
 /* 동료 공격 이펙트 */
 function fireNeedles() {
-  if (reduceMotion || !mon) return; cactusPop = 1;
+  if (!mon) return; sfx("pew"); if (reduceMotion) return; cactusPop = 1;
   const { h: mh } = monSize();
   for (let i = 0; i < 3; i++) needles.push({ x0: 281, y0: GROUND + 2, x1: MON_X - 14 + (Math.random() - .5) * 24, y1: GROUND - mh * (0.3 + Math.random() * 0.35), t: -i * 60, dur: 230, arc: 40 + Math.random() * 30 });
 }
 function throwCloneJavelin() {
-  if (reduceMotion || cloneIdx++ % 2) return;
+  if (cloneIdx++ % 2) return; sfx("whoosh"); if (reduceMotion) return;
   slashes.push({ type: "thrust", t: 0, dur: 190, style: "clone", crit: false, x0: HERO_X - 6, y: GROUND - 58 + (cloneIdx % 4) * 4, len: 150, w: 6, seed: 0, flat: 1 });
 }
 function cheerHearts() {
-  if (reduceMotion) return;
+  sfx("sparkle"); if (reduceMotion) return;
   for (let i = 0; i < 6; i++) hearts.push({ x: 261 + (Math.random() - .5) * 20, y: GROUND - 52, vx: (Math.random() - .5) * 1.4, vy: -1.2 - Math.random() * 1.2, life: 1, dur: 900 + Math.random() * 400, s: 2 + Math.floor(Math.random() * 2) });
 }
 function petPhys(dt) {
@@ -2401,6 +2403,7 @@ function drawHint() {
 function startSwing(tap, crit) {
   const st = stats();
   anim = { a: tap ? 0.4 : 0, dur: Math.max(110, Math.min(260, st.interval * 0.85)), pending: !tap, type: tap ? (crit ? "chop" : "thrust") : nextSwing() };
+  sfx("swing");
   if (tap) smear = 1;
 }
 function heroPose() {
@@ -2424,6 +2427,7 @@ function draw(t) {
   if (shakeAmt > 0.3) ctx.translate((Math.random() - .5) * shakeAmt * 2, (Math.random() - .5) * shakeAmt * 1.4);
   ctx.drawImage(bg, 0, 0);
   drawAmbient(t);
+  ctx.save(); ctx.translate(ACT_X, GROUND); ctx.scale(ACT_S, ACT_S); ctx.translate(-ACT_X, -GROUND);
   const look = heroLook(), pose = heroPose();
   const hs = 6, hx = HERO_X + pose.dx, hy = GROUND - 14 * hs + pose.lift;
   drawPetsBack(t);
@@ -2532,6 +2536,7 @@ function draw(t) {
   ctx.globalAlpha = 1;
   if (bubble.t > 0 && !lift && !(intro && !intro.light && intro.t < intro.dur * 0.62)) drawBubble(hx + 30, hy - 4, bubble.text);
   ctx.restore();
+  ctx.restore();
   // 화면 글자 레이어
   uiApply();
   drawVignette(); drawDanger(t); drawFever(t); drawImpactFrame(); drawScreenFlash();
@@ -2541,6 +2546,267 @@ function draw(t) {
   drawLift(t); drawStamp(); drawIntro(t); drawZoneBanner();
   renderTop(false);
 }
+
+/* ===================== 소리: 효과음 + 50층마다 바뀌는 배경음악 (모두 즉석 합성, 파일 없음) ===================== */
+var sfxGain = null, bgmGain = null, masterGain = null, noiseLong = null, pulseWaves = {};
+const BGM_VOL = 0.3;
+const musicOn = () => S.sound && S.music !== false;
+function audioReady() {
+  ensureAudio(); if (!audioCtx) return false;
+  if (!masterGain) {
+    masterGain = audioCtx.createGain(); masterGain.gain.value = 1; masterGain.connect(audioCtx.destination);
+    sfxGain = audioCtx.createGain(); sfxGain.gain.value = 0.9; sfxGain.connect(masterGain);
+    bgmGain = audioCtx.createGain(); bgmGain.gain.value = 0; bgmGain.connect(masterGain);
+    const n = audioCtx.sampleRate * 0.6; noiseLong = audioCtx.createBuffer(1, n, audioCtx.sampleRate);
+    const d = noiseLong.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    // 아이폰 무음 스위치를 켜 둬도 게임 소리가 나도록 (게임 안 '소리' 버튼으로 끌 수 있음)
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {}
+  }
+  return true;
+}
+const sfxOut = () => sfxGain || audioCtx.destination;
+function pulseWave(duty) {
+  if (pulseWaves[duty]) return pulseWaves[duty];
+  const N = 32, re = new Float32Array(N), im = new Float32Array(N);
+  for (let n = 1; n < N; n++) { re[n] = 2 / (n * Math.PI) * Math.sin(2 * Math.PI * n * duty); im[n] = 2 / (n * Math.PI) * (1 - Math.cos(2 * Math.PI * n * duty)); }
+  return (pulseWaves[duty] = audioCtx.createPeriodicWave(re, im));
+}
+const midiHz = m => 440 * Math.pow(2, (m - 69) / 12);
+
+/* ---------- 효과음 ---------- */
+const sfxLast = {};
+const SFX_GAP = { tick: 60, swing: 90, pop: 60, pew: 50, coin: 30, sparkle: 120, zap: 120 };
+function noiseHit(t, dur, type, freq, vol, freq2, out) {
+  const src = audioCtx.createBufferSource(); src.buffer = noiseLong;
+  const f = audioCtx.createBiquadFilter(); f.type = type; f.frequency.setValueAtTime(freq, t); if (freq2) f.frequency.exponentialRampToValueAtTime(freq2, t + dur);
+  const g = audioCtx.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  src.connect(f); f.connect(g); g.connect(out || sfxOut()); src.start(t, Math.random() * 0.3); src.stop(t + dur + 0.02);
+}
+function sfx(name) {
+  if (!S.sound || !audioCtx || !masterGain || document.hidden) return;
+  const now = performance.now(); if (now - (sfxLast[name] || 0) < (SFX_GAP[name] || 40)) return; sfxLast[name] = now;
+  const t = audioCtx.currentTime;
+  try {
+    switch (name) {
+      case "tick": tone(1900, 0.03, "square", 0.018); break;
+      case "swing": noiseHit(t, 0.11, "bandpass", 900, 0.09, 3800); break;
+      case "crit": tone(1500, 0.14, "sawtooth", 0.045, 0, 3000); noiseHit(t, 0.16, "highpass", 3000, 0.12); tone(98, 0.22, "square", 0.06, 0, 49); break;
+      case "pop": tone(420, 0.09, "square", 0.045, 0, 900); noiseHit(t, 0.06, "lowpass", 1800, 0.08); break;
+      case "upgrade": [784, 988, 1319].forEach((f, i) => tone(f, 0.12, "triangle", 0.07, i * 0.06)); break;
+      case "bigup": [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => tone(f, 0.16, "square", 0.045, i * 0.055)); tone(2093, 0.5, "triangle", 0.05, 0.33); break;
+      case "buy": tone(1568, 0.08, "square", 0.045); tone(2093, 0.28, "square", 0.045, 0.08); noiseHit(t + 0.08, 0.12, "highpass", 5000, 0.05); break;
+      case "chapter": tone(1047, 0.7, "sine", 0.08); tone(1568, 0.9, "sine", 0.05, 0.06); tone(2093, 1.0, "sine", 0.035, 0.12); break;
+      case "uncheck": tone(620, 0.1, "triangle", 0.05, 0, 380); break;
+      case "pass": [784, 988, 1175].forEach((f, i) => tone(f, 0.1, "square", 0.045, i * 0.08)); [1568, 1976, 2349].forEach(f => tone(f, 0.5, "triangle", 0.035, 0.26)); break;
+      case "fail": tone(233, 0.28, "sawtooth", 0.05, 0, 175); tone(220, 0.34, "sawtooth", 0.045, 0.12, 147); break;
+      case "buff": tone(330, 0.4, "sawtooth", 0.04, 0, 1320); noiseHit(t, 0.35, "bandpass", 600, 0.05, 4000); break;
+      case "zap": noiseHit(t, 0.18, "bandpass", 3200, 0.12, 900); tone(1250, 0.16, "square", 0.035, 0, 260); break;
+      case "pew": tone(1600, 0.07, "square", 0.025, 0, 520); break;
+      case "whoosh": noiseHit(t, 0.16, "bandpass", 500, 0.07, 2200); break;
+      case "sparkle": tone(2637, 0.14, "triangle", 0.03); tone(3136, 0.16, "triangle", 0.03, 0.07); tone(3951, 0.2, "triangle", 0.025, 0.14); break;
+      case "sizzle": noiseHit(t, 0.35, "highpass", 4000, 0.06); tone(180, 0.2, "sawtooth", 0.03, 0, 90); break;
+      case "retire": [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.25, "square", 0.045, i * 0.12)); [1047, 1319, 1568].forEach(f => tone(f, 1.0, "triangle", 0.04, 0.5)); break;
+    }
+  } catch (e) {}
+}
+/* 상태 변화로 효과음 내기: 강화·구매·말씀 체크·암송 결과·버프 */
+let sfxSnap = null, lastMemRes = null;
+function sfxWatch() {
+  if (!S) return;
+  const snap = { w: S.wi * 100 + S.wl, pets: Object.values(S.pets || {}).reduce((a, b) => a + b, 0), cos: JSON.stringify(S.cos || {}).length + JSON.stringify(S.look || {}).length,
+    tre: JSON.stringify(S.tre || S.treasures || {}).length, chap: S.bible.total, ret: S.retires, buff: ["haste", "gold2", "rage"].filter(b => S.active[b] > 0).length };
+  if (sfxSnap) {
+    if (snap.ret > sfxSnap.ret) sfx("retire");
+    else if (snap.w > sfxSnap.w) sfx(S.wl === 1 || S.wl === 5 ? "bigup" : "upgrade");
+    if (snap.pets > sfxSnap.pets || snap.cos > sfxSnap.cos || snap.tre > sfxSnap.tre) sfx("buy");
+    if (snap.chap > sfxSnap.chap) sfx("chapter"); else if (snap.chap < sfxSnap.chap) sfx("uncheck");
+    if (snap.buff > sfxSnap.buff) sfx("buff");
+  }
+  sfxSnap = snap;
+  const res = typeof memSess !== "undefined" && memSess && memSess.result;
+  if (res && res !== lastMemRes) sfx(res.pass ? "pass" : "fail");
+  lastMemRes = res || null;
+}
+
+/* ---------- 배경음악: 밝은 판타지 마을풍 창작곡 (플루트·하프·종소리·피치카토·현악, 일부 왈츠), 구역마다 다른 곡 ---------- */
+const MODES = { major: [0, 2, 4, 5, 7, 9, 11], minor: [0, 2, 3, 5, 7, 8, 10], dorian: [0, 2, 3, 5, 7, 9, 10], mixo: [0, 2, 4, 5, 7, 9, 10], lydian: [0, 2, 4, 6, 7, 9, 11], phryg: [0, 1, 3, 5, 7, 8, 10], harm: [0, 2, 3, 5, 7, 8, 11] };
+// 드럼 패턴 (k 킥, s 브러시 스네어, h 셰이커, t 탬버린, m 팀파니)
+const DR = {
+  town: { k: "x.......x.......", s: "....x.......x...", h: "..x...x...x...x.", t: "" },
+  bounce: { k: "x...x...x...x...", s: "....x.......x...", h: "x.x.x.x.x.x.x.x.", t: "....x.......x..." },
+  swing: { k: "x.....x.x.......", s: "....x.......x...", h: "x..x.xx..x.xx..x", t: "" },
+  soft: { k: "x...............", s: "", h: "..x...x...x...x.", t: "" },
+  march: { k: "x...x...x...x...", s: "....x.x.....x.xx", h: "", t: "x.......x.......", m: "x.......x......." },
+  tribal: { k: "x..x..x.x..x..x.", s: "....x.......x...", h: "x.x.x.x.x.x.x.x.", t: "", m: "x.....x.....x..." },
+  tick: { k: "x...x...x...x...", s: "....x.......x...", h: "xxxxxxxxxxxxxxxx", t: "" },
+  epic: { k: "x.....x.x.......", s: "....x.......x.x.", h: "x.x.x.x.x.x.x.x.", t: "", m: "x...............x" },
+  none: { k: "", s: "", h: "", t: "" },
+  waltz: { k: "x...........", s: "", h: "....x...x...", t: "" },
+  waltzT: { k: "x...........", s: "", h: "..x...x...x.", t: "....x...x..." },
+};
+// 구역별 곡: 조성·선법·빠르기·박자·화음 진행(A/B)·멜로디 악기·반주·베이스·드럼·울림
+const BGM_THEMES = [
+  { n: "로비", key: 65, mode: "major", bpm: 118, meter: 4, prog: [[1, 5, 6, 4], [2, 5, 1, 6]], lead: "flute", arp: "harp8", bass: "R.......5...R...", bassI: "pizz", dr: "town", rev: 0.3, bell: true },
+  { n: "사무동", key: 62, mode: "dorian", bpm: 112, meter: 4, swing: 0.2, prog: [[1, 4, 1, 4], [6, 2, 5, 1]], lead: "reed", arp: "pad", seventh: true, bass: "R...3...5...3...", bassI: "upright", dr: "swing", rev: 0.25 },
+  { n: "탕비실", key: 67, mode: "major", bpm: 104, meter: 3, prog: [[1, 4, 5, 1], [6, 2, 5, 1]], lead: "bell", arp: "waltz", bass: "R...........", bassI: "pizz", dr: "waltz", rev: 0.35 },
+  { n: "회의실", key: 57, mode: "minor", bpm: 84, meter: 4, prog: [[1, 6, 4, 5], [1, 7, 6, 5]], lead: "flute", arp: "pad", bass: "R.......5.......", bassI: "upright", dr: "soft", rev: 0.4, vib: true },
+  { n: "서버실", key: 64, mode: "phryg", bpm: 128, meter: 4, prog: [[1, 2, 1, 7], [1, 2, 3, 2]], lead: "chip", arp: "harp16", arpI: "bell", bass: "R.R.R.R.R.R.R.R.", bassI: "synth", dr: "tick", rev: 0.2 },
+  { n: "자료실", key: 67, mode: "lydian", bpm: 88, meter: 4, prog: [[1, 2, 1, 7], [4, 2, 5, 1]], lead: "flute", arp: "harp16", bass: "R...............", bassI: "upright", dr: "soft", rev: 0.5, vib: true, bell: true },
+  { n: "구내식당", key: 70, mode: "major", bpm: 132, meter: 4, swing: 0.15, prog: [[1, 4, 5, 1], [6, 2, 5, 1]], lead: "reed", arp: "alberti", arpI: "pizz", bass: "R...5...R...5...", bassI: "tuba", dr: "bounce", rev: 0.2 },
+  { n: "사내 헬스장", key: 64, mode: "minor", bpm: 140, meter: 4, prog: [[1, 6, 7, 1], [4, 5, 6, 7]], lead: "brass", arp: "pad", bass: "R.R.R.R.R.R.R.R.", bassI: "synth", dr: "tribal", rev: 0.2 },
+  { n: "인사팀", key: 60, mode: "minor", bpm: 100, meter: 4, prog: [[1, 7, 6, 5], [4, 5, 1, 1]], lead: "flute", arp: "harp8", bass: "R..R..R.R..R..R.", bassI: "pizz", dr: "town", rev: 0.3 },
+  { n: "재무팀", key: 58, mode: "major", bpm: 112, meter: 4, prog: [[1, 4, 5, 1], [6, 3, 4, 5]], lead: "brass", arp: "pad", bass: "R...5...R...5...", bassI: "tuba", dr: "march", rev: 0.25 },
+  { n: "옥상 정원", key: 62, mode: "major", bpm: 108, meter: 3, prog: [[1, 4, 1, 5], [4, 1, 5, 1]], lead: "flute", arp: "harp3", bass: "R...........", bassI: "upright", dr: "waltzT", rev: 0.35, bell: true },
+  { n: "헬기장", key: 57, mode: "mixo", bpm: 138, meter: 4, prog: [[1, 7, 4, 1], [1, 7, 6, 7]], lead: "brass", arp: "harp8", bass: "R.R.R.R.R.R.R.R.", bassI: "synth", dr: "epic", rev: 0.25 },
+  { n: "구름 위", key: 65, mode: "lydian", bpm: 92, meter: 3, prog: [[1, 2, 1, 2], [4, 5, 6, 5]], lead: "bell", arp: "harp3", bass: "R...........", bassI: "upright", dr: "waltz", rev: 0.55, seventh: true },
+  { n: "성층권", key: 59, mode: "minor", bpm: 90, meter: 4, prog: [[1, 6, 7, 1], [4, 6, 7, 5]], lead: "flute", arp: "harp16", arpI: "bell", bass: "R.......R.......", bassI: "upright", dr: "soft", rev: 0.55, vib: true },
+  { n: "달 지사", key: 64, mode: "minor", bpm: 80, meter: 3, prog: [[1, 6, 1, 7], [4, 6, 5, 5]], lead: "bell", arp: "pad", bass: "R...........", bassI: "upright", dr: "none", rev: 0.6 },
+  { n: "화성 공장", key: 62, mode: "phryg", bpm: 124, meter: 4, prog: [[1, 1, 2, 1], [6, 7, 2, 1]], lead: "brass", arp: "harp8", arpI: "marimba", bass: "R.R.RR.RR.R.RR.R", bassI: "synth", dr: "tribal", rev: 0.2 },
+  { n: "우주 정거장", key: 60, mode: "lydian", bpm: 120, meter: 4, prog: [[1, 2, 5, 1], [6, 2, 5, 5]], lead: "chip", arp: "harp16", arpI: "bell", bass: "R..R..R.R..R..R.", bassI: "synth", dr: "bounce", rev: 0.3 },
+  { n: "은하 물류센터", key: 63, mode: "major", bpm: 132, meter: 4, prog: [[1, 5, 6, 4], [2, 5, 1, 1]], lead: "brass", arp: "harp16", bass: "R.R.R.R.R.R.R.R.", bassI: "pizz", dr: "epic", rev: 0.35, bell: true },
+  { n: "블랙홀 재무팀", key: 61, mode: "phryg", bpm: 104, meter: 4, prog: [[1, 2, 1, 6], [1, 2, 7, 1]], lead: "flute", arp: "pad", bass: "R...R...R...R...", bassI: "tuba", dr: "march", rev: 0.45, vib: true },
+  { n: "시공간 이사회", key: 57, mode: "harm", bpm: 140, meter: 4, prog: [[1, 6, 4, 5], [1, 4, 5, 5]], lead: "brass", arp: "harp16", bass: "R.R.R.R.R.R.R.R.", bassI: "pizz", dr: "epic", rev: 0.35, bell: true },
+  { n: "지하 문서고", key: 67, mode: "dorian", bpm: 156, meter: 4, prog: [[1, 7, 1, 7], [4, 5, 1, 7]], lead: "pizz", arp: "harp16", arpI: "marimba", bass: "R.R.R.R.R.R.R.R.", bassI: "pizz", dr: "tick", rev: 0.2 },
+];
+const LYR4 = ["x...x...x.x.x...", "x.......x...x...", "x.x.x...x.......", "x.....x.x...x...", "x...x.x.x.......", "x.......x.x.x.x."];
+const LYR3 = ["x.....x...x.", "x...x...x...", "x.....x.x.x.", "x...........", "x.x.x.x.....", "x.....x....."];
+var bgmSongs, bgmIR;
+let bgm = { theme: -1, song: null, step: 0, nextT: 0, bus: null, echo: null };
+function buildSong(ti) {
+  bgmSongs = bgmSongs || new Map();
+  if (bgmSongs.has(ti)) return bgmSongs.get(ti);
+  const th = BGM_THEMES[ti], R = rng(4242 + ti * 7919), sc = MODES[th.mode], BS = th.meter * 4, BARS = 16;
+  const deg = d => th.key + sc[((d % 7) + 7) % 7] + 12 * Math.floor(d / 7);
+  const steps = Array.from({ length: BS * BARS }, () => []);
+  const roots = []; for (let b = 0; b < BARS; b++) roots.push(th.prog[b < 8 ? 0 : 1][b % 4] - 1);
+  const rset = th.meter === 3 ? LYR3 : LYR4;
+  // 노래하듯 이어지는 2마디 동기 두 개 → A(1~8마디)·B(9~16마디)에서 반복하며 변형
+  const motif = (lift) => {
+    const rh = [rset[Math.floor(R() * rset.length)], rset[Math.floor(R() * rset.length)]], notes = [];
+    let off = [2, 4, 7][Math.floor(R() * 3)] + lift;
+    rh.forEach((r, bar) => { for (let s = 0; s < BS; s++) if (r[s] === "x") {
+      if (s % 4 === 0) { const ct = [0, 2, 4, 7, 9]; off = ct.reduce((a, c) => Math.abs(c - off) < Math.abs(a - off) ? c : a, 0); }
+      else off += R() < 0.55 ? 1 : -1;
+      if (R() < 0.12) off += R() < 0.5 ? 2 : -2;
+      off = Math.max(-1, Math.min(11, off)); notes.push({ s: bar * BS + s, off });
+    } });
+    notes.forEach((n, i) => n.len = Math.min(BS, ((notes[i + 1] ? notes[i + 1].s : 2 * BS) - n.s)));
+    return notes;
+  };
+  const mA = motif(0), mB = motif(2);
+  for (let pair = 0; pair < BARS / 2; pair++) {
+    const m = pair < 4 ? mA : mB, varied = pair % 2 === 1;
+    m.forEach((n, i) => {
+      const bar = pair * 2 + Math.floor(n.s / BS), root = roots[bar];
+      let off = n.off;
+      if (varied && i >= m.length - 2) off = i === m.length - 1 ? (pair === 7 || pair === 3 ? 0 : off) : off + 1;
+      const st = pair * 2 * BS + n.s, last = (pair === 7 || pair === 3) && i === m.length - 1;
+      steps[st].push({ i: "lead", m: deg(root + off) + 12, d: last ? BS : n.len });
+      if (th.bell && st % 4 === 0 && R() < 0.6) steps[st].push({ i: "bell2", m: deg(root + off) + 24, d: 2 });
+    });
+  }
+  for (let b = 0; b < BARS; b++) {
+    const root = roots[b], base = b * BS, triad = [root, root + 2, root + 4];
+    for (let s = 0; s < BS; s++) { const c = th.bass[s]; if (!c || c === ".") continue; const o = c === "5" ? 4 : c === "3" ? 2 : c === "8" ? 7 : 0; steps[base + s].push({ i: "bass", m: deg(root + o) - 24, d: 2 }); }
+    if (th.arp === "pad") { (th.seventh ? [...triad, root + 6] : triad).forEach(d => steps[base].push({ i: "pad", m: deg(d), d: BS })); }
+    else if (th.arp === "waltz") { [4, 8].forEach(s => triad.forEach(d => steps[base + s].push({ i: "arp", m: deg(d), d: 2 }))); }
+    else if (th.arp !== "none") {
+      const seq = th.arp === "alberti" ? [0, 2, 1, 2] : th.arp === "harp16" ? [0, 1, 2, 3, 4, 3, 2, 1] : [0, 1, 2, 3, 2, 1];
+      const every = th.arp === "harp16" ? 1 : 2, tones = [triad[0], triad[1], triad[2], root + 7, root + 9];
+      for (let s = 0, k = 0; s < BS; s += every, k++) steps[base + s].push({ i: "arp", m: deg(tones[seq[k % seq.length]]), d: every * 2 });
+      if (th.seventh || th.arp === "harp8") steps[base].push({ i: "pad", m: deg(root + 4), d: BS });
+    }
+    const dp = DR[th.dr] || DR.none;
+    for (let s = 0; s < BS; s++) {
+      if ((dp.k || "")[s] === "x") steps[base + s].push({ i: "kick" });
+      if ((dp.s || "")[s] === "x" || (b % 8 === 7 && s >= BS - 4 && dp.s)) steps[base + s].push({ i: "snare" });
+      if ((dp.h || "")[s] === "x") steps[base + s].push({ i: "hat" });
+      if ((dp.t || "")[s] === "x") steps[base + s].push({ i: "tamb" });
+      if ((dp.m || "")[s] === "x") steps[base + s].push({ i: "timp", m: deg(root) - 24 });
+    }
+  }
+  const song = { steps, th, BS }; bgmSongs.set(ti, song); return song;
+}
+function osc(type, f, t, end, dest, det = 0) {
+  const o = audioCtx.createOscillator();
+  if (type === "pulse25" || type === "pulse12") o.setPeriodicWave(pulseWave(type === "pulse12" ? 0.125 : 0.25)); else o.type = type;
+  o.frequency.setValueAtTime(f, t); if (det) o.detune.value = det;
+  o.connect(dest); o.start(t); o.stop(end); return o;
+}
+function env(t, atk, peak, hold, rel) { // 엔벌로프 게인 노드
+  const g = audioCtx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + atk);
+  if (hold > 0) g.gain.setTargetAtTime(peak * 0.7, t + atk, hold); g.gain.setTargetAtTime(0.0001, t + rel, 0.05); return g;
+}
+function bgmNote(e, t, spb, th) {
+  const bus = bgm.bus; if (!bus) return;
+  const f = e.m != null ? midiHz(e.m) : 0, dur = (e.d || 1) * spb;
+  switch (e.i) {
+    case "kick": { const g = env(t, 0.004, 0.32, 0, 0.16); const o = osc("sine", 110, t, t + 0.25, g); o.frequency.exponentialRampToValueAtTime(48, t + 0.12); g.connect(bus); return; }
+    case "snare": noiseHit(t, 0.15, "lowpass", 3200, 0.1, 0, bus); return;
+    case "hat": noiseHit(t, 0.04, "highpass", 6500, 0.045, 0, bus); return;
+    case "tamb": noiseHit(t, 0.09, "highpass", 8500, 0.06, 0, bus); noiseHit(t + 0.02, 0.06, "bandpass", 9500, 0.03, 0, bus); return;
+    case "timp": { const g = env(t, 0.006, 0.22, 0.2, 0.55); const o = osc("sine", f * 2, t, t + 0.9, g); o.frequency.exponentialRampToValueAtTime(f * 1.8, t + 0.5); g.connect(bus); noiseHit(t, 0.08, "lowpass", 600, 0.08, 0, bus); return; }
+  }
+  let inst = e.i === "lead" ? th.lead : e.i === "arp" ? (th.arpI || "harp") : e.i === "bass" ? (th.bassI || "pizz") + "Bass" : e.i === "bell2" ? "bell" : "strings";
+  const out = e.i === "lead" && bgm.echo ? bgm.echo : bus, end = t + dur + 1.4;
+  const lead = e.i === "lead", v = lead ? 1 : e.i === "bell2" ? 0.45 : e.i === "arp" ? 0.55 : 1;
+  const link = g => { g.connect(bus); if (out !== bus) g.connect(out); };
+  switch (inst) {
+    case "flute": { const g = env(t, 0.035, 0.1 * v, 0.25, t + dur * 0.92); const o1 = osc("sine", f, t, end, g); const g2 = audioCtx.createGain(); g2.gain.value = 0.25; const o2 = osc("triangle", f, t, end, g2); g2.connect(g);
+      if (th.vib || dur > 0.35) { const l = audioCtx.createOscillator(), lg = audioCtx.createGain(); l.frequency.value = 5.2; lg.gain.setValueAtTime(0, t); lg.gain.linearRampToValueAtTime(10, t + 0.25); l.connect(lg); lg.connect(o1.detune); lg.connect(o2.detune); l.start(t); l.stop(end); }
+      noiseHit(t, 0.05, "bandpass", f * 2, 0.012 * v, 0, g); link(g); return; }
+    case "bell": { const g = audioCtx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.09 * v, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.3);
+      osc("sine", f, t, t + 1.4, g); const h = audioCtx.createGain(); h.gain.value = 0.3; osc("sine", f * 2.76, t, t + 0.6, h); h.connect(g); const h2 = audioCtx.createGain(); h2.gain.value = 0.12; osc("sine", f * 5.4, t, t + 0.3, h2); h2.connect(g); link(g); return; }
+    case "pizz": { const g = audioCtx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.13 * v, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3); osc("triangle", f, t, t + 0.35, g); link(g); return; }
+    case "harp": { const g = audioCtx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.075 * v, t + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.0); osc("triangle", f, t, t + 1.05, g); const h = audioCtx.createGain(); h.gain.value = 0.18; osc("sine", f * 2, t, t + 0.5, h); h.connect(g); link(g); return; }
+    case "marimba": { const g = audioCtx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.1 * v, t + 0.003); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4); osc("sine", f, t, t + 0.45, g); const h = audioCtx.createGain(); h.gain.value = 0.15; osc("sine", f * 4, t, t + 0.12, h); h.connect(g); link(g); return; }
+    case "brass": { const g = env(t, 0.05, 0.075 * v, 0.3, t + dur * 0.9), lp = audioCtx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.setValueAtTime(500, t); lp.frequency.exponentialRampToValueAtTime(2600, t + 0.06); lp.frequency.setTargetAtTime(1300, t + 0.1, 0.2);
+      osc("sawtooth", f, t, end, lp, -4); osc("sawtooth", f, t, end, lp, 5); lp.connect(g); link(g); return; }
+    case "reed": { const g = env(t, 0.03, 0.05 * v, 0.3, t + dur * 0.92), lp = audioCtx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2400; osc("pulse25", f, t, end, lp, -6); osc("pulse25", f, t, end, lp, 6); lp.connect(g); link(g); return; }
+    case "chip": { const g = env(t, 0.006, 0.06 * v, 0.12, t + dur * 0.85); osc("pulse25", f, t, end, g); link(g); return; }
+    case "strings": { const g = env(t, 0.22, 0.026, 0, t + dur), lp = audioCtx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1500; osc("sawtooth", f, t, t + dur + 0.6, lp, -8); osc("sawtooth", f, t, t + dur + 0.6, lp, 8); lp.connect(g); g.connect(bus); return; }
+    case "pizzBass": case "uprightBass": { const g = audioCtx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(inst === "pizzBass" ? 0.2 : 0.17, t + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t + (inst === "pizzBass" ? 0.35 : 0.6)); osc("triangle", f, t, t + 0.7, g); osc("sine", f, t, t + 0.7, g); g.connect(bus); return; }
+    case "tubaBass": { const g = env(t, 0.02, 0.15, 0.1, t + dur * 0.7), lp = audioCtx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 520; osc("square", f, t, t + dur + 0.3, lp); lp.connect(g); g.connect(bus); return; }
+    case "synthBass": { const g = env(t, 0.005, 0.1, 0.08, t + dur * 0.8), lp = audioCtx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 900; osc("square", f, t, t + dur + 0.3, lp); lp.connect(g); g.connect(bus); return; }
+  }
+}
+function reverbIR() {
+  if (bgmIR) return bgmIR;
+  const len = Math.floor(audioCtx.sampleRate * 1.9); bgmIR = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = bgmIR.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2); }
+  return bgmIR;
+}
+function bgmTick() {
+  if (!audioCtx || !bgm.song || audioCtx.state !== "running") return;
+  const th = bgm.song.th, spb = 60 / th.bpm / 4, N = bgm.song.steps.length, boss = mode === "tower" && mon && mon.kind >= 2 && !mon.dying;
+  while (bgm.nextT < audioCtx.currentTime + 0.15) {
+    const i = bgm.step % N, t = bgm.nextT + (i % 2 ? (th.swing || 0) * spb : 0);
+    try {
+      bgm.song.steps[i].forEach(e => bgmNote(e, t, spb, th));
+      if (boss) { if (i % 4 === 0) bgmNote({ i: "kick" }, t, spb, th); if (i % 8 === 0) bgmNote({ i: "timp", m: th.key - 24 }, t, spb, th); }
+    } catch (e) {}
+    bgm.step++; bgm.nextT += spb;
+  }
+}
+function bgmUpdate() {
+  if (!audioCtx) return; if (!masterGain && !audioReady()) return;
+  const want = musicOn() && !document.hidden ? (mode === "vault" ? 20 : zoneNo(shownFloor()) % 20) : -1;
+  if (want === bgm.theme) return;
+  const now = audioCtx.currentTime, old = bgm.bus;
+  bgmGain.gain.cancelScheduledValues(now); bgmGain.gain.setTargetAtTime(0, now, 0.12);
+  bgm.theme = want; bgm.song = null; bgm.bus = null; bgm.echo = null;
+  if (old) setTimeout(() => { try { old.disconnect(); } catch (e) {} }, 900);
+  if (want < 0) return;
+  const song = buildSong(want), bus = audioCtx.createGain(); bus.gain.value = 1; bus.connect(bgmGain);
+  try { const cv2 = audioCtx.createConvolver(), wet = audioCtx.createGain(); cv2.buffer = reverbIR(); wet.gain.value = song.th.rev || 0.3; bus.connect(cv2); cv2.connect(wet); wet.connect(bgmGain); } catch (e) {}
+  if (song.th.rev >= 0.45) { const d = audioCtx.createDelay(1), fb = audioCtx.createGain(), w2 = audioCtx.createGain(); d.delayTime.value = 60 / song.th.bpm * 0.75; fb.gain.value = 0.3; w2.gain.value = 0.35; d.connect(fb); fb.connect(d); d.connect(w2); w2.connect(bus); bgm.echo = d; }
+  bgm.bus = bus; bgm.song = song; bgm.step = 0; bgm.nextT = now + 0.55;
+  bgmGain.gain.setTargetAtTime(BGM_VOL, now + 0.5, 0.35);
+}
+setInterval(bgmTick, 30);
+document.addEventListener("pointerdown", () => { if (S.sound && audioReady()) bgmUpdate(); }, { passive: true });
+document.addEventListener("click", e => { const b = e.target && e.target.closest && e.target.closest("button"); if (b && !b.disabled) sfx("tick"); }, true);
+document.addEventListener("visibilitychange", () => { if (!audioCtx) return; try { if (document.hidden) audioCtx.suspend(); else audioCtx.resume(); } catch (e) {} });
 
 let last = performance.now();
 function frame(now) {
@@ -2578,7 +2844,7 @@ function step(dt) {
     const cl = petLv("cat");
     if (cl && mon && !mon.dying) {
       catTimer += dt;
-      if (catTimer >= 2500) { catTimer -= 2500; petT = 1; const big = Math.random() < 0.1; addSkyStrike(MON_X + (Math.random() - .5) * 30, big); if (big) { shakeAmt = Math.max(shakeAmt, 9); screenFlash = Math.max(screenFlash, 0.25); } hit(st.atk * (1.5 + 0.5 * cl) * (big ? 5 : 1), false, "pet"); }
+      if (catTimer >= 2500) { catTimer -= 2500; petT = 1; const big = Math.random() < 0.1; addSkyStrike(MON_X + (Math.random() - .5) * 30, big); sfx("zap"); if (big) { shakeAmt = Math.max(shakeAmt, 9); screenFlash = Math.max(screenFlash, 0.25); } hit(st.atk * (1.5 + 0.5 * cl) * (big ? 5 : 1), false, "pet"); }
     }
     const ca = petLv("cactus");
     if (ca && mon && !mon.dying) { cactusTimer += dt; if (cactusTimer >= 2000) { cactusTimer -= 2000; fireNeedles(); hit(mon.hp * (1 + 0.1 * ca) / 100 / (mon.kind ? 5 : 1), false, "pet"); } }
@@ -2646,10 +2912,10 @@ BUFFS.forEach(([id, n, d]) => {
   $("buffbar").appendChild(b); buffBtns[id] = b;
 });
 const soundBtn = document.createElement("button"); soundBtn.id = "soundBtn";
-soundBtn.addEventListener("click", () => { ensureAudio(); S.sound = !S.sound; renderBuffs(); save(); });
+soundBtn.addEventListener("click", () => { if (S.sound && S.music !== false) S.music = false; else if (S.sound) S.sound = false; else { S.sound = true; S.music = true; } if (S.sound) audioReady(); bgmUpdate(); renderBuffs(); save(); });
 $("buffbar").appendChild(soundBtn);
 function renderBuffs() {
-  soundBtn.innerHTML = `소리<small>${S.sound ? "켜짐" : "꺼짐"}</small>`; soundBtn.classList.toggle("on", !!S.sound);
+  soundBtn.innerHTML = `소리<small>${!S.sound ? "꺼짐" : S.music === false ? "효과음만" : "음악+효과음"}</small>`; soundBtn.classList.toggle("on", !!S.sound);
   BUFFS.forEach(([id, n, d]) => {
     const b = buffBtns[id], on = S.active[id] > 0;
     b.classList.toggle("on", on); b.disabled = !on && S.buffs[id] <= 0;
@@ -2774,7 +3040,7 @@ function beep() {
     if (document.hidden) return;
     audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.frequency.value = 880; g.gain.value = 0.08; o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.value = 880; g.gain.value = 0.08; o.connect(g); g.connect(sfxOut());
     o.start(); o.stop(audioCtx.currentTime + 0.25);
   } catch (e) {}
 }
@@ -3829,7 +4095,7 @@ function load() {
 }
 setInterval(save, 5000);
 document.addEventListener("visibilitychange", () => { if (document.hidden) save(); else { studyTick(); updateUI(true); } });
-setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); }, 250);
+setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); bgmUpdate(); sfxWatch(); }, 250);
 
 /* ===================== 시작 ===================== */
 function start(data) {

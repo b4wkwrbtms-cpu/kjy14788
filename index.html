@@ -284,19 +284,255 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
 .rd-bot { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--panel); }
 .rd-state { flex: 1; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.3; }
 .toast { z-index: 60; }
+
+/* ===================== 게임 UI 꾸밈: 도트 RPG 창, 아래 메뉴바, 큰 버튼 ===================== */
+:root { --edge: #0a0e1a; --hi: #35426e; --win1: #1f2847; --win2: #151b31; --dock: 64px; --c-silver: #e3e9f5; }
+.c-silver { color: var(--c-silver); }
+body { padding-bottom: calc(var(--dock) + 30px + env(safe-area-inset-bottom, 0px)); background: radial-gradient(140% 46% at 50% 0%, #1a2443 0%, rgba(14,19,33,0) 72%), var(--bg); }
+.ri { display: inline-block; width: 16px; height: 16px; flex: none; background-position: center; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; vertical-align: -3px; }
+.pix { image-rendering: pixelated; display: block; }
+
+/* 머리: 제목, 엘리베이터 층 표시, 자원 알약 */
+h1 { font-size: 27px; text-shadow: 0 3px 0 var(--edge); letter-spacing: .3px; }
+h1 small { color: #a9b4d0; }
+.floor-big { display: flex; align-items: baseline; gap: 2px; padding: 6px 11px 5px 9px; border-radius: 10px; background: linear-gradient(180deg, #130c07, #1e130a); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #4a3218, inset 0 0 14px rgba(255,140,40,.18), 0 3px 0 rgba(0,0,0,.35); color: #ffb347; text-shadow: 0 0 8px rgba(255,150,50,.75); font-size: 25px; }
+.floor-big .fl-up { font-style: normal; font-size: 11px; color: #ff7a3a; align-self: center; margin-right: 3px; animation: floorUp 1.6s ease-in-out infinite; }
+.floor-big small { color: #c27a2e; text-shadow: none; }
+@keyframes floorUp { 0%, 100% { opacity: .35; transform: translateY(1px); } 50% { opacity: 1; transform: translateY(-1px); } }
+.chips { gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 11px 3px 5px; border-radius: 999px; background: linear-gradient(180deg, #0b101e, #161d33); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657, inset 0 2px 3px rgba(0,0,0,.45); font-size: 15px; line-height: 1.25; }
+.chip .ri { width: 18px; height: 18px; margin: -2px 0; filter: drop-shadow(0 1px 0 rgba(0,0,0,.6)); }
+.chip.live { border-color: var(--edge); box-shadow: inset 0 0 0 1px var(--ore), 0 0 10px rgba(111,211,255,.25); color: var(--ore); padding-left: 11px; }
+
+/* 전투 칸 */
+.stage { border: 2px solid var(--edge); background: linear-gradient(180deg, #1c2443, #141a2f); box-shadow: inset 0 0 0 1px var(--hi), 0 4px 0 rgba(0,0,0,.35); }
+@media (max-width: 520px) { .stage { border-left: 0; border-right: 0; box-shadow: inset 0 1px 0 var(--hi), inset 0 -1px 0 var(--hi); } }
+.mon-name { text-shadow: 0 2px 0 var(--edge); }
+.bar { height: 14px; background: #14090d; border: 2px solid var(--edge); border-radius: 5px; box-shadow: inset 0 0 0 1px #3c2230; position: relative; }
+.bar > i { position: relative; z-index: 1; border-radius: 2px; background: linear-gradient(180deg, #ffa293 0 3px, #ff4d4d 3px 62%, #c62b3c 62% 100%); }
+.bar > i.trail { position: absolute; left: 0; top: 0; bottom: 0; z-index: 0; background: #fff1a6; transition: width .5s ease-in .2s; }
+.bar::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: repeating-linear-gradient(90deg, transparent 0 13px, rgba(0,0,0,.3) 13px 14px); }
+.timer { height: 10px; border: 2px solid var(--edge); border-radius: 5px; box-shadow: inset 0 0 0 1px #3a3218; }
+.timer > i { background: linear-gradient(180deg, #fff3b0 0 2px, #ffd54a 2px 65%, #d9a21c 65%); }
+.pips { gap: 0; align-items: center; padding: 0 2px; background: linear-gradient(#2b3655, #2b3655) center / calc(100% - 26px) 2px no-repeat; }
+.pips span { width: 10px; height: 10px; margin: 0 6px; border-radius: 2px; transform: rotate(45deg); background: #1a2138; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #3a4774; }
+.pips span.on { background: var(--gold); box-shadow: inset 0 0 0 1px #fff3b0, 0 0 8px rgba(255,213,74,.6); }
+.pips span.now:not(.bs) { animation: pipNow 1s ease-in-out infinite; }
+.pips span.bs { width: 22px; height: 22px; margin: -7px 0 -7px 4px; transform: none; border: 0; border-radius: 0; box-shadow: none; outline: 0; background-color: transparent; background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; filter: grayscale(.85) brightness(.7); }
+.pips span.bs.now { filter: none; animation: bossPulse .7s ease-in-out infinite; }
+@keyframes pipNow { 0%, 100% { box-shadow: inset 0 0 0 1px #3a4774; } 50% { box-shadow: inset 0 0 0 1px #fff3b0, 0 0 8px rgba(255,213,74,.7); } }
+@keyframes bossPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); filter: drop-shadow(0 0 4px rgba(255,77,77,.9)); } }
+
+/* 버프 칸: 아이콘 + 개수 배지 + 남은 시간 막대 */
+.buffbar { gap: 6px; padding: 8px 8px 9px; border-top: 2px solid var(--edge); background: linear-gradient(180deg, #161d34, #10162a); box-shadow: inset 0 1px 0 var(--hi); }
+.buffbar button { position: relative; display: flex; align-items: center; gap: 6px; padding: 5px 5px 8px; text-align: left; border: 2px solid var(--edge); border-radius: 10px; background: linear-gradient(180deg, #28325c, #1b2242); box-shadow: inset 0 0 0 1px #3d4a7a, 0 3px 0 rgba(0,0,0,.4); min-width: 0; overflow: hidden; }
+.buffbar button:active:not(:disabled) { transform: translateY(2px); box-shadow: inset 0 0 0 1px #3d4a7a, 0 1px 0 rgba(0,0,0,.4); }
+.bf-ic { position: relative; flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: #0c1121; box-shadow: inset 0 0 0 1px #2c3657; }
+.bf-n { position: absolute; right: -4px; bottom: -4px; min-width: 15px; height: 15px; padding: 0 3px; border-radius: 8px; background: #ff4d4d; color: #fff; font: 11px/15px var(--display); font-style: normal; text-align: center; box-shadow: 0 0 0 2px var(--edge); }
+.bf-n:empty { display: none; }
+.bf-t { min-width: 0; font-size: 13.5px; line-height: 1.12; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.buffbar .bf-t small { display: block; font-size: 10.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+.bf-bar { position: absolute; left: 5px; right: 5px; bottom: 3px; height: 3px; border-radius: 2px; background: rgba(0,0,0,.35); }
+.bf-bar > i { display: block; height: 100%; width: 0; border-radius: 2px; background: var(--gold); transition: width .25s linear; }
+.buffbar button.on { color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold), 0 0 12px rgba(255,213,74,.35), 0 3px 0 rgba(0,0,0,.4); }
+.buffbar button.on .bf-ic canvas { animation: buffBob .9s ease-in-out infinite; }
+.buffbar button.on .bf-t small { color: var(--gold); }
+#soundBtn.on { color: var(--fg); box-shadow: inset 0 0 0 1px #3d4a7a, 0 3px 0 rgba(0,0,0,.4); }
+#soundBtn.on .bf-ic canvas { animation: none; }
+#soundBtn .bf-bar { display: none; }
+#soundBtn { flex: 0 0 46px; justify-content: center; padding: 5px 0 8px; }
+#soundBtn .bf-t { display: none; }
+.buffbar button.bf:not(#soundBtn) { flex: 1 1 0; }
+@keyframes buffBob { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-2px) scale(1.12); } }
+.retry { border: 2px solid rgba(0,0,0,.5); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 3px 0 #8c2c2c; }
+
+/* 지갑 */
+.wallet { padding: 9px 12px; border-radius: 12px; align-items: center; background: linear-gradient(180deg, #1f2846, #151b30); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #4d421d, 0 3px 0 rgba(0,0,0,.35); }
+.gold { display: inline-flex; align-items: center; gap: 6px; text-shadow: 0 2px 0 var(--edge), 0 0 14px rgba(255,213,74,.25); }
+.gold .ri { width: 26px; height: 26px; vertical-align: 0; }
+.dps b { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+
+/* 아래 메뉴바 */
+.tabs { position: fixed; z-index: 30; left: 0; right: 0; top: auto; bottom: 0; margin: 0 auto; max-width: 560px; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 1px; overflow: visible; padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)); border: 2px solid var(--edge); border-bottom: 0; border-radius: 16px 16px 0 0; background: linear-gradient(180deg, #242d50, #121830 72%); box-shadow: inset 0 1px 0 #46548c, 0 -10px 24px rgba(0,0,0,.45); transition: transform .2s ease; }
+.tabs button { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px; min-width: 0; height: 54px; padding: 2px 0 4px; border-radius: 11px; font-size: 12px; line-height: 1; color: #7d89aa; background: transparent; white-space: nowrap; }
+.tabs button canvas { filter: saturate(.55) brightness(.75); transition: transform .18s ease, filter .18s ease; }
+.tabs button .tl { display: block; letter-spacing: -.3px; }
+.tabs button[aria-selected="true"] { color: var(--gold); background: linear-gradient(180deg, rgba(255,213,74,.28), rgba(255,213,74,.05)); box-shadow: inset 0 0 0 1px rgba(255,213,74,.6), 0 0 14px rgba(255,213,74,.16); }
+.tabs button[aria-selected="true"] canvas { filter: drop-shadow(0 2px 0 rgba(0,0,0,.45)); transform: translateY(-3px) scale(1.12); }
+.tabs button:active canvas { transform: scale(.9); }
+.tabs button .dot { top: 1px; right: calc(50% - 21px); width: 12px; height: 12px; border-radius: 50%; background: #ff4d4d; border: 2px solid #1b2240; box-shadow: 0 0 6px rgba(255,77,77,.75); animation: dotPulse 1.6s ease-in-out infinite; }
+@keyframes dotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+body.typing .tabs { transform: translateY(130%); }
+.toast { bottom: calc(var(--dock) + 22px + env(safe-area-inset-bottom, 0px)); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #ffffff, 0 4px 0 rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.4); }
+
+/* 탭 머리띠 (위에 붙어 다님) */
+.tab-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 4; display: flex; align-items: center; gap: 10px; padding: 6px 10px 6px 7px; border-radius: 12px; border: 2px solid var(--edge); background: linear-gradient(90deg, var(--acc-a, rgba(255,213,74,.18)), rgba(23,30,49,0) 62%), linear-gradient(180deg, #232c4d, #161d35); box-shadow: inset 0 0 0 1px var(--hi), inset 4px 0 0 var(--acc, #ffd54a), 0 6px 14px rgba(0,0,0,.4); }
+.tab-head[data-tab="weapon"] { --acc: #ffd54a; --acc-a: rgba(255,213,74,.2); }
+.tab-head[data-tab="bible"], .tab-head[data-tab="mem"] { --acc: #a8f0c6; --acc-a: rgba(168,240,198,.18); }
+.tab-head[data-tab="study"], .tab-head[data-tab="suit"] { --acc: #6fd3ff; --acc-a: rgba(111,211,255,.18); }
+.tab-head[data-tab="pet"] { --acc: #ffb36b; --acc-a: rgba(255,155,61,.2); }
+.tab-head[data-tab="treasure"], .tab-head[data-tab="retire"] { --acc: #ff8a7a; --acc-a: rgba(255,122,107,.2); }
+.tab-head[data-tab="daily"] { --acc: #7fe3a0; --acc-a: rgba(127,227,160,.18); }
+.tab-head[data-tab="info"] { --acc: #c9a6ff; --acc-a: rgba(201,166,255,.18); }
+.th-ic { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; background: radial-gradient(circle at 50% 40%, rgba(255,255,255,.12), rgba(0,0,0,.28)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.th-t { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.15; }
+.th-t b { font: 400 20px var(--display); color: var(--acc, var(--gold)); text-shadow: 0 2px 0 var(--edge); }
+.th-t small { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.th-cur { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.th-cur span { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px 2px 4px; border-radius: 999px; background: #0b101e; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657; font: 15px var(--display); line-height: 1.2; }
+.th-cur .ri { width: 17px; height: 17px; }
+#panels > .panel:not([hidden]) { animation: panelIn .24s ease-out; }
+@keyframes panelIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* 창(카드)·줄 */
+.card, .up, .task, .memday { position: relative; background: linear-gradient(180deg, var(--win1), var(--win2)); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px var(--hi), inset 0 2px 0 1px rgba(255,255,255,.04), 0 3px 0 rgba(0,0,0,.35); }
+.card.hero-card { background: linear-gradient(#c9a43a, #c9a43a) top 5px left 5px / 4px 4px no-repeat, linear-gradient(#c9a43a, #c9a43a) top 5px right 5px / 4px 4px no-repeat, linear-gradient(#c9a43a, #c9a43a) bottom 5px left 5px / 4px 4px no-repeat, linear-gradient(#c9a43a, #c9a43a) bottom 5px right 5px / 4px 4px no-repeat, linear-gradient(180deg, #242d50, #171e36); box-shadow: inset 0 0 0 1px #5a4a22, inset 0 2px 0 1px rgba(255,255,255,.05), 0 3px 0 rgba(0,0,0,.35); }
+.up { grid-template-columns: 48px 1fr auto; gap: 11px; padding: 9px 9px 9px 9px; }
+.up.locked { opacity: .7; }
+.up.locked .icon canvas { filter: grayscale(.7) brightness(.7); }
+.up.owned-leg { box-shadow: inset 0 0 0 1px #8a6cff, inset 0 2px 0 1px rgba(255,255,255,.04), 0 3px 0 rgba(0,0,0,.35), 0 0 14px rgba(150,110,255,.18); }
+.icon { position: relative; overflow: visible; width: 48px; height: 48px; border-radius: 10px; background: radial-gradient(circle at 50% 38%, #2c3760, #11172a 78%); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #3a4774, inset 0 -4px 0 rgba(0,0,0,.25); }
+.icon canvas { border-radius: 6px; }
+.up.owned-leg .icon { box-shadow: inset 0 0 0 1px #9d84ff, inset 0 -4px 0 rgba(0,0,0,.25), 0 0 10px rgba(160,120,255,.4); }
+.lvb { position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%); padding: 1px 6px 0; border-radius: 7px; background: #0a0e1a; border: 1px solid #3a4774; color: var(--gold); font: 11px/14px var(--display); white-space: nowrap; z-index: 1; }
+.lvb.mx { color: #6fd3ff; border-color: #2b8fb8; }
+.up-name { text-shadow: 0 1px 0 var(--edge); }
+.up.pop { animation: rowPop .5s ease-out; }
+.up.pop .icon canvas, .task.pop .buy, .card.pop canvas { animation: icBounce .45s ease-out; }
+@keyframes rowPop { 0% { box-shadow: inset 0 0 0 2px #ffd54a, 0 0 18px rgba(255,213,74,.6), 0 3px 0 rgba(0,0,0,.35); } 100% { box-shadow: inset 0 0 0 1px var(--hi), 0 3px 0 rgba(0,0,0,.35); } }
+.task.pop, .card.pop { animation: rowPop .5s ease-out; }
+@keyframes icBounce { 0% { transform: scale(1); } 35% { transform: scale(1.22) rotate(-6deg); } 70% { transform: scale(.94); } 100% { transform: scale(1); } }
+.upfx { position: absolute; right: 18px; top: 0; z-index: 3; pointer-events: none; font: 17px var(--display); color: #7fe3a0; text-shadow: 0 2px 0 var(--edge), 0 0 10px rgba(127,227,160,.7); animation: upfx .95s ease-out forwards; white-space: nowrap; }
+@keyframes upfx { 0% { transform: translateY(8px) scale(.6); opacity: 0; } 18% { transform: translateY(0) scale(1.18); opacity: 1; } 100% { transform: translateY(-28px) scale(1); opacity: 0; } }
+
+/* 큰 버튼: 위에 할 일, 아래에 아이콘+비용 */
+.buy { position: relative; overflow: hidden; min-width: 90px; min-height: 46px; padding: 5px 9px 7px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; border: 2px solid rgba(0,0,0,.55); border-radius: 10px; --sh: #9a7a14; box-shadow: inset 0 2px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(0,0,0,.14), 0 3px 0 var(--sh); text-shadow: 0 1px 0 rgba(255,255,255,.3); transition: transform .06s; }
+.buy, .buy.manna, .buy.stamp, .buy.ore, .buy.rare, .buy.ghost { background-image: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0) 52%, rgba(0,0,0,.08)); }
+.buy.manna { --sh: #3f8f68; box-shadow: inset 0 2px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(0,0,0,.14), 0 3px 0 var(--sh); }
+.buy.stamp { --sh: #a33a2f; box-shadow: inset 0 2px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(0,0,0,.14), 0 3px 0 var(--sh); }
+.buy.ore { --sh: #1f7aa3; box-shadow: inset 0 2px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(0,0,0,.14), 0 3px 0 var(--sh); }
+.buy.rare { --sh: #6a4cad; box-shadow: inset 0 2px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(0,0,0,.14), 0 3px 0 var(--sh); }
+.buy.ghost { --sh: #0a0e1a; background-color: #2a3459; color: var(--fg); text-shadow: 0 1px 0 var(--edge); box-shadow: inset 0 0 0 1px #46548c, inset 0 2px 0 rgba(255,255,255,.1), 0 3px 0 var(--sh); }
+.buy small { order: 0; display: block; font-size: 11px; line-height: 1.15; opacity: .85; max-width: 150px; white-space: normal; }
+.buy .cost { order: 1; display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 16px; line-height: 1.12; white-space: nowrap; }
+.buy .cost .ri { width: 16px; height: 16px; vertical-align: 0; filter: drop-shadow(0 1px 0 rgba(0,0,0,.35)); }
+.buy .act { order: 0; font-size: 15px; line-height: 1.15; }
+.buy .act + small { order: 1; }
+.buy small .cur, .rws .rw, .cur { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.buy small .ri { width: 12px; height: 12px; }
+.buy:active:not(:disabled) { transform: translateY(2px); box-shadow: inset 0 2px 0 rgba(255,255,255,.4), inset 0 -2px 0 rgba(0,0,0,.14), 0 1px 0 var(--sh); }
+.buy:not(:disabled):not(.ghost)::after { content: ""; position: absolute; top: -30%; bottom: -30%; left: -45%; width: 32%; background: linear-gradient(100deg, rgba(255,255,255,0), rgba(255,255,255,.55), rgba(255,255,255,0)); transform: translateX(0) skewX(-18deg); animation: btnShine 3.4s ease-in-out infinite; animation-delay: inherit; pointer-events: none; }
+@keyframes btnShine { 0%, 68% { transform: translateX(0) skewX(-18deg); } 100% { transform: translateX(480%) skewX(-18deg); } }
+.buy:disabled { background-color: #252d4a; background-image: none; color: #7c87a6; text-shadow: none; border-color: var(--edge); box-shadow: inset 0 0 0 1px #323d63, 0 3px 0 #0b1020; }
+.buy:disabled .cost { color: #ff8080; }
+.buy:disabled .cost .ri { filter: grayscale(.4); opacity: .8; }
+.buy.max:disabled { background-color: #2f6fd0; background-image: linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,0) 55%); color: #fff; text-shadow: 0 1px 0 rgba(0,0,0,.35); box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 3px 0 #1d4a8f; border-color: rgba(0,0,0,.55); }
+@media (prefers-reduced-motion: reduce) { .buy::after, .tabs button .dot, .floor-big .fl-up, .pips span { animation: none !important; } }
+
+.btn { border: 2px solid var(--edge); border-radius: 10px; background: linear-gradient(180deg, #2b3660, #1e2645); box-shadow: inset 0 0 0 1px #46548c, inset 0 2px 0 rgba(255,255,255,.08), 0 3px 0 rgba(0,0,0,.45); transition: transform .06s; }
+.btn.primary { background: var(--ore) linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,0) 55%); border-color: rgba(0,0,0,.55); box-shadow: inset 0 2px 0 rgba(255,255,255,.5), 0 3px 0 #1f7aa3; }
+.btn.manna { background: var(--manna) linear-gradient(180deg, rgba(255,255,255,.3), rgba(255,255,255,0) 55%); border-color: rgba(0,0,0,.55); box-shadow: inset 0 2px 0 rgba(255,255,255,.55), 0 3px 0 #3f8f68; }
+.btn.warn { background: var(--danger) linear-gradient(180deg, rgba(255,255,255,.25), rgba(255,255,255,0) 55%); border-color: rgba(0,0,0,.55); box-shadow: inset 0 2px 0 rgba(255,255,255,.4), 0 3px 0 #8c2c2c; }
+.btn:active:not(:disabled) { transform: translateY(2px); }
+
+#wBtn small, #wAll small { max-width: none; }
+/* 소제목: 금빛 리본 */
+.panel > .sec-title { position: relative; margin: 12px 0 0; padding: 5px 10px 5px 20px; border-radius: 8px; background: linear-gradient(90deg, rgba(255,213,74,.17), rgba(255,213,74,0) 82%); text-shadow: 0 2px 0 var(--edge); }
+.panel > .sec-title::before { content: ""; position: absolute; left: 6px; top: 50%; width: 7px; height: 7px; margin-top: -4px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 6px rgba(255,213,74,.65); }
+
+/* 수치 칸, 막대 */
+.stat { background: #0e1426; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #26304f, inset 0 3px 6px rgba(0,0,0,.35); border-radius: 9px; }
+.prog, .qbar { position: relative; height: 10px; background: #070b14; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #262f4d; border-radius: 5px; }
+.qbar { height: 9px; margin-top: 4px; }
+.prog > i, .prog.ore > i, .qbar > i { border-radius: 3px; background-image: linear-gradient(180deg, rgba(255,255,255,.5) 0 2px, rgba(255,255,255,0) 2px, rgba(0,0,0,0) 60%, rgba(0,0,0,.2)); }
+.prog::after, .qbar::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(90deg, transparent 0 9px, rgba(0,0,0,.28) 9px 10px); }
+.task .qbar > i { background-color: var(--manna); }
+.task.done .qbar > i { background-color: var(--muted); }
+
+/* 무기 진열대 */
+.wcard canvas { background: radial-gradient(circle at 50% 62%, rgba(255,213,74,.24), rgba(255,213,74,0) 62%), linear-gradient(180deg, #1c2443, #0f1427); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #5a4a22; }
+.wname { text-shadow: 0 2px 0 var(--edge); }
+.stars i { width: 16px; height: 8px; border: 1px solid var(--edge); border-radius: 2px; transform: skewX(-14deg); background: #262f4f; }
+.stars i.on { background: linear-gradient(180deg, #fff3b0, #ffd54a 55%, #d9a21c); box-shadow: 0 0 6px rgba(255,213,74,.55); }
+
+/* 세그먼트 버튼 (구약/신약, 부위) */
+.seg { padding: 3px; gap: 3px; background: #0b101e; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #26304f; border-radius: 10px; }
+.seg button { border-radius: 7px; }
+.seg button[aria-pressed="true"] { color: #fff; background: linear-gradient(180deg, #5a48c8, #3d2e98); box-shadow: inset 0 0 0 1px #9c8bff, inset 0 2px 0 rgba(255,255,255,.22), 0 2px 0 var(--edge); text-shadow: 0 1px 0 var(--edge); }
+
+/* 성경 책·장 타일 */
+.books button { border: 2px solid var(--edge); border-radius: 8px; background: linear-gradient(180deg, #222a4a, #1a2140); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); }
+.books button.done { background: linear-gradient(180deg, #24493a, #1d3a2c); }
+.books button.sel { color: var(--manna); box-shadow: inset 0 0 0 1px var(--manna), 0 0 8px rgba(168,240,198,.3), 0 2px 0 rgba(0,0,0,.35); }
+.chapters button { border: 2px solid var(--edge); border-radius: 8px; background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); }
+.chapters button.read { background: linear-gradient(180deg, #2f5a7d, #23405a); color: var(--fg); box-shadow: inset 0 0 0 1px #4a7aa3, 0 2px 0 rgba(0,0,0,.35); }
+.chapters button.today { background: linear-gradient(180deg, #d2fbe2, #a8f0c6); color: var(--manna-ink); box-shadow: inset 0 0 0 1px #effff5, 0 2px 0 #4f9a73, 0 0 10px rgba(168,240,198,.45); }
+.chapters button:active { transform: translateY(1px); }
+
+/* 업무 줄 */
+.task { padding: 10px 10px 11px; border-radius: 12px; }
+.task .t-name { text-shadow: 0 1px 0 var(--edge); }
+.task .t-sub { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.rws { display: inline-flex; flex-wrap: wrap; gap: 3px 8px; justify-content: flex-end; }
+.rws .rw { color: var(--fg); font-family: var(--display); font-size: 13px; }
+.rws .ri { width: 15px; height: 15px; }
+
+/* 모음 칸 (정보 탭), 도감 */
+.cell { border: 2px solid var(--edge); border-radius: 9px; background: radial-gradient(circle at 50% 38%, #283256, #121829 80%); box-shadow: inset 0 0 0 1px #34416a; }
+.cell.max { box-shadow: inset 0 0 0 1px #c9a43a, 0 0 8px rgba(255,213,74,.25); border-color: var(--edge); }
+.charcell.max { box-shadow: inset 0 0 0 2px var(--gold), 0 0 10px rgba(255,213,74,.35); }
+
+/* 그림 액자 (광산, 프로필, 옷방) */
+.mine-row canvas, .profile canvas, #roomCv { border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #3a4774, 0 3px 0 rgba(0,0,0,.35); }
+
+.mine-cv { display: block; width: 100%; height: auto; aspect-ratio: 32 / 15; image-rendering: pixelated; border-radius: 10px; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #3a4774, 0 3px 0 rgba(0,0,0,.35); background: #0a1018; }
+.mine-info { display: flex; flex-direction: column; gap: 4px; }
+/* 입력칸 */
+textarea, input[type=text], .refin select, .refin input { background: #0c1121; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657, inset 0 3px 6px rgba(0,0,0,.35); border-radius: 10px; }
+.memv { border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657; }
+
+/* 축하 팝업 */
+.celeb { position: fixed; inset: 0; z-index: 55; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 50% 45%, rgba(10,14,26,.4), rgba(5,8,16,.82)); cursor: pointer; }
+.celeb[hidden] { display: none; }
+.celeb { --cc: #ffd54a; --cr: rgba(255,213,74,.26); }
+.celeb[data-c="manna"] { --cc: #a8f0c6; --cr: rgba(168,240,198,.24); }
+.celeb[data-c="ore"] { --cc: #6fd3ff; --cr: rgba(111,211,255,.24); }
+.celeb[data-c="rare"] { --cc: #c9a6ff; --cr: rgba(201,166,255,.28); }
+.celeb[data-c="stamp"] { --cc: #ff8a7a; --cr: rgba(255,122,107,.26); }
+.celeb.go { animation: celebBg .25s ease-out; }
+@keyframes celebBg { from { opacity: 0; } to { opacity: 1; } }
+.celeb-card { position: relative; width: min(300px, 86vw); padding: 24px 18px 14px; text-align: center; border-radius: 18px; border: 2px solid var(--edge); background: linear-gradient(180deg, #252e50, #141a2f); box-shadow: inset 0 0 0 2px var(--cc), inset 0 0 30px var(--cr), 0 16px 40px rgba(0,0,0,.6); }
+.celeb.go .celeb-card { animation: celebPop .55s cubic-bezier(.2, 1.5, .4, 1); }
+@keyframes celebPop { 0% { transform: scale(.4) translateY(30px); opacity: 0; } 60% { opacity: 1; } 100% { transform: none; } }
+.celeb-rays { position: absolute; left: 50%; top: 66px; width: 280px; height: 280px; margin: -140px 0 0 -140px; border-radius: 50%; pointer-events: none; background: repeating-conic-gradient(from 0deg, var(--cr) 0deg 9deg, transparent 9deg 24deg); -webkit-mask: radial-gradient(circle, #000 22%, transparent 68%); mask: radial-gradient(circle, #000 22%, transparent 68%); animation: raySpin 7s linear infinite; }
+@keyframes raySpin { to { transform: rotate(360deg); } }
+.celeb-ic { position: relative; height: 96px; display: grid; place-items: center; }
+.celeb-ic canvas { filter: drop-shadow(0 5px 0 rgba(0,0,0,.4)); -webkit-mask: radial-gradient(circle, #000 58%, transparent 71%); mask: radial-gradient(circle, #000 58%, transparent 71%); }
+.celeb.go .celeb-ic canvas { animation: celebIcon .9s ease-out; }
+@keyframes celebIcon { 0% { transform: scale(.2) rotate(-25deg); } 45% { transform: scale(1.25) rotate(6deg); } 70% { transform: scale(.95); } 100% { transform: none; } }
+.celeb-t { position: relative; display: block; margin-top: 8px; font: 400 27px var(--display); color: var(--cc); text-shadow: 0 3px 0 var(--edge), 0 0 18px var(--cr); }
+.celeb-s { position: relative; display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; color: var(--fg); word-break: keep-all; }
+.celeb-s .rws { justify-content: center; margin-top: 4px; }
+.celeb-s .rws .rw { font-size: 16px; }
+.celeb-s .rws .ri { width: 18px; height: 18px; }
+.celeb-tap { position: relative; display: block; margin-top: 10px; font-size: 11px; color: var(--muted); }
+.celeb-fx { position: fixed; left: 50%; top: 42%; width: 0; height: 0; pointer-events: none; }
+.celeb-fx i { position: absolute; left: -4px; top: -6px; width: 8px; height: 12px; border-radius: 2px; }
+@media (prefers-reduced-motion: reduce) { .celeb-rays, .celeb.go .celeb-card, .celeb.go .celeb-ic canvas { animation: none; } }
 </style>
 
 <div class="wrap">
   <header>
     <div class="title-row">
       <h1><small>말씀 읽고 공부하며 오르는 본사 타워</small>곽준영 키우기</h1>
-      <div class="floor-big num"><span id="floorChip">1</span><small>층</small></div>
+      <div class="floor-big num" aria-label="지금 층"><i class="fl-up" aria-hidden="true">▲</i><span id="floorChip">1</span><small>층</small></div>
     </div>
     <div class="chips">
-      <span class="chip">만나 <b id="mannaChip" class="num c-manna">0</b></span>
-      <span class="chip">도장 <b id="stampChip" class="num c-stamp">0</b></span>
-      <span class="chip">광석 <b id="oreChip" class="num c-ore">0</b></span>
-      <span class="chip">은괴 <b id="silverChip" class="num c-rare">0</b> · 자수정 <b id="ameChip" class="num c-rare">0</b></span>
+      <span class="chip" title="만나"><i class="ri ri-manna"></i><b id="mannaChip" class="num c-manna">0</b></span>
+      <span class="chip" title="결재도장"><i class="ri ri-stamp"></i><b id="stampChip" class="num c-stamp">0</b></span>
+      <span class="chip" title="광석"><i class="ri ri-ore"></i><b id="oreChip" class="num c-ore">0</b></span>
+      <span class="chip" title="은괴"><i class="ri ri-silver"></i><b id="silverChip" class="num c-silver">0</b></span>
+      <span class="chip" title="자수정"><i class="ri ri-ame"></i><b id="ameChip" class="num c-rare">0</b></span>
       <span class="chip live" id="liveChip" hidden></span>
     </div>
   </header>
@@ -305,7 +541,7 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
     <div class="stage-top">
       <div class="run-line num" id="runLine"></div>
       <div class="mon-row"><span id="monName" class="mon-name"></span><span id="monHp" class="mon-hp num"></span></div>
-      <div class="bar"><i id="hpBar"></i></div>
+      <div class="bar"><i id="hpTrail" class="trail"></i><i id="hpBar"></i></div>
       <div class="sub-row">
         <span id="progLabel"></span>
         <div id="pips" class="pips"></div>
@@ -320,14 +556,19 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
   </section>
 
   <section class="wallet">
-    <div><div class="gold num"><span id="gold">0</span><small>원</small></div><div class="gold-sub" id="goldSub">보스를 잡으면 월급이 나옵니다</div></div>
-    <div class="dps">초당 피해<b id="dps" class="num">0</b></div>
+    <div><div class="gold num"><i class="ri ri-coin"></i><span id="gold">0</span><small>원</small></div><div class="gold-sub" id="goldSub">보스를 잡으면 월급이 나옵니다</div></div>
+    <div class="dps">초당 피해<b class="num"><i class="ri ri-dps"></i><span id="dps">0</span></b></div>
   </section>
 
   <nav class="tabs" role="tablist" aria-label="메뉴" id="tabs"></nav>
+  <div class="tab-head" id="tabHead"><span class="th-ic" id="thIc"></span><div class="th-t"><b id="thName"></b><small id="thSub"></small></div><div class="th-cur num" id="thCur"></div></div>
   <section id="panels"></section>
 </div>
 <div id="toast" class="toast" role="status"></div>
+<div id="celeb" class="celeb" hidden role="status" aria-live="polite">
+  <div class="celeb-card"><div class="celeb-rays"></div><div class="celeb-ic" id="celebIc"></div><b class="celeb-t" id="celebT"></b><small class="celeb-s" id="celebS"></small><span class="celeb-tap">눌러서 닫기</span></div>
+  <div class="celeb-fx" id="celebFx"></div>
+</div>
 <div id="reader" class="reader" hidden role="dialog" aria-label="성경 읽기">
   <header class="rd-top">
     <button class="rd-x" data-r="close" aria-label="닫기">✕</button>
@@ -764,8 +1005,8 @@ function heroMap(hair) {
 function heroPal(p) {
   const q = Object.assign({}, p);
   if (!q.j) q.j = q.w; if (!q.a) q.a = q.w; if (!q.x) q.x = q.a;
-  q.k = q.k || "#1a1a22"; q.m = q.m || "#a0524a"; q.r = q.r || "#f3a596"; q.S = q.S || tone(q.s || "#f2c9a0", -0.15);
-  q.B = q.B || "#20232e"; q.Y = q.Y || "#c9a26b"; q.W = "#ffffff"; if (!q.e) q.e = tone(q.h || "#2a2a35", 0.3);
+  q.k = q.k || "#1a1a22"; q.m = q.m || "#a0524a"; q.r = q.r || "#f3a596"; q.S = q.S || shade(q.s || "#f2c9a0", -0.15);
+  q.B = q.B || "#20232e"; q.Y = q.Y || "#c9a26b"; q.W = "#ffffff"; if (!q.e) q.e = shade(q.h || "#2a2a35", 0.3);
   return q;
 }
 const SPR = {
@@ -941,6 +1182,91 @@ const petIcon = id => iconCanvas((g) => {
   else drawSprite(g, SPR[id], PAL[id], 2, 2, 3);
 });
 const weaponIcon = (i, lv, size = 40) => iconCanvas((g, s) => drawWeapon(g, i, lv, s / 2, s - 3, 0.6, s / 20, 0, true), size);
+function weaponBig(i, lv, css = 88) { const d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))), s = Math.round(css * d); const c = iconCanvas(g => drawWeapon(g, i, lv, s / 2, s - 3 * d, 0.6, s / 20, 0, true), s); c.className = "pix"; if (c.style) c.style.width = c.style.height = css + "px"; return c; }
+function petBig(id, css = 84) {
+  if (id === "intern" || id === "idol" || id === "legend" || id === "clone") return bigSprite(heroMap(PET_HAIR[id]), id === "clone" ? clonePal(heroPal(PAL.hero)) : petHeroPal(id), css);
+  return id === "cactus" ? bigSprite(SPR.plant, PAL.cactus, css) : bigSprite(SPR[id], PAL[id], css);
+}
+
+/* ===================== 메뉴용 도트 아이콘 (탭·자원·버프·축하) =====================
+   지도 한 칸 = 화면 픽셀 여러 개. 기기 화소 밀도에 맞춰 정수 배로 그려서 흐릿하지 않게. */
+const UIICON = {
+  weapon: { m: ["............wW", "...........wWw", "..........wWw.", ".........wWw..", "........wWw...", ".......wWw....", "...g..WWw.....", "..gggWWw......", "...gggw.......", "...hheg.......", "..hhhggg......", ".hhh..g.......", ".pp...........", ".pp..........."], p: {"W": "#f4f8ff", "w": "#a9b6d0", "g": "#ffd54a", "h": "#7c5cff", "p": "#ffb53a", "e": "#ff6b6b"} },
+  bible: { m: ["..............", ".CCcccccccc...", ".CCccccccccpp.", ".CCcccggcccpp.", ".CCcccggcccpp.", ".CCcggggggcpp.", ".CCcggggggcpp.", ".CCcccggcccpp.", ".CCcccggcccpp.", ".CCcccggcccpp.", ".CCcccggcccpp.", ".CCccccccccpp.", ".CCccccccrcpp.", "...pppppprppp."], p: {"p": "#f4ead2", "c": "#8a2436", "C": "#5c1424", "g": "#ffd54a", "r": "#6fd3ff"} },
+  mem: { m: ["..............", "RrrrrrrrrrrrrR", "RrrrrrrrrrrrrR", "..pppppppppp..", "..ppllllllpp..", "..pppppppppp..", "..pplllllllp..", "..pppppppppm..", "..pplllllpmm..", "..ppppppppmm..", "..pppppppppp..", "RrrrrrrrrrrrrR", "RrrrrrrrrrrrrR", ".............."], p: {"p": "#f6e7c1", "r": "#a8643a", "R": "#ffd54a", "l": "#9a8466", "m": "#a8f0c6"} },
+  study: { m: ["..............", "..............", "...sssssss....", "...ssssssss...", ".......hhhss..", ".......hh..s..", "......hh......", ".....hh.......", "....hh........", "...hh.....oo..", "..hh.....ooOo.", ".hhh......boo.", ".hh.......ooo.", "..........ooo."], p: {"s": "#c9d2e6", "h": "#a8643a", "o": "#6fd3ff", "O": "#e6f6ff", "b": "#3a7bd6"} },
+  pet: { m: ["..............", "..............", ".ooo......ooo.", ".opoo....oopo.", ".oopooOoOopoo.", ".oooooOoOoooo.", ".oooooooooooo.", "..ooooooooooo.", "..ookooookooo.", "..ookooookooo.", "y.ooowppwooooy", "...oowwwwooo..", "....owwwwoo...", ".......o......"], p: {"o": "#ff9b3d", "O": "#d9701c", "p": "#ffb3c1", "k": "#1a1a22", "w": "#fff4e0", "y": "#ffe14a"} },
+  suit: { m: ["..............", "...jjwwwwjj...", "..jjJwttwJjj..", ".jjjJwttwJjjj.", "jjjjjJttJjjjjj", "jjjjjJttJjjjjj", "jjjjjjJJjjjjjj", "jjjjjjjjjjjjjj", "jjjjjjjjjjjjjj", "jwwjjjjgjjjjjj", "jjjjjjjjjjjjjj", "jjjjjjjgjjjjjj", "jjjjjjjjjjjjjj", "jjjjjjjjjjjjjj"], p: {"j": "#3b4566", "J": "#262e48", "w": "#f4f6fb", "t": "#e0403d", "g": "#ffd54a"} },
+  treasure: { m: ["...........c.c", "............W.", "...g.bbbb.g...", "...gbbbbbbg...", ".bbgbbbbbbgbb.", ".bbgbggggbgbb.", ".gggggkkggggg.", ".BBgBgkggBgBB.", ".bbgbggggbgbb.", ".bbgbbbbbbgbb.", ".bbgbbbbbbgbb.", ".bbgbbbbbbgbb.", ".bbgbbbbbbgbb.", ".............."], p: {"b": "#9a5f2c", "B": "#6e3e1a", "g": "#ffd54a", "k": "#1a1a22", "W": "#ffffff", "c": "#ffe680"} },
+  daily: { m: ["....mmmmmm....", ".bbbmmmmmmbbb.", ".bbbmmmmmmbbb.", ".bwwwwwwwwwwb.", ".bwwwwwwwwwwb.", ".bwwllllllwcc.", ".bwwwwwwwwccb.", ".bwwlllllccwb.", ".bwwwccwccwwb.", ".bwwllccclwwb.", ".bwwwwwcwwwwb.", ".bwwllllwwwwb.", ".bwwwwwwwwwwb.", ".bbbbbbbbbbbb."], p: {"b": "#a8643a", "w": "#f4f6fb", "m": "#8d97b6", "l": "#b9c1d6", "c": "#3fc77a"} },
+  info: { m: [".....rrrr.....", ".....rrrr.....", "......mm......", ".bbbbbbbbbbbb.", ".bbbbbbbbbbbb.", ".bbbbbbbbbbbb.", ".wwwwwwwwwwww.", ".wlhhlwlllllw.", ".wlsslwwwwwww.", ".wlsslwllllww.", ".wjjjjwwwwwww.", ".wjjjjwlllllw.", ".wwwwwwwwwwww.", ".wwwwwwwwwwww."], p: {"r": "#3b7bd6", "m": "#c9d2e6", "w": "#f4f6fb", "b": "#3b7bd6", "s": "#f2c9a0", "h": "#2a2a35", "l": "#9aa6c2", "j": "#3b4566"} },
+  retire: { m: ["..............", "..............", "..............", "lwwwwwwwwwwwwl", "wllwwwwwwwwllw", "wwwlwwwwwwlwww", "wwwlwwwwwwlwww", "wwwwllrrllwwww", "wwwwwrRrrwwwww", "wwwwwrrrrwwwww", "wwwwwwrrwwwwww", "wwwwwwwwwwwwww", ".lllllllllllll", ".............."], p: {"w": "#f4f6fb", "l": "#b9c1d6", "r": "#e0403d", "R": "#ff8a7a", "k": "#1a1a22"} },
+  coin: { m: ["....GG....", "..GGGGGG..", ".GWWgggGG.", ".GWgggggG.", "GGgghhggGG", "GGgghhggGG", ".GggggggG.", ".GGggggGG.", "..GGGGGG..", "....GG...."], p: {"g": "#ffd54a", "G": "#d9a21c", "W": "#fff7c2", "h": "#6b4a0c"} },
+  manna: { m: [".g........", "....m...g.", "..m...m...", "..mmmmmm..", ".mmmmmmmm.", "bBBBBBBBBb", ".bbbbbbbb.", ".bbbbbbbb.", ".bbbbbbbb.", ".........."], p: {"b": "#b07a3a", "B": "#8a5a2b", "m": "#f8f4e2", "g": "#a8f0c6"} },
+  stamp: { m: ["..........", "...hhhh...", "...hHHh...", "....HH....", "....HH....", "....HH....", ".rrrrrrrr.", ".rRrrrrrr.", ".rrrrrrrr.", "rrrrrrrrrr"], p: {"h": "#a8643a", "H": "#7a4220", "r": "#e0403d", "R": "#ff8a7a"} },
+  ore: { m: ["..........", "...o......", "..oOo.....", "..oOoo....", ".ooooo.b..", ".ooooobbb.", ".ooooobbbb", "..oooobbb.", "..oooobbb.", "..ooo.bbb."], p: {"o": "#6fd3ff", "O": "#e6f6ff", "b": "#2b8fb8"} },
+  silver: { m: ["..........", "..SSSSSS..", "..SWWSSS..", ".SSSSSSSS.", "SSSSSSSSSS", ".ssssssss.", ".ssssssss.", ".ssssssss.", ".ssssssss.", ".........."], p: {"s": "#aab6cc", "S": "#eef3fb", "W": "#ffffff"} },
+  ame: { m: ["..........", "..AAAAAA..", ".AAAAAAAA.", "aaaaaaaaaa", ".aaaaaddd.", ".aaaaaddd.", "..aaaadd..", "...aaad...", "....ad....", ".........."], p: {"a": "#b07cff", "A": "#e2ccff", "d": "#7a4fd6"} },
+  dps: { m: ["........wW", ".......wWw", "......wWw.", ".....wWw..", "....wWw...", ".ggwWw....", "..hgw.....", ".hhhg.....", "hhh.g.....", "hh........"], p: {"W": "#f4f8ff", "w": "#a9b6d0", "g": "#ffd54a", "h": "#7c5cff"} },
+  haste: { m: [".......yy...", "......yy....", "......Yy....", ".....Yy.....", "....yyyyyy..", "...yyyyyy...", "..yyyyyy....", ".....yyy....", ".....yy.....", ".....y......", "....y.......", "............"], p: {"y": "#ffe14a", "Y": "#fff7c2", "o": "#ff9b3d"} },
+  gold2: { m: ["............", "....bbbb....", "....bbbb....", "....rrrr....", ".....bbb....", "...bbbbbbb..", "..bbbgGgbbb.", ".bbbggGggbbb", ".bbbggGggbbb", "..bbggGggbb.", "..bbbgGgbbb.", "...bbbbbbb.."], p: {"b": "#c9a26b", "B": "#9a7444", "r": "#e0403d", "g": "#ffd54a", "G": "#b8941c"} },
+  rage: { m: ["............", ".....rr.....", ".....rrr....", ".....rrrr...", "..r.rrorr...", ".rrrrrorrr..", ".rrrrooorrr.", ".rrrroooorr.", ".rroooyoorr.", "..rroyyyrr..", "...rryyyr...", "....rryr...."], p: {"r": "#ff4d3d", "o": "#ff9b3d", "y": "#ffe14a"} },
+  sound: { m: ["............", ".....m......", "....mm....w.", "...mmm.....w", "MMmmmm..w..w", "MMmmmm..w..w", "MMmmmm..w..w", "MMmmmm..w..w", "...mmm.....w", "....mm....w.", ".....m......", "............"], p: {"m": "#c9d2e6", "M": "#8d97b6", "w": "#6fd3ff"} },
+  mute: { m: ["............", ".....m......", "....mm......", "...mmm......", "MMmmmm..x..x", "MMmmmm...xx.", "MMmmmm...xx.", "MMmmmm..x..x", "...mmm......", "....mm......", ".....m......", "............"], p: {"m": "#8d97b6", "M": "#5a6482", "x": "#ff6b6b"} },
+  trophy: { m: ["..............", "gggggggggggggg", "g..gWWggggg..g", "g..gWgrrrgg..g", ".gggggrrrgggg.", "...gggggggg...", "....gggggg....", ".....gggg.....", "......GG......", "......GG......", "....gggggg....", "...bbbbbbbb...", "...bbggggbb...", "...bbbbbbbb..."], p: {"g": "#ffd54a", "G": "#c9962a", "W": "#fff7c2", "b": "#6e3e1a", "r": "#e0403d"} },
+  star: { m: ["..............", "..............", "......yy......", "......yy......", ".....yYyy.....", "yyyyyyYyyyyyyy", "..yyyYyyyyyy..", "...yyyyyyyy...", "....yyyyyy....", "....yyyyyy....", "....yyyyyy....", "...yyy..yyy...", "...y......y...", ".............."], p: {"y": "#ffe14a", "Y": "#fff7c2", "o": "#ffb53a"} },
+  lvup: { m: ["..............", "......gg......", ".....gWgg.....", "....gWgggg....", "...gggggggg...", "..gggggggggg..", ".gggggggggggg.", "....gggggg....", "....gggggg....", "....gggggg....", "....gggggg....", "....gggggg....", "....gggggg....", ".............."], p: {"g": "#7fe3a0", "G": "#3fb871", "W": "#e6fff0"} },
+  skull: { m: ["h........h", ".hwwwwwwh.", ".wwwwwwww.", ".wrrwwrrw.", ".wrrwwrrw.", ".wrrwwrrw.", ".wwwddwww.", "..wwwwww..", "..wwwwww..", "..wdwwdw.."], p: {"w": "#f4efe6", "r": "#ff4d4d", "h": "#ffd54a", "d": "#3a2a2a"} },
+  lock: { m: ["...mmmm...", "..m....m..", "..m....m..", "..m....m..", ".yyyyyyyy.", ".yyyyyyyy.", ".yyykkyyy.", ".yyykkyyy.", ".yyyyyyyy.", ".yyyyyyyy."], p: {"m": "#c9d2e6", "y": "#ffd54a", "k": "#1a1a22"} },
+  music: { m: ["............", "....m....nnn", "...mm....nnn", "..mmm....n.n", "MMmmm....n..", "MMmmm....n..", "MMmmm....n..", "MMmmm....n..", "..mmm...nn..", "...mm..nnn..", "....m..nnn..", "............"], p: {"m": "#c9d2e6", "M": "#8d97b6", "n": "#ffd54a"} }
+};
+const uiDpr = () => Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1)));
+function pixIcon(name, css = 28) {
+  const ic = UIICON[name], c = document.createElement("canvas");
+  c.className = "pix";
+  if (!ic) { c.width = c.height = 1; return c; }
+  const units = ic.m.length + 2, d = uiDpr(), u = Math.max(1, Math.round(css * d / units));
+  c.width = c.height = units * u;
+  if (c.style) c.style.width = c.style.height = (units * u / d) + "px";
+  const g = c.getContext && c.getContext("2d");
+  if (g) { g.imageSmoothingEnabled = false; drawSprite(g, ic.m, ic.p, u, u, u, { pretty: true }); }
+  return c;
+}
+/* 큰 그림(축하 팝업용): 아무 도트 지도나 정수 배로 키워 가운데에 */
+function bigSprite(map, pal, css = 72, flip = false) {
+  const h = map.length, w = Math.max(...map.map(r => r.length)), units = Math.max(w, h) + 2, d = uiDpr();
+  const u = Math.max(1, Math.floor(css * d / units)), size = units * u, c = document.createElement("canvas");
+  c.className = "pix"; c.width = c.height = size;
+  if (c.style) c.style.width = c.style.height = (size / d) + "px";
+  const g = c.getContext && c.getContext("2d");
+  if (g) { g.imageSmoothingEnabled = false; drawSprite(g, map, pal, u * (1 + Math.floor((units - 2 - w) / 2)), u * (1 + Math.floor((units - 2 - h) / 2)), u, { pretty: true, flip }); }
+  return c;
+}
+/* 글자 사이에 넣는 작은 아이콘: <i class="ri ri-coin"></i> (그림은 CSS 배경으로 한 번만 만들어 둠) */
+const RI_NAMES = ["coin", "manna", "stamp", "ore", "silver", "ame", "dps", "haste", "gold2", "rage", "skull", "lock", "trophy", "star", "lvup", "weapon", "bible", "mem", "study", "pet", "suit", "treasure", "daily", "info", "retire"];
+(function riStyles() {
+  try {
+    if (!document.head || !document.createElement("canvas").toDataURL) return;
+    const css = RI_NAMES.map(n => `.ri-${n},span.ri-${n},i.ri-${n}{background-image:url(${pixIcon(n, 16).toDataURL("image/png")})}`).join("");
+    const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+  } catch (e) {}
+})();
+const ri = (n, cls = "") => `<i class="ri ri-${n}${cls ? " " + cls : ""}" aria-hidden="true"></i>`;
+const CUR_ICON = { "만나": "manna", "광석": "ore", "도장": "stamp", "은괴": "silver", "자수정": "ame" };
+const RW_ICON = { manna: "manna", stamp: "stamp", ore: "ore", silver: "silver", ame: "ame", haste: "haste", gold2: "gold2", rage: "rage" };
+/* "만나 45" → 아이콘 45 */
+const curHTML = s => String(s).replace(/(만나|광석|도장|은괴|자수정)\s+([\d.,]+[A-Za-z]*)/g, (m, k, v) => `<span class="cur">${ri(CUR_ICON[k])}${v}</span>`);
+const rwHTML = rw => Object.entries(rw).map(([k, v]) => `<span class="rw" title="${RW_NAME[k]}">${ri(RW_ICON[k] || "star")}${v}</span>`).join("");
+/* 구매 버튼 속: 비용이면 위에 할 일(강화·구매), 아래에 아이콘+값. 아니면 글자 그대로 */
+function btnInner(b) {
+  const lab = String(b.label), m = /^(만나|광석|도장|은괴|자수정)\s+(.+)$/.exec(lab), won = /^([\d.,]+[A-Za-z]*)원$/.exec(lab);
+  if (m || won) {
+    const cost = m ? `${ri(CUR_ICON[m[1]])}${m[2]}` : `${ri("coin")}${won[1]}`;
+    return (b.sub ? `<small>${curHTML(b.sub)}</small>` : "") + `<span class="cost">${cost}</span>`;
+  }
+  return `<span class="act">${lab}</span>` + (b.sub ? `<small>${curHTML(b.sub)}</small>` : "");
+}
+const isMaxLabel = l => /^(최대|MAX|해금됨|완료|받음)/.test(String(l));
 
 /* ===================== 배경 ===================== */
 const cv = $("cv"), ctx = cv.getContext("2d");
@@ -1373,7 +1699,7 @@ function kill() {
   if (S.floor > S.bestFloor) {
     const prev = S.bestFloor; S.bestFloor = S.floor;
     PETS.forEach(p => { if (prev < p.floor && S.bestFloor >= p.floor) toast(`${p.n}을(를) 들일 수 있어요 (동료 탭)`); });
-    CHARS.forEach(c => { if (c.req && c.req.k === "floor" && prev < c.req.v && S.bestFloor >= c.req.v) toast(`새 캐릭터 ${c.n} 해금! (정보 탭)`); });
+    CHARS.forEach(c => { if (c.req && c.req.k === "floor" && prev < c.req.v && S.bestFloor >= c.req.v) { const lk = heroLookFor(c); celebrate({ icon: bigSprite(lk.map, lk.pal, 92), title: "새 캐릭터 해금!", sub: `${c.n} · 정보 탭에서 바꿀 수 있어요`, tone: "gold" }); } });
   }
 }
 function failBoss() { toast("시간 초과! 아래층에서 무기를 키우고 다시 도전하세요"); say("다음엔 꼭 칼퇴시키고 만다...", 3); S.floor = Math.max(1, S.floor - 1); S.k = 1; S.auto = false; spawn(); }
@@ -2072,7 +2398,7 @@ function triggerImpactFrame(x, y, force) {
 /* 색 도우미 */
 function hexRGB(h) { const m = /^#?([0-9a-f]{6})$/i.exec(h || ""); if (!m) return [128, 128, 128]; const n = parseInt(m[1], 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
 function rgbHex(r, g, b) { return "#" + [r, g, b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join(""); }
-function tone(h, f) { const [r, g, b] = hexRGB(h); return f >= 0 ? rgbHex(r + (255 - r) * f, g + (255 - g) * f, b + (255 - b) * f) : rgbHex(r * (1 + f), g * (1 + f), b * (1 + f)); }
+function shade(h, f) { const [r, g, b] = hexRGB(h); return f >= 0 ? rgbHex(r + (255 - r) * f, g + (255 - g) * f, b + (255 - b) * f) : rgbHex(r * (1 + f), g * (1 + f), b * (1 + f)); }
 function mixHex(a, b, t) { const A = hexRGB(a), B = hexRGB(b); return rgbHex(A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t, A[2] + (B[2] - A[2]) * t); }
 
 /* 보스 그림 (오른쪽을 보고 그림, 화면에선 뒤집혀 곽준영 쪽을 봄) */
@@ -2083,9 +2409,9 @@ function execPalOf(z) {
   execPalCache = execPalCache || new Map();
   if (execPalCache.has(z)) return execPalCache.get(z);
   const b = z.bossPal, p = {
-    k: "#120c14", j: b.j, J: tone(b.j, -0.35), q: tone(b.j, 0.22), w: b.w, W: tone(b.w, -0.25), t: b.t, T: tone(b.t, -0.3),
-    s: b.s, S: tone(b.s, -0.25), h: b.h, H: tone(b.h, 0.3), e: "#ff3b3b", E: "#fff2a8", m: "#2a0a0a", n: "#f4efe6",
-    o: "#e2d6c2", O: "#9a8c76", p: tone(b.j, 0.08), P: tone(b.j, -0.3), z: "#0d0d12", Z: "#5a5a6a", b: "#0d0d12", g: "#ffd54a", r: "#d8262c", R: "#8a1418",
+    k: "#120c14", j: b.j, J: shade(b.j, -0.35), q: shade(b.j, 0.22), w: b.w, W: shade(b.w, -0.25), t: b.t, T: shade(b.t, -0.3),
+    s: b.s, S: shade(b.s, -0.25), h: b.h, H: shade(b.h, 0.3), e: "#ff3b3b", E: "#fff2a8", m: "#2a0a0a", n: "#f4efe6",
+    o: "#e2d6c2", O: "#9a8c76", p: shade(b.j, 0.08), P: shade(b.j, -0.3), z: "#0d0d12", Z: "#5a5a6a", b: "#0d0d12", g: "#ffd54a", r: "#d8262c", R: "#8a1418",
   };
   execPalCache.set(z, p); return p;
 }
@@ -2093,8 +2419,8 @@ function dragonPalOf(i) {
   dragonPalCache = dragonPalCache || new Map();
   if (dragonPalCache.has(i)) return dragonPalCache.get(i);
   const src = DRAGON_PAL[i % DRAGON_PAL.length], [c0, c1, c2] = Array.isArray(src) ? src : [src.h, src.w || src.b, src.m], p = {
-    k: "#0c0a12", h: c0, D: tone(c0, -0.38), L: tone(c0, 0.25), w: mixHex(c0, c1, 0.3), W: tone(mixHex(c0, c1, 0.3), -0.3), B: tone(c0, -0.55),
-    b: c1, c: tone(c1, 0.3), x: c2, X: tone(c2, -0.35), e: c2, E: "#ffffff", m: "#2a0a0a", n: "#f4efe6",
+    k: "#0c0a12", h: c0, D: shade(c0, -0.38), L: shade(c0, 0.25), w: mixHex(c0, c1, 0.3), W: shade(mixHex(c0, c1, 0.3), -0.3), B: shade(c0, -0.55),
+    b: c1, c: shade(c1, 0.3), x: c2, X: shade(c2, -0.35), e: c2, E: "#ffffff", m: "#2a0a0a", n: "#f4efe6",
   };
   dragonPalCache.set(i, p); return p;
 }
@@ -2122,7 +2448,7 @@ function prettyPixels(map, pal) {
       let hex = pal[c];
       if (c !== "k" && /^#[0-9a-f]{6}$/i.test(hex)) {
         const below = at(x, y + 1), right = at(x + 1, y), above = at(x, y - 1), left = at(x - 1, y);
-        if (!below) hex = tone(hex, -0.3); else if (!right) hex = tone(hex, -0.16); else if (!above || !left) hex = tone(hex, 0.2);
+        if (!below) hex = shade(hex, -0.3); else if (!right) hex = shade(hex, -0.16); else if (!above || !left) hex = shade(hex, 0.2);
       }
       row.push(hex);
     }
@@ -2907,7 +3233,7 @@ function frame(now) {
   const dt = Math.min(100, now - last); last = now;
   const gdt = fxStep(dt); fx5Step(dt);
   if (hitStop > 0) { hitStop -= dt; shakeAmt = Math.max(0, shakeAmt - dt * 0.02); draw(now); requestAnimationFrame(frame); return; }
-  fxPhys(gdt); fx4Phys(gdt); petPhys(gdt); step(gdt); draw(now); requestAnimationFrame(frame);
+  fxPhys(gdt); fx4Phys(gdt); petPhys(gdt); step(gdt); draw(now); mineTick(now); requestAnimationFrame(frame);
 }
 function step(dt) {
   const sec = dt / 1000;
@@ -2974,10 +3300,17 @@ function step(dt) {
 
 /* ===================== 상단 전투 정보 ===================== */
 const pipsEl = $("pips");
-for (let i = 0; i < 5; i++) { const s = document.createElement("span"); if (i === 4) s.className = "bs"; pipsEl.appendChild(s); }
+for (let i = 0; i < 5; i++) { const s = document.createElement("span"); if (i === 4) { s.className = "bs ri-skull"; s.title = "작은 보스"; } pipsEl.appendChild(s); }
+let trailMon = null, trailPct = 100;
 function renderTop(full) {
   if (!mon) return;
-  $("hpBar").style.width = Math.max(0, mon.hp / mon.max) * 100 + "%";
+  const hpPct = Math.max(0, mon.hp / mon.max) * 100; $("hpBar").style.width = hpPct + "%";
+  const tr = $("hpTrail");   // 깎인 체력이 잠깐 노랗게 남았다가 따라 내려옴
+  if (tr) {
+    if (mon !== trailMon || hpPct > trailPct + 0.01) { tr.style.transition = "none"; tr.style.width = hpPct + "%"; void tr.offsetWidth; tr.style.transition = ""; trailMon = mon; }
+    else if (hpPct < trailPct) tr.style.width = hpPct + "%";
+    trailPct = hpPct;
+  }
   $("monHp").textContent = `${fmt(Math.max(0, mon.hp))} / ${fmt(mon.max)}`;
   const timed = mode === "vault" || TIME_LIMIT[mon.kind] > 0;
   if (timed) {
@@ -2992,7 +3325,7 @@ function renderTop(full) {
   n.className = "mon-name" + (mode === "vault" ? " vault" : mon.kind >= 2 ? " boss" : mon.kind === 1 ? " small" : "");
   $("progLabel").textContent = mode === "vault" ? "문서고 마감까지" : mon.kind === 3 ? "큰 보스 · 회장실" : mon.kind === 2 ? "큰 보스 · 임원실" : mon.kind === 1 ? "작은 보스 · 월급 지급" : (S.auto ? `작은 보스까지 ${5 - S.k}마리` : "아래층에서 훈련 중");
   pipsEl.hidden = timed; $("timerWrap").hidden = !timed; $("timerLabel").hidden = !timed;
-  [...pipsEl.children].forEach((p, i) => p.classList.toggle("on", i < S.k - 1));
+  [...pipsEl.children].forEach((p, i) => { p.classList.toggle("on", i < S.k - 1); p.classList.toggle("now", i === S.k - 1); });
   $("retry").hidden = S.auto || mode === "vault";
   $("floorChip").textContent = S.floor;
 }
@@ -3000,20 +3333,36 @@ function renderTop(full) {
 /* ===================== 버프 바 ===================== */
 const BUFFS = [["haste", "쾌속", "공속 2배"], ["gold2", "더블월급", "월급 2배"], ["rage", "분노", "피해 3배"]];
 const buffBtns = {};
+const bfParts = (b, icon, name) => {
+  const ic = document.createElement("span"); ic.className = "bf-ic"; if (icon) ic.appendChild(icon);
+  const cnt = document.createElement("em"); cnt.className = "bf-n num"; ic.appendChild(cnt);
+  const tx = document.createElement("span"); tx.className = "bf-t"; tx.innerHTML = `${name}<small></small>`;
+  const bar = document.createElement("i"); bar.className = "bf-bar"; bar.appendChild(document.createElement("i"));
+  b.append(ic, tx, bar); b.className = "bf";
+};
 BUFFS.forEach(([id, n, d]) => {
-  const b = document.createElement("button"); b.innerHTML = `${n}<small></small>`;
+  const b = document.createElement("button"); bfParts(b, pixIcon(id, 22), n);
   b.addEventListener("click", () => { if (S.buffs[id] <= 0 || S.active[id] > 0) return; S.buffs[id]--; S.active[id] = 60; toast(`${n} 사용! 1분 동안 ${d}`); updateUI(); save(); });
   $("buffbar").appendChild(b); buffBtns[id] = b;
 });
-const soundBtn = document.createElement("button"); soundBtn.id = "soundBtn";
-soundBtn.addEventListener("click", () => { if (S.sound && S.music !== false) S.music = false; else if (S.sound) S.sound = false; else { S.sound = true; S.music = true; } if (S.sound) audioReady(); bgmUpdate(); renderBuffs(); save(); });
+const soundBtn = document.createElement("button"); soundBtn.id = "soundBtn"; bfParts(soundBtn, null, "소리");
+soundBtn.addEventListener("click", () => { if (S.sound && S.music !== false) S.music = false; else if (S.sound) S.sound = false; else { S.sound = true; S.music = true; } if (S.sound) audioReady(); bgmUpdate(); renderBuffs(); save(); toast(!S.sound ? "소리 꺼짐" : S.music === false ? "효과음만 켜짐" : "음악과 효과음 켜짐"); });
+soundBtn.setAttribute("aria-label", "소리 설정");
 $("buffbar").appendChild(soundBtn);
 function renderBuffs() {
-  soundBtn.innerHTML = `소리<small>${!S.sound ? "꺼짐" : S.music === false ? "효과음만" : "음악+효과음"}</small>`; soundBtn.classList.toggle("on", !!S.sound);
+  const sm = !S.sound ? "mute" : S.music === false ? "sound" : "music";
+  if (soundBtn.dataset.st !== sm) {
+    soundBtn.dataset.st = sm; const ic = soundBtn.querySelector(".bf-ic"), old = ic.querySelector("canvas"); if (old && old.remove) old.remove();
+    const cv2 = pixIcon(sm, 22); if (ic.insertBefore && ic.firstChild) ic.insertBefore(cv2, ic.firstChild); else ic.appendChild(cv2);
+    soundBtn.querySelector("small").textContent = sm === "mute" ? "꺼짐" : sm === "sound" ? "효과음만" : "음악+효과음";
+  }
+  soundBtn.classList.toggle("on", !!S.sound);
   BUFFS.forEach(([id, n, d]) => {
     const b = buffBtns[id], on = S.active[id] > 0;
     b.classList.toggle("on", on); b.disabled = !on && S.buffs[id] <= 0;
-    b.querySelector("small").textContent = on ? `${Math.ceil(S.active[id])}초 남음` : `${d} · ${S.buffs[id]}개`;
+    const sm2 = on ? `${Math.ceil(S.active[id])}초 남음` : d, smEl = b.querySelector("small"); if (smEl.textContent !== sm2) smEl.textContent = sm2;
+    const nEl = b.querySelector(".bf-n"), nv = S.buffs[id] > 0 ? String(S.buffs[id]) : ""; if (nEl.textContent !== nv) nEl.textContent = nv;
+    b.querySelector(".bf-bar i").style.width = on ? Math.min(100, S.active[id] / 60 * 100) + "%" : "0%";
   });
 }
 
@@ -3055,7 +3404,7 @@ function toggleChapter(b, c) {
   B.today.push(entry); B.total++; S.day.chap++;
   if (roundCount() >= TOTAL_CH) {
     B.rounds++; B.read = {}; S.stamp += 100; S.manna += 500;
-    toast(`성경 통독 ${B.rounds}독 완료! 도장 100, 만나 500`);
+    celebrate({ ic: "bible", title: `성경 ${B.rounds}독 완료!`, sub: `<span class="rws">${rwHTML({ stamp: 100, manna: 500 })}</span>`, tone: "manna", ms: 3200 });
   }
 }
 function readTimerToggle() {
@@ -3151,7 +3500,7 @@ function doRetire(promo) {
   Object.assign(S, { gold: 0, floor: 1, k: 1, maxFloor: 1, auto: true, wi: 0, wl: 1, coffee: 0, promo: !!promo });
   if (own("shoes", 0)) S.sneakerUntil = Date.now() + 3 * 60000;
   floats = []; spawnWait = 0; lift = null; intro = null; spawn(); updateUI(true); save();
-  toast(promo ? `영전 퇴사! 도장 ${gain}개, 다음 퇴사까지 월급과 피해 4배` : `사표 수리. 도장 ${gain}개 챙겨서 새 회사 1층부터!`);
+  celebrate({ ic: "retire", title: promo ? "영전 퇴사!" : "사표 수리!", sub: (promo ? `다음 퇴사까지 월급과 피해 4배<br>` : `${S.retires + 1}번째 회사 1층부터 다시<br>`) + `<span class="rws">${rwHTML({ stamp: gain })}</span>`, tone: "stamp", ms: 2800 });
 }
 
 /* ===================== 암송 (20일 200구절, 간격 반복) ===================== */
@@ -3328,21 +3677,112 @@ function memAct(act, j) {
   }
 }
 
+/* ===================== 메뉴 꾸밈: 축하 팝업, 강화 반짝임, 탭 머리띠, 입력 중 메뉴바 숨김 ===================== */
+let celebQ = [], celebOn = false, celebT = 0;
+/* 큰 일(새 무기, +5, 동료 합류, 새 정장, 업적...)에 뜨는 축하 카드. 몰리면 마지막 몇 개만 차례로 */
+function celebrate(o) {
+  if (!$("celeb")) { if (o && o.title) toast(`${o.title} ${o.sub || ""}`); return; }
+  celebQ.push(o); if (celebQ.length > 3) celebQ.splice(0, celebQ.length - 3);
+  if (!celebOn) celebNext();
+}
+function celebNext() {
+  clearTimeout(celebT);
+  const box = $("celeb"), o = celebQ.shift();
+  if (!o) { celebOn = false; box.hidden = true; box.classList.remove("go"); return; }
+  celebOn = true; box.hidden = false;
+  box.setAttribute("data-c", o.tone || "gold");
+  const ic = $("celebIc"); ic.innerHTML = "";
+  const icon = o.icon || pixIcon(o.ic || "star", 76); ic.appendChild(icon);
+  $("celebT").textContent = o.title || ""; $("celebS").innerHTML = o.sub || "";
+  box.classList.remove("go"); void box.offsetWidth; box.classList.add("go");
+  celebFx(o.tone || "gold");
+  if (o.sound) sfx(o.sound);
+  celebT = setTimeout(celebNext, o.ms || 2100);
+}
+const CELEB_COL = { gold: ["#ffd54a", "#fff3b0", "#ff9b3d", "#ffffff"], manna: ["#a8f0c6", "#ffffff", "#ffd54a", "#6fd3ff"], ore: ["#6fd3ff", "#e6f6ff", "#c9a6ff", "#ffffff"], rare: ["#c9a6ff", "#ff6bd6", "#ffd54a", "#ffffff"], stamp: ["#ff7a6b", "#ffd54a", "#ffffff", "#ff9b3d"] };
+function celebFx(tone) {
+  const fx = $("celebFx"); if (!fx) return; fx.innerHTML = "";
+  if (reduceMotion || !fx.appendChild) return;
+  const cols = CELEB_COL[tone] || CELEB_COL.gold;
+  for (let i = 0; i < 34; i++) {
+    const p = document.createElement("i"); p.style.background = cols[i % cols.length];
+    if (i % 3 === 0) { p.style.width = "6px"; p.style.height = "6px"; p.style.borderRadius = "50%"; }
+    fx.appendChild(p);
+    if (!p.animate) continue;
+    const a = -Math.PI / 2 + (Math.random() - 0.5) * 2.6, v = 120 + Math.random() * 170, dx = Math.cos(a) * v, dy = Math.sin(a) * v;
+    p.animate([
+      { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+      { transform: `translate(${dx}px,${dy}px) rotate(${(Math.random() - .5) * 360}deg)`, opacity: 1, offset: 0.35 },
+      { opacity: 1, offset: 0.75 },
+      { transform: `translate(${dx * 1.35}px,${dy + 260 + Math.random() * 160}px) rotate(${(Math.random() - .5) * 900}deg)`, opacity: 0 },
+    ], { duration: 1500 + Math.random() * 700, delay: Math.random() * 120, easing: "cubic-bezier(.2,.7,.4,1)", fill: "forwards" });
+  }
+}
+(() => { const b = $("celeb"); if (b) b.addEventListener("click", () => celebNext()); })();
+/* 강화·구매한 줄: 테두리 번쩍 + 글자가 떠오름 */
+function rowPop(row, text, color) {
+  if (!row || !row.classList) return;
+  row.classList.remove("pop"); void row.offsetWidth; row.classList.add("pop");
+  const f = document.createElement("span"); f.className = "upfx"; f.textContent = text || "UP!"; if (color) f.style.color = color;
+  row.appendChild(f); setTimeout(() => { if (f.remove) f.remove(); }, 950);
+}
+/* 탭 머리띠: 지금 탭 이름·설명·쓰는 재화 (위에 붙어 다님) */
+const TAB_META = {
+  weapon: ["월급으로 무기·커피 강화", () => `<span>${ri("coin")}${fmt(S.gold)}</span>`],
+  bible: ["말씀 읽고 만나·도장 받기", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
+  mem: ["200구절 암송, 반복할수록 큰 보상", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
+  study: ["공부한 시간만큼 광산을 파요", () => `<span>${ri("ore")}${fmtR(S.ore)}</span>`],
+  pet: ["만나로 동료를 들이고 키워요", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
+  suit: ["광석으로 정장·부적 사기", () => `<span>${ri("ore")}${fmtR(S.ore)}</span>` + (S.silver ? `<span>${ri("silver")}${fmtR(S.silver)}</span>` : "")],
+  treasure: ["결재도장으로 보물 강화", () => `<span>${ri("stamp")}${fmtR(S.stamp)}</span>`],
+  daily: ["일일 업무·지하 문서고·업적", () => ""],
+  info: ["내 기록·캐릭터·도감·백업", () => ""],
+  retire: ["사표 내고 더 강해져서 다시", () => `<span>${ri("stamp")}${fmtR(S.stamp)}</span>`],
+};
+let thTab = "", thCur = "";
+function renderTabHead() {
+  const th = $("tabHead"); if (!th) return;
+  if (thTab !== curTab) {
+    thTab = curTab; thCur = null;
+    th.setAttribute("data-tab", curTab);
+    const ic = $("thIc"); ic.innerHTML = ""; ic.appendChild(pixIcon(curTab, 30));
+    $("thName").textContent = (TABS.find(t => t[0] === curTab) || ["", ""])[1];
+    $("thSub").textContent = (TAB_META[curTab] || [""])[0];
+  }
+  const m = TAB_META[curTab], cur = m ? m[1]() : "";
+  if (cur !== thCur) { thCur = cur; $("thCur").innerHTML = cur; }
+}
+/* 글자를 입력하는 동안에는 아래 메뉴바를 숨김 (아이폰 키보드에 겹치지 않게) */
+(() => {
+  const isField = t => !!(t && t.tagName && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+  document.addEventListener("focusin", e => { if (isField(e.target) && document.body) document.body.classList.add("typing"); });
+  document.addEventListener("focusout", () => setTimeout(() => { if (document.body && !isField(document.activeElement)) document.body.classList.remove("typing"); }, 60));
+})();
+
 /* ===================== 탭 ===================== */
 const TABS = [["weapon", "무기"], ["bible", "말씀"], ["mem", "암송"], ["study", "공부"], ["pet", "동료"], ["suit", "정장"], ["treasure", "보물"], ["daily", "업무"], ["info", "정보"], ["retire", "퇴사"]];
 let curTab = "weapon";
 const panels = {}, tabBtns = {}, updaters = {};
 TABS.forEach(([id, label]) => {
-  const b = document.createElement("button"); b.setAttribute("role", "tab"); b.innerHTML = label + '<span class="dot" hidden></span>';
-  b.addEventListener("click", () => selectTab(id)); $("tabs").appendChild(b); tabBtns[id] = b;
+  const b = document.createElement("button"); b.setAttribute("role", "tab"); b.setAttribute("aria-label", label);
+  b.appendChild(pixIcon(id, 30)); const tl = document.createElement("span"); tl.className = "tl"; tl.textContent = label; b.appendChild(tl);
+  const dot = document.createElement("span"); dot.className = "dot"; dot.hidden = true; b.appendChild(dot);
+  b.addEventListener("click", () => selectTab(id, true)); $("tabs").appendChild(b); tabBtns[id] = b;
   const p = document.createElement("div"); p.className = "panel"; p.setAttribute("role", "tabpanel"); p.hidden = true;
   $("panels").appendChild(p); panels[id] = p; updaters[id] = [];
 });
-function selectTab(id) {
+function selectTab(id, user) {
   curTab = id;
   TABS.forEach(([t]) => { tabBtns[t].setAttribute("aria-selected", t === id); panels[t].hidden = t !== id; });
   try { localStorage.setItem(SAVE_KEY + "-tab", id); } catch (e) {}
   updateUI(true);
+  // 아래쪽을 보고 있었다면 새 탭의 맨 위가 보이게 (탭 머리띠 바로 아래로)
+  if (user && typeof window !== "undefined" && window.scrollTo && typeof getComputedStyle === "function") {
+    try {
+      const pr = $("panels").getBoundingClientRect(), th = $("tabHead"), hh = th.getBoundingClientRect().height, top0 = parseFloat(getComputedStyle(th).top) || 0;
+      if (pr.top < hh + top0) window.scrollTo(0, window.scrollY + pr.top - hh - top0 - 4);
+    } catch (e) {}
+  }
 }
 function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
 function secTitle(tab, text, sub) { const h = el("h3", "sec-title", text + (sub ? ` <small>${sub}</small>` : "")); panels[tab].appendChild(h); return h; }
@@ -3350,21 +3790,34 @@ function secTitle(tab, text, sub) { const h = el("h3", "sec-title", text + (sub 
 function addRow(tab, cfg, parent) {
   const row = el("div", "up");
   const ic = el("div", "icon"); ic.appendChild(typeof cfg.icon === "string" ? document.createTextNode(cfg.icon) : cfg.icon);
+  const lvb = el("span", "lvb num"); lvb.hidden = true; ic.appendChild(lvb);
   const info = el("div", "up-info", `<div class="up-name"><span class="nm"></span><span class="lv num"></span></div><div class="up-desc num"></div>`);
   let barEl = null;
   if (cfg.bar) { const b = el("div", "qbar", "<i></i>"); info.appendChild(b); barEl = b.firstChild; }
-  const btn = el("button", "buy num"); btn.addEventListener("click", () => { cfg.click(); updateUI(true); save(); });
+  const btn = el("button", "buy num"); if (btn.style) btn.style.animationDelay = (Math.random() * 2.4).toFixed(2) + "s";
+  btn.addEventListener("click", () => {
+    const before = (cfg.lv ? cfg.lv() : "") + "|" + cfg.name();
+    cfg.click();
+    const lvNow = cfg.lv ? cfg.lv().trim() : "";
+    if ((lvNow + "|" + cfg.name()) !== before.replace(/^\s+/, "")) {
+      const t = /^(Lv\.|\+)/.test(lvNow) ? lvNow + "!" : /개$/.test(lvNow) ? "+1" : /보유|해금/.test(lvNow) ? "GET!" : "";
+      if (t) rowPop(row, t);
+    }
+    updateUI(true); save();
+  });
   row.append(ic, info, btn); (parent || panels[tab]).appendChild(row);
   const nm = info.querySelector(".nm"), lvEl = info.querySelector(".lv"), desc = info.querySelector(".up-desc");
   let lastD = "";
   const r = {
     ready: () => !!(cfg.btn().ok && !cfg.noDot),
     update(force) {
-      nm.textContent = cfg.name(); lvEl.textContent = cfg.lv ? cfg.lv() : "";
+      nm.textContent = cfg.name();
+      const lvt = cfg.lv ? cfg.lv() : "", short = /^\s*(Lv\.\s?\d+|\+\d+|\d+개)\s*$/.test(lvt);
+      lvEl.textContent = short ? "" : lvt; lvb.hidden = !short; if (short && lvb.textContent !== lvt.trim()) lvb.textContent = lvt.trim();
       const d = cfg.desc(); if (force || d !== lastD) { desc.innerHTML = d; lastD = d; }
       const b = cfg.btn();
-      btn.className = "buy num" + (b.cls ? " " + b.cls : ""); btn.disabled = !b.ok;
-      btn.innerHTML = b.label + (b.sub ? `<small>${b.sub}</small>` : "");
+      btn.className = "buy num" + (b.cls ? " " + b.cls : "") + (!b.ok && isMaxLabel(b.label) ? " max" : ""); btn.disabled = !b.ok;
+      const bh = btnInner(b); if (btn._h !== bh) { btn._h = bh; btn.innerHTML = bh; }
       row.classList.toggle("locked", !!(cfg.locked && cfg.locked()));
       row.classList.toggle("owned-leg", !!(cfg.legOwned && cfg.legOwned()));
       if (barEl) barEl.style.width = Math.max(0, Math.min(1, cfg.bar())) * 100 + "%";
@@ -3401,20 +3854,24 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
     if (S.wl < 5 || i === LAST_W) {
       const c = wUp(i, S.wl);
       b.className = "buy num"; b.disabled = S.gold < c;
-      b.innerHTML = `${fmt(c)}원<small>${S.wl < 5 ? `강화 +${S.wl} → +${S.wl + 1} (공격력 +${Math.round(0.25 / (1 + 0.25 * (S.wl - 1)) * 100)}%)` : "초월 강화 (공격력 +12%)"}</small>`;
+      const wh = btnInner({ label: `${fmt(c)}원`, sub: S.wl < 5 ? `강화 +${S.wl} → +${S.wl + 1} · 공격력 +${Math.round(0.25 / (1 + 0.25 * (S.wl - 1)) * 100)}%` : "초월 강화 · 공격력 +12%" }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
       $("wNote").textContent = S.wl < 5 ? "5강까지 올리면 다음 무기를 살 수 있어요. 3강부터 반짝이고 5강이면 빛이 나요." : "마지막 무기는 끝없이 초월할 수 있어요.";
     } else {
       const n = i + 1, nw = WEAPONS[n], c = wBuy(n);
       const locked = nw.leg && !S.legUnlock[n - LEG_START];
       b.className = "buy num" + (nw.leg ? " rare" : ""); b.disabled = locked || S.gold < c;
-      b.innerHTML = locked ? `잠김: ${nw.n}<small>아래 전설 무기 해금에서 광물로 풀어 주세요</small>` : `${fmt(c)}원<small>다음 무기 구매: ${nw.n} (공격력 x${(wPower(n, 1) / wPower(i, 5)).toFixed(1)})</small>`;
+      const wh = locked ? `<span class="act">잠김: ${nw.n}</span><small>아래 전설 무기 해금에서 광물로 풀어 주세요</small>` : btnInner({ label: `${fmt(c)}원`, sub: `새 무기 ${nw.n} · 공격력 x${(wPower(n, 1) / wPower(i, 5)).toFixed(1)}` }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
       $("wNote").textContent = nw.leg ? "전설 무기는 공부로 캔 은괴와 자수정으로 먼저 해금해야 해요." : "새 무기를 사면 모양이 바뀌어요.";
     }
   });
   $("wBtn").addEventListener("click", () => {
     const i = S.wi;
-    if (S.wl < 5 || i === LAST_W) { const c = wUp(i, S.wl); if (S.gold < c) return; S.gold -= c; S.wl++; if (S.wl === 5) toast(`${WEAPONS[i].n} +5 완성! 빛이 나기 시작해요`); }
-    else { const n = i + 1, nw = WEAPONS[n], c = wBuy(n); if (nw.leg && !S.legUnlock[n - LEG_START]) return; if (S.gold < c) return; S.gold -= c; S.wi = n; S.wl = 1; if (S.skin >= 0) S.skin = -1; toast(`새 무기 ${nw.n} 장착!`); }
+    if (S.wl < 5 || i === LAST_W) {
+      const c = wUp(i, S.wl); if (S.gold < c) return; S.gold -= c; S.wl++;
+      if (S.wl === 5) celebrate({ icon: weaponBig(i, 5), title: "+5 완성!", sub: `${WEAPONS[i].n} · 빛이 나기 시작해요`, tone: WEAPONS[i].leg ? "rare" : "gold" });
+      else rowPop(card, `+${S.wl}!`, "#ffd54a");
+    }
+    else { const n = i + 1, nw = WEAPONS[n], c = wBuy(n); if (nw.leg && !S.legUnlock[n - LEG_START]) return; if (S.gold < c) return; S.gold -= c; S.wi = n; S.wl = 1; if (S.skin >= 0) S.skin = -1; celebrate({ icon: weaponBig(n, 1), title: nw.leg ? "전설 무기 장착!" : "새 무기 장착!", sub: `${n + 1}번째 무기 · ${nw.n}`, tone: nw.leg ? "rare" : "gold" }); }
     updateUI(true); save();
   });
   $("wAll").addEventListener("click", () => {
@@ -3425,7 +3882,9 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
       else { const nx = i + 1, c = wBuy(nx); if ((WEAPONS[nx].leg && !S.legUnlock[nx - LEG_START]) || S.gold < c) break; S.gold -= c; S.wi = nx; S.wl = 1; S.skin = -1; }
       n++;
     }
-    if (n) toast(S.wi !== startI ? `${WEAPONS[startI].n} +${startL} → ${WEAPONS[S.wi].n} +${S.wl}` : `${WEAPONS[S.wi].n} +${startL} → +${S.wl}`);
+    if (n && S.wi !== startI) celebrate({ icon: weaponBig(S.wi, S.wl), title: WEAPONS[S.wi].leg ? "전설 무기 장착!" : "새 무기 장착!", sub: `${WEAPONS[startI].n} +${startL} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: WEAPONS[S.wi].leg ? "rare" : "gold" });
+    else if (n && S.wl === 5 && startL < 5) celebrate({ icon: weaponBig(S.wi, 5), title: "+5 완성!", sub: `${WEAPONS[S.wi].n} +${startL} → +5`, tone: "gold" });
+    else if (n) { toast(`${WEAPONS[S.wi].n} +${startL} → +${S.wl}`); rowPop(card, `+${S.wl}!`, "#ffd54a"); }
     updateUI(true); save();
   });
   addRow("weapon", {
@@ -3438,9 +3897,9 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
   const wlist = el("div", "panel");
   const wrows = WEAPONS.map((w, i) => {
     const row = el("div", "up wrow");
-    const ic = el("div", "icon");
+    const ic = el("div", "icon"), lvb = el("span", "lvb num"); lvb.hidden = true;
     const info = el("div", "up-info", `<div class="up-name"><span class="nm"></span><span class="lv num"></span></div><div class="up-desc num"></div>`);
-    const btn = el("button", "buy num");
+    const btn = el("button", "buy num"); if (btn.style) btn.style.animationDelay = (Math.random() * 2.4).toFixed(2) + "s";
     btn.addEventListener("click", () => {
       if (i < S.wi || (i === S.wi && i !== LAST_W && S.wl >= 5 && S.skin >= 0)) { S.skin = (i === S.wi) ? -1 : i; toast(`${w.n} 모양으로 바꿨어요 (성능은 그대로)`); }
       else if (i === S.wi) $("wBtn").click();
@@ -3448,7 +3907,7 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
       updateUI(true); save();
     });
     row.append(ic, info, btn); wlist.appendChild(row);
-    return { row, ic, nm: info.querySelector(".nm"), lv: info.querySelector(".lv"), desc: info.querySelector(".up-desc"), btn, key: "" };
+    return { row, ic, lvb, nm: info.querySelector(".nm"), lv: info.querySelector(".lv"), desc: info.querySelector(".up-desc"), btn, key: "" };
   });
   addCustom("weapon", wlist, () => {
     WEAPONS.forEach((w, i) => {
@@ -3458,20 +3917,21 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
       const cost = i === S.wi ? ((S.wl < 5 || i === LAST_W) ? wUp(i, S.wl) : 0) : nextOk ? wBuy(i) : 0;
       const key = [lv, skinIdx() === i, nextOk, lockedLeg, cost && S.gold >= cost, i <= S.wi + 1].join();
       if (key === r.key) return; r.key = key;
-      r.ic.innerHTML = ""; r.ic.appendChild(i <= S.wi + 1 && !lockedLeg ? weaponIcon(i, Math.max(1, lv)) : iconCanvas(g => { g.fillStyle = "#3a4466"; g.fillRect(12, 18, 16, 14); g.strokeStyle = "#3a4466"; g.lineWidth = 3; g.beginPath(); g.arc(20, 18, 6, Math.PI, 0); g.stroke(); }));
+      r.ic.innerHTML = ""; r.ic.appendChild(i <= S.wi + 1 && !lockedLeg ? weaponIcon(i, Math.max(1, lv)) : pixIcon("lock", 22)); r.ic.appendChild(r.lvb);
+      r.lvb.hidden = lv <= 0; r.lvb.textContent = lv >= 5 && i !== LAST_W ? "MAX" : `+${lv}`; r.lvb.classList.toggle("mx", lv >= 5 && i !== LAST_W);
       r.nm.textContent = `${i + 1}. ${w.n}`; r.nm.style.color = w.leg ? "var(--rare)" : "";
-      r.lv.textContent = ` LV.${lv}/5` + (i === LAST_W && lv > 5 ? ` (+${lv - 5})` : "");
+      r.lv.textContent = i === LAST_W && lv > 5 ? ` 초월 +${lv - 5}` : "";
       r.desc.textContent = `ATK ${fmt(wPower(i, Math.max(1, lv)))}` + (lockedLeg ? ` · 은괴 ${legReq(i - LEG_START).silver}, 자수정 ${legReq(i - LEG_START).ame}로 해금` : "");
       r.row.classList.toggle("locked", i > S.wi + 1 || lockedLeg);
       r.row.style.borderColor = i === S.wi ? "var(--gold)" : skinIdx() === i ? "var(--ore)" : "";
       const b = r.btn;
-      if (i < S.wi) { b.className = "buy ghost num"; b.disabled = skinIdx() === i; b.innerHTML = skinIdx() === i ? "착용 중<small>모양</small>" : "모양 바꾸기"; }
+      if (i < S.wi) { b.className = "buy ghost num"; b.disabled = skinIdx() === i; b.innerHTML = skinIdx() === i ? `<span class="act">착용 중</span><small>모양</small>` : `<span class="act">모양 바꾸기</span>`; }
       else if (i === S.wi) {
-        if (S.wl < 5 || i === LAST_W) { b.className = "buy num"; b.disabled = S.gold < cost; b.innerHTML = `${fmt(cost)}원<small>${S.wl < 5 ? "강화" : "초월"}</small>`; }
-        else { b.className = "buy ghost num"; b.disabled = skinIdx() === i; b.innerHTML = skinIdx() === i ? "착용 중<small>완성</small>" : "모양 바꾸기"; }
+        if (S.wl < 5 || i === LAST_W) { b.className = "buy num"; b.disabled = S.gold < cost; b.innerHTML = btnInner({ label: `${fmt(cost)}원`, sub: S.wl < 5 ? "강화" : "초월" }); }
+        else { b.className = "buy ghost num"; b.disabled = skinIdx() === i; b.innerHTML = skinIdx() === i ? `<span class="act">착용 중</span><small>완성</small>` : `<span class="act">모양 바꾸기</span>`; }
       }
-      else if (nextOk && !lockedLeg) { b.className = "buy num" + (w.leg ? " rare" : ""); b.disabled = S.gold < cost; b.innerHTML = `${fmt(cost)}원<small>구매</small>`; }
-      else { b.className = "buy ghost num"; b.disabled = true; b.innerHTML = lockedLeg ? "잠김<small>광물 해금</small>" : "잠김"; }
+      else if (nextOk && !lockedLeg) { b.className = "buy num" + (w.leg ? " rare" : ""); b.disabled = S.gold < cost; b.innerHTML = btnInner({ label: `${fmt(cost)}원`, sub: "구매" }); }
+      else { b.className = "buy ghost num"; b.disabled = true; b.innerHTML = lockedLeg ? `<span class="act">잠김</span><small>광물 해금</small>` : `<span class="act">잠김</span>`; }
     });
   });
   secTitle("weapon", "전설 무기 해금", "공부(광산)에서 캔 은괴·자수정 사용");
@@ -3482,7 +3942,7 @@ function addCustom(tab, node, update) { panels[tab].appendChild(node); updaters[
       locked: () => !S.legUnlock[k],
       desc: () => S.legUnlock[k] ? (S.wi >= i ? "보유 중" : "골드로 살 수 있어요 (앞 무기를 5강하면)") : `은괴 ${req.silver} · 자수정 ${req.ame} 필요`,
       btn: () => S.legUnlock[k] ? { label: "해금됨", ok: false, cls: "rare" } : { label: `은괴 ${req.silver}`, sub: `자수정 ${req.ame}`, ok: S.silver >= req.silver && S.ame >= req.ame && (k === 0 || S.legUnlock[k - 1]), cls: "rare" },
-      click: () => { if (S.legUnlock[k] || S.silver < req.silver || S.ame < req.ame || (k > 0 && !S.legUnlock[k - 1])) return; S.silver -= req.silver; S.ame -= req.ame; S.legUnlock[k] = true; toast(`${w.n} 해금!`); },
+      click: () => { if (S.legUnlock[k] || S.silver < req.silver || S.ame < req.ame || (k > 0 && !S.legUnlock[k - 1])) return; S.silver -= req.silver; S.ame -= req.ame; S.legUnlock[k] = true; celebrate({ icon: weaponBig(i, 5), title: "전설 무기 해금!", sub: `${w.n} · 이제 월급으로 살 수 있어요`, tone: "rare" }); },
     });
   });
 })();
@@ -3721,9 +4181,9 @@ function updateReaderState() {
   $("stStop").addEventListener("click", () => { studyStop(); updateUI(true); save(); });
 
   const mine = el("div", "card");
-  mine.innerHTML = `<div class="mine-row"><canvas id="mineCv" width="120" height="90"></canvas><div>
-    <div class="sec-title" style="margin:0">오늘의 갱도 <small id="mDepth"></small></div>
-    <div class="muted num" id="mNext"></div><div class="prog ore"><i id="mBar"></i></div><div class="muted num" id="mMult"></div></div></div>
+  mine.innerHTML = `<canvas id="mineCv" class="mine-cv" width="320" height="150" aria-label="오늘의 갱도 그림"></canvas>
+    <div class="mine-info"><div class="sec-title" style="margin:0">오늘의 갱도 <small id="mDepth"></small></div>
+    <div class="muted num" id="mNext"></div><div class="prog ore"><i id="mBar"></i></div><div class="muted num" id="mMult"></div></div>
     <div class="stat-grid"><div class="stat"><span>오늘 공부</span><b class="num" id="mToday"></b></div><div class="stat"><span>공부 연속</span><b class="num" id="mStreak"></b></div><div class="stat"><span>누적</span><b class="num" id="mTotal"></b></div></div>
     <p class="muted">한 층 내려갈 때마다 광석 10, 7층마다 은괴, 21층마다 자수정. 깊이 갈수록 느려져서 매일 조금씩이 가장 많이 캐요 (첫 25분에 하루치 절반). 하루 ${STUDY_CAP}분까지, 25분 이상 공부한 날이 이어지면 연속 보너스.</p>
     <div class="log" id="mLog"></div>`;
@@ -3740,7 +4200,6 @@ function updateReaderState() {
     $("mTotal").textContent = `${(St.total / 60).toFixed(1)}시간`;
     const k = St.log.map(l => l.s + Math.floor(l.m)).join(",");
     if (k !== mKey) { mKey = k; $("mLog").innerHTML = St.log.length ? St.log.map(l => `<div><span>${escapeHtml(l.s)}</span><span class="num">${Math.floor(l.m)}분</span></div>`).join("") : ""; }
-    drawMine(St.depth, St.running);
   });
   addRow("study", {
     icon: weaponIcon(1, 5), name: () => "형광펜 곡괭이", lv: () => ` Lv.${S.pick}`,
@@ -3750,16 +4209,153 @@ function updateReaderState() {
   });
 })();
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
-function drawMine(depth, running) {
-  const c = $("mineCv"); if (!c) return; const g = c.getContext("2d"); g.imageSmoothingEnabled = false;
-  g.fillStyle = "#120e0a"; g.fillRect(0, 0, 120, 90);
-  const off = (depth * 6) % 18;
-  for (let y = -18; y < 90; y += 18) for (let x = 0; x < 120; x += 20) { g.fillStyle = (x / 20 + y / 18) % 2 ? "#2a1f16" : "#231a12"; g.fillRect(x, y + off, 20, 18); }
-  for (let i = 0; i < 6; i++) { const r = rng(depth * 13 + i)(); g.fillStyle = i % 3 === 0 ? "#c9a6ff" : "#6fd3ff"; g.fillRect(Math.floor(r * 110), (Math.floor(r * 997) % 80 + off) % 90, 4, 4); }
-  const sw = running ? Math.sin(performance.now() / 120) * 0.6 : 0.3;
-  drawSprite(g, heroMap("neat"), heroPal(PAL.hero), 32, 34, 1.9, { pretty: true });
-  g.save(); g.translate(32 + 15.5 * 1.9, 34 + 16 * 1.9); g.rotate(0.3 + sw); drawSprite(g, WSPR.pen, WEAPONS[1].p, -4 * 2.2, -15.5 * 2.2, 2.2, { pretty: true }); g.restore();
-  g.fillStyle = "#ffd54a"; g.font = '14px "Do Hyeon", sans-serif'; g.textAlign = "left"; g.fillText(`B${depth}`, 6, 16);
+/* ===================== 공부 탭 광산: 수정 동굴 (7층마다 동굴 색이 바뀜: 청록 → 은빛 얼음 → 자수정 → 용암) =====================
+   멈춰 있는 배경은 한 번만 그려 두고, 매 프레임에는 수정 빛, 떠다니는 빛가루, 곽준영의 곡괭이질, 튀는 광석만 그린다. */
+const MINE_W = 320, MINE_H = 150, MINE_GY = 120;
+const MINE_THEMES = [
+  { n: "청록 수정 동굴", sky: ["#061019", "#0f2c40", "#2b7088"], rock: "#0a1823", rock2: "#15303f", rock3: "#24506a", cry: ["#6fd3ff", "#d6f6ff", "#2a86b0"], glow: "111,211,255", floor: "#0d1d29", floor2: "#173446", water: "#1a4c66" },
+  { n: "은빛 얼음 동굴", sky: ["#0a101c", "#25344f", "#7f97bd"], rock: "#121a29", rock2: "#243049", rock3: "#3c4d6e", cry: ["#e3e9f5", "#ffffff", "#8d9bc0"], glow: "225,236,255", floor: "#161e2f", floor2: "#2a3753", water: "#3a4f73" },
+  { n: "자수정 동굴", sky: ["#0f0819", "#331d55", "#8550bf"], rock: "#140b22", rock2: "#2a1844", rock3: "#46296e", cry: ["#c9a6ff", "#f3e8ff", "#7446d0"], glow: "205,166,255", floor: "#1a102c", floor2: "#2f1c4d", water: "#3f2a6b" },
+  { n: "용암 수정 동굴", sky: ["#150806", "#4c1a10", "#d8662f"], rock: "#170a08", rock2: "#341710", rock3: "#5a2a18", cry: ["#ffb36b", "#fff0c4", "#d9452c"], glow: "255,160,80", floor: "#1e0d0a", floor2: "#3a1a10", water: "#7a2e12" },
+];
+var mineBgCache, mineParts = [], mineLast = 0, mineHitT = 0, mineHitCyc = -1, mineCrys = null;
+const mineTheme = depth => MINE_THEMES[Math.floor(depth / 7) % MINE_THEMES.length];
+/* 픽셀 계단 모양 종유석(위에서 아래로) / 석순(아래에서 위로) */
+function mineSpike(g, cx, y0, w, h, col, up, hi) {
+  const rows = Math.max(1, Math.round(h / 3));
+  for (let i = 0; i < rows; i++) {
+    const t = i / rows, ww = Math.max(1, Math.round(w * (1 - t) * (0.85 + 0.15 * Math.cos(t * 9)))), y = up ? y0 - (i + 1) * 3 : y0 + i * 3;
+    g.fillStyle = col; g.fillRect(Math.round(cx - ww / 2), y, ww, 3);
+    if (hi && ww > 2) { g.fillStyle = hi; g.fillRect(Math.round(cx - ww / 2), y, 1, 3); }
+  }
+}
+/* 수정 한 조각: 줄마다 사각형으로 채워 테두리가 또렷한 도트 느낌 */
+function mineShard(g, x, yb, w, h, lean, cols) {
+  for (let y = 0; y < h; y++) {
+    const t = y / h, hw = Math.max(0.5, (w / 2) * (t < 0.72 ? 1 : 1 - (t - 0.72) / 0.28)), cx = x + lean * t;
+    const l = Math.round(cx - hw), r = Math.round(cx + hw), m = Math.round(cx);
+    g.fillStyle = cols[1]; g.fillRect(l, yb - y, Math.max(1, m - l), 1);
+    g.fillStyle = cols[0]; g.fillRect(m, yb - y, Math.max(1, r - m), 1);
+    g.fillStyle = cols[2]; g.fillRect(r - 1, yb - y, 1, 1);
+  }
+}
+function mineCluster(g, x, yb, s, cols, R) {
+  const n = 3 + Math.floor(R() * 3);
+  for (let i = 0; i < n; i++) {
+    const k = i - (n - 1) / 2, h = Math.round(s * (0.55 + R() * 0.5) * (1 - Math.abs(k) * 0.18));
+    mineShard(g, x + k * s * 0.32, yb, Math.max(3, Math.round(s * 0.26)), h, k * s * 0.22, cols);
+  }
+}
+function mineBg(ti, band) {
+  mineBgCache = mineBgCache || new Map();
+  const key = ti + "|" + band; if (mineBgCache.has(key)) return mineBgCache.get(key);
+  const c = document.createElement("canvas"); c.width = MINE_W; c.height = MINE_H;
+  const g = c.getContext && c.getContext("2d"); if (!g || !g.fillRect) { mineBgCache.set(key, null); return null; }
+  const th = MINE_THEMES[ti], R = rng(9001 + band * 131 + ti * 7);
+  // 하늘(동굴 안쪽 빛)
+  const gr = g.createLinearGradient(0, 0, 0, MINE_H); gr.addColorStop(0, th.sky[0]); gr.addColorStop(0.55, th.sky[1]); gr.addColorStop(1, th.sky[2]);
+  g.fillStyle = gr; g.fillRect(0, 0, MINE_W, MINE_H);
+  const rg = g.createRadialGradient(214, 92, 6, 214, 92, 150); rg.addColorStop(0, `rgba(${th.glow},.45)`); rg.addColorStop(1, `rgba(${th.glow},0)`);
+  g.fillStyle = rg; g.fillRect(0, 0, MINE_W, MINE_H);
+  // 먼 기둥과 석순 (흐릿하게)
+  g.globalAlpha = 0.55;
+  for (let i = 0; i < 9; i++) mineSpike(g, 10 + i * 38 + R() * 20, MINE_GY - 2, 14 + R() * 18, 30 + R() * 50, th.rock3, true);
+  for (let i = 0; i < 12; i++) mineSpike(g, R() * MINE_W, 0, 10 + R() * 16, 20 + R() * 40, th.rock3, false);
+  g.globalAlpha = 1;
+  // 빛줄기
+  g.fillStyle = "rgba(255,255,255,.05)";
+  [[150, 34], [205, 22], [250, 30]].forEach(([x, w]) => { g.beginPath(); g.moveTo(x, 0); g.lineTo(x + w, 0); g.lineTo(x + w + 46, MINE_GY); g.lineTo(x + 30, MINE_GY); g.closePath(); g.fill(); });
+  // 먼 수정 무리
+  g.globalAlpha = 0.6;
+  for (let i = 0; i < 4; i++) mineCluster(g, 120 + i * 52 + R() * 20, MINE_GY - 4, 12 + R() * 8, th.cry, R);
+  g.globalAlpha = 1;
+  // 가까운 종유석
+  for (let i = 0; i < 14; i++) mineSpike(g, R() * MINE_W, 0, 8 + R() * 22, 12 + R() * 34, R() < 0.5 ? th.rock : th.rock2, false, th.rock3);
+  // 바닥
+  g.fillStyle = th.floor; g.fillRect(0, MINE_GY, MINE_W, MINE_H - MINE_GY);
+  for (let x = 0; x < MINE_W; x += 4) { const hgt = Math.round(R() * 3); g.fillStyle = th.floor2; g.fillRect(x, MINE_GY - hgt, 4, hgt + 2); }
+  for (let i = 0; i < 26; i++) { g.fillStyle = R() < 0.5 ? th.floor2 : th.rock; g.fillRect(Math.round(R() * MINE_W), MINE_GY + 4 + Math.round(R() * 24), 2 + Math.round(R() * 4), 2); }
+  // 오른쪽 물웅덩이와 비친 빛
+  g.fillStyle = th.water; g.fillRect(236, 128, 84, 12); g.fillRect(244, 126, 70, 2); g.fillRect(248, 140, 64, 3);
+  g.fillStyle = `rgba(${th.glow},.35)`; for (let i = 0; i < 6; i++) g.fillRect(244 + Math.round(R() * 60), 129 + Math.round(R() * 10), 6 + Math.round(R() * 10), 1);
+  // 레일
+  g.fillStyle = "#2a1d14"; for (let x = 2; x < 150; x += 9) g.fillRect(x, MINE_GY + 3, 5, 3);
+  g.fillStyle = "#8d97b6"; g.fillRect(0, MINE_GY + 2, 150, 1); g.fillStyle = "#5a6482"; g.fillRect(0, MINE_GY + 5, 150, 1);
+  // 캐는 광맥 바위
+  for (let y = 0; y < 44; y++) {
+    const t = y / 44, hw = Math.round(30 * Math.sqrt(Math.max(0, 1 - Math.pow((t - 0.62) / 0.62, 2))));
+    if (hw <= 0) continue; g.fillStyle = y < 3 ? th.rock3 : th.rock2; g.fillRect(232 - hw, MINE_GY - 44 + y, hw * 2, 1);
+    g.fillStyle = th.rock; g.fillRect(232 + hw - 4, MINE_GY - 44 + y, 4, 1);
+    g.fillStyle = th.rock3; g.fillRect(232 - hw, MINE_GY - 44 + y, 2, 1);
+  }
+  const R2 = rng(77 + ti); mineCrys = [];
+  for (let i = 0; i < 9; i++) { const x = 212 + Math.round(R2() * 36), y = MINE_GY - 36 + Math.round(R2() * 30); g.fillStyle = th.cry[i % 2 ? 0 : 2]; g.fillRect(x, y, 3, 3); g.fillStyle = th.cry[1]; g.fillRect(x, y, 1, 1); mineCrys.push([x + 1, y + 1]); }
+  // 앞쪽 큰 수정 무리 (왼쪽 벽, 오른쪽 앞)
+  mineCluster(g, 18, MINE_GY + 2, 30, th.cry, R); mineCluster(g, 300, MINE_GY + 8, 34, th.cry, R); mineCluster(g, 112, MINE_GY + 4, 16, th.cry, R);
+  // 가장자리 어둡게
+  const vg = g.createRadialGradient(MINE_W / 2, MINE_H * 0.55, MINE_H * 0.35, MINE_W / 2, MINE_H * 0.55, MINE_W * 0.66);
+  vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.55)"); g.fillStyle = vg; g.fillRect(0, 0, MINE_W, MINE_H);
+  mineBgCache.set(key, c); return c;
+}
+function drawMine(depth, running, now) {
+  const c = $("mineCv"); if (!c || !c.getContext) return; const g = c.getContext("2d"); if (!g) return;
+  now = now || performance.now(); g.imageSmoothingEnabled = false;
+  const ti = Math.floor(depth / 7) % MINE_THEMES.length, th = MINE_THEMES[ti], bg = mineBg(ti, Math.floor(depth / 7));
+  if (bg) g.drawImage(bg, 0, 0); else { g.fillStyle = th.sky[1]; g.fillRect(0, 0, MINE_W, MINE_H); }
+  const t = now / 1000;
+  // 수정 빛 숨쉬기
+  g.save(); g.globalCompositeOperation = "lighter";
+  [[18, 98, 34], [300, 102, 38], [112, 108, 18], [232, 92, 30]].forEach(([x, y, r], i) => {
+    const a = 0.18 + 0.1 * Math.sin(t * 1.7 + i * 1.9), rg = g.createRadialGradient(x, y, 1, x, y, r);
+    rg.addColorStop(0, `rgba(${th.glow},${a})`); rg.addColorStop(1, `rgba(${th.glow},0)`); g.fillStyle = rg; g.fillRect(x - r, y - r, r * 2, r * 2);
+  });
+  // 떠다니는 빛가루
+  for (let i = 0; i < 16; i++) {
+    const px = (i * 61 + t * (6 + (i % 5) * 2)) % MINE_W, py = MINE_GY - 10 - ((i * 37 + t * (5 + i % 4)) % 90), tw = 0.5 + 0.5 * Math.sin(t * 3 + i);
+    g.fillStyle = `rgba(${th.glow},${0.35 + 0.45 * tw})`; g.fillRect(Math.round(px), Math.round(py), i % 3 ? 1 : 2, i % 3 ? 1 : 2);
+  }
+  g.restore();
+  // 광석 수레 (오늘 캔 만큼 쌓임)
+  const fill = Math.min(1, (S.study.today || 0) / 120), cx = 34, cy = MINE_GY - 4;
+  g.fillStyle = "#140f1c"; g.fillRect(cx - 21, cy - 19, 42, 18);
+  g.fillStyle = "#6e3e1a"; g.fillRect(cx - 20, cy - 18, 40, 16); g.fillStyle = "#9a5f2c"; g.fillRect(cx - 20, cy - 18, 40, 3); g.fillStyle = "#4a2810"; g.fillRect(cx - 20, cy - 5, 40, 3);
+  g.fillStyle = "#8d97b6"; g.fillRect(cx - 14, cy - 18, 2, 16); g.fillRect(cx + 12, cy - 18, 2, 16);
+  if (fill > 0) { const hh = Math.round(3 + fill * 9); for (let x = -18; x < 18; x += 3) { const hgt = Math.round(hh * (1 - Math.abs(x) / 26)); g.fillStyle = (x / 3) % 2 ? th.cry[0] : th.cry[2]; g.fillRect(cx + x, cy - 18 - hgt, 3, hgt); g.fillStyle = th.cry[1]; g.fillRect(cx + x, cy - 18 - hgt, 1, 1); } }
+  g.fillStyle = "#140f1c"; [cx - 12, cx + 12].forEach(x => { g.fillRect(x - 4, cy - 3, 8, 7); }); g.fillStyle = "#5a6482"; [cx - 12, cx + 12].forEach(x => { g.fillRect(x - 3, cy - 2, 6, 5); g.fillStyle = "#c9d2e6"; g.fillRect(x - 1, cy, 2, 1); g.fillStyle = "#5a6482"; });
+  // 곽준영 + 형광펜 곡괭이
+  const look = heroLook(), hs = 2, hx = 162, bob = running ? 0 : Math.round(Math.sin(t * 2) * 1), hy = MINE_GY - 24 * hs + 1 + bob;
+  let ang = 0.5, hit = false;
+  if (running) {
+    const cyc = Math.floor(now / 640), p = (now % 640) / 640;
+    ang = p < 0.72 ? 0.3 - 1.7 * (p / 0.72) : -1.4 + 2.5 * ((p - 0.72) / 0.28);
+    if (p >= 0.9 && mineHitCyc !== cyc) { mineHitCyc = cyc; hit = true; }
+  } else ang = 0.45 + Math.sin(t * 2) * 0.04;
+  if (look.aura) { const ag = g.createRadialGradient(hx + 18, hy + 26, 2, hx + 18, hy + 26, 40); ag.addColorStop(0, hexA(look.aura, .4)); ag.addColorStop(1, hexA(look.aura, 0)); g.fillStyle = ag; g.fillRect(hx - 24, hy - 16, 84, 84); }
+  g.fillStyle = "rgba(0,0,0,.35)"; g.fillRect(hx + 6, MINE_GY + 1, 26, 3);
+  drawSprite(g, look.map, look.pal, hx, hy, hs, { pretty: true });
+  g.save(); g.translate(hx + 15.5 * hs, hy + 16 * hs); g.rotate(ang); drawSprite(g, WSPR.pen, WEAPONS[1].p, -4 * 2.2, -15.5 * 2.2, 2.2, { pretty: true }); g.restore();
+  // 바위를 때리는 순간: 광석 조각이 튐
+  if (hit) {
+    mineHitT = now; if (mineParts.length > 60) mineParts.splice(0, 20);
+    for (let i = 0; i < 9; i++) mineParts.push({ x: 212, y: MINE_GY - 36 + Math.random() * 6, vx: 0.4 + Math.random() * 1.6, vy: -1.6 - Math.random() * 1.8, life: 1, col: th.cry[Math.floor(Math.random() * 3)], s: Math.random() < 0.3 ? 3 : 2 });
+  }
+  if (now - mineHitT < 90) { g.fillStyle = "rgba(255,255,255,.55)"; g.fillRect(207, MINE_GY - 38, 9, 9); g.fillStyle = "rgba(255,255,255,.95)"; g.fillRect(209, MINE_GY - 36, 5, 5); }
+  mineParts = mineParts.filter(p => p.life > 0);
+  mineParts.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += 0.16; p.life -= 0.03; if (p.y > MINE_GY) { p.y = MINE_GY; p.vy *= -0.4; p.vx *= 0.6; } g.globalAlpha = Math.max(0, Math.min(1, p.life * 1.5)); g.fillStyle = p.col; g.fillRect(Math.round(p.x), Math.round(p.y), p.s, p.s); });
+  g.globalAlpha = 1;
+  // 광맥 반짝임
+  if (mineCrys) mineCrys.forEach(([x, y], i) => { const a = Math.max(0, Math.sin(t * 2.4 + i * 1.3)); if (a > 0.85) { g.fillStyle = "#ffffff"; g.fillRect(x - 1, y, 3, 1); g.fillRect(x, y - 1, 1, 3); } });
+  // 깊이 표시판
+  g.font = '13px "Do Hyeon", sans-serif'; g.textBaseline = "middle"; g.textAlign = "left";
+  const label = `B${depth} · ${th.n}`, lw = Math.ceil(g.measureText(label).width) + 14;
+  g.fillStyle = "rgba(8,10,18,.72)"; g.fillRect(6, 6, lw, 19); g.fillStyle = `rgba(${th.glow},.9)`; g.fillRect(6, 6, 2, 19);
+  g.fillStyle = "#ffd54a"; g.fillText(label, 13, 16);
+  if (!running) { g.textAlign = "right"; g.fillStyle = "rgba(233,237,246,.75)"; g.font = '12px "Gowun Dodum", sans-serif'; g.fillText("공부를 시작하면 캐기 시작해요", MINE_W - 8, 16); }
+}
+function mineTick(now) {
+  if (curTab !== "study" || document.hidden) return;
+  if (now - mineLast < 33) return; mineLast = now;
+  drawMine(S.study.depth, S.study.running, now);
 }
 
 /* ---------- 동료 탭 ---------- */
@@ -3774,7 +4370,7 @@ function drawMine(depth, running) {
       const lv = petLv(p.id), c = lv ? petUp(p, lv) : p.price;
       return { label: `만나 ${c}`, sub: lv ? "강화" : "들이기", ok: S.manna >= c, cls: "manna" };
     },
-    click: () => { if (S.bestFloor < p.floor) return; const lv = petLv(p.id), c = lv ? petUp(p, lv) : p.price; if (S.manna < c) return; S.manna -= c; S.pets[p.id] = lv + 1; if (!lv) toast(`${p.n} 합류!`); },
+    click: () => { if (S.bestFloor < p.floor) return; const lv = petLv(p.id), c = lv ? petUp(p, lv) : p.price; if (S.manna < c) return; S.manna -= c; S.pets[p.id] = lv + 1; if (!lv) celebrate({ icon: petBig(p.id), title: "동료 합류!", sub: `${p.n} · ${p.desc(1)}`, tone: "manna" }); },
   }));
 })();
 
@@ -3826,7 +4422,9 @@ function drawMine(depth, running) {
       },
       noDot: true,
       click: () => {
-        if (!own(sl.id, i)) { if (S.ore < it.price) return; S.ore -= it.price; S.cos[sl.id] = S.cos[sl.id] || [0, 0, 0]; S.cos[sl.id][i] = 1; S.look[sl.id] = i; toast(`${it.n} 구매! 바로 입었어요`); return; }
+        if (!own(sl.id, i)) { if (S.ore < it.price) return; S.ore -= it.price; S.cos[sl.id] = S.cos[sl.id] || [0, 0, 0]; S.cos[sl.id][i] = 1; S.look[sl.id] = i;
+          const pal = Object.assign({}, PAL.hero); let hair = "neat"; Object.keys(it.look).forEach(k => { if (k === "hair") hair = it.look.hair; else if (k !== "aura") pal[k] = it.look[k]; });
+          celebrate({ icon: bigSprite(heroMap(hair), heroPal(pal), 92), title: it.leg ? "전설 정장!" : "새 정장!", sub: `${it.n} · 바로 입었어요`, tone: it.leg ? "rare" : "ore" }); return; }
         if (it.leg && legLv(sl.id) < LEG_MAX) { const c = legUpCost(legLv(sl.id)); if (S.ore < c.ore || S.silver < c.silver) return; S.ore -= c.ore; S.silver -= c.silver; S.cos[sl.id][2]++; return; }
         S.look[sl.id] = i;
       },
@@ -3871,18 +4469,30 @@ function drawRoom() {
 function heroLookIdx(slot) { let idx = S.look[slot]; if (idx == null || idx < 0 || !own(slot, idx)) { idx = -1; for (let i = 2; i >= 0; i--) if (own(slot, i)) return i; } return idx; }
 
 /* ---------- 보물 탭 ---------- */
+/* 보물 아이콘: 금빛 메달 + 보물 이름 첫 글자 (보물마다 테두리 색이 다름) */
+function treIcon(t) {
+  const hue = [...t.id].reduce((a, ch) => a + ch.charCodeAt(0), 0) * 47 % 360;
+  return iconCanvas(g => {
+    g.fillStyle = "#140f1c"; g.beginPath(); g.arc(20, 20, 17, 0, 7); g.fill();
+    g.fillStyle = `hsl(${hue},70%,55%)`; g.beginPath(); g.arc(20, 20, 15, 0, 7); g.fill();
+    g.fillStyle = "#ffd54a"; g.beginPath(); g.arc(20, 20, 12, 0, 7); g.fill();
+    g.fillStyle = "#fff3b0"; g.fillRect(12, 12, 4, 3);
+    g.fillStyle = "#d9a21c"; g.beginPath(); g.arc(20, 21, 10, 0.2, Math.PI - 0.2); g.lineWidth = 2; g.strokeStyle = "#d9a21c"; g.stroke();
+    g.fillStyle = "#3a2a06"; g.font = '17px "Do Hyeon", sans-serif'; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t.n[0], 20, 21);
+  });
+}
 (() => {
   addCustom("treasure", el("div", "card", `<p class="muted">보물은 결재도장으로 올려요. 도장은 퇴사, 말씀 읽기, 100층 보스, 지하 문서고에서 나와요. 50레벨마다 진 → 벼려진 → 초월 → 궁극으로 차수가 오르며 효과는 커지지만 값이 훨씬 비싸져요.</p>`), () => {});
   TREASURES.forEach(t => addRow("treasure", {
-    icon: iconCanvas(g => { g.fillStyle = "#ffd54a"; g.beginPath(); g.arc(20, 20, 13, 0, 7); g.fill(); g.fillStyle = "#2a2206"; g.font = '16px "Do Hyeon", sans-serif'; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t.n[0], 20, 21); }),
+    icon: treIcon(t),
     name: () => treName(t, S.tre[t.id]), lv: () => ` Lv.${S.tre[t.id]}`,
     desc: () => {
       const lv = S.tre[t.id];
       if (t.max && lv >= t.max) return `${t.unit} +${t.sec ? treEff(t, lv) + "초" : Math.round(treEff(t, lv) * 100) + "%"} (최대)`;
       return t.sec ? `${t.unit} +${treEff(t, lv)}초 → <b>+${treEff(t, lv + 1)}초</b> (임원·회장 보스)` : `${t.unit} +${Math.round(treEff(t, lv) * 100)}% → <b>+${Math.round(treEff(t, lv + 1) * 100)}%</b>`;
     },
-    btn: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return { label: "최대", ok: false, cls: "stamp" }; const c = treCost(t, lv); return { label: `도장 ${fmtR(c)}`, ok: S.stamp >= c, cls: "stamp" }; },
-    click: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return; const c = treCost(t, lv); if (S.stamp < c) return; S.stamp -= c; S.tre[t.id]++; if ((lv + 1) % 50 === 0) toast(`${treName(t, lv + 1)}으로 차수가 올랐어요!`); },
+    btn: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return { label: "최대", ok: false, cls: "stamp" }; const c = treCost(t, lv); return { label: `도장 ${fmtR(c)}`, sub: lv ? "강화" : "얻기", ok: S.stamp >= c, cls: "stamp" }; },
+    click: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return; const c = treCost(t, lv); if (S.stamp < c) return; S.stamp -= c; S.tre[t.id]++; if ((lv + 1) % 50 === 0) celebrate({ ic: "treasure", title: "보물 차수 상승!", sub: `${treName(t, lv + 1)} · 효과가 크게 올라요`, tone: "stamp" }); },
   }));
 })();
 
@@ -3890,14 +4500,15 @@ function heroLookIdx(slot) { let idx = S.look[slot]; if (idx == null || idx < 0 
 (() => {
   secTitle("daily", "일일 업무", "매일 자정에 새로 시작");
   DAILY.forEach(d => {
-    const row = el("div", "task"); row.innerHTML = `<div><div class="t-name">${d.n}</div><div class="t-sub num"></div></div><button class="buy num"></button>`;
-    const sub = row.querySelector(".t-sub"), btn = row.querySelector("button");
-    btn.addEventListener("click", () => { if (S.day.claimed[d.id] || (S.day[d.stat] || 0) < d.goal) return; S.day.claimed[d.id] = 1; grant(d.rw); toast(`${d.n} 완료 · ${rwText(d.rw)}`); updateUI(true); save(); });
+    const row = el("div", "task"); row.innerHTML = `<div><div class="t-name">${d.n}</div><div class="t-sub num"></div><div class="qbar"><i></i></div></div><button class="buy num"></button>`;
+    const sub = row.querySelector(".t-sub"), btn = row.querySelector("button"), qb = row.querySelector(".qbar i");
+    btn.addEventListener("click", () => { if (S.day.claimed[d.id] || (S.day[d.stat] || 0) < d.goal) return; S.day.claimed[d.id] = 1; grant(d.rw); toast(`${d.n} 완료 · ${rwText(d.rw)}`); rowPop(row, "완료!", "#a8f0c6"); updateUI(true); save(); });
     updaters.daily.push({
       ready: () => !S.day.claimed[d.id] && (S.day[d.stat] || 0) >= d.goal,
       update() {
         const v = Math.min(d.goal, Math.floor(S.day[d.stat] || 0)), done = !!S.day.claimed[d.id];
-        sub.textContent = `${v} / ${d.goal} · 보상 ${rwText(d.rw)}`;
+        const sh = `<span>${v} / ${d.goal}</span><span class="rws">${rwHTML(d.rw)}</span>`; if (sub._h !== sh) { sub._h = sh; sub.innerHTML = sh; }
+        qb.style.width = (done ? 100 : v / d.goal * 100) + "%";
         row.classList.toggle("done", done); btn.disabled = done || v < d.goal; btn.textContent = done ? "받음" : v >= d.goal ? "받기" : "진행 중";
       },
     });
@@ -3905,7 +4516,7 @@ function heroLookIdx(slot) { let idx = S.look[slot]; if (idx == null || idx < 0 
   });
   const allRow = el("div", "task"); allRow.innerHTML = `<div><div class="t-name">오늘 업무 모두 완료</div><div class="t-sub">보상 쾌속·더블월급·분노 각 1, 만나 20</div></div><button class="buy num manna"></button>`;
   const allBtn = allRow.querySelector("button");
-  allBtn.addEventListener("click", () => { if (S.day.claimed.all || !DAILY.every(d => S.day.claimed[d.id])) return; S.day.claimed.all = 1; grant({ haste: 1, gold2: 1, rage: 1, manna: 20 }); toast("오늘 업무 끝! 버프 3종과 만나 20"); updateUI(true); save(); });
+  allBtn.addEventListener("click", () => { if (S.day.claimed.all || !DAILY.every(d => S.day.claimed[d.id])) return; S.day.claimed.all = 1; grant({ haste: 1, gold2: 1, rage: 1, manna: 20 }); celebrate({ ic: "daily", title: "오늘 업무 끝!", sub: `<span class="rws">${rwHTML({ haste: 1, gold2: 1, rage: 1, manna: 20 })}</span>`, tone: "manna", sound: "pass" }); updateUI(true); save(); });
   updaters.daily.push({ ready: () => !S.day.claimed.all && DAILY.every(d => S.day.claimed[d.id]), update() { const ok = DAILY.every(d => S.day.claimed[d.id]); allBtn.disabled = !ok || !!S.day.claimed.all; allBtn.textContent = S.day.claimed.all ? "받음" : ok ? "받기" : "남음"; allRow.classList.toggle("done", !!S.day.claimed.all); } });
   panels.daily.appendChild(allRow);
 
@@ -3919,16 +4530,17 @@ function heroLookIdx(slot) { let idx = S.look[slot]; if (idx == null || idx < 0 
 
   secTitle("daily", "업적", "한 번 달성하면 영구");
   ACH.forEach(a => {
-    const row = el("div", "task"); row.innerHTML = `<div><div class="t-name"></div><div class="t-sub num"></div></div><button class="buy num stamp"></button>`;
-    const nm = row.querySelector(".t-name"), sub = row.querySelector(".t-sub"), btn = row.querySelector("button");
+    const row = el("div", "task"); row.innerHTML = `<div><div class="t-name"></div><div class="t-sub num"></div><div class="qbar"><i></i></div></div><button class="buy num stamp"></button>`;
+    const nm = row.querySelector(".t-name"), sub = row.querySelector(".t-sub"), btn = row.querySelector("button"), qb = row.querySelector(".qbar i");
     const val = () => a.id === "floor" ? S.bestFloor : a.id === "chap" ? S.bible.total : a.id === "study" ? S.study.total / 60 : a.id === "rstreak" ? S.bible.best : a.id === "sstreak" ? S.study.best : a.id === "memm" ? memMastered() : S.retires;
-    btn.addEventListener("click", () => { const i = S.ach[a.id] || 0; if (i >= a.tiers.length || val() < a.tiers[i]) return; S.ach[a.id] = i + 1; grant(a.rw(i)); toast(`업적 달성: ${a.n} ${a.tiers[i]}${a.unit} · ${rwText(a.rw(i))}`); updateUI(true); save(); });
+    btn.addEventListener("click", () => { const i = S.ach[a.id] || 0; if (i >= a.tiers.length || val() < a.tiers[i]) return; S.ach[a.id] = i + 1; grant(a.rw(i)); celebrate({ ic: "trophy", title: "업적 달성!", sub: `${a.n} ${a.tiers[i]}${a.unit}<br><span class="rws">${rwHTML(a.rw(i))}</span>`, tone: "gold", sound: "pass" }); updateUI(true); save(); });
     updaters.daily.push({
       ready: () => { const i = S.ach[a.id] || 0; return i < a.tiers.length && val() >= a.tiers[i]; },
       update() {
         const i = S.ach[a.id] || 0, done = i >= a.tiers.length, v = val();
         nm.textContent = `${a.n} ${done ? "(모두 달성)" : a.tiers[i] + a.unit}`;
-        sub.textContent = done ? "" : `${a.unit === "시간" ? v.toFixed(1) : Math.floor(v)} / ${a.tiers[i]}${a.unit} · 보상 ${rwText(a.rw(i))}`;
+        const sh = done ? "" : `<span>${a.unit === "시간" ? v.toFixed(1) : Math.floor(v)} / ${a.tiers[i]}${a.unit}</span><span class="rws">${rwHTML(a.rw(i))}</span>`; if (sub._h !== sh) { sub._h = sh; sub.innerHTML = sh; }
+        qb.style.width = (done ? 100 : Math.min(1, v / a.tiers[i]) * 100) + "%";
         btn.disabled = done || v < a.tiers[i]; btn.textContent = done ? "완료" : v >= a.tiers[i] ? "받기" : `${i}/${a.tiers.length}`;
         row.classList.toggle("done", done);
       },
@@ -3958,7 +4570,7 @@ function heroLookIdx(slot) { let idx = S.look[slot]; if (idx == null || idx < 0 
   const mkColl = (title, sub) => { secTitle("info", title, sub); const c = el("div", "coll"); panels.info.appendChild(c); return c; };
   const cell = (parent, iconFn) => { const d = el("div", "cell"); d.appendChild(iconFn()); const em = el("em"); d.appendChild(em); parent.appendChild(d); return { d, em }; };
   const tc = mkColl("보물", "결재도장");
-  const tCells = TREASURES.map(t => cell(tc, () => iconCanvas(g => { g.fillStyle = "#ffd54a"; g.beginPath(); g.arc(20, 20, 14, 0, 7); g.fill(); g.fillStyle = "#2a2206"; g.font = '16px "Do Hyeon", sans-serif'; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t.n[0], 20, 21); })));
+  const tCells = TREASURES.map(t => cell(tc, () => treIcon(t)));
   const pc = mkColl("동료", "만나");
   const pCells = PETS.map(p => cell(pc, () => petIcon(p.id)));
   const sc = mkColl("정장", "광석 · 금테는 전설 5강");
@@ -4144,6 +4756,7 @@ function updateUI(force) {
   else if (S.bible.timer) { live.hidden = false; live.textContent = `말씀 ${mm(Date.now() - S.bible.timer)}`; }
   else live.hidden = true;
   renderBuffs();
+  renderTabHead();
   updaters[curTab].forEach(r => r.update(force));
   TABS.forEach(([id]) => {
     let any = false;

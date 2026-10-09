@@ -778,6 +778,43 @@ body.modal { overflow: hidden; }
 .ba-pl b { flex: 1; min-width: 0; font: 400 14px/1.35 var(--display); color: var(--manna); word-break: keep-all; }
 .ba-pl .pl-min { flex: none; white-space: nowrap; }
 .cal-d.fut:not(:disabled) { cursor: pointer; }
+/* 진짜 도전 플랜 */
+.pl-grp { display: flex; align-items: baseline; gap: 8px; margin: 6px 2px 0; font: 15px var(--display); color: #ff8a7a; text-shadow: 0 2px 0 var(--edge); }
+.pl-grp small { font: 12px var(--body); color: var(--muted); }
+.pl-hard { display: inline-block; margin-right: 6px; padding: 1px 6px 0; border-radius: 6px; background: #ff5a4a; color: #fff; font: 12px/1.35 var(--display); font-style: normal; vertical-align: 2px; text-shadow: 0 1px 0 rgba(0,0,0,.35); box-shadow: 0 2px 0 #a32f25; }
+.pl-opt.hard .pl-m { color: #ffb36b; }
+.pl-opt.hard.on { background: linear-gradient(180deg, #4a2a2a, #2a1a22); box-shadow: inset 0 0 0 2px #ff7a6b, 0 0 10px rgba(255,122,107,.2), 0 2px 0 rgba(0,0,0,.35); }
+.pl-opt.hard.on::before { border-color: #ff7a6b; background: radial-gradient(circle, #ff7a6b 0 4px, #0b101e 4.5px); }
+.pl-books { display: flex; flex-direction: column; gap: 6px; }
+.pl-brow { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 9px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: inherit; text-align: left; cursor: pointer; }
+.pl-brow b { font: 400 14.5px var(--display); white-space: nowrap; }
+.pl-brow .num { font: 13px var(--display); color: var(--muted); }
+.pl-bbar { height: 8px; border-radius: 4px; background: #070b14; box-shadow: inset 0 0 0 1px #262f4d; overflow: hidden; }
+.pl-bbar i { display: block; height: 100%; background: var(--manna); border-radius: 4px; }
+.pl-brow.done { box-shadow: inset 0 0 0 1px rgba(168,240,198,.5), 0 2px 0 rgba(0,0,0,.35); }
+.pl-brow.done b, .pl-brow.done .num { color: var(--manna); }
+/* 아이디 로그인 */
+.acct { gap: 10px; }
+.acct[hidden] { display: none; }
+.ac-hd { display: flex; align-items: center; gap: 10px; }
+.ac-hd > div { min-width: 0; }
+.ac-ic { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px; border: 2px solid var(--edge); background: radial-gradient(circle at 50% 36%, #2c3f6a, #10182c 78%); box-shadow: inset 0 0 0 1px #3a5a8c, 0 2px 0 rgba(0,0,0,.4); }
+.ac-hd b { display: block; font: 400 19px/1.15 var(--display); color: var(--ore); text-shadow: 0 2px 0 var(--edge); }
+.ac-hd small { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--muted); word-break: keep-all; }
+.ac-form { display: flex; flex-direction: column; gap: 8px; }
+.ac-form[hidden], #acIn[hidden], #acAsk[hidden] { display: none; }
+.acct input[type=text], .acct input[type=password] { width: 100%; font: 16px var(--body); color: var(--fg); padding: 9px 11px; background: #0c1121; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657, inset 0 3px 6px rgba(0,0,0,.35); border-radius: 10px; }
+.acct input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--ore), inset 0 3px 6px rgba(0,0,0,.35); }
+.ac-err { margin: 0; font-size: 12.5px; color: #ff8a7a; }
+.ac-err[hidden] { display: none; }
+#acAsk { display: flex; flex-direction: column; gap: 7px; }
+#acAsk p { margin: 0; }
+.ac-pick { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 9px 12px; border-radius: 11px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: inherit; text-align: left; cursor: pointer; }
+.ac-pick b { font: 400 16px var(--display); color: var(--ore); }
+.ac-pick small { font-size: 12px; line-height: 1.4; color: var(--muted); }
+.ac-pick:active { transform: translateY(1px); }
+.back-link { align-self: center; border: 0; background: none; padding: 2px 4px; margin-top: -3px; color: #b7c0da; font: 13px var(--body); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.back-link[hidden] { display: none; }
 </style>
 
 <div class="wrap">
@@ -834,6 +871,7 @@ body.modal { overflow: hidden; }
     <div class="slip" id="backSlip" hidden></div>
     <div class="back-att" id="backAtt" hidden></div>
     <button class="buy back-go" id="backGo" type="button"></button>
+    <button class="back-link" id="backLogin" type="button" hidden>예전 기록이 있다면 · 아이디로 로그인</button>
   </div>
   <div class="celeb-fx" id="backFx"></div>
 </div>
@@ -5963,9 +6001,16 @@ var PLANS = [
   { id: "h6", n: "6개월 1독", sub: "조금 빠르게 차례대로", days: 183, tracks: [[0, 66]] },
   { id: "nt90", n: "신약 90일", sub: "마태복음부터 요한계시록까지", days: 90, tracks: [[39, 66]] },
   { id: "y2", n: "2년 1독", sub: "하루 조금씩 천천히", days: 730, tracks: [[0, 66]] },
+  /* 진짜 도전: 보상도 몇 배 */
+  { id: "m3", n: "3달 1독", sub: "석 달 만에 성경 한 번", days: 90, tracks: [[0, 66]], hard: 2 },
+  { id: "m2", n: "2달 1독", sub: "두 달 만에 성경 한 번", days: 60, tracks: [[0, 66]], hard: 3 },
+  { id: "m1", n: "1달 1독", sub: "한 달 만에 성경 한 번 · 가장 어려움", days: 30, tracks: [[0, 66]], hard: 5 },
 ];
 var PLAN_MILES = [[0.1, { stamp: 10, haste: 1 }], [0.25, { ore: 500, gold2: 1 }], [0.5, { silver: 5, rage: 1 }], [0.75, { ame: 3, stamp: 30 }], [1, { ame: 10, stamp: 100, manna: 1000 }]];
 var PLAN_DAY_RW = { manna: 20, stamp: 2 };
+function planHard() { const d = S.plan && planDef(S.plan.id); return (d && d.hard) || 1; }
+function planDayRw() { const m = planHard(); return { manna: PLAN_DAY_RW.manna * m, stamp: PLAN_DAY_RW.stamp * m }; }
+function minText(m) { m = Math.round(m); return m >= 60 ? `${Math.floor(m / 60)}시간${m % 60 ? ` ${m % 60}분` : ""}` : `${m}분`; }
 var READ_CPM = 450;   // 1분에 읽는 글자 수 (어림)
 var planCache = { k: "" }, planMemo = { k: "" }, planVer = 0;
 var planUI = { pick: "y1", pre: null, quit: 0 };
@@ -6046,7 +6091,7 @@ function planStats() {
   const v = { sc, d, done, total: sc.total, behind, ahead, tLeft, today: d < sc.D ? sc.days[d] : [], firstBehind, firstToday, firstAhead, over: d >= sc.D };
   planMemo = { k: key, v }; return v;
 }
-function planScale(rw, total) { const f = Math.min(1, total / TOTAL_CH), o = {}; Object.keys(rw).forEach(k => { o[k] = ["haste", "gold2", "rage"].indexOf(k) >= 0 ? rw[k] : Math.max(1, Math.round(rw[k] * f)); }); return o; }
+function planScale(rw, total, m) { const f = Math.min(1, total / TOTAL_CH) * (m || 1), o = {}; Object.keys(rw).forEach(k => { o[k] = ["haste", "gold2", "rage"].indexOf(k) >= 0 ? rw[k] : Math.max(1, Math.round(rw[k] * f)); }); return o; }
 function planMin(list) { const W = chw(); return Math.max(1, Math.round(list.reduce((a, g) => a + W[g], 0) * 25 / READ_CPM)); }
 /* [창세기 34, 35, 36] → "창세기 34–36장" */
 function planRangeText(list) {
@@ -6075,7 +6120,7 @@ function planOnUndo(b, c) {
   P.done = hexSet(P.done, g, 0); planVer++;
   const st = planStats();
   if (S.day && S.day.plan && st && st.tLeft > 0) {
-    S.day.plan = 0; S.manna = Math.max(0, S.manna - PLAN_DAY_RW.manna); S.stamp = Math.max(0, S.stamp - PLAN_DAY_RW.stamp);
+    const drw = planDayRw(); S.day.plan = 0; S.manna = Math.max(0, S.manna - drw.manna); S.stamp = Math.max(0, S.stamp - drw.stamp);
     if (P.sPrev) { P.last = P.sPrev[0]; P.streak = P.sPrev[1]; }
   }
 }
@@ -6084,22 +6129,22 @@ function planAfterChange(why) {
   const P = S.plan; if (!P || P.fin) return;
   const st = planStats(); if (!st || !st.total) return;
   if (!st.over && st.today.length && !st.tLeft && S.day && !S.day.plan) {
-    S.day.plan = 1; grant(PLAN_DAY_RW);
+    const drw = planDayRw(); S.day.plan = 1; grant(drw);
     P.sPrev = [P.last || "", P.streak || 0];
     P.streak = (P.last === yesterdayKey() ? P.streak || 0 : 0) + 1; P.last = dayKey(); P.best = Math.max(P.best || 0, P.streak);
-    if (why === "read") celebrate({ ic: "bible", title: "오늘 말씀 완료!", sub: `${st.sc.def.n} ${st.d + 1}일차 · 플랜 연속 ${P.streak}일<br><span class="rws">${rwHTML(PLAN_DAY_RW)}</span>`, tone: "manna", sound: "pass" });
-    else toast(`오늘 말씀은 이미 읽어 두었어요 · ${rwText(PLAN_DAY_RW).replace(/ (\d+)/g, " +$1")}`);
+    if (why === "read") celebrate({ ic: "bible", title: "오늘 말씀 완료!", sub: `${st.sc.def.n} ${st.d + 1}일차 · 플랜 연속 ${P.streak}일<br><span class="rws">${rwHTML(drw)}</span>`, tone: "manna", sound: "pass" });
+    else toast(`오늘 말씀은 이미 읽어 두었어요 · ${rwText(drw).replace(/ (\d+)/g, " +$1")}`);
   }
   const pct = st.done / st.total;
   PLAN_MILES.forEach(([t, rw], i) => {
     if (pct + 1e-9 < t || (P.got & (1 << i))) return;
-    P.got |= 1 << i; const r = planScale(rw, st.total); grant(r);
+    P.got |= 1 << i; const r = planScale(rw, st.total, planHard()); grant(r);
     if (t < 1) celebrate({ ic: "trophy", title: `플랜 ${Math.round(t * 100)}% 읽음!`, sub: `${st.sc.def.n} · ${st.done}/${st.total}장<br><span class="rws">${rwHTML(r)}</span>`, tone: "gold", sound: "pass" });
   });
   if (st.done >= st.total && !P.fin) {
     P.fin = dayKey(); S.planFin = (S.planFin || 0) + 1; planVer++;
     S.planHist = (Array.isArray(S.planHist) ? S.planHist : []).concat([{ id: P.id, start: P.start, fin: P.fin, n: st.total }]).slice(-12);
-    celebrate({ ic: "bible", title: "통독 완주!", sub: `${st.sc.def.n} · ${dayDiff(P.start, P.fin) + 1}일 동안 ${st.total}장<br><span class="rws">${rwHTML(planScale(PLAN_MILES[4][1], st.total))}</span>`, tone: "rare", sound: "pass", ms: 3600 });
+    celebrate({ ic: "bible", title: "통독 완주!", sub: `${st.sc.def.n} · ${dayDiff(P.start, P.fin) + 1}일 동안 ${st.total}장<br><span class="rws">${rwHTML(planScale(PLAN_MILES[4][1], st.total, planHard()))}</span>`, tone: "rare", sound: "pass", ms: 3600 });
   }
 }
 /* 하루가 시작될 때 이미 미리 읽어 둔 분량이면 바로 완료 처리 */
@@ -6113,7 +6158,7 @@ function planStart(id, pre) {
   if (!sc || !sc.total) { S.plan = null; planCache.k = ""; toast("나눌 장이 없어요"); renderPlanCard(); return; }
   (S.bible.today || []).forEach(e => { const g = gIdx(e.b, e.c); if (sc.dayOf[g] >= 0 && !hexGet(P.done, g)) { P.done = hexSet(P.done, g, 1); e.plan = 1; } });
   planVer++; planUI.quit = 0;
-  celebrate({ ic: "bible", title: "읽기 플랜 시작!", sub: `${def.n} · ${def.days}일 · 하루 약 ${planPreview(def, P.pre).min}분<br>오늘: ${planRangeText(sc.days[0]) || "쉬어 가는 날"}`, tone: "manna", sound: "pass" });
+  celebrate({ ic: "bible", title: "읽기 플랜 시작!", sub: `${def.n} · ${def.days}일 · 하루 약 ${minText(planPreview(def, P.pre).min)}<br>오늘: ${planRangeText(sc.days[0]) || "쉬어 가는 날"}`, tone: "manna", sound: "pass" });
   planAfterChange("start");
   renderPlanCard(); updateUI(true); save();
 }
@@ -6140,7 +6185,7 @@ function planDayInfo(k) {
 function planTodayRow() {
   const P = S.plan; if (!P || P.fin) return "";
   const st = planStats(); if (!st || st.over || !st.today.length) return "";
-  return `<div class="ba-pl"><span>오늘 말씀</span><b>${planRangeText(st.today)}${st.tLeft ? "" : " ✓"}</b><span class="pl-min">약 ${planMin(st.today)}분</span></div>`;
+  return `<div class="ba-pl"><span>오늘 말씀</span><b>${planRangeText(st.today)}${st.tLeft ? "" : " ✓"}</b><span class="pl-min">약 ${minText(planMin(st.today))}</span></div>`;
 }
 function planShort() { const P = S.plan; if (!P) return "없음"; const st = planStats(); if (!st) return "없음"; return P.fin ? `${st.sc.def.n} 완주` : `${st.sc.def.n} ${Math.floor(st.done / st.total * 100)}%`; }
 
@@ -6154,15 +6199,22 @@ function planChips(list, nextG) {
   });
   return h;
 }
+/* 하루 분량이 많을 때(도전 플랜): 책마다 한 줄, 누르면 그 책의 안 읽은 첫 장부터 */
+function planBooksHTML(list) {
+  const rows = []; let cur = null;
+  list.forEach(g => { const [b, c] = gBC(g), dn = hexGet(S.plan.done, g); if (!cur || cur.b !== b) { cur = { b, c0: c, c1: c, n: 0, done: 0, first: -1, g0: g }; rows.push(cur); } cur.c1 = c; cur.n++; if (dn) cur.done++; else if (cur.first < 0) cur.first = g; });
+  return `<div class="pl-books">${rows.map(x => `<button type="button" class="pl-brow${x.done === x.n ? " done" : ""}" data-g="${x.first >= 0 ? x.first : x.g0}"><b>${BOOKS[x.b][0]} ${x.c0 === x.c1 ? x.c0 + 1 : `${x.c0 + 1}–${x.c1 + 1}`}장</b><span class="pl-bbar"><i style="width:${(x.done / x.n * 100).toFixed(1)}%"></i></span><span class="num">${x.done}/${x.n}</span></button>`).join("")}</div>`;
+}
 function planMileNext(st) {
   const P = S.plan, i = PLAN_MILES.findIndex((m, j) => !(P.got & (1 << j))); if (i < 0) return "";
   const [t, rw] = PLAN_MILES[i], need = Math.max(1, Math.ceil(t * st.total - st.done));
-  return `${t < 1 ? Math.round(t * 100) + "%" : "완주"}까지 ${need}장 <span class="rws">${rwHTML(planScale(rw, st.total))}</span>`;
+  return `${t < 1 ? Math.round(t * 100) + "%" : "완주"}까지 ${need}장 <span class="rws">${rwHTML(planScale(rw, st.total, planHard()))}</span>`;
 }
 function planPickHTML() {
   const rc = roundCount(), pre = planUI.pre == null ? rc > 0 : planUI.pre, preHex = pre && rc ? readHex() : null;
   if (!planDef(planUI.pick)) planUI.pick = "y1";
-  const opts = PLANS.map(p => { const info = planPreview(p, preHex); return `<button type="button" class="pl-opt${planUI.pick === p.id ? " on" : ""}" data-pick="${p.id}"${info.total ? "" : " disabled"}><b>${p.n}</b><small>${p.sub} · ${p.days}일</small><span class="pl-m">${info.total ? `하루 약 ${info.min}분` : "읽을 장 없음"}</span></button>`; }).join("");
+  const opt = p => { const info = planPreview(p, preHex); return `<button type="button" class="pl-opt${p.hard ? " hard" : ""}${planUI.pick === p.id ? " on" : ""}" data-pick="${p.id}"${info.total ? "" : " disabled"}><b>${p.hard ? `<i class="pl-hard">도전</i>` : ""}${p.n}</b><small>${p.sub} · ${p.days}일</small><span class="pl-m">${info.total ? `하루 약 ${minText(info.min)}` : "읽을 장 없음"}</span></button>`; };
+  const opts = PLANS.filter(p => !p.hard).map(opt).join("") + `<div class="pl-grp">진짜 도전 <small>보상 2~5배</small></div>` + PLANS.filter(p => p.hard).map(opt).join("");
   const sel = planDef(planUI.pick), info = planPreview(sel, preHex), end = addDays(dayKey(), sel.days - 1);
   return `<div class="pl-hd"><span class="pl-ic"></span><div><b>말씀 읽기 플랜</b><small>통독 일정을 고르면 날마다 읽을 장을 정해 드려요. 글자 수로 나눠서 하루 읽는 시간이 비슷해요.</small></div></div>`
     + `<div class="pl-opts">${opts}</div>`
@@ -6180,14 +6232,14 @@ function planActiveHTML(st) {
   let body;
   if (st.over) body = `<div class="pl-rest">일정 기간이 끝났어요. 남은 장을 마저 읽으면 완주예요.</div>`;
   else if (!st.today.length) body = `<div class="pl-rest">오늘은 쉬어 가는 날이에요.</div>`;
-  else body = `<div class="pl-chips">${planChips(st.today, st.firstToday)}</div>`;
-  const head = `<div class="pl-th"><b>${st.over ? "남은 말씀" : tdone ? "오늘 말씀 완료 ✓" : "오늘 읽을 말씀"}</b><span>${st.today.length ? `약 ${planMin(st.today)}분` : ""}</span></div>`;
+  else body = st.today.length > 14 ? planBooksHTML(st.today) : `<div class="pl-chips">${planChips(st.today, st.firstToday)}</div>`;
+  const head = `<div class="pl-th"><b>${st.over ? "남은 말씀" : tdone ? "오늘 말씀 완료 ✓" : "오늘 읽을 말씀"}</b><span>${st.today.length ? `약 ${minText(planMin(st.today))}` : ""}</span></div>`;
   let go = "", second = "";
   if (st.over || (tdone && st.behind)) { if (st.firstBehind >= 0) go = planGoBtn(st.firstBehind, `밀린 ${st.behind}장 읽기`); }
   else if (!tdone) { go = planGoBtn(st.firstToday, st.tLeft === st.today.length ? "오늘 말씀 읽기" : "이어서 읽기"); if (st.behind && st.firstBehind >= 0) second = `<button type="button" class="buy ghost" id="plBehind" data-g="${st.firstBehind}"><span class="act">밀린 ${st.behind}장</span><small>먼저 읽기</small></button>`; }
   else if (st.firstAhead >= 0) go = planGoBtn(st.firstAhead, "내일 것 미리 읽기", true);
   const quitArmed = planUI.quit > Date.now();
-  return `<div class="pl-hd"><span class="pl-ic"></span><div><b>${def.n}</b><small>${def.sub} · ${mdShort(P.start, true)} 시작</small></div>${dayLbl}</div>`
+  return `<div class="pl-hd"><span class="pl-ic"></span><div><b>${def.hard ? `<i class="pl-hard">도전</i>` : ""}${def.n}</b><small>${def.sub} · ${mdShort(P.start, true)} 시작</small></div>${dayLbl}</div>`
     + `<div class="pl-prog"><div class="pl-bar"><div class="prog"><i style="width:${(pct * 100).toFixed(2)}%"></i></div>${ticks}</div><div class="pl-pinfo"><span><b>${(pct * 100).toFixed(1)}%</b> · ${st.done}/${st.total}장</span><span>${side.join(" · ")}</span></div></div>`
     + `<div class="pl-today${tdone ? " done" : ""}">${head}${body}</div>`
     + (go || second ? `<div class="row-btns">${go}${second}</div>` : "")
@@ -7039,6 +7091,7 @@ function backRender(first) {
   if (att) { if (need) { att.hidden = false; att.innerHTML = backAttHTML(k); } else att.hidden = true; }
   const b = $("backGo");
   if (b) { b.disabled = false; b.className = "buy back-go" + (need ? " stamp" : ""); b.innerHTML = `<span class="act">${need && a ? "출근 도장 찍고 받기" : need ? "출근 도장 찍기" : "정산금 받기"}</span>`; }
+  const bl = $("backLogin"); if (bl) bl.hidden = !(!a && typeof cloudOn === "function" && cloudOn() && !acctGet() && isFreshSave(S));
 }
 function backBurst(tone) {
   const fx = $("backFx"), btn = $("backGo"); if (!fx || reduceMotion || !fx.appendChild) return;
@@ -7296,8 +7349,149 @@ function buildAttCard() {
   });
 })();
 
+/* ===================== 아이디 로그인 · 기록 저장 =====================
+   아이디와 비밀번호로 로그인하면 기록이 서버(수파베이스)에 저장되어 어느 기기·어느 주소에서 열어도 이어진다.
+   켤 때·돌아올 때 서버 기록을 확인해 더 최근이면 불러오고, 하는 동안 1분마다·닫을 때 올린다 (마지막에 한 기기가 이김).
+   비밀번호는 서버에서 bcrypt 로 바꿔 저장, 이 기기에는 로그인 토큰만 남는다. */
+var CLOUD = { url: "__CLOUD_URL__", key: "__CLOUD_KEY__" };
+var cloud = { busy: false, err: "", ask: null, out: 0, base: 0 };
+var CLOUD_ERR = { bad_id: "아이디는 2~20자, 한글·영문 소문자·숫자·밑줄(_)만 돼요", bad_pw: "비밀번호는 4자 이상으로 해 주세요", taken: "이미 있는 아이디예요. 다른 아이디로 해 주세요", wrong: "아이디나 비밀번호가 맞지 않아요", locked: "여러 번 틀려서 10분 동안 잠겼어요. 잠시 뒤 다시 해 주세요", auth: "로그인이 풀렸어요. 다시 로그인해 주세요", size: "기록이 너무 커서 올리지 못했어요" };
+function cloudOn() { return !!(CLOUD.url && CLOUD.key && CLOUD.url.indexOf("__") < 0 && typeof fetch === "function"); }
+function acctKey() { return SAVE_KEY + "-acct"; }
+function acctGet() { try { const a = JSON.parse(localStorage.getItem(acctKey()) || "null"); return a && a.id && a.token ? a : null; } catch (e) { return null; } }
+function acctSet(a) { try { if (a) localStorage.setItem(acctKey(), JSON.stringify(a)); else localStorage.removeItem(acctKey()); } catch (e) {} }
+async function cloudRpc(fn, args, keep) {
+  const h = { "Content-Type": "application/json", apikey: CLOUD.key };
+  if (!/^sb_/.test(CLOUD.key)) h.Authorization = "Bearer " + CLOUD.key;
+  const r = await fetch(`${CLOUD.url}/rest/v1/rpc/${fn}`, { method: "POST", headers: h, body: JSON.stringify(args), keepalive: !!keep });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+function saveBrief(st) { const att = Object.values((st && st.att && st.att.log) || {}).filter(r => r && r.a).length; return `최고 ${(st && st.bestFloor) || 1}층 · 퇴사 ${(st && st.retires) || 0}회 · 말씀 ${(st && st.bible && st.bible.total) || 0}장 · 출근 ${att}일`; }
+function isFreshSave(st) { return !st || ((st.totalKills || 0) < 40 && !((st.bible && st.bible.total) || 0) && !(st.retires || 0)); }
+function clockText(t) { const d = new Date(t); return (dayKey(d) === dayKey() ? "" : `${d.getMonth() + 1}월 ${d.getDate()}일 `) + `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; }
+/* 서버 기록으로 바꾸기: 백업 불러오기와 같은 정리 + 그 기록이 저장된 뒤 흐른 시간만큼 정산 */
+function cloudApply(data) {
+  S = merge(data);
+  if (TIME_LIMIT[bossKind(S.floor, S.k)]) S.k = 1;
+  awaySettle(data.t || Date.now(), true);
+  mode = "tower"; floats = []; spawnWait = 0; lift = null; intro = null; memSess = null; spawn();
+  planCache.k = ""; updateUI(true); save();
+}
+async function cloudPush(force, keep) {
+  const a = acctGet(); if (!a || !cloudOn()) return false;
+  if (cloud.busy && !keep) return false;
+  save(); const t = S.t;
+  if (!force && a.syncT && t <= a.syncT) return true;
+  cloud.busy = true; let ok = false;
+  try {
+    const r = await cloudRpc("kjy_push", { p_id: a.id, p_token: a.token, p_save: S, p_t: t, p_force: !!force }, keep);
+    if (r && r.ok) { const b = acctGet() || a; b.syncT = t; b.at = Date.now(); acctSet(b); cloud.err = ""; ok = true; }
+    else if (r && r.err === "stale") { cloud.busy = false; await cloudSync("stale", 0); return false; }
+    else if (r && r.err === "auth") { acctSet(null); cloud.err = CLOUD_ERR.auth; }
+    else cloud.err = CLOUD_ERR[r && r.err] || "저장하지 못했어요";
+  } catch (e) { cloud.err = "인터넷이 끊겨서 저장을 미뤄 뒀어요"; }
+  cloud.busy = false; renderAcct(); return ok;
+}
+/* 서버 기록 확인: base = 이 기기에서 마지막으로 하던 때 */
+async function cloudSync(why, base) {
+  const a = acctGet(); if (!a || !cloudOn() || cloud.busy) return;
+  cloud.busy = true; renderAcct();
+  try {
+    const r = await cloudRpc("kjy_pull", { p_id: a.id, p_token: a.token });
+    if (r && r.ok) {
+      cloud.err = ""; cloud.busy = false;
+      const st = +r.save_t || 0;
+      if (r.save && ((st > (a.syncT || 0) && st > (base || 0)) || (isFreshSave(S) && !isFreshSave(r.save)))) {
+        cloudApply(r.save); const b = acctGet() || a; b.syncT = st; b.at = Date.now(); acctSet(b);
+        toast(why === "stale" ? "다른 기기에서 한 더 최근 기록을 불러왔어요" : `${a.id} 계정의 최근 기록을 불러왔어요`);
+        backMaybeOpen(); renderAcct(); return;
+      }
+      await cloudPush(false); return;
+    }
+    if (r && r.err === "auth") { acctSet(null); cloud.err = CLOUD_ERR.auth; }
+  } catch (e) { cloud.err = "인터넷이 끊겨 있어요 · 연결되면 저장해요"; }
+  cloud.busy = false; renderAcct();
+}
+async function cloudLogin(create) {
+  const idEl = $("acId"), pwEl = $("acPw"), id = String((idEl && idEl.value) || "").trim().toLowerCase(), pw = String((pwEl && pwEl.value) || "");
+  if (!id || !pw) { cloud.err = "아이디와 비밀번호를 넣어 주세요"; renderAcct(); return; }
+  if (!cloudOn()) { cloud.err = "서버 준비 중이에요"; renderAcct(); return; }
+  if (cloud.busy) return;
+  cloud.busy = true; cloud.err = ""; renderAcct();
+  try {
+    const r = await cloudRpc(create ? "kjy_signup" : "kjy_login", { p_id: id, p_pw: pw });
+    cloud.busy = false;
+    if (!r || !r.ok) { cloud.err = CLOUD_ERR[r && r.err] || "잠시 뒤 다시 해 주세요"; renderAcct(); return; }
+    acctSet({ id: r.id || id, token: r.token, syncT: 0, at: 0 }); if (pwEl) pwEl.value = "";
+    if (create || !r.save) { await cloudPush(true); toast(create ? `${r.id || id} 계정을 만들고 지금 기록을 올렸어요` : `${r.id || id} 계정에 이 기기 기록을 올렸어요`); }
+    else if (isFreshSave(S)) { cloudApply(r.save); const b = acctGet(); b.syncT = +r.save_t || 0; b.at = Date.now(); acctSet(b); toast(`${b.id} 기록을 불러왔어요`); backMaybeOpen(); }
+    else cloud.ask = { save: r.save, t: +r.save_t || 0 };
+  } catch (e) { cloud.busy = false; cloud.err = "서버에 연결하지 못했어요. 인터넷을 확인해 주세요"; }
+  renderAcct();
+}
+async function cloudLogout() {
+  const a = acctGet(); if (!a) return;
+  await cloudPush(false);
+  try { await cloudRpc("kjy_logout", { p_id: a.id, p_token: a.token }); } catch (e) {}
+  acctSet(null); cloud.ask = null; cloud.err = ""; toast("로그아웃했어요 · 이 기기 기록은 그대로 있어요"); renderAcct();
+}
+function renderAcct() {
+  const card = $("acCard"); if (!card) return;
+  const a = acctGet(), on = cloudOn();
+  if (card.hidden !== !on) card.hidden = !on;
+  if (!on) return;
+  const ic = $("acIc"); if (ic && !ic.firstChild) ic.appendChild(pixIcon("lock", 28));
+  const set = (id, v) => { const e = $(id); if (e && e.textContent !== v) e.textContent = v; };
+  const hid = (id, v) => { const e = $(id); if (e && e.hidden !== v) e.hidden = v; };
+  hid("acOut", !!a || !!cloud.ask); hid("acIn", !a || !!cloud.ask); hid("acAsk", !cloud.ask);
+  const ask = $("acAsk");
+  if (cloud.ask && ask && ask._k !== cloud.ask.t) {
+    ask._k = cloud.ask.t;
+    ask.innerHTML = `<p class="muted">이 계정에 저장된 기록과 이 기기 기록이 달라요. 어느 기록으로 이어갈까요?</p>`
+      + `<button type="button" class="ac-pick" data-pick="srv"><b>계정 기록으로</b><small>${saveBrief(cloud.ask.save)}${cloud.ask.t ? ` · ${clockText(cloud.ask.t)} 저장` : ""}</small></button>`
+      + `<button type="button" class="ac-pick" data-pick="loc"><b>이 기기 기록으로</b><small>${saveBrief(S)} · 계정 기록은 이걸로 바뀌어요</small></button>`;
+  }
+  set("acTitle", a ? `${a.id}님 로그인 중` : "아이디 로그인");
+  set("acSub", cloud.busy ? "서버와 주고받는 중…" : a ? (a.at ? `자동 저장 · 마지막 저장 ${clockText(a.at)}` : "자동 저장 켜짐") : "로그인하면 어느 기기·어느 주소에서든 같은 기록으로 이어져요");
+  const er = $("acErr"); if (er) { if (er.hidden !== !cloud.err) er.hidden = !cloud.err; if (cloud.err && er.textContent !== cloud.err) er.textContent = cloud.err; }
+  const lb = $("acLogin"), nb = $("acNew"); if (lb && lb.disabled !== cloud.busy) { lb.disabled = cloud.busy; nb.disabled = cloud.busy; }
+  set("acOutBtn", cloud.out > Date.now() ? "한 번 더 누르면 로그아웃" : "로그아웃");
+}
+function buildAcctCard() {
+  const card = el("div", "card acct"); card.id = "acCard"; card.hidden = true;
+  card.innerHTML = `<div class="ac-hd"><span class="ac-ic" id="acIc"></span><div><b id="acTitle">아이디 로그인</b><small id="acSub"></small></div></div>
+    <div class="ac-form" id="acOut"><input type="text" id="acId" placeholder="아이디 (한글·영문·숫자 2~20자)" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="20">
+      <input type="password" id="acPw" placeholder="비밀번호 (4자 이상)" autocomplete="current-password" maxlength="72">
+      <div class="row-btns"><button type="button" class="btn primary" id="acLogin" style="flex:1">로그인</button><button type="button" class="btn" id="acNew">새 계정 만들기</button></div></div>
+    <div id="acIn" hidden><div class="row-btns"><button type="button" class="btn primary" id="acSave" style="flex:1">지금 저장</button><button type="button" class="btn" id="acOutBtn">로그아웃</button></div></div>
+    <div id="acAsk" hidden></div>
+    <p class="ac-err" id="acErr" hidden></p>`;
+  addCustom("info", card, renderAcct);
+  card.addEventListener("click", e => {
+    const t = e.target, b = t && t.closest ? (t.closest("button") || (t.tagName === "BUTTON" ? t : null)) : (t && t.tagName === "BUTTON" ? t : null);
+    if (!b || b.disabled) return;
+    const ds = b.dataset || {};
+    if (b.id === "acLogin") cloudLogin(false);
+    else if (b.id === "acNew") cloudLogin(true);
+    else if (b.id === "acSave") cloudPush(true).then(ok => { if (ok) toast("지금 기록을 계정에 저장했어요"); });
+    else if (b.id === "acOutBtn") { if (cloud.out > Date.now()) { cloud.out = 0; cloudLogout(); } else { cloud.out = Date.now() + 3000; renderAcct(); setTimeout(() => { if (cloud.out && Date.now() >= cloud.out) { cloud.out = 0; renderAcct(); } }, 3100); } }
+    else if (ds.pick === "srv" && cloud.ask) { const k = cloud.ask; cloud.ask = null; cloudApply(k.save); const a2 = acctGet(); if (a2) { a2.syncT = k.t; a2.at = Date.now(); acctSet(a2); } toast("계정 기록으로 이어 가요"); backMaybeOpen(); renderAcct(); }
+    else if (ds.pick === "loc" && cloud.ask) { cloud.ask = null; cloudPush(true).then(ok => { if (ok) toast("이 기기 기록을 계정에 올렸어요"); }); renderAcct(); }
+  });
+  const pw = $("acPw"); if (pw && pw.addEventListener) pw.addEventListener("keydown", e => { if (e.key === "Enter") cloudLogin(false); });
+}
+/* 처음 켠 기기의 출근 카드에서 "예전 기록이 있다면" → 정보 탭 로그인으로 */
+function goLogin() { backHide(); selectTab("info", true); setTimeout(() => { const c = $("acCard"); try { if (c && c.scrollIntoView) c.scrollIntoView({ block: "center" }); const i = $("acId"); if (i && i.focus) i.focus(); } catch (e) {} }, 250); }
+(() => {
+  const l = $("backLogin"); if (l && l.addEventListener) l.addEventListener("click", goLogin);
+  setInterval(() => { if (typeof document !== "undefined" && !document.hidden) cloudPush(false); }, 60000);
+  if (typeof window !== "undefined" && window.addEventListener) window.addEventListener("pagehide", () => { cloudPush(false, true); });
+})();
+
 /* ---------- 정보 탭 ---------- */
 (() => {
+  buildAcctCard();
   const card = el("div", "card hero-card");
   card.innerHTML = `<div class="profile"><canvas id="pfCv" width="112" height="112"></canvas><div class="pstats num" id="pfStats"></div></div>`;
   addCustom("info", card, () => {
@@ -7548,12 +7742,13 @@ function load() {
   } catch (e) {}
 }
 setInterval(save, 5000);
-document.addEventListener("visibilitychange", () => { if (document.hidden) { hiddenAt = Date.now(); save(); } else { studyTick(); onResume(); updateUI(true); } });
+document.addEventListener("visibilitychange", () => { if (document.hidden) { hiddenAt = Date.now(); save(); cloudPush(false, true); } else { const t0 = hiddenAt; studyTick(); onResume(); updateUI(true); if (t0) cloudSync("resume", t0); } });
 setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); bgmUpdate(); sfxWatch(); skillAuto(); autoUpgradeTick(); }, 250);
 
 /* ===================== 시작 ===================== */
 function start(data) {
   if (data && data.S) S = merge(data.S); else load();
+  cloud.base = S.t;
   rollDay(); refreshCostumes(false);
   let tab = "weapon"; try { tab = localStorage.getItem(SAVE_KEY + "-tab") || "weapon"; } catch (e) {}
   if (!panels[tab]) tab = "weapon";
@@ -7562,6 +7757,7 @@ function start(data) {
   if (S.totalKills > 20) hintOn = false;
   requestAnimationFrame(t => { last = t; requestAnimationFrame(frame); });
   backReady = true; attWatch = dayKey(); setTimeout(backMaybeOpen, 350);
+  setTimeout(() => cloudSync("start", cloud.base), 800);
 }
 try { window.claude?.hot?.snapshot?.(() => ({ S })); } catch (e) {}
 window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});

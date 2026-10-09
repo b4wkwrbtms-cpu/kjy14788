@@ -897,6 +897,91 @@ body.modal { overflow: hidden; }
 .jp-go { width: 100%; min-height: 52px; }
 @media (prefers-reduced-motion: reduce) { .jsk.ready, .cr-job.pick { animation: none !important; } }
 .celeb-ic canvas.biz { -webkit-mask: none; mask: none; border-radius: 8px; }
+/* ===== v28 습관 지키기: 이번 주 말씀, 연속 지키기, 안식 모드, 묵상 노트, 화면 설정 ===== */
+.stat.big b { color: var(--manna); }
+.hbw { gap: 10px; }
+.hbw-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.hbw-top > b { font: 400 18px/1.2 var(--display); }
+.hbw-n { font: 400 15px/1 var(--display); color: var(--muted); white-space: nowrap; }
+.hbw-n b { font-size: 26px; color: var(--manna); font-weight: 400; }
+.hbw-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; }
+.hbw-d { display: flex; flex-direction: column; align-items: center; gap: 4px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 9px; padding: 6px 0 7px; min-width: 0; }
+.hbw-d > span { font: 400 12.5px/1 var(--display); color: var(--muted); }
+.hbw-d > i { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 2px dashed #3a4670; font: 400 15px/1 var(--display); font-style: normal; color: var(--manna-ink); }
+.hbw-d.on > i { background: var(--manna); border: 2px solid #d8ffe9; box-shadow: 0 0 8px rgba(168,240,198,.35); }
+.hbw-d.sh > i { border: 2px solid #5a9cff; background: #13244a; }
+.hbw-d.rs > i { border: 2px solid #b8a258; background: #2a2614; }
+.hbw-d.today { border-color: var(--gold); }
+.hbw-d.today > span { color: var(--gold); }
+.hbw-d.fut { opacity: .5; }
+.hbw-d > i .ri { width: 16px; height: 16px; vertical-align: 0; }
+.hbw-sub { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: center; }
+.hbw-sub b { color: var(--fg); font-family: var(--display); font-weight: 400; font-size: 15px; }
+.hbw-note, .hk-note { font-size: 13px; line-height: 1.55; background: #142a22; border: 1px solid #2f5a45; color: #d3f2e2; border-radius: 8px; padding: 7px 9px; word-break: keep-all; }
+.hbw-note.rest, .hk-note.rest { background: #262313; border-color: #5f5530; color: #f1e6bd; }
+.hbw-note b, .hk-note b { color: var(--manna); font-family: var(--display); font-weight: 400; }
+.hbw-note .ri, .hk-note .ri { margin-right: 3px; }
+.hbw-goal { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.hbw-goal > span { white-space: nowrap; }
+.hbw-goal .seg { flex: 1; }
+.seg.sm button { font-size: 13.5px; padding: 0 2px; min-height: 44px; }
+
+.hk { gap: 10px; }
+.hk-today { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13.5px; color: var(--muted); align-items: center; }
+.hk-today b { color: var(--fg); font-family: var(--display); font-weight: 400; font-size: 15px; }
+.hk-today .lbl { font: 400 14px/1 var(--display); color: var(--gold); }
+.hk-done { background: linear-gradient(180deg, #1f2a4d, #171f3a); border: 1px solid #3c4f86; border-radius: 10px; padding: 10px 12px; display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; }
+.hk-done .moon { width: 34px; height: 34px; border-radius: 50%; box-shadow: inset -9px -3px 0 0 #ffe9a8; transform: rotate(-20deg); }
+.hk-done b { font: 400 18px/1.2 var(--display); color: #ffe9a8; display: block; }
+.hk-done small { color: #b9c3dc; font-size: 12.5px; line-height: 1.45; display: block; }
+.hk-rows { display: flex; flex-direction: column; gap: 6px; }
+.hk-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 9px; align-items: center; background: var(--panel-2); border-radius: 9px; padding: 8px 10px; }
+.hk-row .pix { width: 28px; height: 28px; }
+.hk-row b { font: 400 16px/1.15 var(--display); }
+.hk-row b em { font-style: normal; color: var(--manna); font-size: 19px; }
+.hk-row small { display: block; font-size: 12px; color: var(--muted); line-height: 1.35; margin-top: 1px; }
+.hk-st { font: 400 13px/1 var(--display); padding: 6px 9px; border-radius: 999px; white-space: nowrap; }
+.hk-st.ok { color: var(--manna); box-shadow: inset 0 0 0 1.5px #3f8f66; }
+.hk-st.todo { color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--line); }
+.hk-st.rec { color: #ffd98a; box-shadow: inset 0 0 0 1.5px #8a6a2a; }
+.hk-st.rest { color: #f1e6bd; box-shadow: inset 0 0 0 1.5px #6a5f35; }
+.hk-sh { display: flex; align-items: center; gap: 9px; font-size: 13.5px; line-height: 1.4; background: #121d36; border: 1px solid #253a66; border-radius: 9px; padding: 8px 10px; }
+.hk-shs { display: flex; gap: 3px; flex: none; }
+.hk-shs .ri { width: 24px; height: 24px; vertical-align: 0; }
+.hk-shs .ri.off { filter: grayscale(1) brightness(.45); }
+.hk-sh small { color: var(--muted); font-size: 12px; display: block; }
+.hk-rest { display: flex; flex-direction: column; gap: 8px; }
+.hk-restbar { display: flex; gap: 8px; }
+.hk-restbar .btn { flex: 1; min-height: 44px; }
+.hk-pick { display: flex; flex-direction: column; gap: 8px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 9px; }
+.hk-pick > span { font-size: 12.5px; color: var(--muted); }
+.hk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.hk-chips button { font-family: var(--display); font-size: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 999px; padding: 0 14px; min-height: 44px; cursor: pointer; }
+.hk-chips button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); background: #2a2614; }
+.hk-how summary { cursor: pointer; font-size: 13.5px; color: var(--muted); padding: 12px 0; list-style-position: inside; }
+.hk-how ul { margin: 4px 0 0; padding-left: 18px; font-size: 13px; color: #b9c3dc; line-height: 1.6; word-break: keep-all; }
+.hk-how li + li { margin-top: 3px; }
+
+.back-hab { display: flex; flex-direction: column; gap: 6px; background: #13203a; border: 1px solid #2b3f6a; border-radius: 10px; padding: 9px 11px; font-size: 13px; line-height: 1.45; text-align: left; word-break: keep-all; }
+.back-hab > div { display: flex; gap: 7px; align-items: flex-start; }
+.back-hab .ri { flex: none; margin-top: 1px; }
+.back-hab b { color: var(--manna); font-family: var(--display); font-weight: 400; }
+
+.seal.sh { border-color: #5a9cff; color: #9cc8ff; background: radial-gradient(circle, rgba(90,156,255,.2), rgba(90,156,255,.05) 72%); box-shadow: inset 0 0 0 1.5px rgba(90,156,255,.3); }
+.seal.rs { border-color: #c9b26a; color: #efe0a6; background: radial-gradient(circle, rgba(201,178,106,.2), rgba(201,178,106,.05) 72%); box-shadow: inset 0 0 0 1.5px rgba(201,178,106,.3); }
+.ci-st.sh { color: #9cc8ff; box-shadow: inset 0 0 0 1.5px #5a9cff; }
+.ci-st.rs { color: #efe0a6; box-shadow: inset 0 0 0 1.5px #c9b26a; }
+
+.chapters button.today.pend { background: #16302a; color: var(--manna); box-shadow: inset 0 0 0 2px #3f8f66; border-style: dashed; }
+.rd-end .btn.pend { border-style: dashed; color: var(--manna); background: #16302a; }
+
+.note-hist summary { cursor: pointer; font-size: 13.5px; color: var(--muted); padding: 12px 0; }
+.note-hist ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.note-hist li { background: var(--panel-2); border-radius: 8px; padding: 7px 10px; font-size: 13.5px; line-height: 1.5; word-break: keep-all; -webkit-user-select: text; user-select: text; }
+.note-hist li small { display: block; color: var(--muted); font-size: 11.5px; }
+
+.fxset .fx-row { display: grid; grid-template-columns: 96px minmax(0, 1fr); align-items: center; gap: 8px; font-size: 14px; }
+.fxset .seg button { min-height: 44px; }
 </style>
 
 <div class="wrap">
@@ -952,6 +1037,7 @@ body.modal { overflow: hidden; }
     <div class="back-hd"><span class="back-pf" id="backPf"></span><div class="back-tt"><b id="backT"></b><small id="backS"></small></div></div>
     <div class="slip" id="backSlip" hidden></div>
     <div class="back-att" id="backAtt" hidden></div>
+    <div class="back-hab" id="backHab" hidden></div>
     <button class="buy back-go" id="backGo" type="button"></button>
     <button class="back-link" id="backLogin" type="button" hidden>예전 기록이 있다면 · 아이디로 로그인</button>
   </div>
@@ -1290,11 +1376,11 @@ function freshState() {
     promo: false, sneakerUntil: 0, retires: 0, totalKills: 0, bossKills: 0, rank: 0, rankAsk: 0, jobs: [], job: "",
     vault: { tickets: 3 },
     day: null,
-    bible: { read: {}, total: 0, rounds: 0, streak: 0, best: 0, last: "", today: [], rewarded: 0, minToday: 0, timer: 0, note: "", noteDay: "" },
-    study: { running: false, lastConfirm: 0, sessionMs: 0, subject: "", today: 0, depth: 0, streak: 0, best: 0, last: "", total: 0, log: [], beeped: false },
-    mem: { sets: 1, setDay: "", v: {}, streak: 0, best: 0, last: "", total: 0 },
+    bible: { read: {}, total: 0, rounds: 0, streak: 0, best: 0, last: "", today: [], rewarded: 0, minToday: 0, timer: 0, note: "", noteDay: "", rsec: 0, pused: 0, cpm: 1000, notes: [], rec: null, sPrev: null },
+    study: { running: false, lastConfirm: 0, sessionMs: 0, subject: "", today: 0, depth: 0, streak: 0, best: 0, last: "", total: 0, log: [], beeped: false, rec: null, sPrev: null },
+    mem: { sets: 1, setDay: "", v: {}, streak: 0, best: 0, last: "", total: 0, rec: null, sPrev: null },
     sound: true, char: "choi", buyN: 1, autoUp: false,
-    ach: {}, att: { log: {}, best: 0, mk: {}, ms: {} }, away: null, plan: null, planFin: 0, planHist: [], t: Date.now(),
+    ach: {}, att: { log: {}, best: 0, mk: {}, ms: {} }, away: null, plan: null, planFin: 0, planHist: [], t: Date.now(), habit: null, fx: { shake: 1, flash: 1 },
   };
 }
 let S = freshState();
@@ -1307,7 +1393,8 @@ function rollDay() {
     if (S.day && S.day.key) attArchive(S.day);
     S.day = newDay();
     S.bible.today = []; S.bible.rewarded = 0; S.bible.minToday = 0;
-    S.study.today = 0; S.study.depth = 0; S.study.log = [];
+    S.study.today = 0; S.study.depth = 0; S.study.log = []; S.bible.rsec = 0; S.bible.pused = 0;
+    habitGuard();
     return true;
   }
   return false;
@@ -3119,7 +3206,7 @@ function kill() {
     CHARS.forEach(c => { if (c.req && c.req.k === "floor" && prev < c.req.v && S.bestFloor >= c.req.v) { const lk = heroLookFor(c); celebrate({ icon: bigSprite(lk.map, lk.pal, 92), title: "새 캐릭터 해금!", sub: `${c.n} · 정보 탭에서 바꿀 수 있어요`, tone: "gold" }); } });
   }
 }
-function failBoss() { toast("시간 초과! 아래층에서 무기를 키우고 다시 도전하세요"); say("다음엔 꼭 칼퇴시키고 만다...", 3); S.floor = Math.max(1, S.floor - 1); S.k = 1; S.auto = false; spawn(); }
+function failBoss() { toast("시간 초과! 한 층 아래에서 무기를 키우면 다시 도전할 수 있어요"); say("다음엔 꼭 칼퇴시키고 만다...", 3); S.floor = Math.max(1, S.floor - 1); S.k = 1; S.auto = false; spawn(); }
 
 function startVault() {
   rollDay();
@@ -3809,7 +3896,7 @@ function fx4Phys(dt) {
 
 /* 만화식 임팩트 프레임: 순간 흑백 반전 + 집중 광선 (치명타·보스 처치, 0.9초에 한 번까지) */
 function triggerImpactFrame(x, y, force) {
-  if (reduceMotion) return; const now = performance.now();
+  if (reduceMotion || flashK() <= 0) return; const now = performance.now();
   if (!force && now - lastImpactF < 900) return; lastImpactF = now;
   impactF = { t: 0, x, y, seed: Math.random() * 6.28 };
 }
@@ -3938,7 +4025,7 @@ function fx5Step(dt) {
   if (impactF) { impactF.t += dt; if (impactF.t > 110) impactF = null; }
 }
 function camApply() {
-  const z = cam.z * (1 + (reduceMotion ? 0 : cam.kick * 0.04)), halfH = VIEW_H / 2 / z, halfW = Math.min(W / 2, halfH * VIEW_A);
+  const z = cam.z * (1 + cam.kick * 0.04 * shakeK()), halfH = VIEW_H / 2 / z, halfW = Math.min(W / 2, halfH * VIEW_A);
   const cx = Math.max(halfW, Math.min(W - halfW, cam.x)), cy = Math.max(halfH, Math.min(H - halfH, cam.y));
   VX0 = cx - halfW; VY0 = cy - halfH; VW = halfW * 2; VH = halfH * 2;
   const s = CSH / VH; ctx.setTransform(s, 0, 0, s, -VX0 * s, -VY0 * s);
@@ -4263,9 +4350,9 @@ function drawVignette() {
 function drawDanger(t) {
   if (mode !== "tower" || !mon || mon.dying || !TIME_LIMIT[mon.kind] || introBlocking()) return;
   const r = bossTime / bossTimeOf(mon.kind); if (r >= 0.3) return;
-  const a = (0.3 - r) / 0.3 * (0.5 + 0.5 * Math.sin(t / 140));
-  const gr = ctx.createRadialGradient(UW / 2, UH / 2, 90, UW / 2, UH / 2, 260);
-  gr.addColorStop(0, "rgba(255,30,30,0)"); gr.addColorStop(1, `rgba(255,30,30,${0.55 * a})`);
+  const a = (0.3 - r) / 0.3 * (flashK() < 1 ? 0.6 : 0.7 + 0.3 * Math.sin(t / 300));
+  const gr = ctx.createRadialGradient(UW / 2, UH / 2, 110, UW / 2, UH / 2, 270);
+  gr.addColorStop(0, "rgba(120,24,24,0)"); gr.addColorStop(1, `rgba(120,24,24,${0.32 * a})`);
   ctx.fillStyle = gr; ctx.fillRect(0, 0, UW, UH);
   ctx.save(); ctx.globalAlpha = 0.65 + 0.35 * a; ctx.font = '20px "Do Hyeon", sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "middle";
   const tx = `퇴근까지 ${Math.ceil(bossTime)}초!`; ctx.lineWidth = 5; ctx.strokeStyle = "#2a0606"; ctx.strokeText(tx, UW / 2, UH - 24); ctx.fillStyle = "#ff6b6b"; ctx.fillText(tx, UW / 2, UH - 24);
@@ -4288,25 +4375,15 @@ function drawImpactFrame() {
   if (!impactF) return;
   const t = impactF.t, [ix, iy] = w2u(impactF.x, impactF.y);
   ctx.save();
-  if (t < 55) {
-    ctx.globalCompositeOperation = "saturation"; ctx.fillStyle = "#808080"; ctx.fillRect(0, 0, UW, UH);
-    ctx.globalCompositeOperation = "difference"; ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, UW, UH);
-    ctx.globalCompositeOperation = "source-over";
-  }
-  ctx.globalAlpha = t < 55 ? 0.92 : Math.max(0, 0.9 * (1 - (t - 55) / 50)); ctx.fillStyle = t < 55 ? "#000000" : "#ffffff";
+  ctx.globalAlpha = (t < 55 ? 0.6 : Math.max(0, 0.55 * (1 - (t - 55) / 50))) * flashK(); ctx.fillStyle = t < 55 ? "#1b1206" : "#fff4dc";
   for (let i = 0; i < 16; i++) {
     const a0 = impactF.seed + i * Math.PI * 2 / 16, w = 0.06 + 0.05 * Math.abs(Math.sin(i * 3.3 + impactF.seed));
-    ctx.beginPath(); ctx.moveTo(ix + Math.cos(a0) * 40, iy + Math.sin(a0) * 40);
-    ctx.lineTo(ix + Math.cos(a0 - w) * 520, iy + Math.sin(a0 - w) * 520); ctx.lineTo(ix + Math.cos(a0 + w) * 520, iy + Math.sin(a0 + w) * 520); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(ix + Math.cos(a0) * 34, iy + Math.sin(a0) * 34);
+    ctx.lineTo(ix + Math.cos(a0 - w) * 130, iy + Math.sin(a0 - w) * 130); ctx.lineTo(ix + Math.cos(a0 + w) * 130, iy + Math.sin(a0 + w) * 130); ctx.closePath(); ctx.fill();
   }
   ctx.restore();
 }
-function drawScreenFlash() {
-  if (screenFlash <= 0) return;
-  if (flashCol === "#ff2a2a") { const vg = ctx.createRadialGradient(UW / 2, UH / 2, 60, UW / 2, UH / 2, 270); vg.addColorStop(0, hexA("#ff2a2a", screenFlash * 0.25)); vg.addColorStop(1, hexA("#ff2a2a", Math.min(0.7, screenFlash * 1.8))); ctx.fillStyle = vg; }
-  else ctx.fillStyle = hexA(flashCol, screenFlash);
-  ctx.fillRect(0, 0, UW, UH);
-}
+function drawScreenFlash() { hbDrawFlash(); }
 function drawStamp() {
   if (!stampFx) return;
   const s = stampFx, big = s.kind >= 2, T0 = 120, T1 = 230, HOLD = big ? 1150 : 650, END = big ? 1500 : 950;
@@ -4453,7 +4530,8 @@ function draw(t) {
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
   ctx.fillStyle = "#05070d"; ctx.fillRect(0, 0, CSW, CSH);
   camApply();
-  if (shakeAmt > 0.3) { bgShx = (Math.random() - .5) * shakeAmt * 2; bgShy = (Math.random() - .5) * shakeAmt * 1.4; } else { bgShx = 0; bgShy = 0; }
+  const shk = shakeK();
+  if (shakeAmt > 0.3 && shk > 0) { bgShx = (Math.random() - .5) * shakeAmt * 2 * shk; bgShy = (Math.random() - .5) * shakeAmt * 1.4 * shk; } else { bgShx = 0; bgShy = 0; }
   ctx.save();
   drawBgBack(t);
   drawAmbient(t); drawBgAmbient(t);
@@ -5055,33 +5133,27 @@ function toggleChapter(b, c) {
     const e = B.today[idx]; B.today.splice(idx, 1);
     if (e.plan) planOnUndo(b, c);
     if (e.newRead) setBit(b, c, false);
-    B.total = Math.max(0, B.total - 1); S.day.chap = Math.max(0, S.day.chap - 1); if (S.week) S.week.chap = Math.max(0, S.week.chap - 1);
-    if (e.rw) { S.manna = Math.max(0, S.manna - e.rw.manna); S.stamp = Math.max(0, S.stamp - e.rw.stamp); B.rewarded--; }
+    if (e.pf) chapUnproof(e);
     toast(`${BOOKS[b][0]} ${c + 1}장 체크를 취소했어요`);
     return;
   }
   const newRead = bits(b)[c] !== "1";
   if (newRead) setBit(b, c, true);
-  // 연속일
-  if (B.last !== dayKey()) { B.streak = (B.last === yesterdayKey() ? B.streak : 0) + 1; B.last = dayKey(); B.best = Math.max(B.best, B.streak); }
-  const entry = { b, c, newRead, rw: null };
-  if (B.rewarded < READ_CAP) {
-    const m = Math.round(10 * readMult());
-    entry.rw = { manna: m, stamp: 1 }; S.manna += m; S.stamp += 1; B.rewarded++;
-    toast(`${BOOKS[b][0]} ${c + 1}장 · 만나 +${m}, 도장 +1`);
-  } else toast(`${BOOKS[b][0]} ${c + 1}장 기록했어요 (오늘 보상은 ${READ_CAP}장까지)`);
-  B.today.push(entry); B.total++; S.day.chap++; if (S.week) S.week.chap++;
-  planOnRead(b, c, entry);
+  // 확인(만나·도장·연속·누적)은 오늘 읽은 시간이 이 장의 최소 시간까지 쌓였을 때
+  const entry = { b, c, newRead, rw: null, pf: 0, need: needSec(b, c) };
+  B.today.push(entry);
+  proofSweep();
+  if (!entry.pf) toast(`${BOOKS[b][0]} ${c + 1}장 기록 · ${hbSecTxt(pendLeft(entry))} 더 읽으면 확인돼요`);
   if (roundCount() >= TOTAL_CH) {
     B.rounds++; B.read = {}; S.stamp += 100; S.manna += 500;
-    celebrate({ ic: "bible", title: `성경 ${B.rounds}독 완료!`, sub: `<span class="rws">${rwHTML({ stamp: 100, manna: 500 })}</span>`, tone: "manna", ms: 3200 });
+    celebrateLater({ ic: "bible", title: `성경 ${B.rounds}독 완료!`, sub: `<span class="rws">${rwHTML({ stamp: 100, manna: 500 })}</span>`, tone: "manna", ms: 3200 });
   }
 }
 function readTimerToggle() {
   rollDay();
   const B = S.bible;
   if (!B.timer) { B.timer = Date.now(); toast("말씀 읽기 타이머 시작"); return; }
-  const min = Math.floor((Date.now() - B.timer) / 60000); B.timer = 0;
+  const min = Math.floor((Date.now() - B.timer) / 60000); B.rsec = (+B.rsec || 0) + Math.max(0, Math.min(6 * 3600, (Date.now() - B.timer) / 1000)); B.timer = 0;
   const room = Math.max(0, READ_MIN_CAP - B.minToday), got = Math.min(room, min);
   B.minToday += min;
   const m = Math.round(got * readMult()); S.manna += m;
@@ -5093,8 +5165,9 @@ function saveNote(text) {
   if (text.length < 5) { toast("다섯 글자 이상 적어 주세요"); return; }
   const first = B.noteDay !== dayKey();
   B.note = text; B.noteDay = dayKey();
-  if (first) { S.day.med = 1; const m = Math.round(20 * readMult()); S.manna += m; toast(`오늘의 묵상을 남겼어요 · 만나 +${m}`); }
+  if (first) { S.day.med = 1; const m = Math.round(30 * readMult()); S.manna += m; S.stamp += 2; toast(`오늘의 묵상을 남겼어요 · 만나 +${m}, 도장 +2`); graceGift("med"); }
   else toast("묵상을 고쳤어요");
+  noteLog(text);
 }
 
 /* ===================== 공부(광산) ===================== */
@@ -5105,7 +5178,9 @@ function addStudy(ms) {
   const St = S.study, before = St.today;
   St.today += ms / 60000; St.total += ms / 60000; S.day.study = St.today; if (S.week) S.week.study += ms / 60000;
   if (St.subject) { const e = St.log.find(l => l.s === St.subject); if (e) e.m += ms / 60000; else St.log.push({ s: St.subject, m: ms / 60000 }); }
-  if (before < 25 && St.today >= 25 && St.last !== dayKey()) { St.streak = (St.last === yesterdayKey() ? St.streak : 0) + 1; St.last = dayKey(); St.best = Math.max(St.best, St.streak); toast(`공부 연속 ${St.streak}일째!`); }
+  habitRecAdd("study", ms / 60000);
+  if (St.today >= HB_MIN.study && habitTouch("study")) toast(`공부 연속 ${St.streak}일째!`);
+  if (Math.floor(before / 25) < Math.floor(St.today / 25)) graceGift("study");
   const nd = depthAt(St.today);
   let ore = 0, sv = 0, am = 0;
   for (let d = St.depth + 1; d <= nd; d++) { ore += 10; if (d % 7 === 0) sv++; if (d % 21 === 0) am++; }
@@ -5144,7 +5219,7 @@ function studyTick() {
   if (since >= CONFIRM_MS && !St.beeped) { St.beeped = true; beep(); }
   if (since >= CONFIRM_MS + GRACE_MS) {
     addStudy(CONFIRM_MS); St.sessionMs += CONFIRM_MS; St.running = false;
-    toast("집중 확인이 없어서 25분까지만 기록하고 멈췄어요");
+    toast("25분 공부를 기록하고 잠시 멈췄어요 · 이어서 하려면 다시 시작을 눌러요");
     updateUI(true); save();
   }
 }
@@ -5203,7 +5278,9 @@ function memPass(v) {
   S.manna += rw.manna; S.stamp += rw.stamp; S.gold += rw.gold;
   r.s = Math.min(MEM_MAX, s + 1); r.n++; r.due = addDays(dayKey(), MEM_INT[r.s]); r.last = dayKey();
   S.mem.total++; S.day.mem = (S.day.mem || 0) + 1; if (S.week) S.week.mem = (S.week.mem || 0) + 1;
-  if (S.mem.last !== dayKey()) { S.mem.streak = (S.mem.last === yesterdayKey() ? S.mem.streak : 0) + 1; S.mem.last = dayKey(); S.mem.best = Math.max(S.mem.best, S.mem.streak); }
+  habitRecAdd("mem", 1);
+  if (S.mem.last !== dayKey() && (S.day.mem >= HB_MIN.mem || !memQueue().length)) habitTouch("mem");
+  if (S.day.mem % 5 === 0) graceGift("mem");
   let bonus = "";
   if (r.s === MEM_MASTER) { S.stamp += 10; bonus = " · 암송 완료 보너스 도장 10"; }
   return { rw, bonus, from: s, to: r.s };
@@ -5301,10 +5378,10 @@ function memRender() {
       <div class="row-btns"><button class="btn" data-act="giveup">모르겠어요</button><button class="btn manna" data-act="check" style="flex:1">채점하기</button></div>`;
   } else {
     const res = memSess.result;
-    if (res.practice) body = `<div class="mem-result ${res.pass ? "pass" : "fail"}"><b>${res.pass ? "연습 통과" : "연습 실패"}</b><span>${res.note || ""}</span></div>`;
+    if (res.practice) body = `<div class="mem-result ${res.pass ? "pass" : "fail"}"><b>${res.pass ? "연습 통과" : "한 번 더 연습"}</b><span>${res.note || ""}</span></div>`;
     else body = res.pass
       ? `<div class="mem-result pass"><b>통과!</b> ${res.to}단계${res.to >= MEM_MASTER ? " · 암송 완료" : ""}<span>만나 +${res.rw.manna}${res.rw.stamp ? ` · 도장 +${res.rw.stamp}` : ""} · 월급 +${fmt(res.rw.gold)}원${res.bonus}</span><span>다음 복습: ${MEM_INT[res.to]}일 뒤</span></div>`
-      : `<div class="mem-result fail"><b>아쉬워요</b> 이 구절을 통과해야 다음 구절로 넘어갈 수 있어요<span>${res.note || ""}</span></div>`;
+      : `<div class="mem-result fail"><b>거의 다 왔어요</b> 이 구절을 통과하면 다음 구절이 열려요<span>${res.note || ""}</span></div>`;
     body += `<div class="ref-big num">${escapeHtml(v.ref)}</div><div class="verse">${memSess.answer != null ? missHtml(v, memSess.answer) : keyHtml(v)}</div>${memSess.answer != null && !res.pass ? '<p class="muted">빨간 글씨가 빠졌거나 틀린 부분이에요.</p>' : ""}
       <div class="row-btns">${res.pass || res.practice ? `<button class="btn manna" data-act="next" style="flex:1">${res.practice ? "닫기" : memSess.i + 1 < memSess.list.length ? "다음 구절" : "끝내기"}</button>` : `<button class="btn manna" data-act="retry" style="flex:1">다시 외우고 재도전</button>`}</div>`;
   }
@@ -5400,13 +5477,13 @@ function rowPop(row, text, color) {
 /* 탭 머리띠: 지금 탭 이름·설명·쓰는 재화 (위에 붙어 다님) */
 const TAB_META = {
   weapon: ["월급으로 무기·커피 강화", () => `<span>${ri("coin")}${fmt(S.gold)}</span>`],
-  bible: ["말씀 읽고 만나·도장 받기", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
-  mem: ["200구절 암송, 반복할수록 큰 보상", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
+  bible: ["말씀 읽고 묵상 남기기", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
+  mem: ["200구절을 간격 반복으로 마음에 새기기", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
   study: ["공부한 시간만큼 광산을 파요", () => `<span>${ri("ore")}${fmtR(S.ore)}</span>`],
   pet: ["만나로 동료를 들이고 키워요", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
   suit: ["광석으로 정장·부적 사기", () => `<span>${ri("ore")}${fmtR(S.ore)}</span>` + (S.silver ? `<span>${ri("silver")}${fmtR(S.silver)}</span>` : "")],
   treasure: ["결재도장으로 보물 강화", () => `<span>${ri("stamp")}${fmtR(S.stamp)}</span>`],
-  daily: ["출근부·일일 업무·문서고·업적", () => `<span>${ri("cal")}연속 ${attStreak()}일</span>`],
+  daily: ["출근부·연속 지키기·일일 업무·업적", () => `<span>${ri("cal")}출근 ${attTotal()}일</span><span>${ri("shield")}${habitState().sh}</span>`],
   info: ["인사 기록·내 기록·도감·백업", () => `<span>${rankName()}${curJob() ? " · " + curJob().team : ""}</span>`],
   retire: ["사표 내고 더 강해져서 다시", () => `<span>${ri("stamp")}${fmtR(S.stamp)}</span>`],
 };
@@ -5723,9 +5800,9 @@ function drawGoldenAura(mxp, myp, h, t) {
 function weekKey() { const d = new Date(); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return dayKey(d); }
 function rollWeek() { if (!S) return; const k = weekKey(); if (!S.week || S.week.key !== k) S.week = { key: k, chap: 0, study: 0, mem: 0, claimed: {} }; }
 const WEEKLY = [
-  { id: "chap", n: "말씀 20장 읽기", goal: 20, val: () => S.week.chap, f: v => `${Math.floor(v)}장`, rw: { stamp: 10, haste: 2 } },
-  { id: "study", n: "공부 5시간", goal: 300, val: () => S.week.study, f: v => `${(v / 60).toFixed(1)}시간`, fg: "5시간", rw: { ore: 600, silver: 3 } },
-  { id: "mem", n: "암송 40구절 통과", goal: 40, val: () => S.week.mem, f: v => `${Math.floor(v)}구절`, rw: { manna: 150, ame: 2 } },
+  { id: "bdays", get n() { return `말씀 ${wGoal()}일 읽기`; }, get goal() { return wGoal(); }, val: () => weekBibleN(), f: v => `${Math.floor(v)}일`, rw: { stamp: 10, haste: 2 } },
+  { id: "study", get n() { return `공부 ${wkHours()}시간`; }, get goal() { return wkScale(300); }, val: () => S.week.study, f: v => `${(v / 60).toFixed(1)}시간`, get fg() { return `${wkHours()}시간`; }, rw: { ore: 600, silver: 3 } },
+  { id: "mem", get n() { return `암송 ${wkScale(40)}구절 통과`; }, get goal() { return wkScale(40); }, val: () => S.week.mem, f: v => `${Math.floor(v)}구절`, rw: { manna: 150, ame: 2 } },
 ];
 const WEEK_ALL = { stamp: 20, gold2: 2, rage: 2 };
 function buildWeekly() {
@@ -5739,10 +5816,10 @@ function buildWeekly() {
     updaters.daily.push({
       ready: () => !!(S.week && !S.week.claimed[w.id] && w.val() >= w.goal),
       update() {
-        rollWeek();
+        rollWeek(); const tn = row.querySelector(".t-name"); if (tn && tn.textContent !== w.n) tn.textContent = w.n;
         const v = Math.min(w.goal, w.val()), done = !!S.week.claimed[w.id];
         const sh = `<span>${w.f(v)} / ${w.fg || w.f(w.goal)}</span><span class="rws">${rwHTML(w.rw)}</span>`; if (sub._h !== sh) { sub._h = sh; sub.innerHTML = sh; }
-        qb.style.width = (done ? 100 : v / w.goal * 100) + "%";
+        qb.style.width = (done || !w.goal ? 100 : v / w.goal * 100) + "%";
         row.classList.toggle("done", done); btn.disabled = done || v < w.goal; btn.textContent = done ? "받음" : v >= w.goal ? "받기" : "진행 중";
       },
     });
@@ -5753,6 +5830,495 @@ function buildWeekly() {
   ab.addEventListener("click", () => { rollWeek(); if (S.week.claimed.all || !WEEKLY.every(w => S.week.claimed[w.id])) return; S.week.claimed.all = 1; grant(WEEK_ALL); celebrate({ ic: "treasure", title: "이번 주 목표 달성!", sub: `<span class="rws">${rwHTML(WEEK_ALL)}</span>`, tone: "gold", sound: "pass" }); updateUI(true); save(); });
   updaters.daily.push({ ready: () => !!(S.week && !S.week.claimed.all && WEEKLY.every(w => S.week.claimed[w.id])), update() { rollWeek(); const ok = WEEKLY.every(w => S.week.claimed[w.id]); ab.disabled = !ok || !!S.week.claimed.all; ab.textContent = S.week.claimed.all ? "받음" : ok ? "받기" : "남음"; all.classList.toggle("done", !!S.week.claimed.all); } });
   panels.daily.appendChild(all);
+}
+
+/* ===================== 습관 지키기 (v28 · 고도화 1단계) =====================
+   1) 연속 지키기: 하루 최소 행동(말씀 1장 · 공부 10분 · 암송 5구절)이면 그날 연속이 이어짐.
+      다 쉬어 간 날은 보호권(월요일마다 1개, 최대 2개)이 자동으로 그날을 지킴.
+      보호권이 없으면 이틀 안에 말씀 2장 · 공부 50분 · 암송 10구절로 다시 이음(48시간 회복).
+      안식 모드(최대 14일) 동안은 연속·주간 목표가 그대로. 주일엔 공부 연속이 쉬어 감.
+   2) 이번 주 말씀 n일(북극성): 기본 4일, 3~7일에서 고름. 안식한 날만큼 목표가 줄어듦.
+   3) 말씀 확인: 오늘 읽은 시간(읽기 타이머 + 본문 화면) ≥ 확인한 장들의 최소 시간 합.
+      장마다 최소 시간 = 글자 수 ÷ (내 읽기 속도 × 1.5), 처음엔 분당 1,000자로 가정.
+      너무 빨리 넘긴 장은 기록만 남고, 읽은 시간이 쌓이면 저절로 확인되어 선물이 옴.
+   4) 예고 없는 선물(하루 2번까지), 묵상 노트, 화면 설정(흔들림·번쩍임), 번쩍임 안전 규칙.
+   rollDay·merge·load 에서 부르므로 함수 선언과 var 만 씀 */
+var HB_KINDS = ["bible", "study", "mem"];
+var HB_NAME = { bible: "말씀", study: "공부", mem: "암송" };
+var HB_UNIT = { bible: "장", study: "분", mem: "구절" };
+var HB_BIT = { bible: 1, study: 2, mem: 4 };
+var HB_MIN = { bible: 1, study: 10, mem: 5 };
+var HB_REC_NEED = { bible: 2, study: 50, mem: 10 };
+var HB_SH_MAX = 2;
+var HB_GIFT_P = { bible: 0.2, study: 0.3, mem: 0.3, med: 0.5 }, HB_GIFT_MAX = 2;
+var HB_GIFTS = {
+  bible: [{ manna: 25 }, { stamp: 2 }, { haste: 1 }, { gold2: 1 }],
+  study: [{ ore: 250 }, { silver: 2 }, { rage: 1 }, { ore: 150, haste: 1 }],
+  mem: [{ manna: 30 }, { stamp: 3 }, { ame: 1 }, { gold2: 1 }],
+  med: [{ stamp: 3 }, { manna: 40 }, { ame: 1 }],
+};
+var HB_GIFT_WHY = { bible: "말씀을 읽다가 받은 선물이에요", study: "공부하다가 받은 선물이에요", mem: "암송하다가 받은 선물이에요", med: "묵상을 남기다가 받은 선물이에요" };
+var HB_WHY = ["시험", "수련회·여행", "아픔", "그냥 쉼"];
+var RD_CPM0 = 1000;
+var hkUI = { open: false, days: 3, why: "" };
+var flashHist = [], flashPrev = 0;
+
+/* ---------- 아이콘: 믿음의 방패 · 안식의 달 · 선물 ---------- */
+UIICON.shield = { m: ["..............", "..BBBBBBBBBB..", ".BwwwwwwwwwwB.", ".BwwwwggwwwwB.", ".BwwwwggwwwwB.", ".BwwggggggwwB.", ".BwwggggggwwB.", ".BwwwwggwwwwB.", "..BwwwggwwwB..", "..BwwwwwwwwB..", "...BwwwwwwB...", "....BwwwwB....", ".....BBBB.....", ".............."], p: { B: "#2f6fd0", w: "#cfe3ff", g: "#ffd54a" } };
+UIICON.moon = { m: ["..............", ".....yyyy.....", "...yyyY.......", "..yyyY........", "..yyY.........", ".yyyY.....s...", ".yyyY....sss..", ".yyyY.....s...", ".yyyyY........", "..yyyyY.......", "..yyyyyYY..YY.", "...yyyyyyyyy..", ".....yyyyy....", ".............."], p: { y: "#ffe08a", Y: "#d9b45a", s: "#ffffff" } };
+UIICON.gift = { m: ["..............", "...rr....rr...", "..r..r..r..r..", "...rrrrrrrr...", ".GGGGGrrGGGGG.", ".GgggGrrGgggG.", ".GGGGGrrGGGGG.", "..bbbbrrbbbb..", "..bbbbrrbbbb..", "..bbbbrrbbbb..", "..bbbbrrbbbb..", "..bbbbrrbbbb..", "..BBBBrrBBBB..", ".............."], p: { r: "#ffd54a", G: "#2f6fd0", g: "#6fd3ff", b: "#4aa3e0", B: "#2a5ea8" } };
+(function hbIconCss() {
+  try {
+    if (!document.head || !document.createElement("canvas").toDataURL) return;
+    const css = ["shield", "moon", "gift"].map(n => `.ri-${n},span.ri-${n},i.ri-${n}{background-image:url(${pixIcon(n, 16).toDataURL("image/png")})}`).join("");
+    const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+  } catch (e) {}
+})();
+
+/* ---------- 저장값 ---------- */
+function hbWeekOf(d) { return addDays(d, -((keyDate(d).getDay() + 6) % 7)); }
+function habitNew(st) {
+  st = st || S; const today = dayKey();
+  const H = { v: 1, sh: HB_SH_MAX, shW: hbWeekOf(today), cover: {}, td: {}, rest: null, restLog: [], sunRest: true, wgoal: 4, wcel: "", news: [], cq: [], gift: { d: "", n: 0 }, from: addDays(today, -2), intro: 0 };
+  try {
+    const L = (st && st.att && st.att.log) || {}, lim = addDays(today, -21);
+    for (const k in L) {
+      if (k < lim || k > today) continue;
+      const r = L[k] || {}; let m = 0;
+      if (r.c) m |= 1; if (r.s === -1 || r.s >= HB_MIN.study) m |= 2; if (r.m) m |= 4;
+      if (m) H.td[k] = m;
+    }
+    const D = st && st.day && st.day.key === today ? st.day : null;
+    if (D) { let m = H.td[today] || 0; if (D.chap > 0) m |= 1; if ((D.study || 0) >= HB_MIN.study) m |= 2; if (D.mem > 0) m |= 4; if (m) H.td[today] = m; }
+    HB_KINDS.forEach(k => { const X = st && st[k]; if (X && X.last && X.last >= lim && X.last <= today && (X.streak || 0) > 0) H.td[X.last] = (H.td[X.last] || 0) | HB_BIT[k]; });
+  } catch (e) {}
+  return H;
+}
+function habitMerge(h, st) {
+  const o = habitNew(st);
+  if (!h || typeof h !== "object") return o;
+  o.sh = Math.max(0, Math.min(HB_SH_MAX, Math.floor(+h.sh || 0)));
+  if (typeof h.shW === "string" && h.shW) o.shW = h.shW;
+  o.cover = h.cover && typeof h.cover === "object" ? Object.assign({}, h.cover) : {};
+  if (h.td && typeof h.td === "object") o.td = Object.assign({}, h.td);
+  o.rest = h.rest && h.rest.from && h.rest.to ? { from: String(h.rest.from), to: String(h.rest.to), why: String(h.rest.why || "") } : null;
+  o.restLog = Array.isArray(h.restLog) ? h.restLog.filter(r => r && r.from && r.to).map(r => ({ from: String(r.from), to: String(r.to), why: String(r.why || "") })).slice(-20) : [];
+  o.sunRest = h.sunRest !== false;
+  o.wgoal = Math.max(3, Math.min(7, Math.floor(+h.wgoal || 4)));
+  o.wcel = typeof h.wcel === "string" ? h.wcel : "";
+  o.news = Array.isArray(h.news) ? h.news.filter(n => n && n.t).slice(-12) : [];
+  o.cq = Array.isArray(h.cq) ? h.cq.filter(c => c && c.title).slice(-4) : [];
+  o.gift = h.gift && typeof h.gift === "object" ? { d: String(h.gift.d || ""), n: Math.max(0, +h.gift.n || 0) } : { d: "", n: 0 };
+  if (typeof h.from === "string" && h.from) o.from = h.from;
+  o.intro = +h.intro || 0;
+  return o;
+}
+function habitState() { if (!S.habit || typeof S.habit !== "object" || !S.habit.td) S.habit = habitNew(S); return S.habit; }
+/* 예전 저장: 오늘 이미 체크한 장은 확인된 것으로 */
+function hbMigrateBible(B) {
+  if (!B) return;
+  (Array.isArray(B.today) ? B.today : []).forEach(e => { if (e && e.pf === undefined) { e.pf = 1; e.need = 0; } });
+  if (!Array.isArray(B.notes)) B.notes = [];
+  if (!(+B.cpm >= 300 && +B.cpm <= 1500)) B.cpm = RD_CPM0;
+}
+function fxMerge(f) {
+  const o = { shake: 1, flash: 1 };
+  if (f && typeof f === "object") { if ([0, 0.5, 1].indexOf(+f.shake) >= 0) o.shake = +f.shake; if ([0, 0.5, 1].indexOf(+f.flash) >= 0) o.flash = +f.flash; }
+  return o;
+}
+
+/* ---------- 말씀 확인 (읽은 시간) ---------- */
+function chChars(b, c) { try { const W = chw(); return (W[gIdx(b, c)] || 1) * 25; } catch (e) { return 1500; } }
+function rdCpm() { const v = +S.bible.cpm; return v >= 300 && v <= 1500 ? v : RD_CPM0; }
+function needSec(b, c) { return Math.max(10, Math.min(480, Math.round(chChars(b, c) / (rdCpm() * 1.5) * 60))); }
+function readSecToday() { const B = S.bible; return (+B.rsec || 0) + (B.timer ? Math.max(0, Math.min(6 * 3600, (Date.now() - B.timer) / 1000)) : 0); }
+function proofAvail() { return readSecToday() - (+S.bible.pused || 0); }
+function todayEntry(b, c) { return S.bible.today.find(e => e.b === b && e.c === c) || null; }
+function pendSum() { let n = 0; S.bible.today.forEach(x => { if (!x.pf) n += x.need || 0; }); return n; }
+function pendLeft(e) { let n = 0; for (const x of S.bible.today) { if (x.pf) continue; n += x.need || 0; if (x === e) break; } return n - proofAvail(); }
+/* 지금 본문을 다음 장으로 넘기면 체크되기까지 남은 초 */
+function rdLeft() { return rd ? needSec(rd.b, rd.c) + pendSum() - proofAvail() : 0; }
+function rdPf(b, c) { const e = todayEntry(b, c); return !e || !!e.pf; }
+function rdPendTxt() { const e = rd && todayEntry(rd.b, rd.c); if (!e || e.pf) return "오늘 읽음 ✓"; return `기록됨 · ${hbSecTxt(pendLeft(e))} 더 읽으면 ✓`; }
+/* 끝까지 읽고 넘길 때 그 장을 읽은 속도로 내 읽기 속도를 조금씩 맞춤 */
+function rdSpeedNote() {
+  if (!rd || !rd.bottom || !rd.verses || !rd.verses.length) return;
+  const B = S.bible, sec = (Date.now() - rd.t0) / 1000, need = needSec(rd.b, rd.c), cpm = rdCpm();
+  if (sec < need || sec > 1800) return;
+  const obs = Math.max(cpm * 0.5, Math.min(cpm * 1.5, chChars(rd.b, rd.c) / (sec / 60)));
+  B.cpm = Math.round(Math.max(300, Math.min(1500, 0.8 * cpm + 0.2 * obs)));
+}
+function chapProof(e) {
+  const B = S.bible; e.pf = 1; B.pused = (+B.pused || 0) + (e.need || 0);
+  B.total++; S.day.chap++; if (S.week) S.week.chap++;
+  let msg = `${BOOKS[e.b][0]} ${e.c + 1}장 읽음`;
+  if (B.rewarded < READ_CAP) { const m = Math.round(10 * readMult()); e.rw = { manna: m, stamp: 1 }; S.manna += m; S.stamp += 1; B.rewarded++; msg += ` · 만나 +${m}, 도장 +1`; }
+  else msg += " · 오늘 선물은 다 받았고, 기록은 계속 쌓여요";
+  toast(msg);
+  habitTouch("bible"); habitRecAdd("bible", 1);
+  planOnRead(e.b, e.c, e);
+  graceGift("bible");
+}
+function chapUnproof(e) {
+  const B = S.bible;
+  B.total = Math.max(0, B.total - 1); S.day.chap = Math.max(0, S.day.chap - 1); if (S.week) S.week.chap = Math.max(0, S.week.chap - 1);
+  B.pused = Math.max(0, (+B.pused || 0) - (e.need || 0));
+  if (e.rw) { S.manna = Math.max(0, S.manna - e.rw.manna); S.stamp = Math.max(0, S.stamp - e.rw.stamp); B.rewarded = Math.max(0, B.rewarded - 1); }
+  habitRecAdd("bible", -1);
+  if (S.day.chap <= 0) habitUntouch("bible");
+}
+/* 기록만 남은 장: 읽은 시간이 쌓이면 먼저 남긴 장부터 확인 */
+function proofSweep() {
+  const B = S.bible; if (!B || !B.today || !B.today.length) return false;
+  let any = false;
+  for (const e of B.today) { if (e.pf) continue; if (proofAvail() >= (e.need || 0)) { chapProof(e); any = true; } else break; }
+  if (any && rd) renderReader();
+  return any;
+}
+function planProofOK() { return S.bible.today.every(e => !e.plan || e.pf); }
+function noteLog(text) {
+  const B = S.bible, t = dayKey(); if (!Array.isArray(B.notes)) B.notes = [];
+  const last = B.notes[B.notes.length - 1];
+  if (last && last.d === t) last.t = text; else B.notes.push({ d: t, t: text });
+  if (B.notes.length > 400) B.notes = B.notes.slice(-400);
+}
+
+/* ---------- 연속 ---------- */
+function hbObj(k) { return k === "bible" ? S.bible : k === "study" ? S.study : S.mem; }
+function hbAlive(k, d) { const X = hbObj(k); return (X.streak || 0) > 0 && X.last === addDays(d, -1); }
+function hbSun(d) { return keyDate(d).getDay() === 0; }
+function restOn(d) {
+  const H = habitState();
+  if (H.rest && H.rest.from <= d && d <= H.rest.to) return H.rest.why || "쉼";
+  for (const r of H.restLog || []) if (r.from <= d && d <= r.to) return r.why || "쉼";
+  return "";
+}
+function hbStreakNow(k) { return k === "bible" ? readStreak() : k === "study" ? studyStreak() : memStreak(); }
+/* 최소 행동을 채운 순간 그날 연속을 이음 (true = 오늘 처음) */
+function habitTouch(k) {
+  const X = hbObj(k), t = dayKey(), H = habitState();
+  H.td[t] = (H.td[t] || 0) | HB_BIT[k];
+  if (X.last === t) return false;
+  X.sPrev = [X.last || "", X.streak || 0, X.best || 0, t];
+  X.streak = (X.last === addDays(t, -1) ? X.streak || 0 : 0) + 1; X.last = t; X.best = Math.max(X.best || 0, X.streak);
+  if (X.rec) X.rec.after = (X.rec.after || 0) + 1;
+  if (k === "bible") weekGoalCheck();
+  return true;
+}
+/* 오늘 한 것을 취소해서 최소 행동 아래로 내려가면 되돌림 */
+function habitUntouch(k) {
+  const X = hbObj(k), t = dayKey(), H = habitState();
+  if (H.td[t]) { H.td[t] &= ~HB_BIT[k]; if (!H.td[t]) delete H.td[t]; }
+  if (X.last !== t || !X.sPrev || X.sPrev[3] !== t) return;
+  X.last = X.sPrev[0]; X.streak = X.sPrev[1]; X.best = X.sPrev[2]; X.sPrev = null;
+  if (X.rec) X.rec.after = Math.max(0, (X.rec.after || 0) - 1);
+}
+function habitRecAdd(k, v) {
+  const X = hbObj(k), t = dayKey();
+  if (!X.rec || !(t > X.rec.d) || t > recUntil(X.rec)) return;
+  X.rec.got = Math.max(0, (X.rec.got || 0) + v);
+  if (X.rec.got >= X.rec.need) {
+    X.rec = null;
+    celebrateLater({ ic: k, title: `${HB_NAME[k]} 연속이 다시 이어졌어요!`, sub: `쉬어 간 날을 메우고 연속 ${X.streak || 0}일 그대로예요`, tone: "manna", sound: "pass" });
+  }
+}
+/* 회복 기한: 쉬어 간 날 다음 이틀, 그 사이 안식한 날만큼 늦춰짐 */
+function recUntil(rec) { let u = rec.until; for (let d = addDays(rec.d, 1), g = 0; d <= u && g < 60; d = addDays(d, 1), g++) if (restOn(d)) u = addDays(u, 1); return u; }
+function hbSecTxt(sec) { sec = Math.max(1, Math.ceil(sec)); return sec < 90 ? `${sec}초` : `약 ${Math.ceil(sec / 60)}분`; }
+function hbGrant(d) { const H = habitState(), wk = hbWeekOf(d); if (H.shW !== wk) { if ((H.sh || 0) < HB_SH_MAX) H.sh = (H.sh || 0) + 1; H.shW = wk; } }
+function attLenBefore(d) { const L = attLog(); let n = 0, k = addDays(d, -1); while (n < 4000 && L[k] && L[k].a) { n++; k = addDays(k, -1); } return n; }
+/* 하루가 바뀔 때(그리고 켤 때) 지난날을 살펴 연속을 지킴 */
+function habitGuard() {
+  if (!S || !S.bible || !S.study || !S.mem) return;
+  const H = habitState(), today = dayKey(), y = addDays(today, -1), news = [];
+  HB_KINDS.forEach(k => {
+    const X = hbObj(k);
+    if (X.rec && today > recUntil(X.rec)) { const was = X.streak || 0, keep = X.rec.after || 0; X.rec = null; X.streak = keep; news.push({ t: "fresh", k, was, now: keep, best: X.best || 0 }); }
+  });
+  let start = today;
+  HB_KINDS.forEach(k => { const X = hbObj(k); if ((X.streak || 0) > 0 && X.last && X.last < y) { const s = addDays(X.last, 1); if (s < start) start = s; } });
+  const L = attLog();
+  { let k = y, n = 0; while (n < 60 && !(L[k] && L[k].a)) { k = addDays(k, -1); n++; } if (n > 0 && n < 60) { const s = addDays(k, 1); if (s < start) start = s; } }
+  if (H.from && start < H.from) start = H.from;
+  for (let d = start, g = 0; d < today && g < 400; d = addDays(d, 1), g++) {
+    hbGrant(d);
+    const risk = HB_KINDS.filter(k => hbAlive(k, d) && !((H.td[d] || 0) & HB_BIT[k]));
+    if (H.sunRest && hbSun(d) && risk.indexOf("study") >= 0) { risk.splice(risk.indexOf("study"), 1); S.study.last = d; }
+    const attN = (L[d] && L[d].a) ? 0 : attLenBefore(d);
+    if (!risk.length && !attN) continue;
+    let cover = H.cover[d] || (restOn(d) ? "r" : "");
+    if (!cover && !H.td[d] && (H.sh || 0) > 0 && (risk.some(k => (hbObj(k).streak || 0) >= 2) || attN >= 2)) {
+      H.sh--; cover = "s"; news.push({ t: "shield", d, ks: risk.slice(), att: attN });
+    }
+    if (cover) {
+      H.cover[d] = cover;
+      risk.forEach(k => { hbObj(k).last = d; });
+      if (attN) { const r = L[d] || (L[d] = {}); r.a = cover === "s" ? 3 : 4; attVer = (attVer || 0) + 1; }
+      continue;
+    }
+    risk.forEach(k => {
+      const X = hbObj(k);
+      if (X.rec) { news.push({ t: "fresh", k, was: X.streak || 0, now: 0, best: X.best || 0 }); X.rec = null; X.streak = 0; return; }
+      if (dayDiff(d, today) <= 2) { X.rec = { d, until: addDays(d, 2), need: HB_REC_NEED[k], got: 0, after: 0 }; X.last = d; news.push({ t: "rec", k, d, n: X.streak || 0 }); }
+      else { news.push({ t: "fresh", k, was: X.streak || 0, now: 0, best: X.best || 0 }); X.streak = 0; }
+    });
+  }
+  hbGrant(today);
+  if (H.rest && H.rest.to < today) { H.restLog = (H.restLog || []).concat([H.rest]).slice(-20); H.rest = null; }
+  hbPrune(H);
+  if (news.length) H.news = (H.news || []).concat(news.map(n => Object.assign(n, { on: today }))).slice(-12);
+  if (!H.intro) {
+    H.intro = 1;
+    if ((S.totalKills || 0) > 40 || (S.bible.total || 0) > 0) celebrateLater({ ic: "shield", title: "연속 지키기가 생겼어요", sub: "하루 쉬어도 연속이 지켜져요 · 보호권 2개를 드려요<br>업무 탭 '연속 지키기'에서 자세히 볼 수 있어요", tone: "rare", sound: "pass", ms: 3600 });
+  }
+}
+function hbPrune(H) {
+  const lim = addDays(dayKey(), -400);
+  ["cover", "td"].forEach(f => { for (const k in H[f]) if (k < lim) delete H[f][k]; });
+  H.restLog = (H.restLog || []).filter(r => r.to >= lim);
+  const old = addDays(dayKey(), -2); H.news = (H.news || []).filter(n => !n.on || n.on >= old);
+}
+
+/* ---------- 이번 주 말씀 ---------- */
+function weekDaysOf(wk) { const out = []; for (let i = 0; i < 7; i++) out.push(addDays(wk, i)); return out; }
+function weekBibleN() { const H = habitState(); return weekDaysOf(weekKey()).filter(d => (H.td[d] || 0) & 1).length; }
+function weekRestN() { return weekDaysOf(weekKey()).filter(d => restOn(d)).length; }
+function wkScale(g) { const r = weekRestN(); return r >= 7 ? 0 : Math.max(1, Math.ceil(g * (7 - r) / 7)); }
+function wkHours() { return +(wkScale(300) / 60).toFixed(1); }
+function wGoal() { const H = habitState(); return wkScale(Math.max(3, Math.min(7, H.wgoal || 4))); }
+function weekGoalCheck() {
+  const H = habitState(), wk = weekKey(), g = wGoal(); if (!g || H.wcel === wk) return;
+  if (weekBibleN() >= g) { H.wcel = wk; celebrateLater({ ic: "bible", title: `이번 주 말씀 ${g}일!`, sub: "이번 주 목표를 채웠어요 · 업무 탭에서 주간 선물을 받을 수 있어요", tone: "rare", sound: "pass", ms: 2800 }); }
+}
+
+/* ---------- 안식 모드 ---------- */
+function restStart(days, why) {
+  const H = habitState(), t = dayKey();
+  if (H.rest) restEnd(true);
+  days = Math.max(1, Math.min(14, Math.floor(days) || 1));
+  H.rest = { from: t, to: addDays(t, days - 1), why: why || "" };
+  toast(`안식 모드 · ${mdText(H.rest.to)}까지 연속과 주간 목표가 그대로예요`);
+}
+function restEnd(silent) {
+  const H = habitState(); if (!H.rest) return;
+  const y = addDays(dayKey(), -1);
+  if (H.rest.from <= y) H.restLog = (H.restLog || []).concat([{ from: H.rest.from, to: H.rest.to < y ? H.rest.to : y, why: H.rest.why }]).slice(-20);
+  H.rest = null; if (!silent) toast("안식 모드를 마쳤어요 · 오늘부터 다시 함께해요");
+}
+function restDays60() { const H = habitState(), t = dayKey(), lim = addDays(t, -59); let n = 0; for (let d = lim; d <= t; d = addDays(d, 1)) if (restOn(d)) n++; return n; }
+
+/* ---------- 예고 없는 선물 · 미뤄 둔 축하 ---------- */
+function graceGift(k) {
+  const H = habitState(), t = dayKey();
+  if (!H.gift || H.gift.d !== t) H.gift = { d: t, n: 0 };
+  if (H.gift.n >= HB_GIFT_MAX || Math.random() >= (HB_GIFT_P[k] || 0)) return null;
+  H.gift.n++;
+  const tb = HB_GIFTS[k] || HB_GIFTS.bible, rw = Object.assign({}, tb[Math.floor(Math.random() * tb.length)]);
+  grant(rw);
+  celebrateLater({ ic: "gift", title: "뜻밖의 선물", sub: `${HB_GIFT_WHY[k] || ""}<br><span class="rws">${rwHTML(rw)}</span>`, tone: "manna", sound: "pass", ms: 2200 });
+  return rw;
+}
+/* 말씀·암송 화면에는 게임 연출을 띄우지 않고, 닫은 뒤에 보여 줌 */
+function celebrateLater(o) { const H = habitState(); H.cq = (H.cq || []).concat([o]).slice(-4); celebFlush(); }
+function celebFlush() {
+  const H = S && S.habit; if (!H || !H.cq || !H.cq.length) return;
+  if (rd || memSess || backOn || !backReady || S.away || !attOn(dayKey())) return;
+  const q = H.cq; H.cq = []; q.forEach(o => celebrate(o));
+}
+
+/* ---------- 글귀 ---------- */
+/* 받침에 따라 은/는, 과/와 */
+function hbJosa(w, a, b) {
+  const s = String(w), ch = s.trim().slice(-1), c = ch.charCodeAt(0);
+  if (c >= 0xAC00 && c <= 0xD7A3) return s + ((c - 0xAC00) % 28 ? a : b);
+  if (/[0-9]/.test(ch)) return s + ("013678".indexOf(ch) >= 0 ? a : b);
+  return s + b;
+}
+function dayWord(d) { const t = dayKey(); return d === addDays(t, -1) ? "어제" : d === addDays(t, -2) ? "그저께" : d === t ? "오늘" : mdText(d).replace(/ \(.\)$/, ""); }
+function untilWord(u) { const t = dayKey(); return u === t ? "오늘" : u === addDays(t, 1) ? "내일" : mdText(u); }
+function recProg(k, X) { const got = X.rec.got || 0; return k === "study" ? `${Math.floor(got)}/${X.rec.need}분` : `${got}/${X.rec.need}${HB_UNIT[k]}`; }
+function hbNote(k) {
+  const X = hbObj(k), t = dayKey();
+  if (restOn(t)) return { rest: true, h: `${ri("moon")}안식 중이에요 · 쉬는 동안 연속과 주간 목표가 그대로 지켜져요` };
+  if (X.rec && t <= recUntil(X.rec)) {
+    const left = Math.max(0, X.rec.need - (X.rec.got || 0)), amt = k === "study" ? `${Math.ceil(left)}분` : `${left}${HB_UNIT[k]}`;
+    return { rest: false, h: `${ri("moon")}${hbJosa(dayWord(X.rec.d), "은", "는")} 쉬어 갔어요 · ${untilWord(recUntil(X.rec))}까지 ${HB_NAME[k]} ${amt} 더 하면 연속 ${X.streak || 0}일이 그대로 이어져요 <b class="num">${recProg(k, X)}</b>` };
+  }
+  return null;
+}
+function hbNewsHTML() {
+  const H = habitState(), out = [];
+  (H.news || []).forEach(n => {
+    if (n.t === "shield") out.push(`<div>${ri("shield")}<span>${hbJosa(dayWord(n.d), "은", "는")} 보호권이 지켜 줬어요${n.ks && n.ks.length ? ` · ${n.ks.map(k => HB_NAME[k]).join("·")} 연속 그대로` : n.att ? " · 출근 연속 그대로" : ""}</span></div>`);
+    else if (n.t === "rec") { const X = hbObj(n.k); if (X.rec && X.rec.d === n.d) out.push(`<div>${ri("moon")}<span>${hbJosa(dayWord(n.d), "은", "는")} 쉬어 갔어요 · ${untilWord(recUntil(X.rec))}까지 ${HB_NAME[n.k]} ${HB_REC_NEED[n.k]}${HB_UNIT[n.k]}이면 연속 <b>${n.n}</b>일이 이어져요</span></div>`); }
+    else if (n.t === "fresh" && n.was > 0) { const tot = n.k === "bible" ? `누적 ${S.bible.total}장` : n.k === "study" ? `누적 ${(S.study.total / 60).toFixed(1)}시간` : `외운 구절 ${memMastered()}개`; out.push(`<div>${ri(n.k)}<span>${HB_NAME[n.k]} 연속은 오늘부터 새로 쌓아요 · ${hbJosa(tot, "과", "와")} 최고 ${n.best}일은 그대로예요</span></div>`); }
+  });
+  return out.join("");
+}
+
+/* ---------- 말씀 탭: 이번 주 말씀 ---------- */
+function hbBtn(e, root) { let t = e.target; while (t && t !== root && t.tagName !== "BUTTON") t = t.parentElement || t.parent; return t && t.tagName === "BUTTON" && !t.disabled ? t : null; }
+function buildHabitWeek() {
+  const card = el("div", "card hbw");
+  card.innerHTML = `<div class="hbw-top"><b>이번 주 말씀</b><span class="hbw-n num" id="hbwN"></span></div>
+    <div class="hbw-days" id="hbwDays"></div>
+    <div class="hbw-sub num" id="hbwSub"></div>
+    <div class="hbw-note" id="hbwNote" hidden></div>
+    <div class="hbw-goal"><span>주간 목표</span><div class="seg sm" id="hbwGoal" role="group" aria-label="주간 말씀 목표">${[3, 4, 5, 6, 7].map(n => `<button type="button" data-g="${n}" aria-pressed="false">${n}일</button>`).join("")}</div></div>`;
+  addCustom("bible", card, () => renderHabitWeek());
+  card.addEventListener("click", e => {
+    const b = hbBtn(e, card); if (!b || !b.dataset || !b.dataset.g) return;
+    habitState().wgoal = +b.dataset.g; sfx("tick"); weekGoalCheck(); updateUI(true); save();
+  });
+}
+function renderHabitWeek() {
+  const box = $("hbwDays"); if (!box) return;
+  const H = habitState(), wk = weekKey(), t = dayKey(), days = weekDaysOf(wk), n = weekBibleN(), g = wGoal(), nt = hbNote("bible");
+  const key = [wk, t, n, g, H.wgoal, days.map(d => (H.td[d] || 0) + (H.cover[d] || "") + (restOn(d) ? "r" : "")).join(""), readStreak(), S.bible.total, H.sh, nt ? nt.h : ""].join("|");
+  if (box._k === key) return; box._k = key;
+  $("hbwN").innerHTML = g ? `<b>${n}</b> / ${g}일` : "안식 주간";
+  box.innerHTML = days.map((d, i) => {
+    const on = (H.td[d] || 0) & 1, cv = on ? "" : H.cover[d] || (restOn(d) ? "r" : ""), fut = d > t;
+    const cls = "hbw-d" + (on ? " on" : cv === "s" ? " sh" : cv === "r" ? " rs" : "") + (d === t ? " today" : "") + (fut ? " fut" : "");
+    return `<div class="${cls}"><span>${WD[(i + 1) % 7]}</span><i>${on ? "✓" : cv === "s" ? ri("shield") : cv === "r" ? ri("moon") : ""}</i></div>`;
+  }).join("");
+  $("hbwSub").innerHTML = `<span>누적 <b>${S.bible.total}</b>장</span><span>말씀 연속 <b>${readStreak()}</b>일</span><span>${ri("shield")}보호권 <b>${H.sh}</b></span>`;
+  const note = $("hbwNote"); note.hidden = !nt; if (nt) { note.innerHTML = nt.h; note.className = "hbw-note" + (nt.rest ? " rest" : ""); }
+  $("hbwGoal").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.g === (H.wgoal || 4))));
+}
+
+/* ---------- 업무 탭: 연속 지키기 ---------- */
+function buildHabitCard() {
+  secTitle("daily", "연속 지키기", "하루 쉬어도 괜찮아요");
+  const card = el("div", "card hk");
+  card.innerHTML = `<div class="hk-today num" id="hkToday"></div>
+    <div class="hk-rows" id="hkRows"></div>
+    <div class="hk-sh" id="hkSh"></div>
+    <div class="hk-rest" id="hkRest"></div>
+    <details class="hk-how"><summary>어떻게 지켜지나요?</summary><ul>
+      <li>말씀 1장 · 공부 10분 · 암송 5구절(볼 구절이 적으면 다 보기)만 해도 그날 연속이 이어져요. 더 하는 건 하루 목표예요.</li>
+      <li>말씀·공부·암송을 모두 쉬어 간 날은 보호권이 그날을 지켜 줘요. 보호권은 월요일마다 1개씩, 2개까지 모여요.</li>
+      <li>보호권이 없을 땐 이틀 안에 말씀 2장 · 공부 50분 · 암송 10구절이면 연속이 그대로 이어져요.</li>
+      <li>시험·수련회·아플 때는 안식 모드를 켜 두면 그동안 연속과 주간 목표가 그대로예요.</li>
+      <li>주일에는 공부 연속이 쉬어 가요. 말씀은 읽은 시간으로 확인돼요(너무 빨리 넘긴 장은 기록만 남고, 읽은 시간이 쌓이면 확인돼요).</li>
+    </ul></details>`;
+  addCustom("daily", card, () => renderHabitCard());
+  card.addEventListener("click", e => {
+    const b = hbBtn(e, card); if (!b) return;
+    const ds = b.dataset || {};
+    if (b.id === "hkOpen") { hkUI.open = !hkUI.open; sfx("tick"); renderHabitCard(true); return; }
+    if (ds.days) { hkUI.days = +ds.days; sfx("tick"); renderHabitCard(true); return; }
+    if (ds.why != null && ds.why !== "") { hkUI.why = hkUI.why === ds.why ? "" : ds.why; sfx("tick"); renderHabitCard(true); return; }
+    if (b.id === "hkGo") { restStart(hkUI.days, hkUI.why); hkUI.open = false; sfx("pass"); updateUI(true); save(); renderHabitCard(true); return; }
+    if (b.id === "hkEnd") { restEnd(false); updateUI(true); save(); renderHabitCard(true); return; }
+    if (b.id === "hkSun") { const H = habitState(); H.sunRest = !H.sunRest; sfx("tick"); toast(H.sunRest ? "주일엔 공부 연속이 쉬어 가요" : "주일에도 공부 연속을 세요"); save(); renderHabitCard(true); return; }
+  });
+}
+function hkRowHTML(k) {
+  const X = hbObj(k), t = dayKey(), n = hbStreakNow(k), H = habitState(), nt = hbNote(k);
+  const done = !!((H.td[t] || 0) & HB_BIT[k]);
+  let st, cls;
+  if (done) { st = "오늘 ✓"; cls = "ok"; }
+  else if (nt && nt.rest) { st = "안식 중"; cls = "rest"; }
+  else if (X.rec && t <= recUntil(X.rec)) { st = `회복 ${recProg(k, X)}`; cls = "rec"; }
+  else if (k === "study" && H.sunRest && hbSun(t)) { st = "주일 쉼"; cls = "rest"; }
+  else { st = k === "bible" ? "1장이면 ✓" : k === "study" ? "10분이면 ✓" : "5구절이면 ✓"; cls = "todo"; }
+  const sub = k === "bible" ? `누적 ${S.bible.total}장 · 최고 ${X.best || 0}일` : k === "study" ? `누적 ${(S.study.total / 60).toFixed(1)}시간 · 최고 ${X.best || 0}일` : `외운 구절 ${memMastered()}/${VERSES.length} · 최고 ${X.best || 0}일`;
+  return `<div class="hk-row"><span class="hk-ic" data-ic="${k}"></span><div><b>${HB_NAME[k]} 연속 <em>${n}</em>일</b><small>${sub}</small></div><span class="hk-st ${cls}">${st}</span></div>`
+    + (nt && !nt.rest && !done ? `<div class="hk-note">${nt.h}</div>` : "");
+}
+function renderHabitCard(force) {
+  const rows = $("hkRows"); if (!rows) return;
+  const H = habitState(), t = dayKey(), D = S.day || {}, rest = restOn(t);
+  const key = [t, H.td[t] || 0, D.chap, Math.floor(S.study.today || 0), D.mem, D.med, D.claimed && D.claimed.all, S.bible.today.length, H.sh, H.sunRest, JSON.stringify(H.rest), hkUI.open, hkUI.days, hkUI.why,
+    HB_KINDS.map(k => { const X = hbObj(k); return hbStreakNow(k) + ":" + (X.best || 0) + ":" + (X.rec ? X.rec.d + X.rec.got : ""); }).join(","), S.bible.total, Math.floor(S.study.total || 0), restDays60()].join("|");
+  if (!force && rows._k === key) return; rows._k = key;
+  const pend = S.bible.today.filter(e => !e.pf).length;
+  const today = `<span class="lbl">오늘</span><span>말씀 <b>${D.chap || 0}</b>장${pend ? ` (+${pend} 기록)` : ""}</span><span>공부 <b>${Math.floor(S.study.today || 0)}</b>분</span><span>암송 <b>${D.mem || 0}</b>구절</span><span>묵상 <b>${D.med ? "✓" : "-"}</b></span>`;
+  $("hkToday").innerHTML = (D.claimed && D.claimed.all) ? `<div class="hk-done"><i class="moon"></i><div><b>오늘은 여기까지</b><small>오늘 할 일을 다 했어요. 남은 시간은 곽준영이 알아서 일해요 · 내일 또 만나요</small></div></div>`
+    : rest ? `<div class="hk-done"><i class="moon"></i><div><b>안식 중이에요</b><small>오늘은 마음 편히 쉬어요. 연속과 주간 목표는 그대로 지켜져요</small></div></div>` : today;
+  rows.innerHTML = HB_KINDS.map(hkRowHTML).join("");
+  rows.querySelectorAll(".hk-ic").forEach(s => { s.innerHTML = ""; s.appendChild(pixIcon(s.dataset.ic, 28)); });
+  const shs = [0, 1].map(i => ri("shield", i < H.sh ? "" : "off")).join("");
+  const nextMon = addDays(hbWeekOf(t), 7);
+  $("hkSh").innerHTML = `<span class="hk-shs">${shs}</span><span>보호권 <b>${H.sh}</b>/${HB_SH_MAX}<small>${H.sh >= HB_SH_MAX ? "가득 찼어요 · 쉬어 간 날에 자동으로 쓰여요" : `${mdText(nextMon)}에 1개 더 와요`}</small></span>`;
+  let rh;
+  if (H.rest) {
+    const left = dayDiff(t, H.rest.to) + 1;
+    rh = `<div class="hk-note rest">${ri("moon")}안식 중 · ${mdText(H.rest.to)}까지 (${left}일)${H.rest.why ? ` · ${escapeHtml(H.rest.why)}` : ""}<br>쉬는 동안 연속과 주간 목표가 그대로예요.</div>
+      <div class="hk-restbar"><button type="button" class="btn" id="hkEnd">오늘부터 다시 시작</button></div>`;
+  } else {
+    rh = `<div class="hk-restbar"><button type="button" class="btn" id="hkOpen">${ri("moon")} 안식 모드${hkUI.open ? " 닫기" : ""}</button><button type="button" class="btn" id="hkSun" aria-pressed="${H.sunRest}">주일 공부 쉼 · ${H.sunRest ? "켬" : "끔"}</button></div>`;
+    if (hkUI.open) rh += `<div class="hk-pick"><span>얼마나 쉴까요? (오늘부터)</span><div class="hk-chips">${[1, 3, 7, 14].map(n => `<button type="button" data-days="${n}" aria-pressed="${hkUI.days === n}">${n}일</button>`).join("")}</div>
+      <span>이유 (골라도 되고 안 골라도 돼요)</span><div class="hk-chips">${HB_WHY.map(w => `<button type="button" data-why="${w}" aria-pressed="${hkUI.why === w}">${w}</button>`).join("")}</div>
+      <button type="button" class="buy manna" id="hkGo"><span class="act">안식 모드 시작 · ${hkUI.days}일</span><small>${mdText(addDays(t, hkUI.days - 1))}까지 · 최근 60일 안식 ${restDays60()}일</small></button></div>`;
+  }
+  $("hkRest").innerHTML = rh;
+}
+
+/* ---------- 복귀 카드에 붙는 소식 ---------- */
+function backHabRender() {
+  const box = $("backHab"); if (!box) return;
+  const h = hbNewsHTML(); box.hidden = !h; box.innerHTML = h;
+}
+
+/* ---------- 작은 도우미 ---------- */
+function hbNoteInto(id, k) {
+  const m = $(id); if (!m) return;
+  const nt = hbNote(k), h = nt ? nt.h : "";
+  if (m._h === h) return; m._h = h; m.hidden = !h; m.innerHTML = h; m.className = "hk-note" + (nt && nt.rest ? " rest" : "");
+}
+function renderNoteHist() {
+  const ul = $("noteList"); if (!ul) return;
+  const N = Array.isArray(S.bible.notes) ? S.bible.notes : [], key = N.length + ":" + (N.length ? N[N.length - 1].d + N[N.length - 1].t : "");
+  if (ul._k === key) return; ul._k = key;
+  const det = $("noteHist"); if (det) det.hidden = !N.length;
+  ul.innerHTML = N.slice(-14).reverse().map(n => `<li><small>${mdText(n.d)}</small>${escapeHtml(n.t)}</li>`).join("");
+}
+
+/* ---------- 정보 탭: 화면 설정 ---------- */
+function fxSet() { if (!S.fx || typeof S.fx !== "object") S.fx = { shake: 1, flash: 1 }; return S.fx; }
+function shakeK() { if (reduceMotion) return 0; const v = +fxSet().shake; return v >= 0 && v <= 1 ? v : 1; }
+function flashK() { const v = +fxSet().flash; return v >= 0 && v <= 1 ? v : 1; }
+function buildFxCard() {
+  secTitle("info", "화면 설정", "흔들림·번쩍임");
+  const card = el("div", "card fxset");
+  const seg = (id, lbl) => `<div class="fx-row"><span>${lbl}</span><div class="seg" role="group" aria-label="${lbl}">${[[1, "기본"], [0.5, "약하게"], [0, "끄기"]].map(([v, n]) => `<button type="button" data-fx="${id}" data-v="${v}" aria-pressed="false">${n}</button>`).join("")}</div></div>`;
+  card.innerHTML = seg("shake", "화면 흔들림") + seg("flash", "번쩍임")
+    + `<p class="muted" id="fxNote"></p>`;
+  addCustom("info", card, () => {
+    const f = fxSet();
+    card.querySelectorAll("button").forEach(b => { const ds = b.dataset || {}; b.setAttribute("aria-pressed", String(+ds.v === +f[ds.fx])); });
+    const n = $("fxNote"), txt = (reduceMotion ? "휴대폰의 '동작 줄이기'가 켜져 있어 흔들림은 꺼져 있어요. " : "휴대폰의 '동작 줄이기'를 켜면 흔들림이 저절로 꺼져요. ") + "번쩍임은 1초에 3번까지, 화면 가운데 일부에만 나오고 빨간 화면 전체 번쩍임은 쓰지 않아요.";
+    if (n && n.textContent !== txt) n.textContent = txt;
+  });
+  card.addEventListener("click", e => {
+    const b = hbBtn(e, card); if (!b || !b.dataset || !b.dataset.fx) return;
+    fxSet()[b.dataset.fx] = +b.dataset.v; sfx("tick"); updateUI(true); save();
+  });
+}
+
+/* ---------- 번쩍임 안전: 1초 3번까지, 몬스터 둘레만, 빨강은 따뜻한 흰빛으로 ---------- */
+function hbRedish(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(String(hex)); if (!m) return false;
+  const n = parseInt(m[1], 16), r = (n >> 16) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+  if (mx !== r || mx - mn < 0.35) return false;
+  let h = 60 * (((g - b) / (mx - mn)) % 6); if (h < 0) h += 360;
+  return h < 25 || h > 330;
+}
+function hbDrawFlash() {
+  if (screenFlash <= 0) { flashPrev = 0; return; }
+  const t = performance.now();
+  if (screenFlash > flashPrev + 0.001) {
+    flashHist = flashHist.filter(x => t - x < 1000);
+    if (flashK() <= 0 || flashHist.length >= 3) { screenFlash = 0; flashPrev = 0; return; }
+    flashHist.push(t);
+  }
+  flashPrev = screenFlash;
+  const col = hbRedish(flashCol) ? "#fff1dc" : flashCol, R = 110, a = Math.min(0.42, screenFlash * 0.95) * flashK();
+  let mx = UW / 2, my = UH / 2; try { const p = w2u(MON_X, GROUND - 70); mx = p[0]; my = p[1]; } catch (e) {}
+  const gr = ctx.createRadialGradient(mx, my, 6, mx, my, R); gr.addColorStop(0, hexA(col, a)); gr.addColorStop(1, hexA(col, 0));
+  ctx.fillStyle = gr; ctx.fillRect(mx - R, my - R, R * 2, R * 2);
 }
 
 /* ===================== 탭 ===================== */
@@ -6227,23 +6793,23 @@ function planOnUndo(b, c) {
 function planAfterChange(why) {
   const P = S.plan; if (!P || P.fin) return;
   const st = planStats(); if (!st || !st.total) return;
-  if (!st.over && st.today.length && !st.tLeft && S.day && !S.day.plan) {
+  if (!st.over && st.today.length && !st.tLeft && S.day && !S.day.plan && planProofOK()) {
     const drw = planDayRw(); S.day.plan = 1; grant(drw);
     P.sPrev = [P.last || "", P.streak || 0];
     P.streak = (P.last === yesterdayKey() ? P.streak || 0 : 0) + 1; P.last = dayKey(); P.best = Math.max(P.best || 0, P.streak);
-    if (why === "read") celebrate({ ic: "bible", title: "오늘 말씀 완료!", sub: `${st.sc.def.n} ${st.d + 1}일차 · 플랜 연속 ${P.streak}일<br><span class="rws">${rwHTML(drw)}</span>`, tone: "manna", sound: "pass" });
+    if (why === "read") celebrateLater({ ic: "bible", title: "오늘 말씀 완료!", sub: `${st.sc.def.n} ${st.d + 1}일차 · 플랜 연속 ${P.streak}일<br><span class="rws">${rwHTML(drw)}</span>`, tone: "manna", sound: "pass" });
     else toast(`오늘 말씀은 이미 읽어 두었어요 · ${rwText(drw).replace(/ (\d+)/g, " +$1")}`);
   }
   const pct = st.done / st.total;
   PLAN_MILES.forEach(([t, rw], i) => {
     if (pct + 1e-9 < t || (P.got & (1 << i))) return;
     P.got |= 1 << i; const r = planScale(rw, st.total, planHard()); grant(r);
-    if (t < 1) celebrate({ ic: "trophy", title: `플랜 ${Math.round(t * 100)}% 읽음!`, sub: `${st.sc.def.n} · ${st.done}/${st.total}장<br><span class="rws">${rwHTML(r)}</span>`, tone: "gold", sound: "pass" });
+    if (t < 1) celebrateLater({ ic: "trophy", title: `플랜 ${Math.round(t * 100)}% 읽음!`, sub: `${st.sc.def.n} · ${st.done}/${st.total}장<br><span class="rws">${rwHTML(r)}</span>`, tone: "gold", sound: "pass" });
   });
   if (st.done >= st.total && !P.fin) {
     P.fin = dayKey(); S.planFin = (S.planFin || 0) + 1; planVer++;
     S.planHist = (Array.isArray(S.planHist) ? S.planHist : []).concat([{ id: P.id, start: P.start, fin: P.fin, n: st.total }]).slice(-12);
-    celebrate({ ic: "bible", title: "통독 완주!", sub: `${st.sc.def.n} · ${dayDiff(P.start, P.fin) + 1}일 동안 ${st.total}장<br><span class="rws">${rwHTML(planScale(PLAN_MILES[4][1], st.total, planHard()))}</span>`, tone: "rare", sound: "pass", ms: 3600 });
+    celebrateLater({ ic: "bible", title: "통독 완주!", sub: `${st.sc.def.n} · ${dayDiff(P.start, P.fin) + 1}일 동안 ${st.total}장<br><span class="rws">${rwHTML(planScale(PLAN_MILES[4][1], st.total, planHard()))}</span>`, tone: "rare", sound: "pass", ms: 3600 });
   }
 }
 /* 하루가 시작될 때 이미 미리 읽어 둔 분량이면 바로 완료 처리 */
@@ -6434,20 +7000,20 @@ function closeReader() {
   if (auto && S.bible.timer) readTimerToggle();
   updateUI(true); save();
 }
-const readEnough = () => !!(rd && rd.verses && rd.verses.length && rd.bottom && (Date.now() - rd.t0) / 1000 >= rd.min);
+const readEnough = () => !!(rd && rd.verses && rd.verses.length && rd.bottom && rdLeft() <= 0);
 function checkCurrent(manual) {
   if (!rd) return false;
   if (isToday(rd.b, rd.c)) return true;
   if (!manual && !readEnough()) return false;
-  toggleChapter(rd.b, rd.c); save(); return true;
+  rdSpeedNote(); toggleChapter(rd.b, rd.c); save(); return true;
 }
 function stepReader(dir) {
   if (!rd) return;
   if (dir > 0 && rd.verses && rd.verses.length && !checkCurrent(false)) {
     if (!rd.warned) {
       rd.warned = true;
-      const left = Math.max(0, Math.ceil(rd.min - (Date.now() - rd.t0) / 1000));
-      toast(!rd.bottom ? "끝까지 읽고 넘기면 자동으로 체크돼요 · 한 번 더 누르면 체크 없이 넘어가요" : `${left}초만 더 읽으면 체크돼요 · 한 번 더 누르면 체크 없이 넘어가요`);
+      const left = Math.max(0, Math.ceil(rdLeft()));
+      toast(!rd.bottom ? "끝까지 읽고 넘기면 자동으로 체크돼요 · 한 번 더 누르면 체크 없이 넘어가요" : `${hbSecTxt(left)}만 더 읽으면 체크돼요 · 한 번 더 누르면 체크 없이 넘어가요`);
       return;
     }
   }
@@ -6467,14 +7033,14 @@ function renderReader() {
   if (!rd) return;
   const b = rd.b, c = rd.c, done = isToday(b, c), before = bits(b)[c] === "1", body = $("rdBody"), st = body.scrollTop;
   $("rdTitle").textContent = `${BOOKS[b][0]} ${c + 1}장`;
-  $("rdSub").textContent = "개역한글" + (rd.plan ? planReaderTag(b, c) : "") + (done ? " · 오늘 읽음 ✓" : before ? " · 이번 통독에서 읽은 장" : "");
+  $("rdSub").textContent = "개역한글" + (rd.plan ? planReaderTag(b, c) : "") + (done ? (rdPf(b, c) ? " · 오늘 읽음 ✓" : " · 기록됨") : before ? " · 이번 통독에서 읽은 장" : "");
   const links = OTHER_VERSIONS.map(([n, u]) => `<a href="${u.replace("{U}", USFM[b]).replace("{C}", c + 1)}" target="_blank" rel="noopener">${n}</a>`).join("");
   let html;
   if (!rd.verses) html = `<p class="muted">말씀을 불러오는 중…</p>`;
   else if (rd.err || !rd.verses.length) html = `<p class="muted">본문을 불러오지 못했어요. 인터넷에 연결된 상태로 한 번 열면 그다음부터는 없어도 읽을 수 있어요. 아래 링크로도 읽을 수 있어요.</p>`;
   else html = rd.verses.map((v, i) => `<p><sup>${i + 1}</sup>${escapeHtml(v)}</p>`).join("");
   html += `<div class="rd-end">
-    <button class="btn manna" data-r="done" ${done ? "disabled" : ""}>${done ? "오늘 읽음으로 체크됨 ✓" : "이 장 다 읽음 ✓"}</button>
+    <button class="btn manna${done && !rdPf(b, c) ? " pend" : ""}" data-r="done" ${done ? "disabled" : ""}>${done ? (rdPf(b, c) ? "오늘 읽음으로 체크됨 ✓" : "기록됨 · 읽은 시간이 쌓이면 ✓") : "이 장 다 읽음 ✓"}</button>
     ${done ? `<button class="btn" data-r="undo">체크 취소</button>` : ""}
     <div class="muted">같은 장을 다른 번역으로 보기 (새 창)</div><div class="rd-vers">${links}</div></div>`;
   body.innerHTML = html; body.scrollTop = st;
@@ -6484,10 +7050,10 @@ function updateReaderState() {
   if (!rd) return;
   const s = $("rdState"); if (!s) return;
   let txt = "";
-  if (isToday(rd.b, rd.c)) txt = "오늘 읽음 ✓";
+  if (isToday(rd.b, rd.c)) txt = rdPendTxt();
   else if (rd.verses && rd.verses.length) {
-    const left = Math.max(0, Math.ceil(rd.min - (Date.now() - rd.t0) / 1000));
-    txt = !rd.bottom ? "끝까지 읽어 주세요" : left ? `${left}초 뒤 넘기면 체크` : "다음 장으로 넘기면 체크 ✓";
+    const left = Math.max(0, Math.ceil(rdLeft()));
+    txt = !rd.bottom ? "끝까지 읽으면 체크돼요" : left ? `${hbSecTxt(left)} 뒤 넘기면 체크` : "다음 장으로 넘기면 체크 ✓";
   }
   if (s.textContent !== txt) s.textContent = txt;
   const t = $("rdTimer"); if (t) { const v = S.bible.timer ? "읽는 중 " + mm(Date.now() - S.bible.timer) : ""; if (t.textContent !== v) t.textContent = v; }
@@ -6514,21 +7080,23 @@ function updateReaderState() {
 })();
 
 (() => {
+  buildHabitWeek();
   buildPlanCard();
   const sum = el("div", "card");
   sum.innerHTML = `<div class="stat-grid">
+    <div class="stat big"><span>누적</span><b class="num" id="bTotal"></b></div>
     <div class="stat"><span>오늘 읽은 장</span><b class="num" id="bToday"></b></div>
-    <div class="stat"><span>말씀 연속</span><b class="num" id="bStreak"></b></div>
-    <div class="stat"><span>보상 배율</span><b class="num c-manna" id="bMult"></b></div></div>
+    <div class="stat"><span>말씀 연속</span><b class="num" id="bStreak"></b></div></div>
     <div><div class="muted num" id="bRound"></div><div class="prog"><i id="bRoundBar"></i></div></div>
-    <p class="muted">한 장 읽을 때마다 만나 10, 결재도장 1 (하루 ${READ_CAP}장까지). 연속으로 읽은 날마다 보상이 10%씩 늘어 최대 2배.</p>`;
+    <p class="muted">읽은 장마다 만나와 도장이 쌓여요(하루 ${READ_CAP}장까지, 그다음은 기록으로). 이어 읽은 날이 늘수록 커져서 지금 <b class="c-manna" id="bMult"></b>배. 말씀은 읽은 시간으로 확인돼요: 너무 빨리 넘긴 장은 기록만 남고, 읽은 시간이 쌓이면 저절로 확인돼요.</p>`;
   addCustom("bible", sum, () => {
-    const B = S.bible;
-    $("bToday").textContent = `${B.today.length}장`;
+    const B = S.bible, pend = B.today.filter(e => !e.pf).length;
+    $("bTotal").textContent = `${B.total}장`;
+    $("bToday").textContent = `${S.day.chap || 0}장` + (pend ? ` +${pend}` : "");
     $("bStreak").textContent = `${readStreak()}일`;
-    $("bMult").textContent = `x${readMult().toFixed(1)}`;
+    $("bMult").textContent = readMult().toFixed(1);
     const rc = roundCount();
-    $("bRound").textContent = `${B.rounds + 1}독 진행 ${rc} / ${TOTAL_CH}장 · 보상 받은 장 오늘 ${B.rewarded}/${READ_CAP}`;
+    $("bRound").textContent = `${B.rounds + 1}독 진행 ${rc} / ${TOTAL_CH}장 · 오늘 선물 받은 장 ${B.rewarded}/${READ_CAP}`;
     $("bRoundBar").style.width = rc / TOTAL_CH * 100 + "%";
   });
   const tm = el("div", "card");
@@ -6538,7 +7106,7 @@ function updateReaderState() {
     const B = S.bible;
     $("rtClock").textContent = B.timer ? mm(Date.now() - B.timer) : "00:00";
     $("rtBtn").textContent = B.timer ? "읽기 끝" : "읽기 시작";
-    $("rtSub").textContent = `오늘 ${B.minToday}분 · 1분에 만나 1 (하루 ${READ_MIN_CAP}분까지)`;
+    $("rtSub").textContent = `오늘 ${Math.floor(readSecToday() / 60)}분 읽음 · 1분에 만나 1 (하루 ${READ_MIN_CAP}분까지) · 종이 성경도 이 시간으로 확인돼요`;
   });
   $("rtBtn").addEventListener("click", () => { readTimerToggle(); updateUI(true); save(); });
 
@@ -6548,7 +7116,7 @@ function updateReaderState() {
     <div class="books" id="bookList"></div>
     <div class="sec-title" style="margin:0" id="chTitle"></div>
     <div class="chapters" id="chGrid"></div>
-    <p class="muted">장을 누르면 개역한글 본문이 열려요. 끝까지 읽고 '다음 장'으로 넘기면 자동으로 체크되고, 읽는 동안 읽기 타이머도 저절로 돌아가요. 초록색은 오늘 읽은 장, 파란색은 이번 통독에서 이미 읽은 장.</p>`;
+    <p class="muted">장을 누르면 개역한글 본문이 열려요. 끝까지 읽고 '다음 장'으로 넘기면 자동으로 체크되고, 읽는 동안 읽기 타이머도 저절로 돌아가요. 초록색은 오늘 읽은 장, 점선은 읽은 시간이 쌓이면 확인될 장, 파란색은 이번 통독에서 이미 읽은 장.</p>`;
   books.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
     bibleTest = b.dataset.t; bibleBook = bibleTest === "old" ? 0 : 39;
     books.querySelectorAll(".seg button").forEach(o => o.setAttribute("aria-pressed", o === b)); bookKey = ""; updateUI(true);
@@ -6558,7 +7126,7 @@ function updateReaderState() {
     const from = bibleTest === "old" ? 0 : 39, to = bibleTest === "old" ? 39 : 66;
     const go = $("rdGo");
     if (go) { const nx = nextUnread(), lbl = `이어 읽기 · ${BOOKS[nx.b][0]} ${nx.c + 1}장`; if (go.textContent !== lbl) go.textContent = lbl; if (!go.dataset.on) { go.dataset.on = "1"; go.addEventListener("click", () => { const n2 = nextUnread(); openReader(n2.b, n2.c); }); } }
-    const k = bibleTest + bibleBook + JSON.stringify(S.bible.read[bibleBook] || "") + S.bible.today.map(e => e.b + ":" + e.c).join(",") + roundCount();
+    const k = bibleTest + bibleBook + JSON.stringify(S.bible.read[bibleBook] || "") + S.bible.today.map(e => e.b + ":" + e.c + (e.pf ? "" : "p")).join(",") + roundCount();
     if (k === bookKey) return; bookKey = k;
     const list = $("bookList"); list.innerHTML = "";
     for (let b = from; b < to; b++) {
@@ -6572,20 +7140,22 @@ function updateReaderState() {
     const grid = $("chGrid"); grid.innerHTML = "";
     for (let c = 0; c < BOOKS[bibleBook][1]; c++) {
       const today = isToday(bibleBook, c);
-      const btn = el("button", today ? "today" : s[c] === "1" ? "read" : "", String(c + 1));
+      const btn = el("button", today ? (rdPf(bibleBook, c) ? "today" : "today pend") : s[c] === "1" ? "read" : "", String(c + 1));
       btn.setAttribute("aria-label", `${BOOKS[bibleBook][0]} ${c + 1}장`);
       btn.addEventListener("click", () => openReader(bibleBook, c));
       grid.appendChild(btn);
     }
   });
   const note = el("div", "card");
-  note.innerHTML = `<div class="sec-title" style="margin:0">오늘의 묵상 한 줄 <small>하루 한 번 만나 20</small></div>
+  note.innerHTML = `<div class="sec-title" style="margin:0">오늘의 묵상 한 줄 <small>하루 한 번 만나 30 · 도장 2</small></div>
     <textarea id="noteTxt" rows="2" placeholder="오늘 마음에 남은 구절이나 생각"></textarea>
-    <div class="row-btns"><button class="btn manna" id="noteBtn">저장</button><span class="muted" id="noteState" style="align-self:center"></span></div>`;
+    <div class="row-btns"><button class="btn manna" id="noteBtn">저장</button><span class="muted" id="noteState" style="align-self:center"></span></div>
+    <details class="note-hist" id="noteHist" hidden><summary>지난 묵상 보기</summary><ul id="noteList"></ul></details>`;
   addCustom("bible", note, () => {
     const done = S.bible.noteDay === dayKey();
     $("noteState").textContent = done ? "오늘 묵상을 남겼어요" : "";
     if (document.activeElement !== $("noteTxt") && !$("noteTxt").dataset.touched) $("noteTxt").value = done ? S.bible.note : "";
+    renderNoteHist();
   });
   $("noteTxt").addEventListener("input", () => { $("noteTxt").dataset.touched = "1"; });
   $("noteBtn").addEventListener("click", () => { saveNote($("noteTxt").value); delete $("noteTxt").dataset.touched; updateUI(true); save(); });
@@ -6597,7 +7167,7 @@ function updateReaderState() {
   card.innerHTML = `<input type="text" id="subj" maxlength="20" placeholder="무엇을 공부하나요? (예: 헬라어, 조직신학)">
     <div class="clock num" id="stClock">00:00</div>
     <div class="muted num" id="stSub" style="text-align:center"></div>
-    <div class="confirm" id="stConfirm" hidden><p>25분이 지났어요. 아직 공부 중이면 눌러 주세요. 10분 안에 안 누르면 25분까지만 기록돼요.</p><button class="btn primary" id="stOk">집중 중</button></div>
+    <div class="confirm" id="stConfirm" hidden><p>25분이 지났어요. 아직 공부 중이면 눌러 주세요. 10분 안에 누르면 이어서 기록되고, 누르지 않으면 25분까지 기록하고 쉬어요.</p><button class="btn primary" id="stOk">집중 중</button></div>
     <div class="row-btns"><button class="btn primary" id="stStart" style="flex:1">공부 시작</button><button class="btn" id="stPause">일시정지</button><button class="btn" id="stStop">끝내기</button></div>`;
   addCustom("study", card, () => {
     const St = S.study, since = St.running ? Date.now() - St.lastConfirm : 0;
@@ -6618,8 +7188,9 @@ function updateReaderState() {
   mine.innerHTML = `<canvas id="mineCv" class="mine-cv" width="320" height="150" aria-label="오늘의 갱도 그림"></canvas>
     <div class="mine-info"><div class="sec-title" style="margin:0">오늘의 갱도 <small id="mDepth"></small></div>
     <div class="muted num" id="mNext"></div><div class="prog ore"><i id="mBar"></i></div><div class="muted num" id="mMult"></div></div>
-    <div class="stat-grid"><div class="stat"><span>오늘 공부</span><b class="num" id="mToday"></b></div><div class="stat"><span>공부 연속</span><b class="num" id="mStreak"></b></div><div class="stat"><span>누적</span><b class="num" id="mTotal"></b></div></div>
-    <p class="muted">한 층 내려갈 때마다 광석 10, 7층마다 은괴, 21층마다 자수정. 깊이 갈수록 느려져서 매일 조금씩이 가장 많이 캐요 (첫 25분에 하루치 절반). 하루 ${STUDY_CAP}분까지, 25분 이상 공부한 날이 이어지면 연속 보너스.</p>
+    <div class="stat-grid"><div class="stat big"><span>누적</span><b class="num" id="mTotal"></b></div><div class="stat"><span>오늘 공부</span><b class="num" id="mToday"></b></div><div class="stat"><span>공부 연속</span><b class="num" id="mStreak"></b></div></div>
+    <div class="hk-note" id="mRec" hidden></div>
+    <p class="muted">한 층 내려갈 때마다 광석 10, 7층마다 은괴, 21층마다 자수정. 깊이 갈수록 느려져서 매일 조금씩이 가장 많이 캐요 (첫 25분에 하루치 절반). 하루 ${STUDY_CAP}분까지, 10분 이상 공부한 날이 이어지면 연속 보너스(주일은 쉬어 가요).</p>
     <div class="log" id="mLog"></div>`;
   let mKey = "";
   addCustom("study", mine, () => {
@@ -6631,7 +7202,7 @@ function updateReaderState() {
     $("mMult").textContent = `광석 배율 x${oreMult().toFixed(2)}` + (isWeekend() ? " (주말 보너스 포함)" : "");
     $("mToday").textContent = `${Math.floor(liveMin)}분`;
     $("mStreak").textContent = `${studyStreak()}일`;
-    $("mTotal").textContent = `${(St.total / 60).toFixed(1)}시간`;
+    $("mTotal").textContent = `${(St.total / 60).toFixed(1)}시간`; hbNoteInto("mRec", "study");
     const k = St.log.map(l => l.s + Math.floor(l.m)).join(",");
     if (k !== mKey) { mKey = k; $("mLog").innerHTML = St.log.length ? St.log.map(l => `<div><span>${escapeHtml(l.s)}</span><span class="num">${Math.floor(l.m)}분</span></div>`).join("") : ""; }
   });
@@ -7133,10 +7704,10 @@ function weekKeys(k) { const s = addDays(k, -keyDate(k).getDay()), out = []; for
 function calCell(k, o) {
   const today = dayKey(), r = attRec(k) || {}, d = keyDate(k), wd = d.getDay(), fut = k > today, isT = k === today, hl = habitLv(k);
   const cls = "cal-d" + (wd === 0 ? " sun" : wd === 6 ? " sat" : "") + (fut ? " fut" : "") + (isT ? " today" : "") + (isT && !r.a ? " todo" : "") + (o.sel === k && !isT ? " sel" : "") + (o.dim ? " oth" : "") + (hl.p ? " pl" : "");
-  const seal = r.a ? `<i class="seal${r.a === 2 ? " mk" : ""}">${r.a === 2 ? "지각" : "출근"}</i>` : "";
+  const seal = r.a ? `<i class="seal${r.a === 2 ? " mk" : r.a === 3 ? " sh" : r.a === 4 ? " rs" : ""}">${r.a === 2 ? "지각" : r.a === 3 ? "보호" : r.a === 4 ? "안식" : "출근"}</i>` : "";
   const dots = (hl.c || hl.s || hl.m) ? `<span class="cal-h">${hl.c ? `<i class="h-c${hl.c > 1 ? " f" : ""}"></i>` : ""}${hl.s ? `<i class="h-s${hl.s > 1 ? " f" : ""}"></i>` : ""}${hl.m ? `<i class="h-m${hl.m > 1 ? " f" : ""}"></i>` : ""}</span>` : "";
   const inner = `<span class="cal-n">${d.getDate()}</span>${seal}${dots}`;
-  return o.btn ? `<button type="button" class="${cls}" data-k="${k}"${fut && !(S.plan && !S.plan.fin) ? " disabled" : ""} aria-label="${mdText(k)}${r.a === 1 ? " 출근" : r.a === 2 ? " 지각" : ""}">${inner}</button>` : `<div class="${cls}">${inner}</div>`;
+  return o.btn ? `<button type="button" class="${cls}" data-k="${k}"${fut && !(S.plan && !S.plan.fin) ? " disabled" : ""} aria-label="${mdText(k)}${r.a === 1 ? " 출근" : r.a === 2 ? " 지각" : r.a === 3 ? " 보호권으로 지킴" : r.a === 4 ? " 안식" : ""}">${inner}</button>` : `<div class="${cls}">${inner}</div>`;
 }
 function slipHTML(a) {
   const now = new Date(), up = a.f1 - a.f0, run = a.gold > 0 || a.floors > 0, gift = giftOf(a.miss || 0), seal = `<i class="seal big" id="slipSeal" hidden>지급</i>`;
@@ -7188,6 +7759,7 @@ function backRender(first) {
   if (slip) { if (a) { slip.hidden = false; slip.innerHTML = slipHTML(a); countUp($("backGold"), a.gold || 0); } else slip.hidden = true; }
   const att = $("backAtt");
   if (att) { if (need) { att.hidden = false; att.innerHTML = backAttHTML(k); } else att.hidden = true; }
+  backHabRender();
   const b = $("backGo");
   if (b) { b.disabled = false; b.className = "buy back-go" + (need ? " stamp" : ""); b.innerHTML = `<span class="act">${need && a ? "출근 도장 찍고 받기" : need ? "출근 도장 찍기" : "정산금 받기"}</span>`; }
   const bl = $("backLogin"); if (bl) bl.hidden = !(!a && typeof cloudOn === "function" && cloudOn() && !acctGet() && isFreshSave(S));
@@ -7217,6 +7789,7 @@ function backClaim() {
   let gold = 0, gift = null, res = null;
   if (a) { gold = a.gold || 0; S.gold += gold; gift = giftOf(a.miss || 0); if (gift) grant(gift); S.away = null; }
   if (wantAtt) res = attStamp();
+  if (S.habit) S.habit.news = [];
   save(); updateUI(true);
   const btn = $("backGo"); if (btn) { btn.disabled = true; btn.innerHTML = `<span class="act">${res ? "출근 완료!" : "받았어요!"}</span>`; }
   const att = $("backAtt"), cell = att && att.querySelector(".cal-d.today");
@@ -7267,7 +7840,7 @@ function calInfoHTML(ym, sel) {
   const today = dayKey(), cur = ymOf(today), A = S.att || {};
   if (calView.ms >= 0) {
     const i = calView.ms, full = daysIn(ym), t = i < 5 ? ATT_MILES[i].n : full, rw = i < 5 ? ATT_MILES[i].rw : ATT_FULL, n = attMonthN(ym), got = !!(((A.ms || {})[ym] || 0) & (1 << i));
-    return `<b>${i < 5 ? `${t}일 출근 상자` : `개근상 (${full}일)`}</b><span class="rws">${rwHTML(rw)}</span><span class="ci-r">${got ? "받음" : ym !== cur ? "못 받음" : `${Math.max(0, t - n)}일 남음`}</span>`;
+    return `<b>${i < 5 ? `${t}일 출근 상자` : `개근상 (${full}일)`}</b><span class="rws">${rwHTML(rw)}</span><span class="ci-r">${got ? "받음" : ym !== cur ? "지난 달" : `${Math.max(0, t - n)}일 남음`}</span>`;
   }
   if (!sel) {
     const s = monthSum(ym), parts = [`<span class="hb">출근 ${s.n}일</span>`];
@@ -7278,7 +7851,7 @@ function calInfoHTML(ym, sel) {
     return `<b>${+ym.slice(5)}월 합계</b>${parts.join("")}`;
   }
   const r = attRec(sel) || {}, h = habitRaw(sel), isT = sel === today;
-  const st = r.a === 1 ? `<span class="ci-st on">출근</span>` : r.a === 2 ? `<span class="ci-st mk">지각</span>` : isT ? `<span class="ci-st todo">도장 전</span>` : sel > dayKey() ? `<span class="ci-st off">예정</span>` : `<span class="ci-st off">결근</span>`;
+  const st = r.a === 1 ? `<span class="ci-st on">출근</span>` : r.a === 2 ? `<span class="ci-st mk">지각</span>` : r.a === 3 ? `<span class="ci-st sh">보호권</span>` : r.a === 4 ? `<span class="ci-st rs">안식</span>` : isT ? `<span class="ci-st todo">도장 전</span>` : sel > dayKey() ? `<span class="ci-st off">예정</span>` : `<span class="ci-st off">쉰 날</span>`;
   const parts = [];
   if (h.c) parts.push(`<span class="hb"><i class="h-c"></i>말씀 ${h.c === -1 ? "읽음" : h.c + "장"}</span>`);
   if (h.s) parts.push(`<span class="hb"><i class="h-s"></i>공부 ${h.s === -1 ? "25분+" : studyText(h.s)}</span>`);
@@ -7396,6 +7969,7 @@ function buildAttCard() {
 /* ---------- 업무 탭 ---------- */
 (() => {
   buildAttCard();
+  buildHabitCard();
   secTitle("daily", "일일 업무", "매일 자정에 새로 시작");
   DAILY.forEach(d => {
     const row = el("div", "task"); row.innerHTML = `<div><div class="t-name">${d.n}</div><div class="t-sub num"></div><div class="qbar"><i></i></div></div><button class="buy num"></button>`;
@@ -7414,7 +7988,7 @@ function buildAttCard() {
   });
   const allRow = el("div", "task"); allRow.innerHTML = `<div><div class="t-name">오늘 업무 모두 완료</div><div class="t-sub num"><span>보상</span><span class="rws">${rwHTML({ haste: 1, gold2: 1, rage: 1, manna: 20 })}</span></div></div><button class="buy num manna"></button>`;
   const allBtn = allRow.querySelector("button");
-  allBtn.addEventListener("click", () => { if (S.day.claimed.all || !DAILY.every(d => S.day.claimed[d.id])) return; S.day.claimed.all = 1; grant({ haste: 1, gold2: 1, rage: 1, manna: 20 }); celebrate({ ic: "daily", title: "오늘 업무 끝!", sub: `<span class="rws">${rwHTML({ haste: 1, gold2: 1, rage: 1, manna: 20 })}</span>`, tone: "manna", sound: "pass" }); updateUI(true); save(); });
+  allBtn.addEventListener("click", () => { if (S.day.claimed.all || !DAILY.every(d => S.day.claimed[d.id])) return; S.day.claimed.all = 1; grant({ haste: 1, gold2: 1, rage: 1, manna: 20 }); celebrate({ ic: "daily", title: "오늘은 여기까지!", sub: `할 일을 다 했어요 · 남은 시간은 곽준영이 알아서 일해요<br><span class="rws">${rwHTML({ haste: 1, gold2: 1, rage: 1, manna: 20 })}</span>`, tone: "manna", sound: "pass" }); updateUI(true); save(); });
   updaters.daily.push({ ready: () => !S.day.claimed.all && DAILY.every(d => S.day.claimed[d.id]), update() { const ok = DAILY.every(d => S.day.claimed[d.id]); allBtn.disabled = !ok || !!S.day.claimed.all; allBtn.textContent = S.day.claimed.all ? "받음" : ok ? "받기" : "남음"; allRow.classList.toggle("done", !!S.day.claimed.all); } });
   panels.daily.appendChild(allRow);
 
@@ -7479,7 +8053,7 @@ function clockText(t) { const d = new Date(t); return (dayKey(d) === dayKey() ? 
 function cloudApply(data) {
   S = merge(data);
   if (TIME_LIMIT[bossKind(S.floor, S.k)]) S.k = 1;
-  awaySettle(data.t || Date.now(), true);
+  awaySettle(data.t || Date.now(), true); habitGuard();
   mode = "tower"; floats = []; spawnWait = 0; lift = null; intro = null; memSess = null; spawn();
   planCache.k = ""; updateUI(true); save();
 }
@@ -7733,7 +8307,7 @@ function careerTick() {
   if (canPromote() && (S.rankAsk || 0) < rankIdx() + 1) {
     S.rankAsk = rankIdx() + 1;
     const nx = rankName(rankIdx() + 1);
-    setTimeout(() => { toast(`${nx} 승진 심사 대상이에요! 정보 탭 맨 위에서 승진하세요`); say(`${nx} 승진 심사래! 정보 탭에 가 보자`, 4); }, 400);
+    setTimeout(() => { toast(`${nx} 승진 심사 대상이에요! 정보 탭 맨 위에서 승진할 수 있어요`); say(`${nx} 승진 심사래! 정보 탭에 가 보자`, 4); }, 400);
   }
 }
 function promote() {
@@ -8707,15 +9281,16 @@ function legUnlockTry(k) {
 (() => {
   const sum = el("div", "card hero-card");
   sum.innerHTML = `<div class="stat-grid">
+    <div class="stat big"><span>외운 구절</span><b class="num" id="mM"></b></div>
     <div class="stat"><span>오늘 볼 구절</span><b class="num" id="mQ"></b></div>
-    <div class="stat"><span>암송 완료</span><b class="num c-manna" id="mM"></b></div>
     <div class="stat"><span>암송 연속</span><b class="num" id="mS"></b></div></div>
+    <div class="hk-note" id="mmRec" hidden></div>
     <button class="btn manna" id="mGo" style="width:100%"></button>
     <p class="muted" id="mInfo"></p>`;
   addCustom("mem", sum, () => {
     memTryUnlock();
     const q = memQueue(), nw = q.filter(v => !memRec(v.no)).length;
-    $("mQ").textContent = `${q.length}구절`; $("mM").textContent = `${memMastered()}/${VERSES.length}`; $("mS").textContent = `${memStreak()}일`;
+    $("mQ").textContent = `${q.length}구절`; $("mM").textContent = `${memMastered()}/${VERSES.length}`; $("mS").textContent = `${memStreak()}일`; hbNoteInto("mmRec", "mem");
     $("mGo").disabled = !q.length || !!memSess;
     $("mGo").textContent = memSess ? "아래에서 시험 진행 중" : q.length ? `암송 시작 · 복습 ${q.length - nw} + 새 구절 ${nw}` : "오늘 암송 끝! 내일 또 만나요";
     $("mInfo").innerHTML = `하루 10구절씩 ${MEM_DAYS}일 과정, 지금 ${S.mem.sets}일차까지 열렸어요. 통과할 때마다 단계가 올라 다음 복습이 1 → 2 → 4 → 7 → 15 → 30 → 60일 뒤로 미뤄지고, <b>반복해서 통과할수록 보상이 커져요</b> (만나 ${memReward(0).manna} → ${memReward(6).manna}, 월급 ${fmt(memReward(0).gold)}원 → ${fmt(memReward(6).gold)}원, 2단계부터 도장). 시험은 모두 직접 외워 쓰는 방식이에요: 장절 보고 본문 쓰기(초성 힌트) → 힌트 없이 쓰기 → 첫 소절 보고 성경·장·절과 본문 쓰기 → 핵심어만 보고 성경·장·절과 본문 쓰기. 연속 배율 x${memMult().toFixed(2)}`;
@@ -8794,6 +9369,7 @@ function legUnlockTry(k) {
 
 /* ---------- 정보 탭: 백업 ---------- */
 (() => {
+  buildFxCard();
   secTitle("info", "기록 백업", "다른 기기나 앱으로 옮길 때");
   const card = el("div", "card");
   card.innerHTML = `<p class="muted">백업 코드를 복사해 두었다가 새 기기나 홈 화면 앱에서 붙여넣으면 기록이 그대로 옮겨져요. 코드에는 게임 기록만 들어 있어요.</p>
@@ -8820,7 +9396,7 @@ function legUnlockTry(k) {
   $("bkNo").addEventListener("click", () => { pending = null; $("bkRow").hidden = false; $("bkAsk").hidden = true; });
   $("bkYes").addEventListener("click", () => {
     if (!pending) return;
-    pending.t = Date.now(); S = merge(pending); pending = null;
+    pending.t = Date.now(); S = merge(pending); pending = null; habitGuard();
     $("bkRow").hidden = false; $("bkAsk").hidden = true; $("bkIn").value = "";
     mode = "tower"; floats = []; spawnWait = 0; lift = null; intro = null; memSess = null; spawn(); updateUI(true); save();
     toast(`기록을 불러왔어요. ${S.floor}층부터 이어서!`); setTimeout(backMaybeOpen, 900); if (acctGet()) cloudPush(true);
@@ -8855,7 +9431,7 @@ function legUnlockTry(k) {
 function updateUI(force) {
   rollDay();
   if (backReady && (attWatch !== dayKey() || backWant)) { attWatch = dayKey(); backWant = false; backMaybeOpen(); }
-  planDailyCheck(); careerTick();
+  planDailyCheck(); careerTick(); proofSweep(); celebFlush();
   refreshCostumes(true);
   $("gold").textContent = fmt(S.gold);
   const st = stats();
@@ -8875,7 +9451,7 @@ function updateUI(force) {
   TABS.forEach(([id]) => {
     let any = false;
     if (id === "retire") any = retireGain() > 0;
-    else if (id === "bible") any = S.bible.today.length === 0 || planTodayLeft() > 0;
+    else if (id === "bible") any = (S.day.chap || 0) === 0 || planTodayLeft() > 0;
     else if (id === "mem") any = memQueue().length > 0;
     else if (id === "study") any = S.study.today < 25 && !S.study.running;
     else if (id !== "weapon") any = updaters[id].some(r => r.ready());
@@ -8903,6 +9479,10 @@ function merge(d) {
   s.rank = Math.max(0, Math.min(9, Math.floor(+d.rank || 0))); s.rankAsk = Math.max(0, Math.floor(+d.rankAsk || 0));
   s.jobs = Array.isArray(d.jobs) ? d.jobs.filter((x, i, a) => ["sales", "dev", "plan", "hr"].indexOf(x) >= 0 && a.indexOf(x) === i).slice(0, 4) : [];
   s.job = s.jobs.indexOf(d.job) >= 0 ? d.job : (s.jobs[0] || "");
+  hbMigrateBible(s.bible);
+  if (!s.bible.notes.length && s.bible.note && s.bible.noteDay) s.bible.notes.push({ d: s.bible.noteDay, t: s.bible.note });
+  HB_KINDS.forEach(k => { const X = s[k]; if (X && X.rec && !(X.rec.d && X.rec.until && X.rec.need)) X.rec = null; });
+  s.habit = habitMerge(d.habit, s); s.fx = fxMerge(d.fx);
   return s;
 }
 function load() {
@@ -8921,7 +9501,7 @@ setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); b
 function start(data) {
   if (data && data.S) S = merge(data.S); else load();
   cloud.base = S.t;
-  rollDay(); refreshCostumes(false);
+  rollDay(); habitGuard(); refreshCostumes(false);
   let tab = "weapon"; try { tab = localStorage.getItem(SAVE_KEY + "-tab") || "weapon"; } catch (e) {}
   if (!panels[tab]) tab = "weapon";
   bibleBook = 0;

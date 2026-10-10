@@ -102,6 +102,13 @@ rep('celebQ.push(o); if (celebQ.length > 3) celebQ.splice(0, celebQ.length - 3);
     'celebQ.push(o); while (celebQ.length > 3) { const i = celebQ.findIndex(x => !x.keep); celebQ.splice(i >= 0 ? i : 0, 1); }')
 rep('function celebrateLater(o) { const H = habitState(); H.cq = (H.cq || []).concat([o]).slice(-4); celebFlush(); }',
     'function celebrateLater(o) { const H = habitState(); H.cq = (H.cq || []).concat([o]); while (H.cq.length > 4) { const i = H.cq.findIndex(x => !x.keep); H.cq.splice(i >= 0 ? i : 0, 1); } celebFlush(); }')
+# ---- 다음 목표 → 그 카드로 바로 (data-at) ----
+rep('data-go="${r.go}"><span class="gl-k">', 'data-go="${r.go}" data-at="${r.at || ""}"><span class="gl-k">')
+rep('if (b && b.dataset && b.dataset.go && b.dataset.go !== curTab) { sfx("tick"); selectTab(b.dataset.go, true); } });',
+    'if (b && b.dataset && b.dataset.go && b.dataset.go !== curTab) { sfx("tick"); selectTab(b.dataset.go, true); measGoAt(b.dataset.at); } else if (b && b.dataset && b.dataset.at) measGoAt(b.dataset.at); });')
+rep('const k = [pick.k, pick.t, pick.v, pick.s, pick.go].join("|");', 'const k = [pick.k, pick.t, pick.v, pick.s, pick.go, pick.at || ""].join("|");')
+rep('grUI.strip = k; gs.dataset.go = pick.go;', 'grUI.strip = k; gs.dataset.go = pick.go; gs.dataset.at = pick.at || "";')
+rep('const go = gs.dataset.go || "daily"; sfx("tick"); selectTab(go, true);', 'const go = gs.dataset.go || "daily"; sfx("tick"); selectTab(go, true); measGoAt(gs.dataset.at);')
 # ---- 안내·문구 ----
 rep('GR_GUIDE.concat(FEST_GUIDE)', 'GR_GUIDE.concat(FEST_GUIDE).concat(MEAS_GUIDE)')
 rep('  info: ["인사 기록·경제·도감·설정·백업",', '  info: ["인사 기록·말씀 상태판·경제·도감·백업",')

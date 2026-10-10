@@ -113,3 +113,14 @@
 .iip-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
 .iip-days button.on { background: var(--manna); border-color: var(--manna); color: var(--manna-ink); }
 .iip-pv { margin: 0; padding: 7px 9px; border-radius: 8px; background: rgba(0,0,0,.22); font-size: 13.5px; color: #d9e0f0; line-height: 1.5; word-break: keep-all; }
+.iip-pt { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 54px; padding: 8px 10px; border-radius: 10px; border: 1px solid #2c3760; background: #11172a; color: var(--fg); text-align: left; cursor: pointer; font: inherit; }
+.iip-pt > span { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.iip-pt b { font: 400 15px/1.2 var(--display); }
+.iip-pt small { font-size: 12px; color: var(--muted); line-height: 1.4; word-break: keep-all; }
+.iip-pt .ri { flex: none; width: 18px; height: 18px; }
+.iip-pt .sw { flex: none; position: relative; width: 44px; height: 26px; border-radius: 13px; background: #2c3760; transition: background .15s; }
+.iip-pt .sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #c9d2e6; transition: transform .15s; }
+.iip-pt[aria-pressed="true"] { border-color: #8a6a1f; }
+.iip-pt[aria-pressed="true"] .sw { background: var(--manna); }
+.iip-pt[aria-pressed="true"] .sw::after { transform: translateX(18px); background: #fff; }
+.iip-pt:disabled { opacity: .65; cursor: default; }

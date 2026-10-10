@@ -343,12 +343,21 @@ async function notiCall(body) {
   const r = await fetch(`${CLOUD.url}/functions/v1/${NOTI_FN}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   return r.json();
 }
+function notiWhy() {
+  try {
+    if (!cloudCfg() || cloudFramed()) return "알림은 홈 화면에 설치한 앱에서 받아요";
+    if (notiIOS() && !notiStandalone()) return "아이폰은 Safari 공유 → '홈 화면에 추가'한 앱에서 알림을 켤 수 있어요";
+    if (!notiSupported()) return "이 브라우저는 알림을 지원하지 않아요";
+    if (!acctGet() || !cloudOn()) return "알림은 정보 탭에서 아이디로 로그인한 뒤에 켤 수 있어요";
+    if (Notification.permission === "denied") return "알림이 막혀 있어요 · 아이폰 설정 → 알림 → 곽준영키우기에서 허용해 주세요";
+  } catch (e) { return "이 브라우저는 알림을 지원하지 않아요"; }
+  return "";
+}
 function notiMsg(m) { measUI.iiMsg = m; measUI.iiMsgAt = Date.now(); measUI.k.ii = ""; }
 async function notiOn() {
   const a = acctGet(), I = iiState();
-  if (!I.on) { notiMsg("먼저 읽을 때와 곳을 정해 주세요"); return; }
-  if (!a || !cloudOn()) { notiMsg("알림은 아이디로 로그인한 설치 앱에서 켤 수 있어요 (정보 탭 · 아이디 로그인)"); return; }
-  if (!notiSupported()) { notiMsg(notiIOS() && !notiStandalone() ? "아이폰은 Safari 공유 → '홈 화면에 추가'한 앱에서 알림을 켤 수 있어요" : "이 브라우저는 알림을 지원하지 않아요"); return; }
+  if (!I.on) { notiMsg("먼저 읽을 시간을 정해 주세요"); return; }
+  const why = notiWhy(); if (why) { notiMsg(why); return; }
   let perm = Notification.permission;
   if (perm === "default") perm = await Notification.requestPermission();
   if (perm !== "granted") { notiMsg("알림이 허용되지 않았어요 · 설정 → 알림에서 바꿀 수 있어요"); return; }
@@ -411,13 +420,18 @@ function measLadder(rows) {
   try {
     const I = iiState();
     if (iiNear()) rows.unshift({ k: "오늘", t: "약속한 시간이에요", v: iiTimeText(I.t), p: 0, s: `${I.cue ? I.cue + " " : ""}${iiWhere(I.where)}말씀 한 장`, go: "bible", hot: true });
-    if (roffOn()) { const R = roffState(); rows.push({ k: "이번 주", t: "보상 끄기 주간", v: `${dayDiff(R.on.from, dayKey()) + 1}일째`, p: (dayDiff(R.on.from, dayKey()) + 1) / 7, s: "보상 없이 기록만 · 연속과 순례 XP는 그대로", go: "info" }); }
+    if (!I.on && !notiWhy()) rows.push({ k: "시즌", t: "말씀 알림 켜기", v: "", p: 0, s: "읽을 시간을 정하면 그 시각에 알림이 와요 (말씀 탭)", go: "bible", at: ".iip" });
+    if (roffOn()) { const R = roffState(); rows.push({ k: "이번 주", t: "보상 끄기 주간", v: `${dayDiff(R.on.from, dayKey()) + 1}일째`, p: (dayDiff(R.on.from, dayKey()) + 1) / 7, s: "보상 없이 기록만 · 연속과 순례 XP는 그대로", go: "info", at: ".rof" }); }
     const t = dayKey(), dow = new Date().getDay(), wk = dow === 1 ? festMon(addDays(t, -1)) : festMon(t);
-    if ((dow === 0 || dow === 1) && !stewState().w[wk] && measFirst() <= addDays(t, -3)) rows.push({ k: "이번 주", t: "주간 한 줄", v: "", p: 0, s: "이번 주 말씀이 내게 한 일 (정보 탭 · 말씀 상태판)", go: "info" });
-    if (new Date().getDate() <= 7 && !stewState().m[t.slice(0, 7)]) rows.push({ k: "시즌", t: "월간 청지기 점검", v: "", p: 0, s: "자동성·동기 8문항과 다음 달 한 가지 (보상 없이 기록만)", go: "info" });
+    if ((dow === 0 || dow === 1) && !stewState().w[wk] && measFirst() <= addDays(t, -3)) rows.push({ k: "이번 주", t: "주간 한 줄", v: "", p: 0, s: "이번 주 말씀이 내게 한 일 (정보 탭 · 말씀 상태판)", go: "info", at: "#mstWeek" });
+    if (new Date().getDate() <= 7 && !stewState().m[t.slice(0, 7)]) rows.push({ k: "시즌", t: "월간 청지기 점검", v: "", p: 0, s: "자동성·동기 8문항과 다음 달 한 가지 (보상 없이 기록만)", go: "info", at: ".stw" });
   } catch (e) {}
 }
 
+function measGoAt(sel) {
+  if (!sel) return;
+  setTimeout(() => { try { const e = document.querySelector(sel); if (e && e.scrollIntoView) { e.scrollIntoView({ block: "start" }); if (typeof window !== "undefined" && window.scrollBy) window.scrollBy(0, -130); } } catch (er) {} }, 80);
+}
 /* ---------- 정보 탭: 말씀 상태판 ---------- */
 function measPart(id, key, html, force) { const box = $(id); if (!box) return null; if (!force && measUI.k[id] === key) return null; measUI.k[id] = key; box.innerHTML = typeof html === "function" ? html() : html; return box; }
 function buildMeasCards() {
@@ -560,14 +574,15 @@ function roffRender(force) {
 /* ---------- 말씀 탭: 읽을 때와 곳 (실행 의도) ---------- */
 function buildIICard() {
   const card = el("div", "card iip");
-  card.innerHTML = `<div class="pay-h"><span class="pay-ic" id="iiIc"></span><div><b>읽을 때와 곳</b><small>언제·무엇 다음에·어디서 읽을지 정해 두면 실제로 읽게 될 가능성이 커져요</small></div></div><div id="iiBody"></div>`;
+  card.innerHTML = `<div class="pay-h"><span class="pay-ic" id="iiIc"></span><div><b>읽을 때와 곳 · 알림</b><small>언제·어디서 읽을지 정하면 그 시각에 알림이 와요 (아직 안 읽은 날만)</small></div></div><div id="iiBody"></div>`;
   addCustom("bible", card, () => iiRender(false));
   card.addEventListener("input", () => { if (measUI.iiEdit) iiPaint(); });
   card.addEventListener("change", () => { if (measUI.iiEdit) iiPaint(); });
   const ic = $("iiIc"); if (ic) ic.appendChild(pixIcon("bell", 30));
   card.addEventListener("click", e => {
     const b = hbBtn(e, card); if (!b || !b.dataset) return; const a = b.dataset.act, I = iiState();
-    if (a === "edit") { measUI.iiEdit = true; measUI.iiDraft = Object.assign({}, I, { on: 1 }); measUI.k.ii = ""; iiRender(true); }
+    if (a === "edit") { measUI.iiEdit = true; measUI.iiDraft = Object.assign({}, I, { on: 1, wantPush: !I.push && !notiWhy() }); measUI.k.ii = ""; iiRender(true); }
+    else if (a === "pusht") { const d = measUI.iiDraft; if (!d) return; d.wantPush = !d.wantPush; iiPaint(); }
     else if (a === "cancel") { measUI.iiEdit = false; measUI.k.ii = ""; iiRender(true); }
     else if (a === "day") { const d = measUI.iiDraft; if (!d) return; const bit = 1 << +b.dataset.i; d.days = d.days ^ bit; if (!d.days) d.days = bit; iiPaint(); }
     else if (a === "save") iiSave();
@@ -587,15 +602,15 @@ function iiRender(force) {
   notiStatus();
   if (measUI.iiMsg && !measUI.busy && Date.now() - (measUI.iiMsgAt || 0) > 12000) measUI.iiMsg = "";
   const cx = measContext(), ns = measUI.nst, a = acctGet();
-  const key = JSON.stringify([I, cx, ns, measUI.iiMsg, !!a, measUI.busy, dayKey()]);
+  const why = notiWhy(), key = JSON.stringify([I, cx, ns, measUI.iiMsg, !!a, measUI.busy, dayKey(), why]);
   if (!force && measUI.k.ii === key) return; measUI.k.ii = key; measUI.k.iiBody = "view";
   let h = "";
-  if (!I.on) h = `<p class="muted">예: 평일 오전 7:30, 아침 먹고 나서 식탁에서 말씀을 펼쳐요</p><button type="button" class="buy num" data-act="edit"><span class="act">정하기</span></button>`;
+  if (!I.on) h = `<p class="muted">예: 평일 오전 7:30, 아침 먹고 나서 식탁에서 말씀을 펼쳐요</p><div class="iip-n">${ri("bell")}<span>${why || "시간을 정하면서 알림도 함께 켜요"}</span></div><button type="button" class="buy num" data-act="edit"><span class="act">${why ? "시간 정하기" : "시간 정하고 알림 켜기"}</span></button>`;
   else {
     h = `<p class="iip-s">${escapeHtml(iiSentence(I))}${I.t2 ? `<small>두 번째 알림 ${iiTimeText(I.t2)}</small>` : ""}</p>`;
     h += `<div class="iip-m">${cx.v == null ? "계획한 시간 ±1시간 안에 읽은 날을 세고 있어요" : `최근 14일 계획한 시간 ±1시간 안에 읽은 날 <b class="num">${cx.ok}/${cx.n}</b>`}</div>`;
     const paused = I.push && ns && ns.paused, lost = I.push && ns && ns.ok && ns.subs === 0;
-    h += `<div class="iip-n${I.push && !lost ? " on" : ""}">${ri("bell")}<span>${!I.push ? "알림 꺼짐" : lost ? "이 계정에 연결된 기기가 없어요 · 알림 켜기를 다시 눌러 주세요" : paused ? "알림이 쉬는 중이에요 · 알림 온 날을 세 번 그냥 넘겨서 잠시 멈췄어요" : `알림 켜짐 · ${iiTimeText(I.t)}${I.t2 ? `·${iiTimeText(I.t2)}` : ""} · 아직 안 읽은 날만 · 세 번 그냥 넘기면 쉬어요`}</span></div>`;
+    h += `<div class="iip-n${I.push && !lost ? " on" : ""}">${ri("bell")}<span>${!I.push ? `알림 꺼짐 · ${why || "알림 켜기를 누르면 정한 시각에 와요"}` : lost ? "이 계정에 연결된 기기가 없어요 · 알림 켜기를 다시 눌러 주세요" : paused ? "알림이 쉬는 중이에요 · 알림 온 날을 세 번 그냥 넘겨서 잠시 멈췄어요" : `알림 켜짐 · ${iiTimeText(I.t)}${I.t2 ? `·${iiTimeText(I.t2)}` : ""} · 아직 안 읽은 날만 · 세 번 그냥 넘기면 쉬어요`}</span></div>`;
     h += `<div class="row-btns iip-b"><button type="button" class="btn" data-act="edit">고치기</button>${!I.push || lost ? `<button type="button" class="btn manna" data-act="non"${measUI.busy ? " disabled" : ""}>알림 켜기</button>${lost ? `<button type="button" class="btn" data-act="noff">끄기</button>` : ""}` : paused ? `<button type="button" class="btn manna" data-act="nres">다시 켜기</button><button type="button" class="btn" data-act="noff">끄기</button>` : `<button type="button" class="btn" data-act="ntest"${measUI.busy ? " disabled" : ""}>시험 알림</button><button type="button" class="btn" data-act="noff">알림 끄기</button>`}</div>`;
   }
   if (measUI.iiMsg) h += `<p class="iip-msg">${escapeHtml(measUI.iiMsg)}</p>`;
@@ -609,6 +624,7 @@ function iiFormHTML() {
     <div class="iip-days">${II_DAYS.map((x, i) => `<button type="button" data-act="day" data-i="${i}">${x}</button>`).join("")}</div>
     <label><span>두 번째 알림 <small>선택 · 아직 안 읽었으면</small></span><input type="time" id="iiT2" value="${d.t2 || ""}"></label>
     <p class="iip-pv" id="iiPv"></p>
+    ${iiState().push ? `<p class="iip-pv">알림 켜짐 · 바꾼 시각으로 알려 드려요</p>` : (() => { const why = notiWhy(); return `<button type="button" class="iip-pt" data-act="pusht" aria-pressed="${d.wantPush ? "true" : "false"}"${why ? " disabled" : ""}>${ri("bell")}<span><b>이 시각에 알림 받기</b><small>${escapeHtml(why || "아직 안 읽은 날만 · 하루 2번까지 · 세 번 그냥 넘기면 쉬어요")}</small></span><em class="sw"></em></button>`; })()}
     <div class="row-btns"><button type="button" class="btn" data-act="cancel">닫기</button>${iiState().on ? `<button type="button" class="btn" data-act="off">지우기</button>` : ""}<button type="button" class="buy num" data-act="save"><span class="act">정하기</span></button></div></div>`;
 }
 function iiDraftRead() { const d = measUI.iiDraft; if (!d) return null; d.t = measHM(($("iiT") || {}).value) || d.t; d.t2 = measHM(($("iiT2") || {}).value); d.cue = measTxt(($("iiCue") || {}).value, 20); d.where = measTxt(($("iiWhere") || {}).value, 20); if (d.t2 === d.t) d.t2 = ""; return d; }
@@ -616,6 +632,7 @@ function iiPaint() {
   const d = iiDraftRead(), box = $("iiBody"); if (!d || !box) return;
   box.querySelectorAll(".iip-days button").forEach(b => { const on = !!(d.days & (1 << +b.dataset.i)); b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
   const pv = $("iiPv"); if (pv) pv.textContent = iiSentence(d);
+  const pt = box.querySelector(".iip-pt"); if (pt) pt.setAttribute("aria-pressed", d.wantPush ? "true" : "false");
 }
 function iiSave() {
   const d = iiDraftRead(); if (!d) return;
@@ -626,4 +643,5 @@ function iiSave() {
   measUI.iiEdit = false; measUI.iiDraft = null; measUI.k.ii = "";
   toast(`정했어요 · ${iiSentence(I)}`);
   updateUI(true); save(); if (I.push && acctGet() && cloudOn()) cloudPush(true);
+  if (d.wantPush && !I.push) notiOn();
 }

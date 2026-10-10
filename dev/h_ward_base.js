@@ -74,6 +74,9 @@ const S = () => JSON.parse(store.get("yageun-knight-v3") || "{}");
 const clickAll = (sel) => qsa(body, sel).forEach(b => b.click());
 const E = c => window.__ev(c);
 const txt = id => ($(id) ? $(id).textContent.replace(/\s+/g, " ").trim() : "(none)");
-const tabs = () => qsa(body, "#tabs button"); const T = n => tabs().find(t => t.textContent.startsWith(n));
+const tabs = () => qsa(body, "#tabs button");
+// v34부터 아래 메뉴는 묶음 5개: 화면 이름으로 부르면 머리띠 작은 메뉴 버튼(data-t)을 먼저 찾음
+const TAB_ID = { "무기": "weapon", "말씀": "bible", "암송": "mem", "공부": "study", "동료": "pet", "옷장": "suit", "정장": "suit", "보물": "treasure", "업무": "daily", "정보": "info", "퇴사": "retire", "설정": "set" };
+const T = n => { const id = TAB_ID[n], s = id && qsa(body, "#thSeg button").find(b => b.attrs["data-t"] === id); return s || tabs().find(t => t.textContent.startsWith(n)); };
 run(1500); if ($("backGo") && !$("back").hidden) $("backGo").click(); run(300);
 const out = (...a) => console.log(...a);

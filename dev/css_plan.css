@@ -1,0 +1,77 @@
+/* 말씀 읽기 플랜 */
+.plancard { padding: 11px; }
+.pl-body { display: flex; flex-direction: column; gap: 10px; }
+.pl-hd { display: flex; align-items: center; gap: 10px; }
+.pl-ic { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px; border: 2px solid var(--edge); background: radial-gradient(circle at 50% 36%, #2f5a48, #10221a 78%); box-shadow: inset 0 0 0 1px #4f9a73, 0 2px 0 rgba(0,0,0,.4); }
+.pl-hd > div { flex: 1; min-width: 0; }
+.pl-hd b { display: block; font: 400 19px/1.15 var(--display); color: var(--manna); text-shadow: 0 2px 0 var(--edge); }
+.pl-hd small { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--muted); word-break: keep-all; }
+.pl-day { flex: none; text-align: right; font: 13px/1.2 var(--display); color: var(--muted); white-space: nowrap; }
+.pl-day b { font: 400 26px/1 var(--display); color: var(--fg); text-shadow: 0 2px 0 var(--edge); }
+.pl-prog { display: flex; flex-direction: column; gap: 5px; }
+.pl-bar { position: relative; margin: 0 2px; }
+.pl-bar .prog > i { background-color: var(--manna); }
+.pl-tick { position: absolute; top: -4px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: #3a4566; box-shadow: 0 0 0 1px var(--edge); z-index: 1; }
+.pl-tick.on { background: var(--gold); box-shadow: 0 0 0 1px var(--edge), 0 0 6px rgba(255,213,74,.6); }
+.pl-pinfo { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12px; color: var(--muted); }
+.pl-pinfo b { font: 400 14px var(--display); color: var(--fg); }
+.pl-pinfo .warn { color: #ffb36b; } .pl-pinfo .good { color: var(--good); }
+.pl-today { display: flex; flex-direction: column; gap: 8px; padding: 9px 10px 10px; border-radius: 11px; background: #0e1426; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #26304f, inset 0 3px 6px rgba(0,0,0,.3); }
+.pl-today.done { box-shadow: inset 0 0 0 1px rgba(168,240,198,.45), inset 0 3px 6px rgba(0,0,0,.3); }
+.pl-th { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.pl-th b { font: 400 15px var(--display); }
+.pl-today.done .pl-th b { color: var(--manna); }
+.pl-th span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.pl-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.pl-bk { font: 13.5px var(--display); color: #c3cbe0; margin: 0 1px 0 5px; }
+.pl-nw { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.pl-nw:first-child .pl-bk { margin-left: 0; }
+.pl-ch { min-width: 38px; height: 34px; padding: 0 8px; border-radius: 8px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: 15px var(--display); cursor: pointer; }
+.pl-ch.done { background: linear-gradient(180deg, #d2fbe2, #a8f0c6); color: var(--manna-ink); box-shadow: inset 0 0 0 1px #effff5, 0 2px 0 #4f9a73; }
+.pl-ch.next { box-shadow: inset 0 0 0 2px var(--manna), 0 0 8px rgba(168,240,198,.35), 0 2px 0 rgba(0,0,0,.35); }
+.pl-ch:active { transform: translateY(1px); }
+.pl-rest { font-size: 13px; color: var(--muted); }
+.plancard .row-btns { display: flex; gap: 8px; }
+.plancard .row-btns .buy { flex: 1; }
+.plancard .row-btns .buy.ghost { flex: 0 0 auto; min-width: 96px; }
+.pl-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.pl-next { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; min-width: 0; }
+.pl-link { flex: none; border: 0; background: none; padding: 4px 2px; font: 12px var(--body); color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.pl-link.armed { color: #ff8a7a; }
+.pl-opts { display: flex; flex-direction: column; gap: 6px; }
+.pl-opt { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 1px 9px; padding: 8px 10px; border-radius: 11px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: inherit; text-align: left; cursor: pointer; }
+.pl-opt::before { content: ""; grid-row: 1 / span 2; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #46548c; background: #0b101e; box-sizing: border-box; }
+.pl-opt.on { background: linear-gradient(180deg, #24433a, #17292a); box-shadow: inset 0 0 0 2px var(--manna), 0 0 10px rgba(168,240,198,.16), 0 2px 0 rgba(0,0,0,.35); }
+.pl-opt.on::before { border-color: var(--manna); background: radial-gradient(circle, var(--manna) 0 4px, #0b101e 4.5px); }
+.pl-opt:disabled { opacity: .45; cursor: default; }
+.pl-opt b { font: 400 16px/1.2 var(--display); }
+.pl-opt small { grid-column: 2; font-size: 12px; color: var(--muted); }
+.pl-opt .pl-m { grid-column: 3; grid-row: 1 / span 2; font: 13px var(--display); color: var(--manna); white-space: nowrap; }
+.pl-pre { display: flex; align-items: center; gap: 8px; padding: 2px; border: 0; background: none; color: #c3cbe0; font: 12.5px/1.35 var(--body); text-align: left; cursor: pointer; }
+.pl-pre .ck { flex: none; width: 20px; height: 20px; border-radius: 6px; border: 2px solid #46548c; background: #0b101e; }
+.pl-pre.on .ck { border-color: var(--manna); background: var(--manna) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2.2 5.2 4.2 7.2 7.8 2.9' fill='none' stroke='%230b2a1a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px 13px no-repeat; }
+.pl-fin { padding: 10px 12px; border-radius: 11px; background: rgba(201,166,255,.1); box-shadow: inset 0 0 0 1px rgba(201,166,255,.35); font-size: 13px; line-height: 1.5; }
+/* 출근부에 잇기: 보라 책갈피 = 그날 플랜 분량을 그날 다 읽음 */
+.cal-d.pl::after { content: ""; position: absolute; right: 4px; top: -2px; z-index: 2; width: 7px; height: 11px; background: var(--rare); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%); }
+.cal-info .hb i.h-p { width: 8px; height: 10px; border-radius: 0; background: var(--rare); box-shadow: none; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%); }
+.cal-info .hb.pl { white-space: normal; }
+.ba-pl { display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: var(--muted); }
+.ba-pl > span:first-child { flex: none; white-space: nowrap; }
+.ba-pl b { flex: 1; min-width: 0; font: 400 14px/1.35 var(--display); color: var(--manna); word-break: keep-all; }
+.ba-pl .pl-min { flex: none; white-space: nowrap; }
+.cal-d.fut:not(:disabled) { cursor: pointer; }
+/* 진짜 도전 플랜 */
+.pl-grp { display: flex; align-items: baseline; gap: 8px; margin: 6px 2px 0; font: 15px var(--display); color: #ff8a7a; text-shadow: 0 2px 0 var(--edge); }
+.pl-grp small { font: 12px var(--body); color: var(--muted); }
+.pl-hard { display: inline-block; margin-right: 6px; padding: 1px 6px 0; border-radius: 6px; background: #ff5a4a; color: #fff; font: 12px/1.35 var(--display); font-style: normal; vertical-align: 2px; text-shadow: 0 1px 0 rgba(0,0,0,.35); box-shadow: 0 2px 0 #a32f25; }
+.pl-opt.hard .pl-m { color: #ffb36b; }
+.pl-opt.hard.on { background: linear-gradient(180deg, #4a2a2a, #2a1a22); box-shadow: inset 0 0 0 2px #ff7a6b, 0 0 10px rgba(255,122,107,.2), 0 2px 0 rgba(0,0,0,.35); }
+.pl-opt.hard.on::before { border-color: #ff7a6b; background: radial-gradient(circle, #ff7a6b 0 4px, #0b101e 4.5px); }
+.pl-books { display: flex; flex-direction: column; gap: 6px; }
+.pl-brow { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 9px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: inherit; text-align: left; cursor: pointer; }
+.pl-brow b { font: 400 14.5px var(--display); white-space: nowrap; }
+.pl-brow .num { font: 13px var(--display); color: var(--muted); }
+.pl-bbar { height: 8px; border-radius: 4px; background: #070b14; box-shadow: inset 0 0 0 1px #262f4d; overflow: hidden; }
+.pl-bbar i { display: block; height: 100%; background: var(--manna); border-radius: 4px; }
+.pl-brow.done { box-shadow: inset 0 0 0 1px rgba(168,240,198,.5), 0 2px 0 rgba(0,0,0,.35); }
+.pl-brow.done b, .pl-brow.done .num { color: var(--manna); }

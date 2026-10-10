@@ -1,0 +1,75 @@
+/* ===== v29 성장 길잡이: 다음 목표 한 줄·사다리, 퇴사 게이지, 탭 차례로 열기, 안내 다시 보기, 이번 주 경제 ===== */
+.goal-strip { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 7px 10px 7px 8px; border-radius: 12px; border: 2px solid var(--edge); background: linear-gradient(180deg, #1c2440, #151b30); box-shadow: inset 0 0 0 1px #2c3657, 0 3px 0 rgba(0,0,0,.35); color: var(--fg); font-family: var(--body); text-align: left; cursor: pointer; }
+.goal-strip .gs-k { font: 400 12.5px/1 var(--display); color: var(--gold-ink); background: var(--gold); border-radius: 999px; padding: 5px 9px; white-space: nowrap; }
+.goal-strip .gs-t { font-size: 13.5px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.goal-strip .gs-v { font: 400 13.5px/1 var(--display); color: var(--manna); white-space: nowrap; }
+.goal-strip .gs-v:empty { display: none; }
+.goal-strip .gs-go { color: var(--muted); font: 400 20px/1 var(--display); }
+.goal-strip.hot { border-color: #8a6a1f; box-shadow: inset 0 0 0 1px rgba(255,213,74,.6), 0 0 12px rgba(255,213,74,.25); }
+
+.gl-rows { display: flex; flex-direction: column; gap: 6px; }
+.gl-row { display: grid; grid-template-columns: 50px minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 8px; row-gap: 6px; align-items: center; width: 100%; text-align: left; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; color: var(--fg); font-family: var(--body); cursor: pointer; min-height: 44px; }
+.gl-k { font: 400 12.5px/1 var(--display); color: var(--gold); grid-row: 1 / 3; align-self: start; padding-top: 3px; white-space: nowrap; }
+.gl-t { min-width: 0; }
+.gl-t b { display: block; font: 400 15.5px/1.2 var(--display); }
+.gl-t small { display: block; font-size: 12.5px; color: var(--muted); line-height: 1.4; margin-top: 2px; word-break: keep-all; }
+.gl-v { font: 400 14px/1 var(--display); color: var(--manna); white-space: nowrap; align-self: start; padding-top: 2px; }
+.gl-bar { grid-column: 2 / 4; display: block; height: 6px; border-radius: 3px; background: #0a0f1b; overflow: hidden; }
+.gl-bar b { display: block; height: 100%; background: var(--manna); border-radius: 3px; }
+.gl-row.done { opacity: .62; }
+.gl-row.done .gl-bar b { background: #4f9a73; }
+.gl-row.hot { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,213,74,.25); }
+.gl-row.hot .gl-v { color: var(--gold); }
+.gl-foot { font-size: 12px; }
+
+.rg { display: flex; flex-direction: column; gap: 6px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.rg-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.rg-top b { font: 400 16px/1.2 var(--display); }
+.rg-top > span { font-size: 12.5px; color: var(--muted); }
+.rg-pct { font: 400 24px/1 var(--display) !important; color: var(--muted); }
+.rg.ok .rg-pct, .rg.ok .rg-top b { color: var(--good); }
+.rg.hot .rg-pct, .rg.hot .rg-top b { color: var(--gold); }
+.rg-bar { position: relative; height: 14px; border-radius: 7px; background: #070b14; border: 2px solid var(--edge); overflow: hidden; }
+.rg-bar > i { display: block; height: 100%; background: #5d6a8e; }
+.rg.ok .rg-bar > i { background: var(--good); }
+.rg.hot .rg-bar > i { background: linear-gradient(90deg, var(--good), var(--gold)); }
+.rg-bar em { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,.6); }
+.rg-bar .m50 { left: 16.67%; } .rg-bar .m200 { left: 66.67%; }
+.rg-lbl { position: relative; height: 14px; font-size: 11px; color: var(--muted); }
+.rg-lbl span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.rg-lbl span:first-child { left: 0; transform: none; }
+.rg-lbl .l50 { left: 16.67%; } .rg-lbl .l200 { left: 66.67%; }
+.rg small { font-size: 12.5px; color: var(--muted); line-height: 1.5; word-break: keep-all; }
+
+.tabs button[hidden] { display: none !important; }
+.tabs button.fresh { animation: tabFresh 1.2s ease-in-out 3; }
+@keyframes tabFresh { 50% { box-shadow: inset 0 0 0 2px var(--gold), 0 0 14px rgba(255,213,74,.5); } }
+@media (prefers-reduced-motion: reduce) { .tabs button.fresh { animation: none; box-shadow: inset 0 0 0 2px var(--gold); } }
+
+.mg { gap: 4px; }
+.mg-row { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 9px; align-items: center; padding: 7px 2px; border-bottom: 1px solid var(--line); }
+.mg-row b { font: 400 15px/1.2 var(--display); }
+.mg-row small { display: block; font-size: 12.5px; color: var(--muted); line-height: 1.45; word-break: keep-all; }
+.mg-row.lock { opacity: .62; }
+.mg-sys { display: flex; flex-direction: column; margin-top: 4px; }
+.gd { border-bottom: 1px solid var(--line); }
+.gd summary { cursor: pointer; padding: 12px 2px; font: 400 15px/1.2 var(--display); }
+.gd p { margin: 0 2px 10px; font-size: 13px; color: #b9c3dc; line-height: 1.6; word-break: keep-all; }
+
+.eco-tb { display: flex; flex-direction: column; gap: 4px; }
+.eco-h, .eco-r { display: grid; grid-template-columns: minmax(0, 1.3fr) 1fr 1fr 1fr; gap: 6px; align-items: center; }
+.eco-h { font-size: 11.5px; color: var(--muted); padding: 0 8px; }
+.eco-h span { text-align: right; } .eco-h span:first-child { text-align: left; }
+.eco-r { background: var(--panel-2); border-radius: 8px; padding: 7px 8px; }
+.eco-r b { font: 400 14px/1.1 var(--display); text-align: right; }
+.eco-r .eco-i { color: var(--good); } .eco-r .eco-o { color: #ff9a8c; }
+.eco-n { font: 400 14px/1 var(--display); display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+.eco-r small { grid-column: 1 / -1; font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+.eco-al { display: flex; flex-direction: column; gap: 6px; }
+.eco-al:empty { display: none; }
+.eco-go { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; width: 100%; min-height: 44px; text-align: left; background: #2a2614; border: 1px solid #5f5530; color: #f1e6bd; border-radius: 9px; padding: 8px 10px; font-family: var(--body); font-size: 13px; line-height: 1.4; cursor: pointer; }
+.eco-go b { font: 400 13px/1 var(--display); color: var(--gold); white-space: nowrap; }
+.eco-nx { font-size: 13px; color: #b9c3dc; line-height: 1.6; }
+.eco-nx:empty { display: none; }
+.eco-nx b { font: 400 14px/1.2 var(--display); color: var(--fg); display: block; margin-bottom: 2px; }
+.chip[hidden] { display: none !important; }

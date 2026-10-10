@@ -1,0 +1,80 @@
+/* 승진 · 직무 */
+.cvw { position: relative; }
+.jobsk { position: absolute; left: 7px; top: calc(10% + 6px); z-index: 3; display: flex; flex-direction: column; gap: 9px; pointer-events: none; }
+.jobsk[hidden] { display: none; }
+.jsk { pointer-events: auto; position: relative; width: 46px; height: 46px; padding: 0; border-radius: 50%; border: 2px solid var(--edge); display: grid; place-items: center; cursor: pointer; background: radial-gradient(circle at 50% 35%, #2f3a66, #111830 75%); box-shadow: inset 0 0 0 2px var(--jc, #ffd54a), 0 3px 0 rgba(0,0,0,.55); }
+.jsk canvas { pointer-events: none; }
+.jsk.ready { box-shadow: inset 0 0 0 2px var(--jc, #ffd54a), 0 0 14px var(--jc, #ffd54a), 0 3px 0 rgba(0,0,0,.55); animation: jskReady 1.6s ease-in-out infinite; }
+.jsk.on { box-shadow: inset 0 0 0 3px #ffffff, 0 0 18px var(--jc, #ffd54a), 0 3px 0 rgba(0,0,0,.55); }
+.jsk:active { transform: translateY(2px); }
+.jsk-n { position: absolute; left: calc(100% + 6px); top: 50%; transform: translateY(-50%); white-space: nowrap; font: 11.5px/1 var(--display); font-style: normal; color: #fff; padding: 4px 7px 3px; border-radius: 7px; background: rgba(8,11,22,.74); box-shadow: inset 0 0 0 1px var(--jc, #ffd54a); pointer-events: none; }
+.jsk:not(.ready) .jsk-n { opacity: .7; }
+@keyframes jskReady { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+.career { display: flex; flex-direction: column; gap: 11px; padding: 12px; }
+.cr-biz { display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border-radius: 12px; border: 2px solid var(--edge); background: linear-gradient(135deg, #fbfcfe, #dfe5f0); color: #1b1f2a; box-shadow: inset 6px 0 0 var(--jc, #ffd54a), 0 3px 0 rgba(0,0,0,.4); }
+.cr-ic { flex: none; width: 54px; height: 54px; border-radius: 12px; display: grid; place-items: center; background: radial-gradient(circle at 50% 35%, #2f3a66, #141a33 75%); box-shadow: inset 0 0 0 2px var(--jc, #ffd54a), 0 2px 0 rgba(0,0,0,.35); }
+.cr-who { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.cr-who small { font-size: 12px; line-height: 1.3; color: #4a5470; word-break: keep-all; }
+.cr-who b { display: flex; align-items: center; gap: 7px; font: 400 23px/1.1 var(--display); color: #141826; }
+.cr-rank { display: inline-block; padding: 3px 9px 2px; border-radius: 8px; background: #141826; color: var(--jc, #ffd54a); font-size: 18px; line-height: 1.1; }
+.cr-who em { font-size: 12px; font-style: normal; color: #3a4258; word-break: keep-all; }
+.cr-next { display: flex; flex-direction: column; gap: 7px; }
+.cr-nh, .cr-jh { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.cr-nh b, .cr-jh b { font: 400 16px var(--display); }
+.cr-nh span, .cr-jh span { font-size: 12px; color: var(--muted); text-align: right; }
+.cr-reqs { display: flex; flex-direction: column; gap: 6px; }
+.cr-req { display: grid; grid-template-columns: 66px 1fr auto; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.cr-req[hidden] { display: none; }
+.cr-req b { font: 13.5px var(--display); color: var(--fg); white-space: nowrap; }
+.cr-req.ok span { color: var(--good); }
+.cr-req.ok b { color: var(--good); }
+.cr-bar { display: block; height: 10px; border-radius: 5px; background: #070b14; box-shadow: inset 0 0 0 1px #262f4d; overflow: hidden; }
+.cr-bar > i { display: block; height: 100%; width: 0; border-radius: 5px; background: linear-gradient(90deg, #ffb13b, #ffd54a); }
+.cr-req.ok .cr-bar > i { background: linear-gradient(90deg, #4fbf7f, #a8f0c6); }
+.cr-go { width: 100%; min-height: 50px; }
+.cr-go[hidden] { display: none; }
+.cr-note { margin: 0; font-size: 12px; color: var(--rare); }
+.cr-note[hidden] { display: none; }
+.cr-jobs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.cr-job { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; padding: 7px 2px 6px; border-radius: 11px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: inherit; cursor: pointer; }
+.cr-job b { font: 400 14px/1.15 var(--display); white-space: nowrap; }
+.cr-job small { font-size: 10.5px; line-height: 1.2; color: var(--muted); white-space: nowrap; }
+.cr-job.on { box-shadow: inset 0 0 0 2px var(--jc), 0 0 12px rgba(0,0,0,.3), 0 2px 0 rgba(0,0,0,.35); }
+.cr-job.on small, .cr-job.own small { color: var(--jc); }
+.cr-job.lock canvas { filter: grayscale(1) brightness(.55); }
+.cr-job.lock b, .cr-job.lock small { opacity: .6; }
+.cr-job.pick { box-shadow: inset 0 0 0 2px var(--gold), 0 0 10px rgba(255,213,74,.35), 0 2px 0 rgba(0,0,0,.35); animation: jskReady 1.6s ease-in-out infinite; }
+.cr-job.pick small { color: var(--gold); }
+.cr-job.sel { background: linear-gradient(180deg, #2c3762, #1d2547); }
+.cr-job:active { transform: translateY(1px); }
+.cr-det { display: flex; flex-direction: column; gap: 6px; padding: 10px 11px; border-radius: 11px; background: #0e1426; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #26304f, inset 3px 0 0 var(--jc, #ffd54a); font-size: 12.5px; line-height: 1.45; }
+.cr-det h4 { margin: 0; font: 400 16px var(--display); color: var(--jc, #ffd54a); }
+.cr-det h4 small { font: 12px var(--body); color: var(--muted); margin-left: 4px; }
+.cr-dl { margin: 0; color: #c3cbe0; word-break: keep-all; }
+.cr-dl span { display: inline-block; min-width: 0; margin-right: 6px; padding: 0 6px; border-radius: 5px; background: rgba(255,255,255,.08); font: 12.5px var(--display); color: var(--fg); }
+.cr-lock { margin: 0; color: var(--muted); font-size: 12px; }
+.cr-use { width: 100%; margin-top: 2px; }
+
+.jp { position: fixed; inset: 0; z-index: 58; display: grid; place-items: center; padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(12px + env(safe-area-inset-bottom, 0px)); background: radial-gradient(circle at 50% 38%, rgba(12,16,30,.66), rgba(5,8,16,.92)); touch-action: none; overscroll-behavior: contain; }
+.jp[hidden] { display: none; }
+.jp-card { width: min(380px, 100%); max-height: 100%; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 18px; border: 2px solid var(--edge); background: linear-gradient(180deg, #262f52, #141a2f); box-shadow: inset 0 0 0 2px #c9a43a, inset 0 0 0 4px rgba(10,14,26,.55), 0 18px 44px rgba(0,0,0,.65); scrollbar-width: none; }
+.jp-card::-webkit-scrollbar { display: none; }
+.jp.go .jp-card { animation: celebPop .5s cubic-bezier(.2, 1.4, .4, 1); }
+.jp-hd b { display: block; font: 400 23px/1.15 var(--display); color: var(--gold); text-shadow: 0 2px 0 var(--edge); }
+.jp-hd small { display: block; margin-top: 4px; font-size: 12.5px; line-height: 1.4; color: #b7c0da; word-break: keep-all; }
+.jp-list { display: flex; flex-direction: column; gap: 7px; }
+.jp-opt { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 10px; align-items: start; text-align: left; padding: 10px; border-radius: 12px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: inherit; cursor: pointer; }
+.jp-opt.on { background: linear-gradient(180deg, #2c3762, #1d2547); box-shadow: inset 0 0 0 2px var(--jc), 0 0 16px rgba(0,0,0,.35), 0 2px 0 rgba(0,0,0,.35); }
+.jp-ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: #0e1426; box-shadow: inset 0 0 0 2px var(--jc); }
+.jp-tx { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.jp-tx b { font: 400 19px/1.15 var(--display); color: var(--jc); }
+.jp-tx small { font-size: 12px; line-height: 1.35; color: #b7c0da; word-break: keep-all; }
+.jp-pas { display: flex; flex-wrap: wrap; gap: 4px; }
+.jp-pas i { font-style: normal; font-size: 11.5px; line-height: 1.35; padding: 1px 6px; border-radius: 6px; background: rgba(255,255,255,.08); color: var(--fg); }
+.jp-sk { display: flex; flex-direction: column; gap: 2px; font-size: 11.5px; line-height: 1.35; color: var(--muted); }
+.jp-sk em { font-style: normal; word-break: keep-all; }
+.jp-sk u { text-decoration: none; margin-right: 3px; font: 13px var(--display); color: var(--fg); }
+.jp-go { width: 100%; min-height: 52px; }
+@media (prefers-reduced-motion: reduce) { .jsk.ready, .cr-job.pick { animation: none !important; } }
+.celeb-ic canvas.biz { -webkit-mask: none; mask: none; border-radius: 8px; }

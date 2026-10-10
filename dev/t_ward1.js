@@ -1,0 +1,11 @@
+run(1200);
+const r = E("(() => { const st = stats(); return { dps: st.dps, atk: st.atk, aps: st.aps, crit: st.crit, critMul: st.critMul, boss: st.bossBonus, gold: goldMult(), stamp: stampMult(), read: readMult(), ore: oreMult(), floor: S.floor, best: S.bestFloor, vault: vaultTickets(), bt: bossTimeOf(2), mem: memMult() }; })()");
+out("after ", JSON.stringify(r));
+const w = E("JSON.stringify({ own: S.ward.own, eq: S.ward.eq, look: S.ward.look, seen: S.ward.seen && S.ward.seen.length, nv: S.ward.nv, coll: S.ward.coll, ops: S.ward.ops, mig: S.ward.mig })");
+out("ward", w);
+out("ore/silver", E("S.ore + ' / ' + S.silver"));
+out("W", E("JSON.stringify(wardStats())"));
+out("cq", E("JSON.stringify((habitState().cq||[]).map(o => o.title + ' | ' + (o.wid||o.ic)))"));
+out("celebT", txt("celebT"), "|", txt("celebS"));
+out("look", E("JSON.stringify({ top: heroLook().top, aura: heroLook().aura, wfx: heroLook().wfx, title: heroLook().title && heroLook().title.id, map0: heroLook().map.slice(0,4) })"));
+out("errors", errors.length, errors.slice(0, 5).join("\n"));

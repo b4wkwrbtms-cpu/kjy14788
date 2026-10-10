@@ -1,0 +1,24 @@
+/* 아이디 로그인 */
+.acct { gap: 10px; }
+.acct[hidden] { display: none; }
+.ac-hd { display: flex; align-items: center; gap: 10px; }
+.ac-hd > div { min-width: 0; }
+.ac-ic { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px; border: 2px solid var(--edge); background: radial-gradient(circle at 50% 36%, #2c3f6a, #10182c 78%); box-shadow: inset 0 0 0 1px #3a5a8c, 0 2px 0 rgba(0,0,0,.4); }
+.ac-hd b { display: block; font: 400 19px/1.15 var(--display); color: var(--ore); text-shadow: 0 2px 0 var(--edge); }
+.ac-hd small { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--muted); word-break: keep-all; }
+.ac-form { display: flex; flex-direction: column; gap: 8px; }
+.ac-form[hidden], #acIn[hidden], #acAsk[hidden] { display: none; }
+.acct input[type=text], .acct input[type=password] { width: 100%; font: 16px var(--body); color: var(--fg); padding: 9px 11px; background: #0c1121; border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px #2c3657, inset 0 3px 6px rgba(0,0,0,.35); border-radius: 10px; }
+.acct input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--ore), inset 0 3px 6px rgba(0,0,0,.35); }
+.ac-err { margin: 0; font-size: 12.5px; color: #ff8a7a; }
+.ac-err[hidden] { display: none; }
+#acAsk { display: flex; flex-direction: column; gap: 7px; }
+#acAsk p { margin: 0; }
+.ac-pick { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 9px 12px; border-radius: 11px; border: 2px solid var(--edge); background: linear-gradient(180deg, #212a4a, #182039); box-shadow: inset 0 0 0 1px #2c3657, 0 2px 0 rgba(0,0,0,.35); color: var(--fg); font: inherit; text-align: left; cursor: pointer; }
+.ac-pick b { font: 400 16px var(--display); color: var(--ore); }
+.ac-pick small { font-size: 12px; line-height: 1.4; color: var(--muted); }
+.ac-pick:active { transform: translateY(1px); }
+.back-link { align-self: center; border: 0; background: none; padding: 2px 4px; margin-top: -3px; color: #b7c0da; font: 13px var(--body); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.back-link[hidden] { display: none; }
+.ac-note { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); word-break: keep-all; }
+.ac-note[hidden] { display: none; }

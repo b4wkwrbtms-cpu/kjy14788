@@ -1,0 +1,3677 @@
+[
+{
+"d": 1,
+"t": "Playing to Wait: A Taxonomy of Idle Games",
+"a": "Alharthi, Alsaedi, Toups, Tanenbaum, Hammer (2018, CHI)",
+"k": "논문",
+"u": "https://par.nsf.gov/biblio/10061230",
+"ds": [
+1,
+2,
+10
+],
+"urls": [
+"https://par.nsf.gov/biblio/10061230"
+],
+"n": 1
+},
+{
+"d": 1,
+"t": "Interpassivity and the Joy of Delegated Play in Idle Games",
+"a": "Sonia Fizek (2018, ToDiGRA)",
+"k": "논문",
+"u": "https://todigra.org/index.php/todigra/article/view/1754",
+"ds": [
+1
+],
+"urls": [
+"https://todigra.org/index.php/todigra/article/view/1754"
+],
+"n": 2
+},
+{
+"d": 1,
+"t": "\"It Started as a Joke\": On the Design of Idle Games",
+"a": "Spiel, Alharthi, Cen, Hammer, Nacke, Toups, Tanenbaum (2019, CHI PLAY)",
+"k": "논문",
+"u": "https://par.nsf.gov/biblio/10174274",
+"ds": [
+1,
+2,
+10
+],
+"urls": [
+"https://par.nsf.gov/biblio/10174274"
+],
+"n": 3
+},
+{
+"d": 1,
+"t": "Busy doing nothing? What do players do in idle games?",
+"a": "Cutting, Gundry, Cairns (2019, IJHCS)",
+"k": "논문",
+"u": "https://eprints.whiterose.ac.uk/id/eprint/135461/",
+"ds": [
+1
+],
+"urls": [
+"https://eprints.whiterose.ac.uk/id/eprint/135461/"
+],
+"n": 4
+},
+{
+"d": 1,
+"t": "Progress Wars: Idle Games and the Demarcation of \"Real\" Games",
+"a": "Sebastian Deterding (2016, DiGRA/FDG)",
+"k": "논문",
+"u": "https://dl.digra.org/index.php/dl/article/view/851",
+"ds": [
+1
+],
+"urls": [
+"https://dl.digra.org/index.php/dl/article/view/851"
+],
+"n": 5
+},
+{
+"d": 1,
+"t": "Idle Games: A Cozy Genre Turned Exploitative",
+"a": "Justin Buergi (2024, Replay)",
+"k": "논문",
+"u": "https://www.czasopisma.uni.lodz.pl/Replay/article/view/23588",
+"ds": [
+1,
+2
+],
+"urls": [
+"https://www.czasopisma.uni.lodz.pl/Replay/article/view/23588"
+],
+"n": 6
+},
+{
+"d": 1,
+"t": "Quiet Play: How Desktop Moyu Games Carve Out Enjoyment Inside the Workplace",
+"a": "Guo, Tse, Wang (2026, DiGRA)",
+"k": "논문",
+"u": "https://dl.digra.org/index.php/dl/article/download/2977/2961/3020",
+"ds": [
+1
+],
+"urls": [
+"https://dl.digra.org/index.php/dl/article/download/2977/2961/3020"
+],
+"n": 7
+},
+{
+"d": 1,
+"t": "Towards Understanding Waiting in Video Games",
+"a": "Tepponen, Bhatnagar, Hämäläinen (2024, CHI PLAY Companion)",
+"k": "논문",
+"u": "https://research.aalto.fi/en/publications/towards-understanding-waiting-in-video-games/",
+"ds": [
+1
+],
+"urls": [
+"https://research.aalto.fi/en/publications/towards-understanding-waiting-in-video-games/"
+],
+"n": 8
+},
+{
+"d": 1,
+"t": "Playing at a Distance: Borderlands of Video Game Aesthetic",
+"a": "Sonia Fizek (2022, MIT Press)",
+"k": "도서",
+"u": "https://directory.doabooks.org/handle/20.500.12854/93891",
+"ds": [
+1
+],
+"urls": [
+"https://directory.doabooks.org/handle/20.500.12854/93891"
+],
+"n": 9
+},
+{
+"d": 1,
+"t": "Интерактивность и интерпассивность геймеров в видеоигровых практиках",
+"a": "M. A. Podval'nyi (2018, Вестник РГГУ)",
+"k": "논문",
+"u": "https://history.rsuh.ru/jour/article/download/590/567",
+"ds": [
+1
+],
+"urls": [
+"https://history.rsuh.ru/jour/article/download/590/567"
+],
+"n": 10
+},
+{
+"d": 1,
+"t": "The Math of Idle Games, Part I",
+"a": "Anthony Pecorella / Kongregate (2016)",
+"k": "블로그",
+"u": "https://www.gamedeveloper.com/design/the-math-of-idle-games-part-i",
+"ds": [
+1,
+2
+],
+"urls": [
+"https://www.gamedeveloper.com/design/the-math-of-idle-games-part-i"
+],
+"n": 11
+},
+{
+"d": 1,
+"t": "The Math of Idle Games, Part II",
+"a": "Anthony Pecorella (2016)",
+"k": "블로그",
+"u": "https://www.gamedeveloper.com/game-platforms/the-math-of-idle-games-part-ii",
+"ds": [
+1
+],
+"urls": [
+"https://www.gamedeveloper.com/game-platforms/the-math-of-idle-games-part-ii"
+],
+"n": 12
+},
+{
+"d": 1,
+"t": "The Math of Idle Games, Part III",
+"a": "Anthony Pecorella (2017)",
+"k": "블로그",
+"u": "https://www.gamedeveloper.com/design/the-math-of-idle-games-part-iii",
+"ds": [
+1,
+2,
+8
+],
+"urls": [
+"https://www.gamedeveloper.com/design/the-math-of-idle-games-part-iii",
+"https://blog.kongregate.com/the-math-of-idle-games-part-iii/"
+],
+"n": 13
+},
+{
+"d": 1,
+"t": "Idle Games: The Mechanics and Monetization of Self-Playing Games",
+"a": "Anthony Pecorella (2015, GDC)",
+"k": "강연",
+"u": "https://gdcvault.com/play/1022065/Idle-Games-The-Mechanics-and",
+"ds": [
+1,
+2,
+5,
+10
+],
+"urls": [
+"https://gdcvault.com/play/1022065/Idle-Games-The-Mechanics-and",
+"https://www.gdcvault.com/play/1022065/Idle-Games-The-Mechanics-and"
+],
+"n": 14
+},
+{
+"d": 1,
+"t": "The rise of games you (mostly) don't play",
+"a": "Simon Parkin (2015, Game Developer)",
+"k": "기사",
+"u": "https://www.gamedeveloper.com/design/the-rise-of-games-you-mostly-don-t-play",
+"ds": [
+1,
+2
+],
+"urls": [
+"https://www.gamedeveloper.com/design/the-rise-of-games-you-mostly-don-t-play"
+],
+"n": 15
+},
+{
+"d": 1,
+"t": "Quest for Progress: The Math and Design of Idle Games",
+"a": "Anthony Pecorella (2016, GDC Europe)",
+"k": "강연",
+"u": "https://www.slideshare.net/slideshow/quest-for-progress-gdc-europe-2016/65405507",
+"ds": [
+1,
+2,
+10
+],
+"urls": [
+"https://www.slideshare.net/slideshow/quest-for-progress-gdc-europe-2016/65405507"
+],
+"n": 16
+},
+{
+"d": 1,
+"t": "A Brief Look at the Idle Games Genre",
+"a": "Kongregate Developers Blog (2016)",
+"k": "블로그",
+"u": "https://blog.kongregate.com/idle-games/",
+"ds": [
+1
+],
+"urls": [
+"https://blog.kongregate.com/idle-games/"
+],
+"n": 17
+},
+{
+"d": 1,
+"t": "The recipe behind Cookie Clicker",
+"a": "Tino van der Kraan (2013, Game Developer)",
+"k": "블로그",
+"u": "https://www.gamedeveloper.com/design/the-recipe-behind-cookie-clicker",
+"ds": [
+1
+],
+"urls": [
+"https://www.gamedeveloper.com/design/the-recipe-behind-cookie-clicker"
+],
+"n": 18
+},
+{
+"d": 1,
+"t": "How to Make an Idle Game: Everything You Need to Know About Incremental Mobile Games",
+"a": "David Hartery / GameAnalytics (2025)",
+"k": "블로그",
+"u": "https://www.gameanalytics.com/blog/how-to-make-an-idle-game-adjust",
+"ds": [
+1
+],
+"urls": [
+"https://www.gameanalytics.com/blog/how-to-make-an-idle-game-adjust"
+],
+"n": 19
+},
+{
+"d": 1,
+"t": "Why Egg, Inc is the new gold standard for idle game monetization",
+"a": "PocketGamer.biz (2016)",
+"k": "분석",
+"u": "https://www.pocketgamer.biz/egg-inc-idle-games-gold-standard/",
+"ds": [
+1
+],
+"urls": [
+"https://www.pocketgamer.biz/egg-inc-idle-games-gold-standard/"
+],
+"n": 20
+},
+{
+"d": 1,
+"t": "Playsaurus ditches Clicker Heroes 2 microtransactions due to ethical concerns over addictions",
+"a": "MCV/DEVELOP (2017)",
+"k": "기사",
+"u": "https://www.mcvuk.com/development-news/playsaurus-ditches-clicker-heroes-2-microtransactions-due-to-ethical-concerns-over-addictions/",
+"ds": [
+1
+],
+"urls": [
+"https://www.mcvuk.com/development-news/playsaurus-ditches-clicker-heroes-2-microtransactions-due-to-ethical-concerns-over-addictions/"
+],
+"n": 21
+},
+{
+"d": 1,
+"t": "50 Years of Text Games — 2017: Universal Paperclips",
+"a": "Aaron A. Reed (2021)",
+"k": "에세이",
+"u": "https://if50.substack.com/p/2017-universal-paperclips",
+"ds": [
+1,
+10
+],
+"urls": [
+"https://if50.substack.com/p/2017-universal-paperclips"
+],
+"n": 22
+},
+{
+"d": 1,
+"t": "This clicker game lets you take over the world with paper clips",
+"a": "GamesBeat (2017)",
+"k": "인터뷰",
+"u": "https://gamesbeat.com/this-clicker-game-lets-you-take-over-the-world-with-paper-clips/",
+"ds": [
+1
+],
+"urls": [
+"https://gamesbeat.com/this-clicker-game-lets-you-take-over-the-world-with-paper-clips/"
+],
+"n": 23
+},
+{
+"d": 1,
+"t": "Beholding the Beauty of Games With Frank Lantz",
+"a": "Hey Good Game (2024)",
+"k": "인터뷰",
+"u": "https://www.hey.gg/blog/frank-lantz",
+"ds": [
+1
+],
+"urls": [
+"https://www.hey.gg/blog/frank-lantz"
+],
+"n": 24
+},
+{
+"d": 1,
+"t": "Realm Grinder beginner's guide",
+"a": "Lauren Morton / PC Gamer (2017)",
+"k": "가이드",
+"u": "https://www.pcgamer.com/realm-grinder-guide/",
+"ds": [
+1
+],
+"urls": [
+"https://www.pcgamer.com/realm-grinder-guide/"
+],
+"n": 25
+},
+{
+"d": 1,
+"t": "break_infinity.js",
+"a": "Patashu (GitHub)",
+"k": "기술 문서",
+"u": "https://github.com/Patashu/break_infinity.js",
+"ds": [
+1
+],
+"urls": [
+"https://github.com/Patashu/break_infinity.js"
+],
+"n": 26
+},
+{
+"d": 2,
+"t": "Level 7: Advancement, Progression and Pacing",
+"a": "Ian Schreiber (2010, Game Balance Concepts)",
+"k": "블로그",
+"u": "https://gamebalanceconcepts.wordpress.com/2010/08/18/level-7-advancement-progression-and-pacing/",
+"ds": [
+2
+],
+"urls": [
+"https://gamebalanceconcepts.wordpress.com/2010/08/18/level-7-advancement-progression-and-pacing/"
+],
+"n": 27
+},
+{
+"d": 2,
+"t": "Level 2: Numeric Relationships",
+"a": "Ian Schreiber (2010)",
+"k": "블로그",
+"u": "https://gamebalanceconcepts.wordpress.com/2010/07/14/level-2-numeric-relationships/",
+"ds": [
+2
+],
+"urls": [
+"https://gamebalanceconcepts.wordpress.com/2010/07/14/level-2-numeric-relationships/"
+],
+"n": 28
+},
+{
+"d": 2,
+"t": "Level 3: Transitive Mechanics and Cost Curves",
+"a": "Ian Schreiber (2010)",
+"k": "블로그",
+"u": "https://gamebalanceconcepts.wordpress.com/2010/07/21/level-3-transitive-mechanics-and-cost-curves/",
+"ds": [
+2
+],
+"urls": [
+"https://gamebalanceconcepts.wordpress.com/2010/07/21/level-3-transitive-mechanics-and-cost-curves/"
+],
+"n": 29
+},
+{
+"d": 2,
+"t": "Game Balance",
+"a": "Ian Schreiber & Brenda Romero (2021, CRC Press)",
+"k": "도서",
+"u": "https://www.routledge.com/Game-Balance/Schreiber-Romero/p/book/9781498799577",
+"ds": [
+2
+],
+"urls": [
+"https://www.routledge.com/Game-Balance/Schreiber-Romero/p/book/9781498799577"
+],
+"n": 30
+},
+{
+"d": 2,
+"t": "Game Balancing – A Semantical Analysis",
+"a": "Becker & Görlich (2019, CEUR-WS)",
+"k": "논문",
+"u": "https://ceur-ws.org/Vol-2486/icaiw_vgameedu_2.pdf",
+"ds": [
+2
+],
+"urls": [
+"https://ceur-ws.org/Vol-2486/icaiw_vgameedu_2.pdf"
+],
+"n": 31
+},
+{
+"d": 2,
+"t": "Game Balance (CS247 lecture slides)",
+"a": "Christina Wodtke (2019)",
+"k": "강의",
+"u": "https://eleganthack.com/wp-content/uploads/2019/06/GameBalance.pdf",
+"ds": [
+2
+],
+"urls": [
+"https://eleganthack.com/wp-content/uploads/2019/06/GameBalance.pdf"
+],
+"n": 32
+},
+{
+"d": 2,
+"t": "Game Mechanics: Advanced Game Design",
+"a": "Ernest Adams & Joris Dormans (2012, New Riders)",
+"k": "도서",
+"u": "https://research.hva.nl/en/publications/game-mechanics-advanced-game-design/",
+"ds": [
+2
+],
+"urls": [
+"https://research.hva.nl/en/publications/game-mechanics-advanced-game-design/"
+],
+"n": 33
+},
+{
+"d": 2,
+"t": "Simulating Mechanics to Study Emergence in Games",
+"a": "Joris Dormans (2011, AIIDE Workshop)",
+"k": "논문",
+"u": "https://ojs.aaai.org/index.php/AIIDE/article/view/12477",
+"ds": [
+2
+],
+"urls": [
+"https://ojs.aaai.org/index.php/AIIDE/article/view/12477"
+],
+"n": 34
+},
+{
+"d": 2,
+"t": "Engineering Emergence: Applied Theory for Game Design",
+"a": "Joris Dormans (2012, Univ. of Amsterdam)",
+"k": "학위논문",
+"u": "https://eprints.illc.uva.nl/id/eprint/2118/",
+"ds": [
+2
+],
+"urls": [
+"https://eprints.illc.uva.nl/id/eprint/2118/"
+],
+"n": 35
+},
+{
+"d": 2,
+"t": "Value chains – A method for creating and balancing faucet-and-drain game economies",
+"a": "Daniel Cook / Lostgarden (2021)",
+"k": "블로그",
+"u": "https://lostgarden.com/2021/12/12/value-chains/",
+"ds": [
+2
+],
+"urls": [
+"https://lostgarden.com/2021/12/12/value-chains/"
+],
+"n": 36
+},
+{
+"d": 2,
+"t": "Virtual Economies: Design and Analysis",
+"a": "Lehdonvirta & Castronova (2014, MIT Press)",
+"k": "도서",
+"u": "https://mitpressbookstore.mit.edu/book/9780262535069",
+"ds": [
+2,
+8
+],
+"urls": [
+"https://mitpressbookstore.mit.edu/book/9780262535069",
+"https://www.readings.com.au/product/9780262535069"
+],
+"n": 37
+},
+{
+"d": 2,
+"t": "Virtual Worlds: A First-Hand Account of Market and Society on the Cyberian Frontier",
+"a": "Edward Castronova (2001, CESifo WP 618)",
+"k": "논문",
+"u": "https://ideas.repec.org/p/ces/ceswps/_618.html",
+"ds": [
+2
+],
+"urls": [
+"https://ideas.repec.org/p/ces/ceswps/_618.html"
+],
+"n": 38
+},
+{
+"d": 2,
+"t": "The Economy Framework That Explains Axie Infinity's Collapse (And Prevents Yours)",
+"a": "Yu-kai Chou (2026)",
+"k": "블로그",
+"u": "https://yukaichou.com/gamification-study/economy-design-framework-axie-infinity-collapse/",
+"ds": [
+2
+],
+"urls": [
+"https://yukaichou.com/gamification-study/economy-design-framework-axie-infinity-collapse/"
+],
+"n": 39
+},
+{
+"d": 2,
+"t": "Game Economics 101",
+"a": "Eyal Dror Consulting (2022)",
+"k": "블로그",
+"u": "https://eyaldror.com/blog/game-economics",
+"ds": [
+2
+],
+"urls": [
+"https://eyaldror.com/blog/game-economics"
+],
+"n": 40
+},
+{
+"d": 2,
+"t": "The F-Words of MMORPGs: Faucets",
+"a": "GameBanshee (2011)",
+"k": "기사",
+"u": "https://www.gamebanshee.com/9x94",
+"ds": [
+2
+],
+"urls": [
+"https://www.gamebanshee.com/9x94"
+],
+"n": 41
+},
+{
+"d": 2,
+"t": "Monthly Economic Report – November 2024",
+"a": "CCP / EVE Online (2024)",
+"k": "보고서",
+"u": "https://www.eveonline.com/news/view/monthly-economic-report-november-2024",
+"ds": [
+2
+],
+"urls": [
+"https://www.eveonline.com/news/view/monthly-economic-report-november-2024"
+],
+"n": 42
+},
+{
+"d": 2,
+"t": "Virtual Deflation",
+"a": "Felix Salmon (2007)",
+"k": "블로그",
+"u": "https://www.felixsalmon.com/2007/11/virtual-deflation/",
+"ds": [
+2
+],
+"urls": [
+"https://www.felixsalmon.com/2007/11/virtual-deflation/"
+],
+"n": 43
+},
+{
+"d": 2,
+"t": "What Can Virtual-World Economists Tell Us about Real-World Economies?",
+"a": "Scientific American (2007)",
+"k": "기사",
+"u": "https://www.scientificamerican.com/article/virtual-world-economists-on-real-economies/",
+"ds": [
+2
+],
+"urls": [
+"https://www.scientificamerican.com/article/virtual-world-economists-on-real-economies/"
+],
+"n": 44
+},
+{
+"d": 2,
+"t": "Loops and Arcs",
+"a": "Daniel Cook / Lostgarden (2012)",
+"k": "블로그",
+"u": "https://lostgarden.com/2012/04/30/loops-and-arcs",
+"ds": [
+2,
+8
+],
+"urls": [
+"https://lostgarden.com/2012/04/30/loops-and-arcs",
+"https://lostgarden.com/2012/04/30/loops-and-arcs/"
+],
+"n": 45
+},
+{
+"d": 2,
+"t": "The Chemistry of Game Design",
+"a": "Daniel Cook (2007, Gamasutra)",
+"k": "기사",
+"u": "https://www.gamedeveloper.com/design/the-chemistry-of-game-design",
+"ds": [
+2
+],
+"urls": [
+"https://www.gamedeveloper.com/design/the-chemistry-of-game-design"
+],
+"n": 46
+},
+{
+"d": 2,
+"t": "The 'immense responsibility' of creating value for players",
+"a": "Leigh Alexander (2012, Dan Cook 강연 보도)",
+"k": "기사",
+"u": "https://gamedeveloper.com/design/the-immense-responsibility-of-creating-value-for-players",
+"ds": [
+2
+],
+"urls": [
+"https://gamedeveloper.com/design/the-immense-responsibility-of-creating-value-for-players"
+],
+"n": 47
+},
+{
+"d": 2,
+"t": "How Fast Should Characters Level Up?",
+"a": "GameBanshee (2012)",
+"k": "기사",
+"u": "https://gamebanshee.com/kkkyh",
+"ds": [
+2
+],
+"urls": [
+"https://gamebanshee.com/kkkyh"
+],
+"n": 48
+},
+{
+"d": 3,
+"t": "A meta-analytic review of experiments examining the effects of extrinsic rewards on intrinsic motivation",
+"a": "Deci, Koestner & Ryan (1999, Psychological Bulletin)",
+"k": "논문",
+"u": "https://depts.washington.edu/techdocs/papers/deciExtrinsicRewardsAndIntrinsicMotivation99.pdf",
+"ds": [
+3,
+4
+],
+"urls": [
+"https://depts.washington.edu/techdocs/papers/deciExtrinsicRewardsAndIntrinsicMotivation99.pdf"
+],
+"n": 49
+},
+{
+"d": 3,
+"t": "Reinforcement, reward, and intrinsic motivation: A meta-analysis",
+"a": "Cameron & Pierce (1994, Review of Educational Research)",
+"k": "논문",
+"u": "https://journals.sagepub.com/doi/10.3102/00346543064003363",
+"ds": [
+3
+],
+"urls": [
+"https://journals.sagepub.com/doi/10.3102/00346543064003363"
+],
+"n": 50
+},
+{
+"d": 3,
+"t": "Control and information in the intrapersonal sphere: An extension of cognitive evaluation theory",
+"a": "Richard M. Ryan (1982, JPSP)",
+"k": "논문",
+"u": "https://pure.ewha.ac.kr/en/publications/control-and-information-in-the-intrapersonal-sphere-an-extension-/",
+"ds": [
+3
+],
+"urls": [
+"https://pure.ewha.ac.kr/en/publications/control-and-information-in-the-intrapersonal-sphere-an-extension-/"
+],
+"n": 51
+},
+{
+"d": 3,
+"t": "Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being",
+"a": "Ryan & Deci (2000, American Psychologist)",
+"k": "논문",
+"u": "https://pubmed.ncbi.nlm.nih.gov/11392867/",
+"ds": [
+3
+],
+"urls": [
+"https://pubmed.ncbi.nlm.nih.gov/11392867/"
+],
+"n": 52
+},
+{
+"d": 3,
+"t": "Intrinsic Versus Extrinsic Goal Contents in Self-Determination Theory",
+"a": "Vansteenkiste, Lens & Deci (2006, Educational Psychologist)",
+"k": "논문",
+"u": "https://mlc-wels.edu/wp-content/uploads/2019/05/VanSteenkiste.Lens_.Deci_.Article.pdf",
+"ds": [
+3
+],
+"urls": [
+"https://mlc-wels.edu/wp-content/uploads/2019/05/VanSteenkiste.Lens_.Deci_.Article.pdf"
+],
+"n": 53
+},
+{
+"d": 3,
+"t": "The Motivational Pull of Video Games: A Self-Determination Theory Approach",
+"a": "Ryan, Rigby & Przybylski (2006, Motivation and Emotion)",
+"k": "논문",
+"u": "https://www.rochester.edu/warner/lida/wp-content/uploads/2022/11/02bfe513dd59366750000000.pdf",
+"ds": [
+3,
+4,
+8
+],
+"urls": [
+"https://www.rochester.edu/warner/lida/wp-content/uploads/2022/11/02bfe513dd59366750000000.pdf",
+"https://selfdeterminationtheory.org/SDT/documents/2006_RyanRigbyPrzybylski_MandE.pdf"
+],
+"n": 54
+},
+{
+"d": 3,
+"t": "A Motivational Model of Video Game Engagement",
+"a": "Przybylski, Rigby & Ryan (2010, Review of General Psychology)",
+"k": "논문",
+"u": "https://journals.sagepub.com/doi/10.1037/a0019440",
+"ds": [
+3
+],
+"urls": [
+"https://journals.sagepub.com/doi/10.1037/a0019440"
+],
+"n": 55
+},
+{
+"d": 3,
+"t": "Toward a theory of intrinsically motivating instruction",
+"a": "Thomas Malone (1981, Cognitive Science)",
+"k": "논문",
+"u": "https://cdgr.ucsb.edu/database/toward-theory-intrinsically-motivating-instruction",
+"ds": [
+3
+],
+"urls": [
+"https://cdgr.ucsb.edu/database/toward-theory-intrinsically-motivating-instruction"
+],
+"n": 56
+},
+{
+"d": 3,
+"t": "GameFlow: a model for evaluating player enjoyment in games",
+"a": "Sweetser & Wyeth (2005, Computers in Entertainment)",
+"k": "논문",
+"u": "https://ntnu.no/wiki/download/attachments/112986425/GameFlow.pdf?api=v2",
+"ds": [
+3
+],
+"urls": [
+"https://ntnu.no/wiki/download/attachments/112986425/GameFlow.pdf?api=v2"
+],
+"n": 57
+},
+{
+"d": 3,
+"t": "Flow in games (and everything else)",
+"a": "Jenova Chen (2007, Communications of the ACM)",
+"k": "에세이",
+"u": "https://khoury.northeastern.edu/~lieber/courses/csu670/f08/materials/p31-chen-flow-in-games.pdf",
+"ds": [
+3
+],
+"urls": [
+"https://khoury.northeastern.edu/~lieber/courses/csu670/f08/materials/p31-chen-flow-in-games.pdf"
+],
+"n": 58
+},
+{
+"d": 3,
+"t": "MDA: A Formal Approach to Game Design and Game Research",
+"a": "Hunicke, LeBlanc & Zubek (2004)",
+"k": "논문",
+"u": "https://users.cs.northwestern.edu/~hunicke/MDA.pdf",
+"ds": [
+3
+],
+"urls": [
+"https://users.cs.northwestern.edu/~hunicke/MDA.pdf"
+],
+"n": 59
+},
+{
+"d": 3,
+"t": "A Theory of Fun for Game Design",
+"a": "Raph Koster (2004/2013)",
+"k": "도서",
+"u": "https://www.thevideogamelibrary.org/book/a-theory-of-fun-for-game-design",
+"ds": [
+3
+],
+"urls": [
+"https://www.thevideogamelibrary.org/book/a-theory-of-fun-for-game-design"
+],
+"n": 60
+},
+{
+"d": 3,
+"t": "How We Developed The Gamer Motivation Profile v2",
+"a": "Nick Yee / Quantic Foundry (2015)",
+"k": "블로그",
+"u": "https://quanticfoundry.com/2015/07/20/how-we-developed-the-gamer-motivation-profile-v2/",
+"ds": [
+3
+],
+"urls": [
+"https://quanticfoundry.com/2015/07/20/how-we-developed-the-gamer-motivation-profile-v2/"
+],
+"n": 61
+},
+{
+"d": 3,
+"t": "The Octalysis Framework: 8 Core Drives of Gamification",
+"a": "Yu-kai Chou (2012)",
+"k": "블로그",
+"u": "https://yukaichou.com/gamification-examples/octalysis-complete-gamification-framework/",
+"ds": [
+3
+],
+"urls": [
+"https://yukaichou.com/gamification-examples/octalysis-complete-gamification-framework/"
+],
+"n": 62
+},
+{
+"d": 3,
+"t": "Building a practically useful theory of goal setting and task motivation: A 35-year odyssey",
+"a": "Locke & Latham (2002, American Psychologist)",
+"k": "논문",
+"u": "https://goal-lab.psych.umn.edu/orgpsych/2020/readings/5.%20Motivation/Locke%20&%20Latham%20(2002).pdf",
+"ds": [
+3
+],
+"urls": [
+"https://goal-lab.psych.umn.edu/orgpsych/2020/readings/5.%20Motivation/Locke%20&%20Latham%20(2002).pdf"
+],
+"n": 63
+},
+{
+"d": 3,
+"t": "The Goal-Gradient Hypothesis Resurrected",
+"a": "Kivetz, Urminsky & Zheng (2006, JMR)",
+"k": "논문",
+"u": "https://business.columbia.edu/sites/default/files-efs/pubfiles/1200/goalgradient.pdf",
+"ds": [
+3
+],
+"urls": [
+"https://business.columbia.edu/sites/default/files-efs/pubfiles/1200/goalgradient.pdf"
+],
+"n": 64
+},
+{
+"d": 3,
+"t": "The Endowed Progress Effect: How Artificial Advancement Increases Effort",
+"a": "Nunes & Drèze (2006, JCR)",
+"k": "논문",
+"u": "https://ideas.repec.org/a/oup/jconrs/v32y2006i4p504-512.html",
+"ds": [
+3
+],
+"urls": [
+"https://ideas.repec.org/a/oup/jconrs/v32y2006i4p504-512.html"
+],
+"n": 65
+},
+{
+"d": 3,
+"t": "Towards understanding the effects of individual gamification elements on intrinsic motivation and performance",
+"a": "Mekler et al. (2017, Computers in Human Behavior)",
+"k": "논문",
+"u": "https://glassmanlab.seas.harvard.edu/annotated_works/mekler17.pdf",
+"ds": [
+3
+],
+"urls": [
+"https://glassmanlab.seas.harvard.edu/annotated_works/mekler17.pdf"
+],
+"n": 66
+},
+{
+"d": 3,
+"t": "How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction",
+"a": "Sailer, Hense, Mayr & Mandl (2017, CHB)",
+"k": "논문",
+"u": "https://epub.ub.uni-muenchen.de/53202",
+"ds": [
+3,
+6
+],
+"urls": [
+"https://epub.ub.uni-muenchen.de/53202"
+],
+"n": 67
+},
+{
+"d": 3,
+"t": "Assessing the effects of gamification in the classroom: A longitudinal study",
+"a": "Hanus & Fox (2015, Computers & Education)",
+"k": "논문",
+"u": "https://doi.org/10.1016/j.compedu.2014.08.019",
+"ds": [
+3
+],
+"urls": [
+"https://doi.org/10.1016/j.compedu.2014.08.019"
+],
+"n": 68
+},
+{
+"d": 3,
+"t": "Counterproductive effects of gamification: An analysis on the example of the gamified task manager Habitica",
+"a": "Diefenbach & Müssig (2019, IJHCS)",
+"k": "논문",
+"u": "https://epub.ub.uni-muenchen.de/77668",
+"ds": [
+3,
+10
+],
+"urls": [
+"https://epub.ub.uni-muenchen.de/77668"
+],
+"n": 69
+},
+{
+"d": 3,
+"t": "How are habits formed: Modelling habit formation in the real world",
+"a": "Lally, van Jaarsveld, Potts & Wardle (2010, EJSP)",
+"k": "논문",
+"u": "https://doi.org/10.1002/ejsp.674",
+"ds": [
+3,
+4,
+10
+],
+"urls": [
+"https://doi.org/10.1002/ejsp.674",
+"https://openresearch.surrey.ac.uk/esploro/outputs/99783513802346"
+],
+"n": 70
+},
+{
+"d": 3,
+"t": "On or Off Track: How (Broken) Streaks Affect Consumer Decisions",
+"a": "Silverman & Barasch (2023, JCR)",
+"k": "논문",
+"u": "https://www.colorado.edu/business/faculty-research/2023/04/19/or-track-how-broken-streaks-affect-consumer-decisions",
+"ds": [
+3,
+4
+],
+"urls": [
+"https://www.colorado.edu/business/faculty-research/2023/04/19/or-track-how-broken-streaks-affect-consumer-decisions"
+],
+"n": 71
+},
+{
+"d": 3,
+"t": "The habit-building research behind your Duolingo streak",
+"a": "Osman Mansur / Duolingo (2022)",
+"k": "블로그",
+"u": "https://blog.duolingo.com/how-duolingo-streak-builds-habit",
+"ds": [
+3,
+4,
+6,
+10
+],
+"urls": [
+"https://blog.duolingo.com/how-duolingo-streak-builds-habit"
+],
+"n": 72
+},
+{
+"d": 3,
+"t": "Holding the Hunger Games Hostage at the Gym: An Evaluation of Temptation Bundling",
+"a": "Milkman, Minson & Volpp (2014, Management Science)",
+"k": "논문",
+"u": "https://repository.upenn.edu/oid_papers/150",
+"ds": [
+3,
+4
+],
+"urls": [
+"https://repository.upenn.edu/oid_papers/150",
+"https://ideas.repec.org/a/inm/ormnsc/v60y2014i2p283-299.html"
+],
+"n": 73
+},
+{
+"d": 3,
+"t": "To Achieve Long-Term Goals, Focus on the Short Term",
+"a": "Chicago Booth Review (2016, Woolley & Fishbach)",
+"k": "기사",
+"u": "https://www.chicagobooth.edu/review/achieve-long-term-goals-focus-short-term",
+"ds": [
+3
+],
+"urls": [
+"https://www.chicagobooth.edu/review/achieve-long-term-goals-focus-short-term"
+],
+"n": 74
+},
+{
+"d": 3,
+"t": "Two Types of Religious Internalization and Their Relations to Religious Orientations and Mental Health",
+"a": "Ryan, Rigby & King (1993, JPSP)",
+"k": "논문",
+"u": "https://pure.ewha.ac.kr/en/publications/two-types-of-religious-internalization-and-their-relations-to-rel/",
+"ds": [
+3
+],
+"urls": [
+"https://pure.ewha.ac.kr/en/publications/two-types-of-religious-internalization-and-their-relations-to-rel/"
+],
+"n": 75
+},
+{
+"d": 3,
+"t": "Understanding the psychology of religion: The contribution of Self Determination Theory",
+"a": "Brambilla & Assor (2020)",
+"k": "도서 장",
+"u": "https://selfdeterminationtheory.org/wp-content/uploads/2020/10/2020_BrambillaAssor_UnderstandingReligion.pdf",
+"ds": [
+3
+],
+"urls": [
+"https://selfdeterminationtheory.org/wp-content/uploads/2020/10/2020_BrambillaAssor_UnderstandingReligion.pdf"
+],
+"n": 76
+},
+{
+"d": 3,
+"t": "Design and the digital Bible: persuasive technology and religious reading",
+"a": "Tim Hutchings (2017, Journal of Contemporary Religion)",
+"k": "논문",
+"u": "https://nottingham-repository.worktribe.com/output/1411478/design-and-the-digital-bible-persuasive-technology-and-religious-reading",
+"ds": [
+3
+],
+"urls": [
+"https://nottingham-repository.worktribe.com/output/1411478/design-and-the-digital-bible-persuasive-technology-and-religious-reading"
+],
+"n": 77
+},
+{
+"d": 3,
+"t": "The Evolution of Bible Engagement: A Research Journey (2004–2023)",
+"a": "Arnie Cole / Back to the Bible (2026)",
+"k": "보고서",
+"u": "https://www.backtothebible.org/post/the-evolution-of-bible-engagement-a-research-journey-2004-2023",
+"ds": [
+3,
+4
+],
+"urls": [
+"https://www.backtothebible.org/post/the-evolution-of-bible-engagement-a-research-journey-2004-2023"
+],
+"n": 78
+},
+{
+"d": 3,
+"t": "Why We Play Games: Four Keys to More Emotion Without Story",
+"a": "Nicole Lazzaro / XEODesign (2004)",
+"k": "백서",
+"u": "https://killscreen.com/content/files/xeodesign_whyweplaygames.pdf",
+"ds": [
+3
+],
+"urls": [
+"https://killscreen.com/content/files/xeodesign_whyweplaygames.pdf"
+],
+"n": 79
+},
+{
+"d": 3,
+"t": "Glued to Games: How Video Games Draw Us In and Hold Us Spellbound",
+"a": "Rigby & Ryan (2011)",
+"k": "도서",
+"u": "https://acuresearchbank.acu.edu.au/item/8qy6y/glued-to-games-how-video-games-draw-us-in-and-hold-us-spellbound",
+"ds": [
+3
+],
+"urls": [
+"https://acuresearchbank.acu.edu.au/item/8qy6y/glued-to-games-how-video-games-draw-us-in-and-hold-us-spellbound"
+],
+"n": 80
+},
+{
+"d": 3,
+"t": "Hearts, Clubs, Diamonds, Spades: Players Who Suit MUDs",
+"a": "Richard Bartle (1996)",
+"k": "논문",
+"u": "https://mud.co.uk/richard/hcds.htm",
+"ds": [
+3
+],
+"urls": [
+"https://mud.co.uk/richard/hcds.htm"
+],
+"n": 81
+},
+{
+"d": 4,
+"t": "Psychology of Habit",
+"a": "Wood & Rünger (2016, Annual Review of Psychology)",
+"k": "논문",
+"u": "https://dornsife.usc.edu/wendy-wood/wp-content/uploads/sites/183/2023/10/wood.runger.2016.pdf",
+"ds": [
+4
+],
+"urls": [
+"https://dornsife.usc.edu/wendy-wood/wp-content/uploads/sites/183/2023/10/wood.runger.2016.pdf"
+],
+"n": 82
+},
+{
+"d": 4,
+"t": "A Behavior Model for Persuasive Design (B=MAP)",
+"a": "BJ Fogg (2009, Persuasive)",
+"k": "논문",
+"u": "https://behaviordesign.stanford.edu/resources/fogg-behavior-model",
+"ds": [
+4
+],
+"urls": [
+"https://behaviordesign.stanford.edu/resources/fogg-behavior-model"
+],
+"n": 83
+},
+{
+"d": 4,
+"t": "Implementation Intentions and Goal Achievement: A Meta-analysis",
+"a": "Gollwitzer & Sheeran (2006)",
+"k": "논문",
+"u": "https://kops.uni-konstanz.de/entities/publication/2e749bfb-8533-437c-8203-7e788c910c5f",
+"ds": [
+4
+],
+"urls": [
+"https://kops.uni-konstanz.de/entities/publication/2e749bfb-8533-437c-8203-7e788c910c5f"
+],
+"n": 84
+},
+{
+"d": 4,
+"t": "Beyond Self-Tracking and Reminders: Designing Smartphone Apps That Support Habit Formation",
+"a": "Stawarz, Cox & Blandford (2015, CHI)",
+"k": "논문",
+"u": "https://discovery.ucl.ac.uk/id/eprint/1468224/",
+"ds": [
+4,
+10
+],
+"urls": [
+"https://discovery.ucl.ac.uk/id/eprint/1468224/"
+],
+"n": 85
+},
+{
+"d": 4,
+"t": "The Ultimate Habit Tracker Guide",
+"a": "James Clear (2019)",
+"k": "블로그",
+"u": "https://jamesclear.com/habit-tracker",
+"ds": [
+4
+],
+"urls": [
+"https://jamesclear.com/habit-tracker"
+],
+"n": 86
+},
+{
+"d": 4,
+"t": "The Fresh Start Effect: Temporal Landmarks Motivate Aspirational Behavior",
+"a": "Dai, Milkman & Riis (2014, Management Science)",
+"k": "논문",
+"u": "https://faculty.wharton.upenn.edu/wp-content/uploads/2014/06/Dai_Fresh_Start_2014_Mgmt_Sci.pdf",
+"ds": [
+4
+],
+"urls": [
+"https://faculty.wharton.upenn.edu/wp-content/uploads/2014/06/Dai_Fresh_Start_2014_Mgmt_Sci.pdf"
+],
+"n": 87
+},
+{
+"d": 4,
+"t": "Creating Exercise Habits Using Incentives: The Trade-off Between Flexibility and Routinization",
+"a": "Beshears et al. (2021, Management Science)",
+"k": "논문",
+"u": "https://ideas.repec.org/a/inm/ormnsc/v67y2021i7p4139-4171.html",
+"ds": [
+4
+],
+"urls": [
+"https://ideas.repec.org/a/inm/ormnsc/v67y2021i7p4139-4171.html"
+],
+"n": 88
+},
+{
+"d": 4,
+"t": "Megastudies improve the impact of applied behavioural science",
+"a": "Milkman et al. (2021, Nature)",
+"k": "논문",
+"u": "https://authors.library.caltech.edu/records/mys88-cc756",
+"ds": [
+4
+],
+"urls": [
+"https://authors.library.caltech.edu/records/mys88-cc756"
+],
+"n": 89
+},
+{
+"d": 4,
+"t": "Improving the streak: Forming habits one lesson at a time",
+"a": "Anton Yu / Duolingo (2020)",
+"k": "블로그",
+"u": "https://blog.duolingo.com/improving-the-streak",
+"ds": [
+4,
+6,
+10
+],
+"urls": [
+"https://blog.duolingo.com/improving-the-streak"
+],
+"n": 90
+},
+{
+"d": 4,
+"t": "How Streaks keep Duolingo learners committed to their language goals",
+"a": "Kai Herng Loh / Duolingo (2017)",
+"k": "블로그",
+"u": "https://blog.duolingo.com/how-streaks-keep-duolingo-learners-committed-to-their-language-goals/",
+"ds": [
+4,
+6
+],
+"urls": [
+"https://blog.duolingo.com/how-streaks-keep-duolingo-learners-committed-to-their-language-goals/"
+],
+"n": 91
+},
+{
+"d": 4,
+"t": "Rest in the Inn (Pause Damage)",
+"a": "Habitica Wiki (2023)",
+"k": "문서",
+"u": "https://habitica.fandom.com/wiki/Rest_in_the_Inn",
+"ds": [
+4
+],
+"urls": [
+"https://habitica.fandom.com/wiki/Rest_in_the_Inn"
+],
+"n": 92
+},
+{
+"d": 4,
+"t": "How Duolingo reignited user growth",
+"a": "Jorge Mazal (2023, Lenny's Newsletter)",
+"k": "블로그",
+"u": "https://www.lennysnewsletter.com/p/how-duolingo-reignited-user-growth",
+"ds": [
+4,
+10
+],
+"urls": [
+"https://www.lennysnewsletter.com/p/how-duolingo-reignited-user-growth",
+"https://lennysnewsletter.com/p/how-duolingo-reignited-user-growth"
+],
+"n": 93
+},
+{
+"d": 4,
+"t": "New data shows losing 80% of mobile users is normal, and why the best apps do better",
+"a": "Andrew Chen (2015)",
+"k": "블로그",
+"u": "https://andrewchen.com/new-data-shows-why-losing-80-of-your-mobile-users-is-normal-and-that-the-best-apps-do-much-better/",
+"ds": [
+4
+],
+"urls": [
+"https://andrewchen.com/new-data-shows-why-losing-80-of-your-mobile-users-is-normal-and-that-the-best-apps-do-much-better/"
+],
+"n": 94
+},
+{
+"d": 4,
+"t": "GameAnalytics: Mobile gaming benchmarks in 2025",
+"a": "GameAnalytics (2025, GameDev Reports 요약)",
+"k": "보고서",
+"u": "https://gamedevreports.substack.com/p/gameanalytics-mobile-gaming-benchmarks",
+"ds": [
+4,
+10
+],
+"urls": [
+"https://gamedevreports.substack.com/p/gameanalytics-mobile-gaming-benchmarks",
+"https://gameanalytics.com/reports/2025-mobile-gaming-benchmarks"
+],
+"n": 95
+},
+{
+"d": 4,
+"t": "A Sleeping, Recovering Bandit Algorithm for Optimizing Recurring Notifications",
+"a": "Yancey & Settles / Duolingo (2020, KDD)",
+"k": "논문",
+"u": "https://research.duolingo.com/papers/yancey.kdd20.pdf",
+"ds": [
+4
+],
+"urls": [
+"https://research.duolingo.com/papers/yancey.kdd20.pdf"
+],
+"n": 96
+},
+{
+"d": 4,
+"t": "An In-Situ Study of Mobile Phone Notifications",
+"a": "Pielot, Church & de Oliveira (2014, MobileHCI)",
+"k": "논문",
+"u": "https://ic.unicamp.br/~oliveira/doc/MHCI2014_An-in-situ-study-of-mobile-phone-notifications.pdf",
+"ds": [
+4
+],
+"urls": [
+"https://ic.unicamp.br/~oliveira/doc/MHCI2014_An-in-situ-study-of-mobile-phone-notifications.pdf"
+],
+"n": 97
+},
+{
+"d": 4,
+"t": "Should I send this notification? Optimizing push notifications decision making by modeling the future",
+"a": "O'Brien et al. / Twitter (2022, arXiv)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2202.08812",
+"ds": [
+4
+],
+"urls": [
+"https://arxiv.org/abs/2202.08812"
+],
+"n": 98
+},
+{
+"d": 4,
+"t": "Web Push for Web Apps on iOS and iPadOS",
+"a": "Eidson & Simmons / WebKit (2023)",
+"k": "문서",
+"u": "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/",
+"ds": [
+4
+],
+"urls": [
+"https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/"
+],
+"n": 99
+},
+{
+"d": 4,
+"t": "Dark Patterns in the Design of Games",
+"a": "Zagal, Björk & Lewis (2013, FDG)",
+"k": "논문",
+"u": "https://research.chalmers.se/en/publication/177148",
+"ds": [
+4
+],
+"urls": [
+"https://research.chalmers.se/en/publication/177148"
+],
+"n": 100
+},
+{
+"d": 4,
+"t": "Against \"Dark Game Design Patterns\"",
+"a": "Deterding, Stenros & Montola (2020, DiGRA)",
+"k": "논문",
+"u": "https://eprints.whiterose.ac.uk/156460/1/DiGRA_2020_paper_189.pdf",
+"ds": [
+4
+],
+"urls": [
+"https://eprints.whiterose.ac.uk/156460/1/DiGRA_2020_paper_189.pdf"
+],
+"n": 101
+},
+{
+"d": 4,
+"t": "Level Up or Game Over: Exploring How Dark Patterns Shape Mobile Games",
+"a": "Niknejad et al. (2024, MUM)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2412.05039",
+"ds": [
+4
+],
+"urls": [
+"https://arxiv.org/abs/2412.05039"
+],
+"n": 102
+},
+{
+"d": 4,
+"t": "The Art of Manipulation (Manipulation Matrix)",
+"a": "Nir Eyal (2012, TechCrunch)",
+"k": "블로그",
+"u": "https://techcrunch.com/?p=581552",
+"ds": [
+4
+],
+"urls": [
+"https://techcrunch.com/?p=581552"
+],
+"n": 103
+},
+{
+"d": 4,
+"t": "White Hat vs Black Hat Gamification in the Octalysis Framework",
+"a": "Yu-kai Chou (2014/2021)",
+"k": "블로그",
+"u": "https://yukaichou.com/gamification-study/white-hat-black-hat-gamification-octalysis-framework/",
+"ds": [
+4
+],
+"urls": [
+"https://yukaichou.com/gamification-study/white-hat-black-hat-gamification-octalysis-framework/"
+],
+"n": 104
+},
+{
+"d": 5,
+"t": "Why do players buy in-game content? An empirical study on concrete purchase motivations",
+"a": "Hamari, Alha, Järvelä, Kivikangas, Koivisto, Paavilainen (2017, CHB)",
+"k": "논문",
+"u": "https://doi.org/10.1016/j.chb.2016.11.045",
+"ds": [
+5
+],
+"urls": [
+"https://doi.org/10.1016/j.chb.2016.11.045"
+],
+"n": 105
+},
+{
+"d": 5,
+"t": "Virtual Consumption / Virtual Item Sales as a Revenue Model",
+"a": "Vili Lehdonvirta (2009)",
+"k": "학위논문",
+"u": "https://utupub.fi/bitstream/handle/10024/98536/Ae11_2009lehdonvirta.pdf",
+"ds": [
+5,
+8
+],
+"urls": [
+"https://utupub.fi/bitstream/handle/10024/98536/Ae11_2009lehdonvirta.pdf",
+"https://www.engadget.com/2009-01-09-why-do-people-buy-virtual-goods-in-mmos.html"
+],
+"n": 106
+},
+{
+"d": 5,
+"t": "Game design as marketing: How game mechanics create demand for virtual goods",
+"a": "Hamari & Lehdonvirta (2010, IJBSAM)",
+"k": "논문",
+"u": "https://readkong.com/page/game-design-as-marketing-how-game-mechanics-create-7636523",
+"ds": [
+5
+],
+"urls": [
+"https://readkong.com/page/game-design-as-marketing-how-game-mechanics-create-7636523"
+],
+"n": 107
+},
+{
+"d": 5,
+"t": "Free-to-Play Games: Professionals' Perspectives",
+"a": "Alha, Koskinen, Paavilainen, Hamari, Kinnunen (2014, Nordic DiGRA)",
+"k": "논문",
+"u": "https://dl.digra.org/index.php/dl/article/view/702",
+"ds": [
+5
+],
+"urls": [
+"https://dl.digra.org/index.php/dl/article/view/702"
+],
+"n": 108
+},
+{
+"d": 5,
+"t": "Crushing Candy: The Free-to-Play Game in Its Connective Commodity Form",
+"a": "David B. Nieborg (2015, Social Media + Society)",
+"k": "논문",
+"u": "https://journals.sagepub.com/doi/10.1177/2056305115621932",
+"ds": [
+5
+],
+"urls": [
+"https://journals.sagepub.com/doi/10.1177/2056305115621932"
+],
+"n": 109
+},
+{
+"d": 5,
+"t": "Video game loot boxes are linked to problem gambling: Results of a large-scale survey",
+"a": "Zendle & Cairns (2018, PLOS ONE)",
+"k": "논문",
+"u": "https://eprints.whiterose.ac.uk/139116/1/journal.pone.0206767.pdf",
+"ds": [
+5
+],
+"urls": [
+"https://eprints.whiterose.ac.uk/139116/1/journal.pone.0206767.pdf"
+],
+"n": 110
+},
+{
+"d": 5,
+"t": "Video game monetization (e.g., 'loot boxes'): a blueprint for practical social responsibility measures",
+"a": "King & Delfabbro (2019, IJMHA)",
+"k": "논문",
+"u": "https://digital.library.adelaide.edu.au/dspace/handle/2440/119650",
+"ds": [
+5
+],
+"urls": [
+"https://digital.library.adelaide.edu.au/dspace/handle/2440/119650"
+],
+"n": 111
+},
+{
+"d": 5,
+"t": "Towards an Ethical Game Design Solution to Loot Boxes: a Commentary on King and Delfabbro",
+"a": "Xiao & Henderson (2019, IJMHA)",
+"k": "논평",
+"u": "https://durham-repository.worktribe.com/OutputFile/1263775",
+"ds": [
+5
+],
+"urls": [
+"https://durham-repository.worktribe.com/OutputFile/1263775"
+],
+"n": 112
+},
+{
+"d": 5,
+"t": "Unfair play? Video games as exploitative monetized services",
+"a": "King, Delfabbro, Gainsbury, Dreier, Greer, Billieux (2019, CHB)",
+"k": "논문",
+"u": "https://orbilu.uni.lu/handle/10993/39924",
+"ds": [
+5
+],
+"urls": [
+"https://orbilu.uni.lu/handle/10993/39924"
+],
+"n": 113
+},
+{
+"d": 5,
+"t": "Battle pass capitalism",
+"a": "Daniel Joseph (2021, Journal of Consumer Culture)",
+"k": "논문",
+"u": "https://journals.sagepub.com/doi/10.1177/1469540521993930",
+"ds": [
+5
+],
+"urls": [
+"https://journals.sagepub.com/doi/10.1177/1469540521993930"
+],
+"n": 114
+},
+{
+"d": 5,
+"t": "Predatory Monetisation? A Categorisation of Unfair, Misleading and Aggressive Monetisation Techniques",
+"a": "Petrovskaya & Zendle (2021, Journal of Business Ethics)",
+"k": "논문",
+"u": "https://link.springer.com/article/10.1007/s10551-021-04970-6",
+"ds": [
+5
+],
+"urls": [
+"https://link.springer.com/article/10.1007/s10551-021-04970-6"
+],
+"n": 115
+},
+{
+"d": 5,
+"t": "Pay to (Not) Play: Monetizing Impatience in Mobile Games",
+"a": "Lundy, Raman, Fu, Leyton-Brown (2023, arXiv)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2312.10205",
+"ds": [
+5
+],
+"urls": [
+"https://arxiv.org/abs/2312.10205"
+],
+"n": 116
+},
+{
+"d": 5,
+"t": "The Top F2P Monetization Tricks",
+"a": "Ramin Shokrizade (2013, Game Developer)",
+"k": "칼럼",
+"u": "https://www.gamedeveloper.com/business/the-top-f2p-monetization-tricks",
+"ds": [
+5
+],
+"urls": [
+"https://www.gamedeveloper.com/business/the-top-f2p-monetization-tricks"
+],
+"n": 117
+},
+{
+"d": 5,
+"t": "Don't build mobile games for whales",
+"a": "Eric Seufert (2012, Mobile Dev Memo)",
+"k": "블로그",
+"u": "https://mdm.co/don-build-mobile-games-for-whales/",
+"ds": [
+5
+],
+"urls": [
+"https://mdm.co/don-build-mobile-games-for-whales/"
+],
+"n": 118
+},
+{
+"d": 5,
+"t": "18 top F2P monetisation tips to supercharge your business",
+"a": "PocketGamer.biz (2014)",
+"k": "칼럼",
+"u": "https://www.pocketgamer.biz/18-top-f2p-monetisation-tips-to-supercharge-your-business",
+"ds": [
+5
+],
+"urls": [
+"https://www.pocketgamer.biz/18-top-f2p-monetisation-tips-to-supercharge-your-business"
+],
+"n": 119
+},
+{
+"d": 5,
+"t": "Supercell's Battle Pass Clash: A Tale of Two Economies",
+"a": "Deconstructor of Fun (2020)",
+"k": "분석",
+"u": "https://deconstructoroffun.com/blog/2020/7/16/8jsjtv3v25nfmw9x177ampscr836m0",
+"ds": [
+5
+],
+"urls": [
+"https://deconstructoroffun.com/blog/2020/7/16/8jsjtv3v25nfmw9x177ampscr836m0"
+],
+"n": 120
+},
+{
+"d": 5,
+"t": "Battle Passes - Everything You Ought to Know and Then Some",
+"a": "Javier Barnes / Deconstructor of Fun (2022)",
+"k": "분석",
+"u": "https://deconstructoroffun.com/blog/2022/6/4/battle-passes-analysis",
+"ds": [
+5
+],
+"urls": [
+"https://deconstructoroffun.com/blog/2022/6/4/battle-passes-analysis"
+],
+"n": 121
+},
+{
+"d": 5,
+"t": "The Magic of 'Legend Of Mushroom'",
+"a": "Ken Landen / Deconstructor of Fun (2024)",
+"k": "분석",
+"u": "https://www.deconstructoroffun.com/blog/2024/4/15/the-magic-of-legend-of-mushroom",
+"ds": [
+5,
+9
+],
+"urls": [
+"https://www.deconstructoroffun.com/blog/2024/4/15/the-magic-of-legend-of-mushroom"
+],
+"n": 122
+},
+{
+"d": 5,
+"t": "Lessons Learned from AFK Journey",
+"a": "Naavik (2024)",
+"k": "분석",
+"u": "https://naavik.co/digest/lessons-learned-from-afk-journey/",
+"ds": [
+5
+],
+"urls": [
+"https://naavik.co/digest/lessons-learned-from-afk-journey/"
+],
+"n": 123
+},
+{
+"d": 5,
+"t": "Liftoff & GameRefinery: Casual Games in 2024",
+"a": "GameDev Reports (2024)",
+"k": "보고서",
+"u": "https://gamedevreports.substack.com/p/liftoff-and-gamerefinery-casual-games",
+"ds": [
+5
+],
+"urls": [
+"https://gamedevreports.substack.com/p/liftoff-and-gamerefinery-casual-games"
+],
+"n": 124
+},
+{
+"d": 5,
+"t": "Sensor Tower: RPG Revenue Declines in South Korea",
+"a": "GameDev Reports (2024)",
+"k": "보고서",
+"u": "https://gamedevreports.substack.com/p/sensor-tower-rpg-revenue-declines",
+"ds": [
+5
+],
+"urls": [
+"https://gamedevreports.substack.com/p/sensor-tower-rpg-revenue-declines"
+],
+"n": 125
+},
+{
+"d": 5,
+"t": "Fundamentals of rewarded video ad placements",
+"a": "Unity (ironSource) blog",
+"k": "가이드",
+"u": "https://blog.unity.com/games/fundamentals-of-rewarded-video-ad-placements",
+"ds": [
+5
+],
+"urls": [
+"https://blog.unity.com/games/fundamentals-of-rewarded-video-ad-placements"
+],
+"n": 126
+},
+{
+"d": 5,
+"t": "\"Kompu Gacha\" Social Game Mechanic Is History, Here's How It All Went Down",
+"a": "Serkan Toto (2012)",
+"k": "분석",
+"u": "https://www.serkantoto.com/?p=6156",
+"ds": [
+5
+],
+"urls": [
+"https://www.serkantoto.com/?p=6156"
+],
+"n": 127
+},
+{
+"d": 5,
+"t": "An In-depth Explanation of Why 'Comp Gacha' is Illegal",
+"a": "Monolith Law Office (2023/2024)",
+"k": "법률 해설",
+"u": "https://monolith.law/en/general-corporate/game-random-complete-illegal",
+"ds": [
+5
+],
+"urls": [
+"https://monolith.law/en/general-corporate/game-random-complete-illegal"
+],
+"n": 128
+},
+{
+"d": 5,
+"t": "VIP System (Cash Shop wiki)",
+"a": "MapleStory SEA 공식",
+"k": "문서",
+"u": "https://www.maplesea.com/wiki/CashShop/MVP",
+"ds": [
+5
+],
+"urls": [
+"https://www.maplesea.com/wiki/CashShop/MVP"
+],
+"n": 129
+},
+{
+"d": 5,
+"t": "Video Game VIP Programs Keep Top Players Spending Big",
+"a": "Zach Lutz / Birches Health (2026)",
+"k": "해설",
+"u": "https://bircheshealth.com/resources/video-gaming-vip-programs",
+"ds": [
+5
+],
+"urls": [
+"https://bircheshealth.com/resources/video-gaming-vip-programs"
+],
+"n": 130
+},
+{
+"d": 5,
+"t": "What Is a Pity Counter in Gacha? How It Works",
+"a": "Ryan Turner / PulseGeek (2026)",
+"k": "해설",
+"u": "https://pulsegeek.com/articles/what-is-a-pity-counter-in-gacha-how-it-works/",
+"ds": [
+5
+],
+"urls": [
+"https://pulsegeek.com/articles/what-is-a-pity-counter-in-gacha-how-it-works/"
+],
+"n": 131
+},
+{
+"d": 5,
+"t": "LiveOps: The Strategic Artform of Successful Games",
+"a": "Knezovic & Moran / Udonis (2023)",
+"k": "가이드",
+"u": "https://blog.udonis.co/mobile-marketing/mobile-games/liveops",
+"ds": [
+5
+],
+"urls": [
+"https://blog.udonis.co/mobile-marketing/mobile-games/liveops"
+],
+"n": 132
+},
+{
+"d": 5,
+"t": "How to plan a live-ops content calendar",
+"a": "Jordan Blackman / Bright Black (2026)",
+"k": "가이드",
+"u": "https://brightblack.co/blog/liveops-content-calendar",
+"ds": [
+5
+],
+"urls": [
+"https://brightblack.co/blog/liveops-content-calendar"
+],
+"n": 133
+},
+{
+"d": 6,
+"t": "From Game Design Elements to Gamefulness: Defining \"Gamification\"",
+"a": "Deterding, Dixon, Khaled & Nacke (2011, MindTrek)",
+"k": "논문",
+"u": "https://gamification-research.org/2012/04/defining-gamification/",
+"ds": [
+6
+],
+"urls": [
+"https://gamification-research.org/2012/04/defining-gamification/"
+],
+"n": 134
+},
+{
+"d": 6,
+"t": "Does Gamification Work? — A Literature Review of Empirical Studies on Gamification",
+"a": "Hamari, Koivisto & Sarsa (2014, HICSS)",
+"k": "논문",
+"u": "https://ieeexplore.ieee.org/abstract/document/6758978",
+"ds": [
+6
+],
+"urls": [
+"https://ieeexplore.ieee.org/abstract/document/6758978"
+],
+"n": 135
+},
+{
+"d": 6,
+"t": "Gamification in theory and action: A survey",
+"a": "Seaborn & Fels (2015, IJHCS)",
+"k": "논문",
+"u": "https://doi.org/10.1016/j.ijhcs.2014.09.006",
+"ds": [
+6
+],
+"urls": [
+"https://doi.org/10.1016/j.ijhcs.2014.09.006"
+],
+"n": 136
+},
+{
+"d": 6,
+"t": "Developing a Theory of Gamified Learning",
+"a": "Richard Landers (2014, Simulation & Gaming)",
+"k": "논문",
+"u": "https://journals.sagepub.com/doi/10.1177/1046878114563660",
+"ds": [
+6
+],
+"urls": [
+"https://journals.sagepub.com/doi/10.1177/1046878114563660"
+],
+"n": 137
+},
+{
+"d": 6,
+"t": "The Gamification of Learning and Instruction",
+"a": "Karl M. Kapp (2012, Pfeiffer/Wiley)",
+"k": "도서",
+"u": "https://www.td.org/product/book--the-gamification-of-learning-and-instruction-game-based-methods-and-strategies-for-training-and-education/131203",
+"ds": [
+6
+],
+"urls": [
+"https://www.td.org/product/book--the-gamification-of-learning-and-instruction-game-based-methods-and-strategies-for-training-and-education/131203"
+],
+"n": 138
+},
+{
+"d": 6,
+"t": "The rise of motivational information systems: A review of gamification research",
+"a": "Koivisto & Hamari (2019, IJIM)",
+"k": "논문",
+"u": "https://webpages.tuni.fi/gamification/2019/06/24/the-rise-of-motivational-information-systems-a-review-of-gamification-research/",
+"ds": [
+6
+],
+"urls": [
+"https://webpages.tuni.fi/gamification/2019/06/24/the-rise-of-motivational-information-systems-a-review-of-gamification-research/"
+],
+"n": 139
+},
+{
+"d": 6,
+"t": "The Gamification of Learning: a Meta-analysis",
+"a": "Sailer & Homner (2020, Educational Psychology Review)",
+"k": "논문",
+"u": "https://link.springer.com/article/10.1007/s10648-019-09498-w",
+"ds": [
+6
+],
+"urls": [
+"https://link.springer.com/article/10.1007/s10648-019-09498-w"
+],
+"n": 140
+},
+{
+"d": 6,
+"t": "Examining the effectiveness of gamification as a tool promoting teaching and learning: a meta-analysis",
+"a": "Li, Ma & Shi (2023, Frontiers in Psychology)",
+"k": "논문",
+"u": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1253549/pdf",
+"ds": [
+6
+],
+"urls": [
+"https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1253549/pdf"
+],
+"n": 141
+},
+{
+"d": 6,
+"t": "When Gamification Spoils Your Learning: A Qualitative Case Study of Gamification Misuse in a Language-Learning App",
+"a": "Hadi Mogavi et al. (2022, ACM L@S)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2203.16175",
+"ds": [
+6,
+10
+],
+"urls": [
+"https://arxiv.org/abs/2203.16175"
+],
+"n": 142
+},
+{
+"d": 6,
+"t": "The Critical Importance of Retrieval for Learning",
+"a": "Karpicke & Roediger (2008, Science)",
+"k": "논문",
+"u": "https://pubmed.ncbi.nlm.nih.gov/18276894/",
+"ds": [
+6
+],
+"urls": [
+"https://pubmed.ncbi.nlm.nih.gov/18276894/"
+],
+"n": 143
+},
+{
+"d": 6,
+"t": "Spacing Effects in Learning: A Temporal Ridgeline of Optimal Retention",
+"a": "Cepeda, Vul, Rohrer, Wixted & Pashler (2008, Psychological Science)",
+"k": "논문",
+"u": "https://pubmed.ncbi.nlm.nih.gov/19076480/",
+"ds": [
+6
+],
+"urls": [
+"https://pubmed.ncbi.nlm.nih.gov/19076480/"
+],
+"n": 144
+},
+{
+"d": 6,
+"t": "A Trainable Spaced Repetition Model for Language Learning",
+"a": "Settles & Meeder (2016, ACL)",
+"k": "논문",
+"u": "https://aclanthology.org/P16-1174/",
+"ds": [
+6
+],
+"urls": [
+"https://aclanthology.org/P16-1174/"
+],
+"n": 145
+},
+{
+"d": 6,
+"t": "A Stochastic Shortest Path Algorithm for Optimizing Spaced Repetition Scheduling",
+"a": "Ye, Su & Cao (2022, KDD)",
+"k": "논문",
+"u": "https://dblp1.uni-trier.de/rec/conf/kdd/YeSC22.html",
+"ds": [
+6
+],
+"urls": [
+"https://dblp1.uni-trier.de/rec/conf/kdd/YeSC22.html"
+],
+"n": 146
+},
+{
+"d": 6,
+"t": "SuperMemo SM-2 algorithm",
+"a": "Piotr Woźniak (1990)",
+"k": "알고리즘",
+"u": "https://www-v1.supermemo.com/archives1990-2015/english/ol/sm2",
+"ds": [
+6
+],
+"urls": [
+"https://www-v1.supermemo.com/archives1990-2015/english/ol/sm2"
+],
+"n": 147
+},
+{
+"d": 6,
+"t": "What spaced repetition algorithm does Anki use?",
+"a": "Anki Manual",
+"k": "문서",
+"u": "https://docs.ankiweb.net/faqs/what-spaced-repetition-algorithm",
+"ds": [
+6
+],
+"urls": [
+"https://docs.ankiweb.net/faqs/what-spaced-repetition-algorithm"
+],
+"n": 148
+},
+{
+"d": 6,
+"t": "The Algorithm (FSRS)",
+"a": "open-spaced-repetition (GitHub wiki)",
+"k": "문서",
+"u": "https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm",
+"ds": [
+6
+],
+"urls": [
+"https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm"
+],
+"n": 149
+},
+{
+"d": 6,
+"t": "Simple spaced repetition algorithms mistreat expected failures",
+"a": "Andy Matuschak",
+"k": "전문가 노트",
+"u": "https://notes.andymatuschak.org/zPFEkvYDUnJzewccCQs4z6fULuozcMyHZnc",
+"ds": [
+6
+],
+"urls": [
+"https://notes.andymatuschak.org/zPFEkvYDUnJzewccCQs4z6fULuozcMyHZnc"
+],
+"n": 150
+},
+{
+"d": 6,
+"t": "Understanding effort regulation: Comparing 'Pomodoro' breaks and self-regulated breaks",
+"a": "Biwer et al. (2023, BJEP)",
+"k": "논문",
+"u": "https://doi.org/10.1111/bjep.12593",
+"ds": [
+6
+],
+"urls": [
+"https://doi.org/10.1111/bjep.12593"
+],
+"n": 151
+},
+{
+"d": 6,
+"t": "Investigating the Effectiveness of Self-Regulated, Pomodoro, and Flowtime Break-Taking Techniques Among Students",
+"a": "Smits, Wenzel & de Bruin (2025, Behavioral Sciences)",
+"k": "논문",
+"u": "https://www.mdpi.com/2076-328X/15/7/861",
+"ds": [
+6
+],
+"urls": [
+"https://www.mdpi.com/2076-328X/15/7/861"
+],
+"n": 152
+},
+{
+"d": 6,
+"t": "Pomodoro Technique",
+"a": "Wikipedia (Cirillo 원칙 요약)",
+"k": "2차 자료",
+"u": "https://en.wikipedia.org/wiki/Pomodoro_Technique",
+"ds": [
+6
+],
+"urls": [
+"https://en.wikipedia.org/wiki/Pomodoro_Technique"
+],
+"n": 153
+},
+{
+"d": 6,
+"t": "Putting in work: The habit of language learning",
+"a": "Mary van Ogtrop / Duolingo (2021)",
+"k": "블로그",
+"u": "https://blog.duolingo.com/putting-in-work-the-habit-of-language-learning",
+"ds": [
+6
+],
+"urls": [
+"https://blog.duolingo.com/putting-in-work-the-habit-of-language-learning"
+],
+"n": 154
+},
+{
+"d": 6,
+"t": "YouVersion newsroom statistics",
+"a": "YouVersion (2026)",
+"k": "공식 자료",
+"u": "https://www.youversion.com/newsroom",
+"ds": [
+6
+],
+"urls": [
+"https://www.youversion.com/newsroom"
+],
+"n": 155
+},
+{
+"d": 6,
+"t": "Easter marks the highest Bible engagement day in YouVersion history",
+"a": "YouVersion (2026)",
+"k": "보도자료",
+"u": "https://www.youversion.com/news/easter-marks-the-highest-bible-engagement-day-in-youversion-history",
+"ds": [
+6
+],
+"urls": [
+"https://www.youversion.com/news/easter-marks-the-highest-bible-engagement-day-in-youversion-history"
+],
+"n": 156
+},
+{
+"d": 6,
+"t": "There's a religious app for that! A framework for studying religious mobile applications",
+"a": "Campbell, Altenhofen, Bellar & Cho (2014, Mobile Media & Communication)",
+"k": "논문",
+"u": "https://journals.sagepub.com/doi/10.1177/2050157914520846",
+"ds": [
+6
+],
+"urls": [
+"https://journals.sagepub.com/doi/10.1177/2050157914520846"
+],
+"n": 157
+},
+{
+"d": 6,
+"t": "E-Reading and the Christian Bible",
+"a": "Tim Hutchings (2015, Studies in Religion)",
+"k": "논문",
+"u": "https://journals.sagepub.com/doi/10.1177/0008429815610607",
+"ds": [
+6
+],
+"urls": [
+"https://journals.sagepub.com/doi/10.1177/0008429815610607"
+],
+"n": 158
+},
+{
+"d": 6,
+"t": "Values at Play (VAP)",
+"a": "Flanagan et al.",
+"k": "방법론",
+"u": "https://valuesatplay.org/",
+"ds": [
+6
+],
+"urls": [
+"https://valuesatplay.org/"
+],
+"n": 159
+},
+{
+"d": 7,
+"t": "Game Feel: A Game Designer's Guide to Virtual Sensation",
+"a": "Steve Swink (2008, Elsevier)",
+"k": "도서",
+"u": "https://shop.elsevier.com/books/game-feel/swink/978-0-12-374328-2",
+"ds": [
+7
+],
+"urls": [
+"https://shop.elsevier.com/books/game-feel/swink/978-0-12-374328-2"
+],
+"n": 160
+},
+{
+"d": 7,
+"t": "Good Game Feel: An Empirically Grounded Framework for Juicy Design",
+"a": "Hicks, Dickinson, Holopainen, Gerling (2018, DiGRA)",
+"k": "논문",
+"u": "https://dl.digra.org/index.php/dl/article/view/936",
+"ds": [
+7
+],
+"urls": [
+"https://dl.digra.org/index.php/dl/article/view/936"
+],
+"n": 161
+},
+{
+"d": 7,
+"t": "Juicy Game Design: Understanding the Impact of Visual Embellishments on Player Experience",
+"a": "Hicks, Gerling, Dickinson, Vanden Abeele (2019, CHI PLAY)",
+"k": "논문",
+"u": "https://doi.org/10.1145/3311350.3347171",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1145/3311350.3347171"
+],
+"n": 162
+},
+{
+"d": 7,
+"t": "The effects of juiciness in an action RPG",
+"a": "Dominic Kao (2020, Entertainment Computing)",
+"k": "논문",
+"u": "https://doi.org/10.1016/j.entcom.2020.100359",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1016/j.entcom.2020.100359"
+],
+"n": 163
+},
+{
+"d": 7,
+"t": "How does juicy game feedback motivate? Testing curiosity, competence, and effectance",
+"a": "Kao, Ballou, Gerling, Breitsohl, Deterding (2024, CHI)",
+"k": "논문",
+"u": "https://spiral.imperial.ac.uk/entities/publication/253c32f5-d124-4a23-88b5-9aaaf114608d",
+"ds": [
+7
+],
+"urls": [
+"https://spiral.imperial.ac.uk/entities/publication/253c32f5-d124-4a23-88b5-9aaaf114608d"
+],
+"n": 164
+},
+{
+"d": 7,
+"t": "Good Feedback for bad Players? A preliminary Study of 'juicy' Interface feedback",
+"a": "Jesper Juul & Jason Begy (2016)",
+"k": "포스터",
+"u": "https://adk.elsevierpure.com/en/publications/good-feedback-for-bad-players-a-preliminary-study-of-juicy-interf",
+"ds": [
+7
+],
+"urls": [
+"https://adk.elsevierpure.com/en/publications/good-feedback-for-bad-players-a-preliminary-study-of-juicy-interf"
+],
+"n": 165
+},
+{
+"d": 7,
+"t": "Designing Game Feel: A Survey",
+"a": "Pichlmair & Johansen (2020, arXiv)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2011.09201",
+"ds": [
+7
+],
+"urls": [
+"https://arxiv.org/abs/2011.09201"
+],
+"n": 166
+},
+{
+"d": 7,
+"t": "What Features Influence Impact Feel? A Study of Impact Feedback in Action Games",
+"a": "Lin, Duan, Wen, Cai (2022, arXiv)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2208.06155",
+"ds": [
+7
+],
+"urls": [
+"https://arxiv.org/abs/2208.06155"
+],
+"n": 167
+},
+{
+"d": 7,
+"t": "Juicy Text: Onomatopoeia and Semantic Text Effects for Juicy Player Experiences",
+"a": "Fabre, Seaborn, Verhulst, Itoh, Rekimoto (2024, ICMI)",
+"k": "논문",
+"u": "https://arxiv.org/html/2512.13695",
+"ds": [
+7
+],
+"urls": [
+"https://arxiv.org/html/2512.13695"
+],
+"n": 168
+},
+{
+"d": 7,
+"t": "Juicy Audio: Audio Designers' Conceptualization of the Term in Video Games",
+"a": "Hicks, Rogers, Gerling, Nacke (2024, CHI PLAY)",
+"k": "논문",
+"u": "https://eprints.staffs.ac.uk/8527",
+"ds": [
+7
+],
+"urls": [
+"https://eprints.staffs.ac.uk/8527"
+],
+"n": 169
+},
+{
+"d": 7,
+"t": "Game Sound",
+"a": "Karen Collins (2008, MIT Press)",
+"k": "도서",
+"u": "https://doi.org/10.7551/mitpress/7909.001.0001",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.7551/mitpress/7909.001.0001"
+],
+"n": 170
+},
+{
+"d": 7,
+"t": "Heuristic evaluation for games: usability principles for video game design",
+"a": "Pinelle, Wong, Stach (2008, CHI)",
+"k": "논문",
+"u": "https://doi.org/10.1145/1357054.1357282",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1145/1357054.1357282"
+],
+"n": 171
+},
+{
+"d": 7,
+"t": "Game Usability Heuristics (PLAY) for Evaluating and Designing Better Games: The Next Iteration",
+"a": "Desurvire & Wiberg (2009, OCSC)",
+"k": "논문",
+"u": "https://doi.org/10.1007/978-3-642-02774-1_60",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1007/978-3-642-02774-1_60"
+],
+"n": 172
+},
+{
+"d": 7,
+"t": "Playability heuristics for mobile games",
+"a": "Korhonen & Koivisto (2006, MobileHCI)",
+"k": "논문",
+"u": "https://doi.org/10.1145/1152215.1152218",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1145/1152215.1152218"
+],
+"n": 173
+},
+{
+"d": 7,
+"t": "The impact of tutorials on games of varying complexity",
+"a": "Andersen et al. (2012, CHI)",
+"k": "논문",
+"u": "https://doi.org/10.1145/2207676.2207687",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1145/2207676.2207687"
+],
+"n": 174
+},
+{
+"d": 7,
+"t": "Target size study for one-handed thumb use on small touchscreen devices",
+"a": "Parhi, Karlson, Bederson (2006, MobileHCI)",
+"k": "논문",
+"u": "https://doi.org/10.1145/1152215.1152260",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1145/1152215.1152260"
+],
+"n": 175
+},
+{
+"d": 7,
+"t": "The Gamer's Brain: How Neuroscience and UX Can Impact Video Game Design",
+"a": "Celia Hodent (2017, CRC Press)",
+"k": "도서",
+"u": "https://doi.org/10.1201/9781315154725",
+"ds": [
+7
+],
+"urls": [
+"https://doi.org/10.1201/9781315154725"
+],
+"n": 176
+},
+{
+"d": 7,
+"t": "Juice it or lose it",
+"a": "Martin Jonasson & Petri Purho (2012)",
+"k": "강연",
+"u": "https://www.youtube.com/watch?v=Fy0aCDmgnxg",
+"ds": [
+7
+],
+"urls": [
+"https://www.youtube.com/watch?v=Fy0aCDmgnxg"
+],
+"n": 177
+},
+{
+"d": 7,
+"t": "The Art of Screenshake",
+"a": "Jan Willem Nijman / Vlambeer (2013)",
+"k": "강연",
+"u": "https://www.youtube.com/watch?v=AJdEqssNZ-U",
+"ds": [
+7
+],
+"urls": [
+"https://www.youtube.com/watch?v=AJdEqssNZ-U"
+],
+"n": 178
+},
+{
+"d": 7,
+"t": "10 Usability Heuristics for User Interface Design",
+"a": "Jakob Nielsen / NN/g (1994, 2020)",
+"k": "아티클",
+"u": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+"ds": [
+7
+],
+"urls": [
+"https://www.nngroup.com/articles/ten-usability-heuristics/"
+],
+"n": 179
+},
+{
+"d": 7,
+"t": "Response Times: The 3 Important Limits",
+"a": "Jakob Nielsen / NN/g (1993, 2014)",
+"k": "아티클",
+"u": "https://www.nngroup.com/articles/response-times-3-important-limits/",
+"ds": [
+7
+],
+"urls": [
+"https://www.nngroup.com/articles/response-times-3-important-limits/"
+],
+"n": 180
+},
+{
+"d": 7,
+"t": "Executing UX Animations: Duration and Motion Characteristics",
+"a": "Page Laubheimer / NN/g (2020)",
+"k": "아티클",
+"u": "https://www.nngroup.com/articles/animation-duration/",
+"ds": [
+7
+],
+"urls": [
+"https://www.nngroup.com/articles/animation-duration/"
+],
+"n": 181
+},
+{
+"d": 7,
+"t": "Human Interface Guidelines: Designing for games",
+"a": "Apple",
+"k": "가이드라인",
+"u": "https://developer.apple.com/design/human-interface-guidelines/designing-for-games",
+"ds": [
+7
+],
+"urls": [
+"https://developer.apple.com/design/human-interface-guidelines/designing-for-games"
+],
+"n": 182
+},
+{
+"d": 7,
+"t": "Human Interface Guidelines: Accessibility",
+"a": "Apple",
+"k": "가이드라인",
+"u": "https://developer.apple.com/design/human-interface-guidelines/accessibility",
+"ds": [
+7
+],
+"urls": [
+"https://developer.apple.com/design/human-interface-guidelines/accessibility"
+],
+"n": 183
+},
+{
+"d": 7,
+"t": "Game Accessibility Guidelines",
+"a": "Game Accessibility Guidelines (2012~)",
+"k": "가이드라인",
+"u": "https://gameaccessibilityguidelines.com/full-list/",
+"ds": [
+7
+],
+"urls": [
+"https://gameaccessibilityguidelines.com/full-list/"
+],
+"n": 184
+},
+{
+"d": 7,
+"t": "Xbox Accessibility Guidelines (XAG 101/117/118)",
+"a": "Microsoft",
+"k": "가이드라인",
+"u": "https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/117",
+"ds": [
+7
+],
+"urls": [
+"https://learn.microsoft.com/en-us/gaming/accessibility/xbox-accessibility-guidelines/117"
+],
+"n": 185
+},
+{
+"d": 7,
+"t": "WCAG 2.2 Understanding: Three Flashes or Below Threshold (+ Contrast Minimum, Target Size)",
+"a": "W3C (2023)",
+"k": "표준",
+"u": "https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html",
+"ds": [
+7
+],
+"urls": [
+"https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html"
+],
+"n": 186
+},
+{
+"d": 7,
+"t": "Responsive Design for Motion",
+"a": "James Craig / WebKit (2017)",
+"k": "기술 블로그",
+"u": "https://webkit.org/blog/7551/responsive-design-for-motion/",
+"ds": [
+7
+],
+"urls": [
+"https://webkit.org/blog/7551/responsive-design-for-motion/"
+],
+"n": 187
+},
+{
+"d": 7,
+"t": "Designing Websites for iPhone X",
+"a": "Timothy Horton / WebKit (2017)",
+"k": "기술 블로그",
+"u": "https://webkit.org/blog/7929/designing-websites-for-iphone-x/",
+"ds": [
+7
+],
+"urls": [
+"https://webkit.org/blog/7929/designing-websites-for-iphone-x/"
+],
+"n": 188
+},
+{
+"d": 7,
+"t": "How Do Users Really Hold Mobile Devices?",
+"a": "Steven Hoober / UXmatters (2013)",
+"k": "아티클",
+"u": "https://www.uxmatters.com/mt/archives/2013/02/how-do-users-really-hold-mobile-devices.php",
+"ds": [
+7
+],
+"urls": [
+"https://www.uxmatters.com/mt/archives/2013/02/how-do-users-really-hold-mobile-devices.php"
+],
+"n": 189
+},
+{
+"d": 8,
+"t": "Framework for Designing and Evaluating Game Achievements",
+"a": "Hamari & Eranti (2011, DiGRA)",
+"k": "논문",
+"u": "https://dl.digra.org/index.php/dl/article/view/545",
+"ds": [
+8
+],
+"urls": [
+"https://dl.digra.org/index.php/dl/article/view/545"
+],
+"n": 190
+},
+{
+"d": 8,
+"t": "Applying game achievement systems to enhance user experience in a photo sharing service",
+"a": "Montola, Nummenmaa, Lucero, Boberg & Korhonen (2009, MindTrek)",
+"k": "논문",
+"u": "https://users.aalto.fi/~luceroa1/publications/2009/montola09_achieve.pdf",
+"ds": [
+8
+],
+"urls": [
+"https://users.aalto.fi/~luceroa1/publications/2009/montola09_achieve.pdf"
+],
+"n": 191
+},
+{
+"d": 8,
+"t": "The Achievement Machine: Understanding Xbox 360 Achievements in Gaming Practices",
+"a": "Mikael Jakobsson (2011, Game Studies)",
+"k": "논문",
+"u": "https://gamestudies.org/1101/articles/jakobsson",
+"ds": [
+8
+],
+"urls": [
+"https://gamestudies.org/1101/articles/jakobsson"
+],
+"n": 192
+},
+{
+"d": 8,
+"t": "You Have Earned a Trophy: Characterize In-Game Achievements and Their Completions",
+"a": "Haewoon Kwak (2022, ACM WebSci)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2205.15163",
+"ds": [
+8
+],
+"urls": [
+"https://arxiv.org/abs/2205.15163"
+],
+"n": 193
+},
+{
+"d": 8,
+"t": "The need to achieve: Players' perceptions and uses of extrinsic meta-game reward systems",
+"a": "Cruz, Hanus & Fox (2017, CHB)",
+"k": "논문",
+"u": "https://datalearner.com/academic/journal-papers/0747-5632/volumes-and-issues/183/paper-detail/36712",
+"ds": [
+8
+],
+"urls": [
+"https://datalearner.com/academic/journal-papers/0747-5632/volumes-and-issues/183/paper-detail/36712"
+],
+"n": 194
+},
+{
+"d": 8,
+"t": "Do badges increase user activity? A field experiment on the effects of gamification",
+"a": "Juho Hamari (2017, CHB)",
+"k": "논문",
+"u": "https://webpages.tuni.fi/gamification/2018/09/20/badges-increase-user-activity-a-field-experiment-on-the-effects-of-gamification/",
+"ds": [
+8
+],
+"urls": [
+"https://webpages.tuni.fi/gamification/2018/09/20/badges-increase-user-activity-a-field-experiment-on-the-effects-of-gamification/"
+],
+"n": 195
+},
+{
+"d": 8,
+"t": "What makes a trophy hunter? An empirical analysis of Reddit discussions",
+"a": "Chien et al. (2020, GamiFIN)",
+"k": "논문",
+"u": "https://blogs.tuni.fi/playlab/game-research-highlights/trophy-hunters-participate-not-only-in-trophy-related-talk-but-also-in-a-wider-range-of-discussions-about-games/",
+"ds": [
+8
+],
+"urls": [
+"https://blogs.tuni.fi/playlab/game-research-highlights/trophy-hunters-participate-not-only-in-trophy-related-talk-but-also-in-a-wider-range-of-discussions-about-games/"
+],
+"n": 196
+},
+{
+"d": 8,
+"t": "Player Dossiers: Analyzing Gameplay Data as a Reward",
+"a": "Ben Medler (2011, Game Studies)",
+"k": "논문",
+"u": "https://gamestudies.org/1101/articles/medler",
+"ds": [
+8
+],
+"urls": [
+"https://gamestudies.org/1101/articles/medler"
+],
+"n": 197
+},
+{
+"d": 8,
+"t": "Greater Rewards in Videogames Lead to More Presence, Enjoyment and Effort",
+"a": "Johnson et al. (2018)",
+"k": "논문",
+"u": "https://research.usq.edu.au/download/b473a98e1d5bb3a0431b3fd5a0bc99e135fd705d970b6e3d3647ecf4554c3e2d/695582/Johnson%20etal%202018%20Greater%20rewards%20in%20videogam.pdf",
+"ds": [
+8
+],
+"urls": [
+"https://research.usq.edu.au/download/b473a98e1d5bb3a0431b3fd5a0bc99e135fd705d970b6e3d3647ecf4554c3e2d/695582/Johnson%20etal%202018%20Greater%20rewards%20in%20videogam.pdf"
+],
+"n": 198
+},
+{
+"d": 8,
+"t": "Achievements Considered Harmful?",
+"a": "Chris Hecker (2010, GDC)",
+"k": "강연",
+"u": "http://chrishecker.com/Achievements_Considered_Harmful%3F",
+"ds": [
+8
+],
+"urls": [
+"http://chrishecker.com/Achievements_Considered_Harmful%3F"
+],
+"n": 199
+},
+{
+"d": 8,
+"t": "The Cake is Not a Lie: How to Design Effective Achievements",
+"a": "Lucas Blair (2011, Game Developer)",
+"k": "기사",
+"u": "https://www.gamedeveloper.com/design/the-cake-is-not-a-lie-how-to-design-effective-achievements",
+"ds": [
+8
+],
+"urls": [
+"https://www.gamedeveloper.com/design/the-cake-is-not-a-lie-how-to-design-effective-achievements"
+],
+"n": 200
+},
+{
+"d": 8,
+"t": "The Overjustification Effect and Game Achievements",
+"a": "Jamie Madigan (2016, Psychology of Games)",
+"k": "블로그",
+"u": "https://www.psychologyofgames.com/2016/10/the-overjustification-effect-and-game-achievements/",
+"ds": [
+8
+],
+"urls": [
+"https://www.psychologyofgames.com/2016/10/the-overjustification-effect-and-game-achievements/"
+],
+"n": 201
+},
+{
+"d": 8,
+"t": "Why \"Achievement Unlocked\" Works",
+"a": "Ben Sim (2016, Game Developer)",
+"k": "기사",
+"u": "https://www.gamedeveloper.com/business/why-quot-achievement-unlocked-quot-works",
+"ds": [
+8
+],
+"urls": [
+"https://www.gamedeveloper.com/business/why-quot-achievement-unlocked-quot-works"
+],
+"n": 202
+},
+{
+"d": 8,
+"t": "Achievements (Play Games Services)",
+"a": "Google",
+"k": "가이드",
+"u": "https://developer.android.com/games/pgs/achievements",
+"ds": [
+8
+],
+"urls": [
+"https://developer.android.com/games/pgs/achievements"
+],
+"n": 203
+},
+{
+"d": 8,
+"t": "Play Games Services quality checklist",
+"a": "Google",
+"k": "체크리스트",
+"u": "https://developer.android.com/games/pgs/quality",
+"ds": [
+8
+],
+"urls": [
+"https://developer.android.com/games/pgs/quality"
+],
+"n": 204
+},
+{
+"d": 8,
+"t": "In-game content purchase motivations (IGCPMs): Conceptualization, scale development, and validation",
+"a": "Hussain, Hollebeek, Marder & Ting (2025, Information & Management)",
+"k": "논문",
+"u": "https://www.research.ed.ac.uk/en/publications/in-game-content-purchase-motivations-igcpms-conceptualization-sca/",
+"ds": [
+8
+],
+"urls": [
+"https://www.research.ed.ac.uk/en/publications/in-game-content-purchase-motivations-igcpms-conceptualization-sca/"
+],
+"n": 205
+},
+{
+"d": 8,
+"t": "Hats of Affect: A Study of Affect, Achievements and Hats in Team Fortress 2",
+"a": "Christopher Moore (2011, Game Studies)",
+"k": "논문",
+"u": "https://gamestudies.org/1101/articles/moore",
+"ds": [
+8
+],
+"urls": [
+"https://gamestudies.org/1101/articles/moore"
+],
+"n": 206
+},
+{
+"d": 8,
+"t": "From the Hands of an Early Adopter's Avatar to Virtual Junkyards: Analysis of Virtual Goods' Lifetime Survival",
+"a": "Bortko, Pazura, Hamari et al. (2019, Applied Sciences)",
+"k": "논문",
+"u": "https://arxiv.org/pdf/1903.11506",
+"ds": [
+8
+],
+"urls": [
+"https://arxiv.org/pdf/1903.11506"
+],
+"n": 207
+},
+{
+"d": 8,
+"t": "The Effects of Avatar-based Customization on Player Identification",
+"a": "Turkay & Kinzer (2015)",
+"k": "논문",
+"u": "https://www.irma-international.org/chapter/the-effects-of-avatar-based-customization-on-player-identification/126061",
+"ds": [
+8
+],
+"urls": [
+"https://www.irma-international.org/chapter/the-effects-of-avatar-based-customization-on-player-identification/126061"
+],
+"n": 208
+},
+{
+"d": 8,
+"t": "Fostering Intrinsic Motivation through Avatar Identification in Digital Games",
+"a": "Birk, Atkins, Bowey & Mandryk (2016, CHI)",
+"k": "논문",
+"u": "https://dblp.uni-trier.de/pid/170/1084.html",
+"ds": [
+8
+],
+"urls": [
+"https://dblp.uni-trier.de/pid/170/1084.html"
+],
+"n": 209
+},
+{
+"d": 8,
+"t": "The Effects of Badges and Avatar Identification on Play and Making in Educational Games",
+"a": "Kao & Harrell (2018, CHI)",
+"k": "논문",
+"u": "https://people.csail.mit.edu/dkao/pdf/kao2018chi.pdf",
+"ds": [
+8
+],
+"urls": [
+"https://people.csail.mit.edu/dkao/pdf/kao2018chi.pdf"
+],
+"n": 210
+},
+{
+"d": 8,
+"t": "Audio Matters Too: How Audial Avatar Customization Enhances Visual Avatar Customization",
+"a": "Kao et al. (2022, CHI)",
+"k": "논문",
+"u": "https://arxiv.org/abs/2202.05315",
+"ds": [
+8
+],
+"urls": [
+"https://arxiv.org/abs/2202.05315"
+],
+"n": 211
+},
+{
+"d": 8,
+"t": "Me vs. Super(wo)man: Effects of Customization and Identification in a VR Exergame",
+"a": "Koulouris et al. (2020, CHI)",
+"k": "논문",
+"u": "https://paper.nweon.com/?p=1291",
+"ds": [
+8
+],
+"urls": [
+"https://paper.nweon.com/?p=1291"
+],
+"n": 212
+},
+{
+"d": 8,
+"t": "The Proteus Effect: Implications of transformed digital self-representation on online and offline behavior",
+"a": "Yee, Bailenson & Ducheneaut (2009, Communication Research)",
+"k": "논문",
+"u": "https://vhil.stanford.edu/publications/avatars-and-agents/proteus-effect-implications-transformed-digital-self-representation",
+"ds": [
+8
+],
+"urls": [
+"https://vhil.stanford.edu/publications/avatars-and-agents/proteus-effect-implications-transformed-digital-self-representation"
+],
+"n": 213
+},
+{
+"d": 9,
+"t": "'세븐나이츠 키우기' 시장 찢었다…넷마블, 한방 있었네",
+"a": "이대호 / 바이라인네트워크 (2023)",
+"k": "기사",
+"u": "https://byline.network/2023/09/13-300/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2023/09/13-300/"
+],
+"n": 214
+},
+{
+"d": 9,
+"t": "넷마블 '순한 맛 자동사냥' 통했다···장기흥행 요소는 과제",
+"a": "이범종 / 뉴스토마토 (2023)",
+"k": "기사",
+"u": "https://www.newstomato.com/ReadNews.aspx?no=1203785",
+"ds": [
+9
+],
+"urls": [
+"https://www.newstomato.com/ReadNews.aspx?no=1203785"
+],
+"n": 215
+},
+{
+"d": 9,
+"t": "2023년 하반기 국내 모바일 게임 결산: '세븐나이츠 키우기' 매출 6위",
+"a": "Yena You / 센서타워 (2024)",
+"k": "보고서",
+"u": "https://sensortower.com/ko/blog/2H2023-Mobile-Games-recap-in-Korea",
+"ds": [
+9
+],
+"urls": [
+"https://sensortower.com/ko/blog/2H2023-Mobile-Games-recap-in-Korea"
+],
+"n": 216
+},
+{
+"d": 9,
+"t": "핵앤슬래시에 슈팅까지… 진화한 방치형 게임, 새 캐시카우 될까",
+"a": "문대찬 / 디지털데일리 (2024)",
+"k": "기사",
+"u": "https://www.ddaily.co.kr/page/view/2024011501333739935",
+"ds": [
+9
+],
+"urls": [
+"https://www.ddaily.co.kr/page/view/2024011501333739935"
+],
+"n": 217
+},
+{
+"d": 9,
+"t": "中에서 온 '버섯커 키우기'…'방치형 게임'의 반란[한겜할래]",
+"a": "박성은 / 노컷뉴스 (2024)",
+"k": "기사",
+"u": "https://www.nocutnews.co.kr/news/6161177",
+"ds": [
+9
+],
+"urls": [
+"https://www.nocutnews.co.kr/news/6161177"
+],
+"n": 218
+},
+{
+"d": 9,
+"t": "의외의 연속…넷마블 '세븐나이츠 키우기'가 주는 놀라운 통찰",
+"a": "이대호 / 바이라인 (2024, 김정민 대표 인터뷰)",
+"k": "인터뷰",
+"u": "https://byline.network/2024/09/9-234/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/09/9-234/"
+],
+"n": 219
+},
+{
+"d": 9,
+"t": "저도 방치형에 빠졌죠…세나키우기 의외의 플레이가 뭐냐면요?",
+"a": "이대호 / 바이라인 (2024)",
+"k": "인터뷰",
+"u": "https://byline.network/2024/09/11-378/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/09/11-378/"
+],
+"n": 220
+},
+{
+"d": 9,
+"t": "어쩌다 성공? 극소 개발사의 방치형 바이블 '데미갓 키우기'",
+"a": "이대호 / 바이라인 (2024)",
+"k": "기사",
+"u": "https://byline.network/2024/09/12-324/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/09/12-324/"
+],
+"n": 221
+},
+{
+"d": 9,
+"t": "방치형 키우기, 하이퍼 캐주얼보다 낫네",
+"a": "이대호 / 바이라인 (2024)",
+"k": "기사",
+"u": "https://byline.network/2024/09/20-353/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/09/20-353/"
+],
+"n": 222
+},
+{
+"d": 9,
+"t": "복잡해진 키우기 게임, 이제 본연으로…넷마블넥서스 해법은?",
+"a": "이대호 / 바이라인 (2024, 게임 인사이트 기조연설)",
+"k": "강연",
+"u": "https://byline.network/2024/09/27-383/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/09/27-383/"
+],
+"n": 223
+},
+{
+"d": 9,
+"t": "실시간 바뀌는 방치형 게임 판도, 게임사는 누굴 잡아야 할까?",
+"a": "남혜현 / 바이라인 (2024, 모바일인덱스 김두)",
+"k": "강연",
+"u": "https://byline.network/2024/09/29-301",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/09/29-301"
+],
+"n": 224
+},
+{
+"d": 9,
+"t": "보상 아끼면 안 돼요…'1년간 1200개' 들여다본 에이펙스허브의 조언",
+"a": "이대호 / 바이라인 (2024, 장영국)",
+"k": "강연",
+"u": "https://byline.network/2024/09/29-299/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/09/29-299/"
+],
+"n": 225
+},
+{
+"d": 9,
+"t": "'세상 만만한 게임이 2000만달러 매출' 컴투스홀딩스 쾌거",
+"a": "이대호 / 바이라인 (2024)",
+"k": "기사",
+"u": "https://byline.network/2024/08/23-348/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2024/08/23-348/"
+],
+"n": 226
+},
+{
+"d": 9,
+"t": "[지스타2023] \"장비 뽑기 없다, 무한 전투 파밍 극대화\"…'로스트 소드'",
+"a": "이진호 / 바이라인 (2023)",
+"k": "기사",
+"u": "https://byline.network/2023/11/1117_001/",
+"ds": [
+9
+],
+"urls": [
+"https://byline.network/2023/11/1117_001/"
+],
+"n": 227
+},
+{
+"d": 9,
+"t": "《메이플 키우기》, 누적 매출 1억 달러 돌파",
+"a": "Yena You / 센서타워 (2025)",
+"k": "보고서",
+"u": "https://sensortower.com/ko/blog/maplestory-idle-rpg-surpasses-100-million-in-cumulative-revenue",
+"ds": [
+9
+],
+"urls": [
+"https://sensortower.com/ko/blog/maplestory-idle-rpg-surpasses-100-million-in-cumulative-revenue"
+],
+"n": 228
+},
+{
+"d": 9,
+"t": "'키우기'가 달구는 게임 시장…방치형 RPG 인기 지속",
+"a": "문영수 / 아이뉴스24 (2026)",
+"k": "기사",
+"u": "https://v.daum.net/v/362QjdmjWm",
+"ds": [
+9
+],
+"urls": [
+"https://v.daum.net/v/362QjdmjWm"
+],
+"n": 229
+},
+{
+"d": 9,
+"t": "넥슨게임즈(225570) 투자의견 매수(유지)",
+"a": "임희석 / 미래에셋증권 (2025)",
+"k": "보고서",
+"u": "https://securities.miraeasset.com/bbs/maildownload/20250305172910443_155",
+"ds": [
+9
+],
+"urls": [
+"https://securities.miraeasset.com/bbs/maildownload/20250305172910443_155"
+],
+"n": 230
+},
+{
+"d": 9,
+"t": "[IGC2015] 마프게임즈 김동준 - 대기업의 틈바구니에서 인디게임으로 살아남기",
+"a": "김동준 / MAF Games (2015)",
+"k": "강연",
+"u": "https://www.slideshare.net/slideshow/ss-53532534/53532534",
+"ds": [
+9
+],
+"urls": [
+"https://www.slideshare.net/slideshow/ss-53532534/53532534"
+],
+"n": 231
+},
+{
+"d": 9,
+"t": "\"유저 불만 폭주\" 인디 게임의 대명사 중년기사 김봉식에 무슨 일이?",
+"a": "이준혁 / 녹색경제신문 (2019)",
+"k": "기사",
+"u": "https://www.greened.kr/news/articleView.html?idxno=202246",
+"ds": [
+9
+],
+"urls": [
+"https://www.greened.kr/news/articleView.html?idxno=202246"
+],
+"n": 232
+},
+{
+"d": 9,
+"t": "중년기사 김봉식 (App Store)",
+"a": "NADDIC GAMES / (주)마프게임즈",
+"k": "스토어",
+"u": "https://apps.apple.com/kr/app/%EC%A4%91%EB%85%84%EA%B8%B0%EC%82%AC-%EA%B9%80%EB%B4%89%EC%8B%9D/id987072755",
+"ds": [
+9
+],
+"urls": [
+"https://apps.apple.com/kr/app/%EC%A4%91%EB%85%84%EA%B8%B0%EC%82%AC-%EA%B9%80%EB%B4%89%EC%8B%9D/id987072755"
+],
+"n": 233
+},
+{
+"d": 9,
+"t": "중년기사 김봉식 (나무위키)",
+"a": "나무위키",
+"k": "위키(보조)",
+"u": "https://namu.wiki/w/%EC%A4%91%EB%85%84%EA%B8%B0%EC%82%AC%20%EA%B9%80%EB%B4%89%EC%8B%9D",
+"ds": [
+9
+],
+"urls": [
+"https://namu.wiki/w/%EC%A4%91%EB%85%84%EA%B8%B0%EC%82%AC%20%EA%B9%80%EB%B4%89%EC%8B%9D"
+],
+"n": 234
+},
+{
+"d": 9,
+"t": "중년기사 김봉식 초반 공략 및 보석 쿠폰 번호",
+"a": "제이의 재미놀이터 (2015/2024)",
+"k": "블로그",
+"u": "https://gamejay.net/731",
+"ds": [
+9
+],
+"urls": [
+"https://gamejay.net/731"
+],
+"n": 235
+},
+{
+"d": 9,
+"t": "넥슨 NDC, 게임업계 기술 트렌드 한자리에",
+"a": "정문경 / 뉴스토마토 (2018)",
+"k": "기사",
+"u": "https://newstomato.com/ReadNews.aspx?no=819187",
+"ds": [
+9
+],
+"urls": [
+"https://newstomato.com/ReadNews.aspx?no=819187"
+],
+"n": 236
+},
+{
+"d": 9,
+"t": "6년 만에 오프라인으로 돌아온 NDC…주목할 강연은?",
+"a": "이학범 / 디지털데일리 (2025)",
+"k": "기사",
+"u": "https://m.ddaily.co.kr/page/view/2025061817320167473",
+"ds": [
+9
+],
+"urls": [
+"https://m.ddaily.co.kr/page/view/2025061817320167473"
+],
+"n": 237
+},
+{
+"d": 9,
+"t": "게임 내 경제란 무엇인가",
+"a": "Unity Technologies",
+"k": "가이드",
+"u": "https://unity.com/kr/how-to/what-game-economy-guide-part-1",
+"ds": [
+9
+],
+"urls": [
+"https://unity.com/kr/how-to/what-game-economy-guide-part-1"
+],
+"n": 238
+},
+{
+"d": 9,
+"t": "Flexible time session design in AFK Arena",
+"a": "Florian Jesuha / Game Developer (2020)",
+"k": "블로그",
+"u": "https://www.gamedeveloper.com/design/flexible-time-session-design-in-afk-arena",
+"ds": [
+9
+],
+"urls": [
+"https://www.gamedeveloper.com/design/flexible-time-session-design-in-afk-arena"
+],
+"n": 239
+},
+{
+"d": 9,
+"t": "AFK Arena: Hail to the New King of RPGs",
+"a": "Deconstructor of Fun (2019)",
+"k": "분석",
+"u": "https://www.deconstructoroffun.com/blog/2019/6/6/afk-arena-puts-lilith-into-the-billionaire-club",
+"ds": [
+9
+],
+"urls": [
+"https://www.deconstructoroffun.com/blog/2019/6/6/afk-arena-puts-lilith-into-the-billionaire-club"
+],
+"n": 240
+},
+{
+"d": 9,
+"t": "Game Analysis: The evolution of idle RPG systems",
+"a": "Jakub Remiar / PocketGamer.biz (2024)",
+"k": "분석",
+"u": "https://www.pocketgamer.biz/game-analysis-the-evolution-of-idle-rpg-systems",
+"ds": [
+9
+],
+"urls": [
+"https://www.pocketgamer.biz/game-analysis-the-evolution-of-idle-rpg-systems"
+],
+"n": 241
+},
+{
+"d": 9,
+"t": "Revenue for Legend of Mushroom neared $300 million",
+"a": "WN Hub (2024)",
+"k": "기사",
+"u": "https://wnhub.io/news/finance/item-43484",
+"ds": [
+9
+],
+"urls": [
+"https://wnhub.io/news/finance/item-43484"
+],
+"n": 242
+},
+{
+"d": 10,
+"t": "Game Analytics: Maximizing the Value of Player Data",
+"a": "Seif El-Nasr, Drachen & Canossa (2013, Springer)",
+"k": "도서",
+"u": "https://www.springer.com/in/book/9781447147688",
+"ds": [
+10
+],
+"urls": [
+"https://www.springer.com/in/book/9781447147688"
+],
+"n": 243
+},
+{
+"d": 10,
+"t": "Games User Research",
+"a": "Drachen, Mirza-Babaei & Nacke (2018, Oxford University Press)",
+"k": "도서",
+"u": "https://www.sdu.dk/en/forskning/sdumetaverselab/books/game_user_research",
+"ds": [
+10
+],
+"urls": [
+"https://www.sdu.dk/en/forskning/sdumetaverselab/books/game_user_research"
+],
+"n": 244
+},
+{
+"d": 10,
+"t": "RITE Method",
+"a": "Medlock, Wixon et al. (Microsoft, 2002)",
+"k": "방법론",
+"u": "https://en.wikipedia.org/wiki/RITE_Method",
+"ds": [
+10
+],
+"urls": [
+"https://en.wikipedia.org/wiki/RITE_Method"
+],
+"n": 245
+},
+{
+"d": 10,
+"t": "A Stage-Based Model of Personal Informatics Systems",
+"a": "Li, Dey & Forlizzi (2010, CHI)",
+"k": "논문",
+"u": "https://my.eng.utah.edu/~cs5540/au16/readings/PersonalInformatics-Li2010.pdf",
+"ds": [
+10
+],
+"urls": [
+"https://my.eng.utah.edu/~cs5540/au16/readings/PersonalInformatics-Li2010.pdf"
+],
+"n": 246
+},
+{
+"d": 10,
+"t": "A Lived Informatics Model of Personal Informatics",
+"a": "Epstein, Ping, Fogarty & Munson (2015, UbiComp)",
+"k": "논문",
+"u": "https://my.eng.utah.edu/~cs5540/au16/readings/PersonalInformatics-Epstein2015.pdf",
+"ds": [
+10
+],
+"urls": [
+"https://my.eng.utah.edu/~cs5540/au16/readings/PersonalInformatics-Epstein2015.pdf"
+],
+"n": 247
+},
+{
+"d": 10,
+"t": "Understanding Quantified-Selfers' Practices in Collecting and Exploring Personal Data",
+"a": "Choe, Lee, Lee, Pratt & Kientz (2014, CHI)",
+"k": "논문",
+"u": "https://my.eng.utah.edu/~cs5540/au16/readings/PersonalInformatics-Choe2014.pdf",
+"ds": [
+10
+],
+"urls": [
+"https://my.eng.utah.edu/~cs5540/au16/readings/PersonalInformatics-Choe2014.pdf"
+],
+"n": 248
+},
+{
+"d": 10,
+"t": "How to Evaluate Technologies for Health Behavior Change in HCI Research",
+"a": "Klasnja, Consolvo & Pratt (2011, CHI)",
+"k": "논문",
+"u": "https://doi.org/10.1145/1978942.1979396",
+"ds": [
+10
+],
+"urls": [
+"https://doi.org/10.1145/1978942.1979396"
+],
+"n": 249
+},
+{
+"d": 10,
+"t": "Toward Usable Evidence: Optimizing Knowledge Accumulation in HCI Research on Health Behavior Change",
+"a": "Klasnja, Hekler, Korinek, Harlow & Mishra (2017, CHI)",
+"k": "논문",
+"u": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6161824",
+"ds": [
+10
+],
+"urls": [
+"https://pmc.ncbi.nlm.nih.gov/articles/PMC6161824"
+],
+"n": 250
+},
+{
+"d": 10,
+"t": "The Behavior Change Technique Taxonomy (v1) of 93 Hierarchically Clustered Techniques",
+"a": "Michie et al. (2013, Annals of Behavioral Medicine)",
+"k": "논문",
+"u": "https://openaccess.city.ac.uk/id/eprint/3293/",
+"ds": [
+10
+],
+"urls": [
+"https://openaccess.city.ac.uk/id/eprint/3293/"
+],
+"n": 251
+},
+{
+"d": 10,
+"t": "Investigating the Impact of Adding Plan Reminders on Implementation Intentions to Support Behaviour Change",
+"a": "Wicaksono, Hendley & Beale (2019, Interacting with Computers)",
+"k": "논문",
+"u": "https://research.birmingham.ac.uk/files/71165330/Investigating_the_Impact_IWC_2019_Final.pdf",
+"ds": [
+10
+],
+"urls": [
+"https://research.birmingham.ac.uk/files/71165330/Investigating_the_Impact_IWC_2019_Final.pdf"
+],
+"n": 252
+},
+{
+"d": 10,
+"t": "Heuristic Evaluation of Persuasive Health Technologies",
+"a": "Kientz, Choe et al. (2010, ACM IHI)",
+"k": "논문",
+"u": "https://terpconnect.umd.edu/~choe/download/IHI-10-Kientz.pdf",
+"ds": [
+10
+],
+"urls": [
+"https://terpconnect.umd.edu/~choe/download/IHI-10-Kientz.pdf"
+],
+"n": 253
+},
+{
+"d": 10,
+"t": "How to Keep Players Engaged and Coming Back to Your Idle Game",
+"a": "GameAnalytics (2020)",
+"k": "블로그",
+"u": "https://gameanalytics.com/blog/keep-players-engaged-idle-games-stats/",
+"ds": [
+10
+],
+"urls": [
+"https://gameanalytics.com/blog/keep-players-engaged-idle-games-stats/"
+],
+"n": 254
+},
+{
+"d": 10,
+"t": "Data-Driven or Data-Blinded? Uses and Abuses of Analytics in Games",
+"a": "Emily Greer / Kongregate (2018, GDC)",
+"k": "강연",
+"u": "https://gdcvault.com/play/1025378/Data-Driven-or-Data-Blinded",
+"ds": [
+10
+],
+"urls": [
+"https://gdcvault.com/play/1025378/Data-Driven-or-Data-Blinded"
+],
+"n": 255
+},
+{
+"d": 10,
+"t": "A/B testing at King",
+"a": "Yassal Sundman / Crisp's Blog (2016)",
+"k": "블로그",
+"u": "https://blog.crisp.se/2016/11/22/yassalsundman/ab-testing-at-king",
+"ds": [
+10
+],
+"urls": [
+"https://blog.crisp.se/2016/11/22/yassalsundman/ab-testing-at-king"
+],
+"n": 256
+},
+{
+"d": 10,
+"t": "Behind the product: Duolingo streaks",
+"a": "Jackson Shuttleworth (2024, Lenny's Podcast)",
+"k": "팟캐스트",
+"u": "https://lennysnewsletter.com/p/behind-the-product-duolingo-streaks",
+"ds": [
+10
+],
+"urls": [
+"https://lennysnewsletter.com/p/behind-the-product-duolingo-streaks"
+],
+"n": 257
+},
+{
+"d": 10,
+"t": "Cookie Clicker is 5 years old today",
+"a": "Andy Chalk / PC Gamer (2018)",
+"k": "기사",
+"u": "https://www.pcgamer.com/cookieclicker",
+"ds": [
+10
+],
+"urls": [
+"https://www.pcgamer.com/cookieclicker"
+],
+"n": 258
+},
+{
+"d": 10,
+"t": "Runescape devs loved this fan-made idle game so much, they're publishing it",
+"a": "PCGamesN (Melvor Idle)",
+"k": "기사",
+"u": "https://www.pcgamesn.com/runescape/melvor-idle",
+"ds": [
+10
+],
+"urls": [
+"https://www.pcgamesn.com/runescape/melvor-idle"
+],
+"n": 259
+}
+]

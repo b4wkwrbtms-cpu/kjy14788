@@ -1,0 +1,13 @@
+{
+ "looks": [ {"name": "choi", "char": "choi", "items": []} ],
+ "poses": [
+  {"name": "before (v36 1st)", "bx":1,"hip":1,"lean":3,"tq":1,"hx":1,"hy":1,"fF":4,"fB":-4,"kF":1, "sh":1.95,"fa":2.2,"wa":1.95,"dx":18},
+  {"name": "H1 heel1 fB-3", "bx":1,"hip":0,"lean":5,"tq":2,"hx":2,"hy":1,"fF":4,"fB":-3,"kF":1,"hl":1, "sh":1.75,"fa":1.95,"wa":1.9,"dx":18},
+  {"name": "H2 heel2 fB-4", "bx":1,"hip":0,"lean":5,"tq":2,"hx":2,"hy":1,"fF":4,"fB":-4,"kF":1,"hl":2, "sh":1.75,"fa":1.95,"wa":1.9,"dx":18},
+  {"name": "H3 hip1 heel1", "bx":1,"hip":1,"lean":5,"tq":2,"hx":2,"hy":1,"fF":4,"fB":-3,"kF":1,"hl":1, "sh":1.75,"fa":1.95,"wa":1.9,"dx":18},
+  {"name": "H4 lean6 heel1", "bx":2,"hip":0,"lean":6,"tq":2,"hx":2,"hy":1,"fF":5,"fB":-3,"kF":1,"hl":1, "sh":1.75,"fa":1.95,"wa":1.9,"dx":18},
+  {"name": "H5 hip1 heel2 fB-4", "bx":1,"hip":1,"lean":5,"tq":2,"hx":2,"hy":1,"fF":4,"fB":-4,"kF":1,"hl":2, "sh":1.75,"fa":1.95,"wa":1.9,"dx":18},
+  {"name": "W1 windup", "bx":0,"hip":0,"lean":1,"tq":0,"hx":0,"hy":0,"fF":2,"fB":-2, "sh":-0.35,"fa":-0.1,"wa":0.05,"dx":-2},
+  {"name": "idle", "bx":0,"hip":0,"lean":0,"tq":0,"hx":0,"hy":0,"fF":0,"fB":0, "sh":2.6,"fa":1.75,"wa":0.55}
+ ]
+}

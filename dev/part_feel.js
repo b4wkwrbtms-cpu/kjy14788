@@ -6,6 +6,8 @@
      공격 시계 ─┴→ [1/60초 고정 틱] 곽준영 상태 기계: 쉼 → 예비 → 판정 → 회복(포즈 홀드 → 제자리)
                     판정 프레임 = 접촉 → 피해 묶음 → 연출 레시피(히트스톱·피격 반응·흔들림·소리·숫자)
      렌더만: 몸 리그(어깨→팔꿈치→손이 무기를 쥠, 윗몸 기울기·무릎·발 내딛기) · 칼이 지나간 자리 궤적 · 트라우마 흔들림 · 땅 흔적
+   v36: 몸 전체로 휘두르기 — 참고(중년기사 김봉식)처럼 칼을 든 꼿꼿한 예비 자세 → 한 번에 낮고 넓은 자세로 내려침(허리 숙임·앞발 내딛고 뒷발 뺌)
+        → 친 자세를 다음 타격 직전까지 버팀(탄력 홀드 keep) · 큰 초승달 궤적이 시작 쪽부터 가늘게 사라짐 · 무기마다 이펙트 색
    draw·step·hit 에서 부르므로 var 와 function 선언만 씀 */
 
 /* ---------- 시간 (CP-01) ---------- */
@@ -28,13 +30,16 @@ var FEEL_BIGCRIT = 36;            // f. 큰 치명 연출(X 베기·집중선·�
    startup: 첫 판정 프레임(그 틱에 피해). 그중 마지막 strike 프레임이 실제로 내려치는 구간, 앞부분이 예비동작.
    active: 판정 유지 · hold: 끝 자세 유지(포즈 홀드로 읽히게, G-ACT-01) · ret: 제자리로.
    cancel = startup + active + hold → 팔로우스루를 자르지 않고 다음 기술을 받음 (G-ACT-02).
-   예비동작은 큰 기술일수록 길게 (G-ACT-01): 올려 6 < 내려 7 < 돌진 8. 내려치기 2~3f (P-FEEL-18: 2f 펀치 > 5f 펀치).
+   예비동작은 큰 기술일수록 길게 (G-ACT-01): 올려 4 < 내려 5 < 돌진 6. 내려치기 2~3f (P-FEEL-18: 2f 펀치 > 5f 펀치).
+   v36 참고 영상 계측(60fps): 예비 자세 ~5f → 한 번에 내려침 → 친 자세 ~16~22f 버팀(한 주기의 약 70%) → 일어서며 다시 예비.
+     그래서 예비동작을 짧게 하고(v35 6~8f → 4~6f), 캔슬 뒤에도 다음 기술이 올 때까지 친 자세를 keep f까지 그대로 둠(탄력 홀드).
+     공속이 느려 다음 타격이 멀면 keep 뒤 ret 동안 제자리로. 캔슬 창(cancel)은 그대로라 터치 버퍼(9f)는 v35와 같이 받음.
    터치 찌르기: 피해는 입력 프레임(P-FEEL-10), 칼끝은 1f 뒤 닿음(내려치기 1f). dir = 맞는 방향(불꽃·넉백·카메라 킥). */
 var FEEL_MOVES = {
-  rise:  { startup: 8,  strike: 2, active: 2, hold: 6, ret: 8,  tier: "hit",      dir: [0.75, -0.65] },
-  chop:  { startup: 9,  strike: 2, active: 2, hold: 7, ret: 9,  tier: "hit",      dir: [0.55, 0.85] },
-  lunge: { startup: 11, strike: 3, active: 3, hold: 8, ret: 10, tier: "finisher", dir: [1, 0] },
-  jab:   { startup: 1,  strike: 1, active: 2, hold: 3, ret: 7,  tier: "tap",      dir: [1, 0] },
+  rise:  { startup: 6, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.75, -0.65] },
+  chop:  { startup: 7, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.55, 0.85] },
+  lunge: { startup: 9, strike: 3, active: 3, hold: 7, keep: 18, ret: 9, tier: "finisher", dir: [1, 0] },
+  jab:   { startup: 1, strike: 1, active: 2, hold: 3, keep: 12, ret: 7, tier: "tap",      dir: [1, 0] },
 };
 var FEEL_CHAIN = ["rise", "chop", "lunge"];        // 자동 3연타: 올려베기 → 내려베기 → 돌진 찌르기(마무리)
 /* 공속 단계: 공격 간격(ms)이 짧으면 같은 기술을 짧게 — 정수로 반올림, 최소 프레임 보장 (튜닝). 터치는 늘 같은 길이 */
@@ -47,8 +52,8 @@ var FEEL_FD = (function () {
       if (id === "jab") k = 1;
       const r = (v, lo) => Math.max(lo, Math.round(v * k));
       const strike = id === "jab" ? M.strike : r(M.strike, 2), wind = id === "jab" ? 0 : r(M.startup - M.strike, 2);
-      const fd = { startup: wind + strike, strike, active: r(M.active, 1), hold: r(M.hold, 2), ret: r(M.ret, 3) };
-      fd.cancel = fd.startup + fd.active + fd.hold; fd.total = fd.cancel + fd.ret;
+      const fd = { startup: wind + strike, strike, active: r(M.active, 1), hold: r(M.hold, 2), keep: r(M.keep, 0), ret: r(M.ret, 3) };
+      fd.cancel = fd.startup + fd.active + fd.hold; fd.keepEnd = fd.cancel + fd.keep; fd.total = fd.keepEnd + fd.ret;
       return fd;
     });
   }
@@ -82,16 +87,38 @@ var FEEL_SHAKE = { decay: 0.5, px: 20, rollDeg: 10, rollK: 0.2, speed: 20, hitCa
 /* hitCap·killCap: 자주 나는 타격·처치가 쌓아 올릴 수 있는 트라우마 상한 (흔들림 2.5 px·4 px). 큰 보스 처치·스킬은 상한 없음 (튜닝, U-FEEL-07) */
 
 /* ---------- 몸 리그 자세 ----------
-   sh 위팔 · fa 아래팔 · wa 무기 각도 (0 = 위, 시계 방향 +, 1.57 = 앞) · lean 윗몸 기울기(칸) · crouch 무릎(칸) · dx 발 내딛기(px) · lift 뜀(px, − 가 위)
-   A = 예비동작 끝 · B = 맞는 순간 · C = 끝까지 휘두른 자세(포즈 홀드) */
-var RIG_PAD = 2, RIG_L1 = 2.8, RIG_L2 = 2.3, FEEL_BLADE = 15.5 * 5;
-var FEEL_IDLE = { sh: 2.6, fa: 1.75, wa: 0.55, lean: 0, crouch: 0, dx: 0, lift: 0 };
-var FEEL_KEYS = {
-  rise:  { A: { sh: 3.3, fa: 3.7, wa: 4.5, lean: -1, crouch: 1, dx: -3, lift: 0 }, B: { sh: 1.2, fa: 0.7, wa: 1.35, lean: 1, crouch: 0, dx: 14, lift: -4 }, C: { sh: 0.6, fa: 0.1, wa: 0.25, lean: 0, crouch: 0, dx: 12, lift: -2 } },
-  chop:  { A: { sh: -0.2, fa: -0.7, wa: -0.75, lean: -1, crouch: 1, dx: -4, lift: 0 }, B: { sh: 1.55, fa: 1.9, wa: 1.75, lean: 2, crouch: 0, dx: 16, lift: 0 }, C: { sh: 2.2, fa: 2.5, wa: 2.4, lean: 2, crouch: 1, dx: 18, lift: 0 } },
-  lunge: { A: { sh: 3.6, fa: 1.6, wa: 1.5, lean: -1, crouch: 1, dx: -6, lift: 0 }, B: { sh: 1.55, fa: 1.55, wa: 1.55, lean: 2, crouch: 0, dx: 28, lift: 0 }, C: { sh: 1.6, fa: 1.6, wa: 1.6, lean: 2, crouch: 1, dx: 30, lift: 0 } },
-  jab:   { A: { sh: 3.6, fa: 1.6, wa: 1.5, lean: -1, crouch: 1, dx: -2, lift: 0 }, B: { sh: 1.55, fa: 1.55, wa: 1.55, lean: 1, crouch: 0, dx: 18, lift: 0 }, C: { sh: 1.6, fa: 1.6, wa: 1.6, lean: 1, crouch: 0, dx: 20, lift: 0 } },
-};
+   팔·무기: sh 위팔 · fa 아래팔 · wa 무기 각도 (0 = 위, 시계 방향 +, 1.57 = 앞) · dx 몸 전체 앞으로(px) · lift 뜀(px, − 가 위)
+   몸(v36, 칸 단위 — 그릴 때 반올림): bx 골반 앞 · hip 골반 내림 · lean 어깨가 골반보다 앞(숙임) · tq 몸통 한 줄 접기 · hx 머리 더 앞 · hy 머리 내림
+     fF 앞발 · fB 뒷발(− = 뒤로 뺌) · kF·kB 무릎을 다리와 직각으로 내미는 칸
+   A = 예비동작 끝(칼을 든 꼿꼿한 자세) · B = 맞는 순간(낮고 넓게) · C = 끝까지 휘두른 자세(포즈 홀드, 다음 기술까지 버팀)
+   참고 영상의 친 자세: 키 ~15% 낮아짐 · 윗몸 앞으로 · 앞무릎 굽힘 · 뒷다리 뒤로 쭉 · 칼끝은 몬스터 발치 앞 바닥 쪽 (G-ACT-01 포즈 홀드, U-FEEL-12 실루엣)
+   tq 는 0~3 (몸통 접는 줄 수) */
+var RIG_L1 = 2.8, RIG_L2 = 2.3, FEEL_BLADE = 15.5 * 5;
+var RIG_BODY_KEYS = ["bx", "hip", "lean", "tq", "hx", "hy", "fF", "fB", "kF", "kB", "hl"];
+var FEEL_IDLE = { sh: 2.6, fa: 1.75, wa: 0.55, dx: 0, lift: 0, bx: 0, hip: 0, lean: 0, tq: 0, hx: 0, hy: 0, fF: 0, fB: 0, kF: 0, kB: 0, hl: 0 };
+var FEEL_KEYS = (function () {
+  const P = o => Object.assign({}, FEEL_IDLE, o);
+  // 친 자세 (v36, 사용자 피드백 반영: "더 숙이고 뒷발은 더 빼되 다리를 찢지 말고, 뒤꿈치를 들어 역동적으로")
+  //   윗몸: 어깨가 골반보다 5칸 앞 · 몸통 2줄 접음 · 머리 1칸 내리고 2칸 더 앞 → 키가 3칸(12%) 낮아지고 크게 숙임
+  //   다리: 골반은 그대로(다리 길이 유지) · 앞발 4칸 내딛고 무릎 굽힘 · 뒷발 3칸 뒤로 빼고 뒤꿈치를 들어 발끝으로 밂
+  const LOW = { bx: 1, hip: 0, lean: 5, tq: 2, hx: 2, hy: 1, fF: 4, fB: -3, kF: 1, kB: 0, hl: 1 };
+  // 예비 자세: 몸을 뒤로 젖히지 않고(예전엔 젖히며 칼이 몸 뒤로 숨음) 꼿꼿이 서서 무기를 머리 위로 높이 — 무기가 늘 몸 앞에 보이게
+  const UP = { bx: 0, hip: 0, lean: 1, tq: 0, hx: 0, hy: 0, fF: 2, fB: -2, kF: 0, kB: 0, hl: 0 };
+  return {
+    rise:  { A: P({ sh: 2.4, fa: 2.6, wa: 2.0, dx: -3, bx: 1, hip: 1, lean: 3, tq: 2, hx: 1, hy: 1, fF: 3, fB: -3, kF: 1 }),     // 낮게 웅크려 칼끝을 앞 바닥에
+             B: P(Object.assign({}, LOW, { sh: 1.0, fa: 0.5, wa: 0.9, dx: 14, lean: 4, tq: 1, hy: 0 })),                         // 숙인 채 앞에서 위로 올려벰
+             C: P(Object.assign({}, LOW, { sh: 0.7, fa: 0.3, wa: 0.45, dx: 14, lean: 4, tq: 1, hy: 0 })) },
+    chop:  { A: P(Object.assign({}, UP, { sh: -0.35, fa: -0.1, wa: 0.05, dx: -2, lift: -2 })),                                  // 무기를 머리 위로 곧게
+             B: P(Object.assign({}, LOW, { sh: 1.75, fa: 1.95, wa: 1.7, dx: 16, lean: 6 })),                                    // 맞는 순간 한 칸 더 숙였다가
+             C: P(Object.assign({}, LOW, { sh: 1.75, fa: 1.95, wa: 1.9, dx: 18 })) },                                           // 버팀 (칼끝은 몬스터 발치 바닥)
+    lunge: { A: P({ sh: 3.6, fa: 1.6, wa: 1.5, dx: -4, bx: 0, hip: 1, lean: 2, tq: 1, fF: 2, fB: -3, kF: 1 }),                 // 웅크려 팔을 당겨 장전 (무기는 앞을 겨눔)
+             B: P(Object.assign({}, LOW, { sh: 1.55, fa: 1.55, wa: 1.55, dx: 28, bx: 2, lean: 6, fF: 5, fB: -4, hl: 2 })),
+             C: P(Object.assign({}, LOW, { sh: 1.6, fa: 1.6, wa: 1.6, dx: 30, bx: 2, lean: 6, fF: 5, fB: -4, hl: 2 })) },
+    jab:   { A: P({ sh: 3.6, fa: 1.6, wa: 1.5, dx: -2, lean: 1, fF: 1, fB: -1 }),
+             B: P(Object.assign({}, LOW, { sh: 1.55, fa: 1.55, wa: 1.55, dx: 18, lean: 4, tq: 1 })),
+             C: P(Object.assign({}, LOW, { sh: 1.6, fa: 1.6, wa: 1.6, dx: 20, lean: 4, tq: 1 })) },
+  };
+})();
 
 /* ---------- 상태 ---------- */
 var fHero = { mv: null, fd: null, f: 0, p0: null, auto: false, pend: 0, buf: 0, chain: 0, held: 0, frz: 0, frzMax: 0, vs: 0, lastHit: -99, bigCrit: -999, front: null, sh: { x: 0, y: 0 } };
@@ -120,7 +147,7 @@ var FH_WIND = {                                   // 예비동작 + 내려치기
       if (++h.held > FEEL_HOLD_MAX) return FH_IDLE;
       return null;
     }
-    if (h.f === W && h.auto) sfx("swing");                                  // 휘두르는 소리는 내려치기 시작에
+    if (h.f === W && h.auto) { sfx("swing"); feelStepDust(h.mv); }          // 휘두르는 소리는 내려치기 시작에 · 뒷발이 땅을 밀어내는 먼지
     h.f++;
     return h.f >= h.fd.startup ? FH_ACT : null;
   },
@@ -148,6 +175,8 @@ var fHeroM = new FeelMachine(fHero, FH_IDLE);
 /* 기술 시작: 지금 자세에서 이어서 */
 function feelBegin(h, mv) {
   h.p0 = feelPoseRaw();
+  const K = FEEL_KEYS[mv], T = K && (mv === "jab" ? K.B : K.A);
+  if (T) ["sh", "fa", "wa"].forEach(k => { const d = h.p0[k] - T[k]; h.p0[k] -= Math.round(d / (2 * Math.PI)) * 2 * Math.PI; });   // 각도는 가까운 쪽으로 (한 바퀴 돌지 않게)
   h.mv = mv; h.fd = feelFD(mv, feelSt || stats()); h.f = 0; h.held = 0; h.auto = mv !== "jab";
   if (h.auto) h.chain++;
   anim = { a: 0.5, dur: 200, pending: false, type: mv };                    // 예전 코드 호환
@@ -171,6 +200,12 @@ function feelAutoNext(h) {
 function feelStrikeReady(h) {
   if (!feelLive() || !feelInReach(h.mv)) return false;
   return h.pend > 0 || (feelSt || stats()).interval - atkTimer <= h.fd.strike * FEEL_DT;
+}
+/* 내려치는 순간 뒷발을 뒤로 빼며 땅을 밀어냄 → 뒷발 자리에 작은 먼지 (v36) */
+function feelStepDust(mv) {
+  if (reduceMotion) return;
+  const B = (FEEL_KEYS[mv] || FEEL_KEYS.chop).B;
+  addDust(HERO_X + B.dx + (RIG_LEG.B.c + 0.5 + B.fB) * 3.5, GROUND - 3, mv === "lunge" ? 3 : 2, -1, false);
 }
 /* 판정 프레임: 쌓인 자동 타격을 한 번에 (숫자는 합계 하나 + ×n) */
 function feelContact(h) {
@@ -281,7 +316,8 @@ function feelImpact(b) {
   }
   const [ix, iy] = b.x != null ? [b.x, b.y] : feelHitPoint(b.mv);
   if (!reduceMotion) {
-    for (let i = 0; i < R.sparks; i++) { const sp = 3 + Math.random() * (big ? 10 : 7); sparks.push({ x: ix, y: iy, vx: dir[0] * sp + (Math.random() - .5) * 3, vy: dir[1] * sp + (Math.random() - .5) * 3 - 1, life: 1, c: i % 3 ? "#fff7c2" : "#ffffff", line: true }); }
+    const FP = feelFxPal(performance.now());                                // v36: 불꽃도 무기 이펙트 색
+    for (let i = 0; i < R.sparks; i++) { const sp = 3 + Math.random() * (big ? 10 : 7); sparks.push({ x: ix, y: iy, vx: dir[0] * sp + (Math.random() - .5) * 3, vy: dir[1] * sp + (Math.random() - .5) * 3 - 1, life: 1, c: i % 3 ? FP[2] : i % 2 ? FP[1] : "#ffffff", line: true }); }
     if (melee) addBurst(ix, iy, big);
     if (b.mv === "chop") { addDust(MON_X - 10, GROUND - 3, big ? 4 : 2, 1, false); feelMark(MON_X - 14, 30, "cut"); }
     if (b.mv === "lunge") addDust(HERO_X + 30, GROUND - 3, 3, -1, false);
@@ -320,8 +356,8 @@ function feelBox() {
   return { x0: cx - mw / 2, x1: cx + mw / 2, y0: GROUND + eo.dy - mh, y1: GROUND + eo.dy };
 }
 function feelTip(P) {
-  const look = heroLook(), R = rigBody(look, Math.round(P.lean), P.crouch > 0.5 ? 1 : 0), arm = rigArm(R, P), hs = 3.5;
-  const x0 = HERO_X + P.dx - RIG_PAD * hs, y0 = GROUND - 24 * hs + P.lift - R.top * hs, gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs;
+  const look = heroLook(), R = rigBody(look, rigQ(P)), arm = rigArm(R, P), hs = 3.5;
+  const x0 = HERO_X + P.dx - R.P * hs, y0 = GROUND - 24 * hs + P.lift - R.top * hs, gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs;
   return [gx + Math.sin(P.wa) * FEEL_BLADE, gy - Math.cos(P.wa) * FEEL_BLADE];
 }
 function feelHitPoint(mv) {
@@ -385,63 +421,119 @@ function feelEaseIO(k) { return 0.5 - 0.5 * Math.cos(Math.PI * k); }
 function feelLerp(P, Q, k) { const o = {}; for (const key in FEEL_IDLE) o[key] = P[key] + (Q[key] - P[key]) * k; return o; }
 function feelIdle() {
   const o = Object.assign({}, FEEL_IDLE);
-  if (!reduceMotion) { const now = performance.now(); o.crouch = Math.floor(now / 620) % 2; o.wa = FEEL_IDLE.wa + Math.sin(now / 700) * 0.05; }
+  if (!reduceMotion) { const now = performance.now(); o.hip = Math.floor(now / 620) % 2; o.wa = FEEL_IDLE.wa + Math.sin(now / 700) * 0.05; }   // 숨쉬기: 골반 1칸(무릎은 곧게)
   return o;
 }
 /* 프레임 fr(소수 = 틱 사이 보간, CP-01 alpha)의 자세 */
 function feelPoseAt(mv, fd, p0, fr) {
-  const K = FEEL_KEYS[mv], W = fd.startup - fd.strike, S = fd.startup, A = S + fd.active;
+  const K = FEEL_KEYS[mv], W = fd.startup - fd.strike, S = fd.startup, A = S + fd.active, E = fd.keepEnd != null ? fd.keepEnd : fd.cancel;
   if (fr < W) return feelLerp(p0, K.A, feelEaseOut(fr / W));                                  // 예비동작: 빠르게 들고 멈추듯 (안티시페이션)
   if (fr < S) return feelLerp(W > 0 ? K.A : p0, K.B, feelEaseIn((fr - W) / fd.strike));        // 내려치기: 점점 빠르게
   if (fr < A) return feelLerp(K.B, K.C, feelEaseOut((fr - S) / fd.active));                     // 맞는 구간: 끝까지 밀어붙임
-  if (fr < fd.cancel) return Object.assign({}, K.C);                                            // 포즈 홀드
-  if (fr < fd.total) return feelLerp(K.C, feelIdle(), feelEaseIO((fr - fd.cancel) / fd.ret));   // 제자리로
+  if (fr < E) return Object.assign({}, K.C);                                                    // 포즈 홀드 (캔슬 뒤 keep까지 — 다음 기술이 오면 여기서 바로 이어짐)
+  if (fr < fd.total) return feelLerp(K.C, feelIdle(), feelEaseIO((fr - E) / fd.ret));           // 다음 타격이 멀면 제자리로
   return feelIdle();
 }
 function feelFrame() { const h = fHero; return h.f + (h.frz > 0 || fHeroM.cur === FH_WIND && h.held > 0 ? 0 : Math.min(0.999, feelClock.alpha)); }
 function feelPoseRaw() { const h = fHero; return h.mv && h.fd ? feelPoseAt(h.mv, h.fd, h.p0 || FEEL_IDLE, feelFrame()) : feelIdle(); }
 function feelPoseNow() {
   const P = feelPoseRaw();
-  if (reduceMotion) { P.dx = 0; P.lean = 0; P.lift = 0; P.crouch = 0; }
+  if (reduceMotion) { P.dx = 0; P.lift = 0; RIG_BODY_KEYS.forEach(k => { P[k] = 0; }); }       // 움직임 줄이기: 팔·무기만 움직임
   else P.dx += feelShakeOff(fHero.frz, fHero.frzMax, fHero.vs);                               // 공격자는 완전히 멈추지 않음 (P-FEEL-15 ⑦)
   P.ang = P.wa;
   return P;
 }
 function feelPivot() { return fHero.sh.x ? { x: fHero.sh.x, y: fHero.sh.y } : { x: HERO_X + 10 + 15.5 * 3.5, y: GROUND - 84 + 1 + 16 * 3.5 }; }
 
-/* ---------- 몸 그림: 앞팔 지우고, 윗몸 기울이고, 무릎 굽힌 지도 (모양마다 한 번만 만듦) ---------- */
+/* ---------- v36 몸 리그: 머리 · 몸통 · 허리 · 두 다리를 도트 칸 단위로 다시 짜 맞춤 ----------
+   기본 그림 18×24 칸: 머리 0~11줄 · 몸통 12~18 · 허리띠 19 · 다리 20~22 · 신발 23 / 뒷다리 5~7칸 · 앞다리 10~12칸.
+   회전 대신 줄 밀기(시어)와 통째 옮기기만 써서 도트가 깨지지 않게 함 (얼굴·안경 줄은 그대로).
+   q = 정수 자세(칸)
+     bx 골반을 앞으로 · hip 골반 내림(무릎이 굽음) · lean 어깨가 골반보다 앞(몸통 줄마다 비례로 밀어 숙임) · tq 몸통 접기 0~3줄(더 숙임: 15 → 14 → 16줄 순서로 뺌)
+     hx 머리를 어깨보다 더 앞 · hy 머리 내림(목 움츠림) · fF 앞발 · fB 뒷발(− = 뒤로 뺌) · kF·kB 무릎을 다리와 직각으로 내미는 칸(+ = 앞·아래, − = 뒤·위, 0 = 곧은 다리)
+     hl 뒷발 뒤꿈치 들기 0~2줄 (발끝으로 땅을 밀어냄 — 다리를 찢지 않고도 역동적으로)
+   장비: 몸통·머리에 붙은 것은 같이 움직이고, 발밑 왼쪽(19~23줄 0~3칸, 가방·도장 같은 소품)은 땅에 그대로 둠 */
+var RIG_PADX = 9;                                              // 좌우 여백 칸 — 뒷발을 뒤로 빼고 머리를 앞으로 내밀 자리
+var RIG_LEG = { B: { c: 6, s0: 4, s1: 8 }, F: { c: 11, s0: 9, s1: 15 } };   // 다리 가운데 칸 · 신발 줄 범위
+var RIG_LEGLEN = 3;                                            // 다리 길이(칸, 20~22줄)
+var RIG_HAIR = { h: 1, e: 1 };
 var rigBodyCache;
-function rigBody(look, lean, crouch) {
+function rigQ(P) {
+  return { bx: Math.round(P.bx || 0), hip: Math.max(0, Math.round(P.hip || 0)), lean: Math.round(P.lean || 0), tq: Math.max(0, Math.min(3, Math.round(P.tq || 0))),
+    hx: Math.round(P.hx || 0), hy: P.hy > 0.5 ? 1 : 0, fF: Math.round(P.fF || 0), fB: Math.round(P.fB || 0), kF: Math.round(P.kF || 0), kB: Math.round(P.kB || 0), hl: Math.max(0, Math.min(2, Math.round(P.hl || 0))) };
+}
+function rigBody(look, q) {
   rigBodyCache = rigBodyCache || new WeakMap();
   let byKey = rigBodyCache.get(look.map); if (!byKey) { byKey = new Map(); rigBodyCache.set(look.map, byKey); }
-  const key = lean + "|" + crouch; if (byKey.has(key)) return byKey.get(key);
-  const top = look.top || 0, src = look.map, W = Math.max(...src.map(r => r.length)), pad = ".".repeat(RIG_PAD);
-  const at = (r, c) => (src[top + r] || "")[c] || ".";
-  // 앞팔 지우기: 14줄 14칸, 15줄 13~16칸(13칸은 몸통 색으로 메움), 16줄 14~16칸
+  const key = q.bx + "|" + q.hip + "|" + q.lean + "|" + q.tq + "|" + q.hx + "|" + q.hy + "|" + q.fF + "|" + q.fB + "|" + q.kF + "|" + q.kB + "|" + q.hl;
+  const hit = byKey.get(key); if (hit) return hit;
+  const top = look.top || 0, src = look.map, P = RIG_PADX, W = 18 + 2 * P, H = top + 24;
+  const at = (r, c) => { const row = src[top + r]; return row && c >= 0 && c < row.length ? row[c] : "."; };
+  // 앞팔은 따로 그림(rigArm) → 14줄 14칸, 15줄 13~16칸(13칸은 몸통 색으로 메움), 16줄 14~16칸을 지움
   const sleeve = at(15, 14) !== "." ? at(15, 14) : "a", cuff = at(16, 14) !== "." ? at(16, 14) : sleeve, skin = at(15, 15) !== "." ? at(15, 15) : "s";
-  let rows = src.map((row, i) => {
-    let s = row.padEnd(W, "."); const r = i - top;
-    if (r === 14) s = setCh(s, 14, ".");
-    if (r === 15) { s = setCh(s, 13, at(15, 12) !== "." ? at(15, 12) : "j"); for (let c = 14; c <= 16; c++) s = setCh(s, c, "."); }
-    if (r === 16) for (let c = 14; c <= 16; c++) s = setCh(s, c, ".");
-    return s;
-  });
-  // 윗몸 기울이기: 머리(0~11줄)는 lean 칸, 몸통(12~18줄)은 절반
-  const shift = (s, k) => k > 0 ? ".".repeat(k) + s.slice(0, s.length - k) : k < 0 ? s.slice(-k) + ".".repeat(-k) : s;
-  const tl = lean > 0 ? Math.floor(lean / 2) : lean < 0 ? -Math.floor(-lean / 2) : 0;
-  rows = rows.map((s, i) => { const r = i - top; return pad + shift(s, r <= 11 ? lean : r <= 18 ? tl : 0) + pad; });
-  // 무릎 굽히기: 다리 한 줄(21줄)을 빼고 맨 위에 빈 줄
-  if (crouch > 0 && rows[top + 21]) { rows.splice(top + 21, 1); rows.unshift(".".repeat(rows[0].length)); }
-  const o = { map: rows, top, tl, sleeve, cuff, skin };
-  byKey.set(key, o); return o;
+  const fill13 = at(15, 12) !== "." ? at(15, 12) : "j";
+  const S = (r, c) => {
+    if (r === 14 && c === 14) return ".";
+    if (r === 15) { if (c === 13) return fill13; if (c >= 14 && c <= 16) return "."; }
+    if (r === 16 && c >= 14 && c <= 16) return ".";
+    return at(r, c);
+  };
+  const g = []; for (let i = 0; i < H; i++) g.push(new Array(W).fill("."));
+  const put = (r, c, ch) => { if (ch === "." || ch == null) return; const i = r + top, j = c + P; if (i >= 0 && i < H && j >= 0 && j < W) g[i][j] = ch; };
+  const FOLD = [15, 14, 16].slice(0, q.tq), FL = FOLD.length, tH = 7 - FL;   // 몸통 접기: 뺄 줄과 남는 몸통 높이(허리띠 위)
+  const below = r => FOLD.filter(x => x > r).length;                           // r보다 아래에서 빠진 줄 수 → 그만큼 내려 그림
+  const ts = y => q.bx + Math.round(q.lean * Math.max(0, Math.min(1, (19 + q.hip - y) / tH)));   // 그려지는 줄 y의 밀림 (허리띠 = bx, 어깨 = bx + lean)
+  const headDY = q.hip + FL + q.hy, headDX = q.bx + q.lean + q.hx;
+  const isHair = (r, c, ch) => r <= 13 && c <= 6 && RIG_HAIR[ch];
+  // 1) 땅에 둔 소품 (19~23줄, 0~3칸)
+  for (let r = 19; r <= 23; r++) for (let c = 0; c <= 3; c++) put(r, c, S(r, c));
+  // 2) 다리: 엉덩이 관절 → (무릎) → 발목. 칸마다 다리 길이 방향 t·폭 방향 u를 구해 원래 다리 줄·칸에서 색을 가져옴
+  const leg = (L, f, kp, hl) => {
+    const jx = L.c + 0.5 + q.bx, jy = 20 + q.hip, ax = L.c + 0.5 + f, ay = 23 - hl;           // 뒤꿈치를 들면 발목도 그만큼 올라감
+    const dx = ax - jx, dy = ay - jy, d = Math.hypot(dx, dy) || 1;
+    let kx = (jx + ax) / 2, ky = (jy + ay) / 2;
+    if (kp) { kx += dy / d * kp; ky += -dx / d * kp; }                     // 무릎을 다리와 직각, 앞쪽으로
+    const segs = [[jx, jy, kx, ky], [kx, ky, ax, ay]].map(([x0, y0, x1, y1]) => { const l = Math.hypot(x1 - x0, y1 - y0) || 1e-6; return { x0, y0, ex: (x1 - x0) / l, ey: (y1 - y0) / l, l }; });
+    const tot = segs[0].l + segs[1].l;
+    const c0 = Math.floor(Math.min(jx, kx, ax) - 2), c1 = Math.ceil(Math.max(jx, kx, ax) + 2), r0 = Math.floor(Math.min(jy, ky) - 1);
+    for (let r = r0; r <= 22; r++) for (let c = c0; c <= c1; c++) {
+      const px = c + 0.5, py = r + 0.5;
+      let best = null;
+      segs.forEach((s, i) => {
+        const wx = px - s.x0, wy = py - s.y0, al = wx * s.ex + wy * s.ey, pe = wx * s.ey - wy * s.ex;
+        const ac = Math.max(0, Math.min(s.l, al)), dd = Math.hypot(wx - s.ex * ac, wy - s.ey * ac);
+        if (!best || dd < best.dd - 1e-9) best = { dd, t: ((i ? segs[0].l : 0) + al) / tot, u: pe };
+      });
+      if (best.dd >= 1.5 || best.t < -0.05) continue;
+      const sr = 20 + Math.max(0, Math.min(2, Math.floor(best.t * 3))), sc = L.c + Math.max(-1, Math.min(1, Math.round(best.u)));
+      const ch = S(sr, sc); put(r, c, ch !== "." ? ch : "p");
+    }
+    let heel = -1, toe = -1; for (let c = L.s0; c <= L.s1; c++) if (S(23, c) !== "." && c > 3) { if (heel < 0) heel = c; toe = c; }
+    for (let c = L.s0; c <= L.s1; c++) {                                                        // 신발은 발목을 따라감. 뒤꿈치를 들면 앞꿈치만 땅에 (발끝 → 뒤꿈치로 비스듬히)
+      const ch = S(23, c); if (ch === "." || c <= 3) continue;
+      const up = hl ? Math.round(hl * (toe - c) / Math.max(1, toe - heel)) : 0;
+      put(23 - up, c + f, ch);
+    }
+    return { kx, ky };
+  };
+  const kb = leg(RIG_LEG.B, q.fB, q.kB, q.hl), kf = leg(RIG_LEG.F, q.fF, q.kF, 0);
+  // 3) 몸통 (12~18줄, 줄마다 밀어 숙임) · 허리띠 (19줄) · 허리 아래 옷자락(20~22줄, 다리 칸이 아닌 것)
+  for (let r = 12; r <= 18; r++) { if (FOLD.indexOf(r) >= 0) continue; const y = r + q.hip + below(r), dx = ts(y); for (let c = 0; c < 18; c++) { const ch = S(r, c); if (ch !== "." && !isHair(r, c, ch)) put(y, c + dx, ch); } }
+  for (let c = 4; c < 18; c++) put(19 + q.hip, c + q.bx, S(19, c));
+  for (let r = 20; r <= 22; r++) for (let c = 4; c < 18; c++) { if (Math.abs(c - RIG_LEG.B.c) <= 1 || Math.abs(c - RIG_LEG.F.c) <= 1) continue; put(r + q.hip, c + q.bx, S(r, c)); }
+  // 4) 머리 (11줄까지 + 모자 줄 + 긴 머리카락) — 통째로 옮김
+  for (let r = -top; r <= 13; r++) for (let c = 0; c < 18; c++) { const ch = S(r, c); if (ch === ".") continue; if (r <= 11 || isHair(r, c, ch)) put(r + headDY, c + headDX, ch); }
+  const R = { map: g.map(row => row.join("")), top, P, sx: P + 13.3 + q.bx + q.lean * (6.2 - FL) / tH, sy: top + 12.8 + q.hip + FL, sleeve, cuff, skin, q, knB: kb, knF: kf };
+  if (byKey.size > 160) byKey.clear();
+  byKey.set(key, R); return R;
 }
 /* ---------- 앞팔: 어깨 → 팔꿈치 → 손을 도트 칸으로 (각도는 10도 단위로 모아 지도를 다시 씀) ---------- */
 var rigArmCache = new Map();
 function rigArm(R, pose) {
-  const q = v => Math.round(v / 0.1745) * 0.1745, sh = q(pose.sh), fa = q(pose.fa), cr = pose.crouch > 0.5 ? 1 : 0;
-  const Sx = RIG_PAD + 13.3 + R.tl, Sy = R.top + 12.8 + cr;
+  const qa = v => Math.round(v / 0.1745) * 0.1745, sh = qa(pose.sh), fa = qa(pose.fa);
+  const Sx = R.sx, Sy = R.sy;
   const Ex = Sx + RIG_L1 * Math.sin(sh), Ey = Sy - RIG_L1 * Math.cos(sh), Hx = Ex + RIG_L2 * Math.sin(fa), Hy = Ey - RIG_L2 * Math.cos(fa);
-  const key = [sh.toFixed(2), fa.toFixed(2), R.tl, cr, R.top].join("|");
+  const key = [sh.toFixed(2), fa.toFixed(2), Sx.toFixed(1), Sy.toFixed(1)].join("|");
   let A = rigArmCache.get(key);
   if (!A) {
     const seg = (px, py, ax, ay, bx, by) => { const vx = bx - ax, vy = by - ay, L = vx * vx + vy * vy || 1, k = Math.max(0, Math.min(1, ((px - ax) * vx + (py - ay) * vy) / L)), dx = ax + vx * k - px, dy = ay + vy * k - py; return [Math.hypot(dx, dy), k]; };
@@ -466,13 +558,14 @@ function rigArmPal(look, R) {
   return { A: /^#[0-9a-f]{6}$/i.test(sl) ? shade(sl, 0.16) : sl, X: p[R.cuff] || sl, S: p[R.skin] || "#f2c9a0" };   // 앞팔은 몸통과 같은 색이면 묻혀서 한 단계 밝게
 }
 
-/* ---------- 곽준영 그리기: 반사·그림자 → (등 뒤 무기) → 몸 → 궤적·무기 → 앞팔. 휘두르는 동안 무기·팔은 몬스터보다 앞에 ---------- */
+/* ---------- 곽준영 그리기: 반사·그림자 → (등 뒤 무기) → 몸 → 궤적·무기 → 앞팔. 휘두르는 동안(포즈 홀드 포함) 무기·팔은 몬스터보다 앞에 ---------- */
 function drawHeroRig(t, look, pose, hx, hy, hs) {
-  const R = rigBody(look, Math.round(pose.lean), pose.crouch > 0.5 ? 1 : 0), x0 = hx - RIG_PAD * hs, y0 = hy - R.top * hs;
+  const q = rigQ(pose), R = rigBody(look, q), x0 = hx - R.P * hs, y0 = hy - R.top * hs;
   reflect(() => drawSprite(ctx, R.map, look.pal, x0, y0, hs, { pretty: true }));
-  ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(hx + 6, GROUND - 3, 60, 6);
+  const sl = Math.min(1.7, 3 + q.fB), sr = Math.max(18.9, 16 + q.fF);                    // 그림자: 벌린 발 사이를 덮음 (서 있으면 v35와 같은 폭)
+  ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(hx + sl * hs, GROUND - 3, (sr - sl) * hs, 6);
   const arm = rigArm(R, pose), apal = rigArmPal(look, R), WS = 5;
-  const gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs, back = Math.sin(pose.wa) < -0.25;
+  const gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs, back = !fHero.mv && Math.sin(pose.wa) < -0.25;   // 휘두르는 동안 무기는 늘 몸 앞 (몸 뒤로 숨지 않게)
   fHero.sh.x = x0 + arm.sx * hs; fHero.sh.y = y0 + arm.sy * hs; heroHand.x = gx; heroHand.y = gy;
   if (back) drawHeldWeapon(ctx, gx, gy, pose.wa, WS, t, false, 1.8);
   drawSprite(ctx, R.map, look.pal, x0, y0, hs, { pretty: true });
@@ -482,31 +575,49 @@ function drawHeroRig(t, look, pose, hx, hy, hs) {
     drawSprite(ctx, arm.map, apal, x0 + arm.bx * hs, y0 + arm.by * hs, hs, { pretty: true });
   };
   const h = fHero, fr = feelFrame();
-  if (h.mv && h.fd && fr >= h.fd.startup - h.fd.strike - 1 && fr <= h.fd.cancel + 1) fHero.front = front; else front();
+  if (h.mv && h.fd && fr >= h.fd.startup - h.fd.strike - 1 && fr <= h.fd.total) fHero.front = front; else front();
 }
 function feelFront() { const f = fHero.front; fHero.front = null; if (f) f(); }
-/* 궤적: 내려치기~판정 동안 칼이 실제로 지나간 자리(칼 30%~끝)를 칠함 — 예전처럼 무기를 여러 장 겹치지 않음 */
+/* 칼 위치: [칼 30% 지점 x, y, 칼끝 x, y] */
 function feelBlade(look, hx0, hy0, hs, p) {
-  const R = rigBody(look, Math.round(p.lean), p.crouch > 0.5 ? 1 : 0), arm = rigArm(R, p);
-  const x0 = hx0 + p.dx - RIG_PAD * hs, y0 = hy0 + p.lift - R.top * hs, gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs, sx = Math.sin(p.wa), sy = -Math.cos(p.wa);
+  const R = rigBody(look, rigQ(p)), arm = rigArm(R, p);
+  const x0 = hx0 + p.dx - R.P * hs, y0 = hy0 + p.lift - R.top * hs, gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs, sx = Math.sin(p.wa), sy = -Math.cos(p.wa);
   return [gx + sx * FEEL_BLADE * 0.3, gy + sy * FEEL_BLADE * 0.3, gx + sx * FEEL_BLADE, gy + sy * FEEL_BLADE];
 }
+/* 궤적 (v36, 참고 영상 계측): 예비 자세 끝 → 맞는 순간까지 칼이 실제로 지나간 자리를 큰 초승달로(가운데 두껍고 양끝 뾰족).
+   친 자세를 버티는 동안 시작 쪽부터 줄어들며 가늘어지고 FEEL_SMEAR_LIFE f에 사라짐 — 참고: 두꺼운 초승달 → ~10f에 걸쳐 실선·점으로.
+   히트스톱 동안은 기술 프레임이 멈추므로 궤적도 멈춤(프리즈 프레임). 찌르기·돌진은 짧은 직선만. 색은 무기 이펙트 색(feelFxPal) */
+var FEEL_SMEAR_LIFE = 12;
 function feelSmear(look, hx0, hy0, hs, t) {
   const h = fHero; if (reduceMotion || !h.mv || !h.fd) return;
-  const fd = h.fd, W = fd.startup - fd.strike, A = fd.startup + fd.active, fr = feelFrame();
-  if (fr <= W || fr > A + 2) return;
-  const a1 = Math.min(fr, A), a0 = Math.max(W, a1 - (h.mv === "jab" ? 1.5 : 2.6)); if (a1 - a0 < 0.05) return;
-  const N = 7, pts = [];
+  const fd = h.fd, W = fd.startup - fd.strike, A = fd.startup + fd.active, fr = feelFrame(), thrust = h.mv === "jab" || h.mv === "lunge";
+  const life = thrust ? 3 : FEEL_SMEAR_LIFE;
+  if (fr <= W || fr > A + life) return;
+  const a1 = Math.min(fr, A), b0 = thrust ? Math.max(W, a1 - 1.5) : W;
+  const k = fr <= A ? 0 : (fr - A) / life;                                                  // 0 = 막 그음 → 1 = 사라짐
+  const a0 = b0 + (a1 - b0) * Math.min(0.88, k * 0.95);                                     // 시작 쪽부터 줄어듦
+  if (a1 - a0 < 0.05) return;
+  const N = 14, pts = [];
   for (let i = 0; i <= N; i++) pts.push(feelBlade(look, hx0, hy0, hs, feelPoseAt(h.mv, fd, h.p0 || FEEL_IDLE, a0 + (a1 - a0) * i / N)));
-  const pal = slashPal(slashStyle(), false, t), fade = fr <= A ? 1 : Math.max(0, 1 - (fr - A) / 2);
+  const pal = feelFxPal(t), fade = 1 - k * k, thin = 1 - 0.7 * k;
+  const prof = i => { const u = i / N; return thrust ? 1 : Math.max(0.1, Math.pow(Math.sin(Math.PI * Math.min(1, 0.12 + u * 0.88)), 0.6)); };   // 초승달 두께 (시작 뾰족 → 끝 쪽 두껍게)
   const ribbon = (inner, col, alpha) => {
     ctx.beginPath();
     pts.forEach((p, i) => i ? ctx.lineTo(p[2], p[3]) : ctx.moveTo(p[2], p[3]));
-    for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i]; ctx.lineTo(p[2] + (p[0] - p[2]) * inner, p[3] + (p[1] - p[3]) * inner); }
+    for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i], w = inner * prof(i); ctx.lineTo(p[2] + (p[0] - p[2]) * w, p[3] + (p[1] - p[3]) * w); }
     ctx.closePath(); ctx.globalAlpha = alpha * fade; ctx.fillStyle = col; ctx.fill();
   };
-  ctx.save(); ribbon(1, pal[0], 0.24); ribbon(0.62, pal[1], 0.44); ribbon(0.26, pal[2], 0.72); ctx.restore();
+  ctx.save();
+  ribbon(0.78 * thin, pal[0], 0.3); ribbon(0.5 * thin, pal[1], 0.55); ribbon(0.24 * thin, pal[2], 0.92);
+  if (!thrust && k > 0.12) {                                                                // 사라지는 시작 쪽 뒤에 남는 점 두 개
+    const p = pts[0], q = pts[1], dx = p[2] - q[2], dy = p[3] - q[3], L = Math.hypot(dx, dy) || 1, s = 2.6;
+    ctx.globalAlpha = 0.85 * fade; ctx.fillStyle = pal[2];
+    for (let j = 1; j <= 2; j++) ctx.fillRect(p[2] + dx / L * 9 * j - s, p[3] + dy / L * 9 * j - s, s * 2, s * 2);
+  }
+  ctx.restore();
 }
+/* 무기 이펙트 색 [진한, 가운데, 밝은] — 옷장 '무기 이펙트'를 끼면 그 색, 아니면 들고 있는 무기 색 */
+function feelFxPal(t) { return slashPal(slashStyle(), false, t); }
 
 /* ---------- 소리: 무기 재질음(hitSound) + 몬스터 고유음 (P-FEEL-17 재질 + 적 고유 사운드, U-FEEL-13) ---------- */
 function feelHash(s) { let h = 0; s = String(s || ""); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }

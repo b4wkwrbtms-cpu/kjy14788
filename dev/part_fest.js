@@ -80,7 +80,7 @@ RW_NAME.tok = "절기 토큰"; RW_NAME.scroll = "시간의 두루마리"; RW_ICO
 function festNew() { return { sid: "", dev: 0, lv: 0, cf: 0, cd: 0, tok: 0, ov: 0, b: {}, wk: {}, hist: [] }; }
 function jarNew() { return { g: 0, n: 0, open: 0, tot: 0 }; }
 function scrollNew() { return { n: 0, d: "", u: 0, got: 0, used: 0 }; }
-function dblNew() { return { d: "", n: 0, p: [], got: 0 }; }
+function dblNew() { return { d: "", n: 0, p: [], got: 0, st: { reg: 0, fast: 0, slow: 0 } }; }
 function firstsNew() { return { start: 0, sd: "", bk: {}, br: {}, bc: {}, mem: 0, mig: 0 }; }
 function payInt(v, max) { const n = Math.floor(+v || 0); return n > 0 && isFinite(n) ? Math.min(max, n) : 0; }
 function payAmt(v) { const n = +v || 0; return n > 0 && isFinite(n) ? n : 0; }
@@ -106,8 +106,9 @@ function payMerge(s, d) {
   const b = d.dbl, D = dblNew();
   if (b && typeof b === "object") {
     D.d = typeof b.d === "string" && PAY_DAY.test(b.d) ? b.d : ""; D.n = payInt(b.n, DBL_DAY); D.got = payInt(b.got, 1e9);
-    D.p = Array.isArray(b.p) ? b.p.filter(p => p && typeof p === "object").map(p => ({ s: p.s === "daily" ? "daily" : "back", g: payAmt(p.g), rw: payRw(p.rw), c0: payInt(p.c0, 1e9), m0: payInt(p.m0, 1e9), d: typeof p.d === "string" && PAY_DAY.test(p.d) ? p.d : "", nd: p.nd ? 1 : 0 })).filter(p => p.g > 0 || Object.keys(p.rw).length).slice(-DBL_KEEP) : [];
+    D.p = Array.isArray(b.p) ? b.p.filter(p => p && typeof p === "object").map(p => ({ s: p.s === "daily" ? "daily" : "back", g: payAmt(p.g), rw: payRw(p.rw), c0: payInt(p.c0, 1e9), m0: payInt(p.m0, 1e9), d: typeof p.d === "string" && PAY_DAY.test(p.d) ? p.d : "", nd: p.nd ? 1 : 0, t: payInt(p.t, 1e15) })).filter(p => p.g > 0 || Object.keys(p.rw).length).slice(-DBL_KEEP) : [];
   }
+  if (b && b.st && typeof b.st === "object") D.st = { reg: payInt(b.st.reg, 1e6), fast: payInt(b.st.fast, 1e6), slow: payInt(b.st.slow, 1e6) };
   s.dbl = D;
   const x = d.firsts, X = firstsNew();
   if (x && typeof x === "object") {
@@ -123,7 +124,7 @@ function payMerge(s, d) {
 function festState() { if (!S.fest || typeof S.fest !== "object" || !S.fest.b || !S.fest.wk || !Array.isArray(S.fest.hist)) S.fest = festNew(); return S.fest; }
 function jarState() { if (!S.jar || typeof S.jar !== "object") S.jar = jarNew(); return S.jar; }
 function scrollState() { if (!S.scroll || typeof S.scroll !== "object") S.scroll = scrollNew(); return S.scroll; }
-function dblState() { if (!S.dbl || typeof S.dbl !== "object" || !Array.isArray(S.dbl.p)) S.dbl = dblNew(); return S.dbl; }
+function dblState() { if (!S.dbl || typeof S.dbl !== "object" || !Array.isArray(S.dbl.p)) S.dbl = dblNew(); if (!S.dbl.st) S.dbl.st = { reg: 0, fast: 0, slow: 0 }; return S.dbl; }
 function firstsState() { if (!S.firsts || typeof S.firsts !== "object" || !S.firsts.bk || !S.firsts.br || !S.firsts.bc) S.firsts = firstsNew(); return S.firsts; }
 
 /* ---------- 보상 주기 (토큰·두루마리·옷 포함) ---------- */
@@ -273,6 +274,7 @@ function festClaim(se, c) {
 function festClaimable() { const se = festCur(); if (!se) return 0; const F = festState(); return Math.max(0, F.lv - F.cf) + (F.dev ? Math.max(0, F.lv - F.cd) : 0); }
 function festClaimNow() {
   const se = festCur(); if (!se) return;
+  if (roffOn()) { toast("보상 끄기 주간이에요 · 순례 XP는 그대로 쌓이고, 보상은 주가 끝나면 받아요"); return; }
   const r = festClaim(se); if (!r.n) return;
   const its = r.items.map(id => WIT[id] ? WIT[id].n : "").filter(Boolean).join(" · ");
   celebrate({ wid: r.items[0], ic: "lamp", title: `순례 보상 ${r.n}개!`, sub: (its ? `${escapeHtml(its)}<br>` : "") + `<span class="rws">${rwHTML(r.tot)}</span>`, tone: r.items.length ? "rare" : "gold", sound: "pass", ms: 3000 });
@@ -289,7 +291,7 @@ function festClose(k) {
   F.hist.push({ k, L: F.lv, max: se.maxL, dev: F.dev }); if (F.hist.length > 12) F.hist = F.hist.slice(-12);
   const D = FEST_DEF[se.id];
   const its = got.items.map(id => WIT[id] ? WIT[id].n : "").filter(Boolean);
-  celebrateLater({ wid: got.items[0], ic: "lamp", title: `${hbJosa(D.n, "을", "를")} 마쳤어요`, sub: `Lv ${F.lv}/${se.maxL}${F.dev ? " · 헌신 길" : ""}` + (got.n ? `<br>못 받은 보상 ${got.n}개를 받아 두었어요` : "") + (its.length ? `<br>${escapeHtml(its.slice(0, 4).join(" · "))}${its.length > 4 ? ` 외 ${its.length - 4}` : ""}` : "") + (Object.keys(got.tot).length ? `<br><span class="rws">${rwHTML(got.tot)}</span>` : "") + (left ? `<br>남은 토큰 ${left}개 → 광석 ${fmtR(ore)}` : "") + `<br><span class="muted">${D.when} 다시 열려요</span>`, tone: "rare", sound: "pass", ms: 4200 });
+  celebrateLater({ wid: got.items[0], ic: "lamp", title: `${hbJosa(D.n, "을", "를")} 마쳤어요`, sub: `Lv ${F.lv}/${se.maxL}${F.dev ? " · 헌신 길" : ""}` + (got.n ? `<br>못 받은 보상 ${got.n}개를 받아 두었어요` : "") + (its.length ? `<br>${escapeHtml(its.slice(0, 4).join(" · "))}${its.length > 4 ? ` 외 ${its.length - 4}` : ""}` : "") + (Object.keys(got.tot).length ? `<br><span class="rws">${rwHTML(got.tot)}</span>` : "") + (left ? `<br>남은 토큰 ${left}개 → 광석 ${fmtR(ore)}` : "") + `<br><span class="muted">${D.when} 다시 열려요</span>`, tone: "rare", sound: "pass", ms: 4200, keep: 1 });
 }
 function festSwitch(key) {
   const F = festState();
@@ -301,7 +303,7 @@ function festSwitch(key) {
   festUI.quiet = true; const c = festGet(se, true); festUI.quiet = false;
   N.lv = c.L; if (c.dv.ok) N.dev = 1;
   const D = FEST_DEF[se.id];
-  if ((+S.bible.total || 0) > 0 || (S.bestFloor || 1) >= 10) celebrateLater({ ic: "lamp", title: `${hbJosa(D.n, "이", "가")} 열렸어요`, sub: `${festMD(se.start)} ~ ${festMD(se.end)} · ${se.weeks}주 · 최대 Lv ${se.maxL}` + (c.L ? `<br>이번 순례 기록으로 Lv ${c.L}부터 시작해요` : "") + (N.dev ? " · 헌신 길 열림" : "") + `<br><span class="muted">업무 탭 '절기 순례' · 보상은 영구</span>`, tone: "rare", sound: "pass", ms: 3600 });
+  if ((+S.bible.total || 0) > 0 || (S.bestFloor || 1) >= 10) celebrateLater({ ic: "lamp", title: `${hbJosa(D.n, "이", "가")} 열렸어요`, sub: `${festMD(se.start)} ~ ${festMD(se.end)} · ${se.weeks}주 · 최대 Lv ${se.maxL}` + (c.L ? `<br>이번 순례 기록으로 Lv ${c.L}부터 시작해요` : "") + (N.dev ? " · 헌신 길 열림" : "") + `<br><span class="muted">업무 탭 '절기 순례' · 보상은 영구</span>`, tone: "rare", sound: "pass", ms: 3600, keep: 1 });
 }
 function festTick() {
   if (!S || !S.day || !S.bible) return;
@@ -350,7 +352,7 @@ function startOpen() {
 
 /* ---------- 3) 시간의 두루마리 ---------- */
 function scrollDay() { const C = scrollState(), t = dayKey(); if (C.d !== t) { C.d = t; C.u = 0; } return C; }
-function scrollEarn(n) { n = Math.floor(n); if (!(n > 0)) return; const C = scrollState(); C.n += n; C.got += n; payNote(`집중 25분 · 시간의 두루마리 +${n} (공부 탭)`); }
+function scrollEarn(n) { n = Math.floor(n); if (!(n > 0) || roffOn()) return; const C = scrollState(); C.n += n; C.got += n; payNote(`집중 25분 · 시간의 두루마리 +${n} (공부 탭)`); }
 /* 지금 층에서 2시간 일한 월급: 일반 4마리 + 작은 보스 1마리를 되풀이 (다음 몹이 나오는 시간 포함).
    쾌속·분노·더블월급·스킬 같은 잠깐 효과는 빼고, 위층 보스(신기록·첫 처치)는 넣지 않음 */
 function farmRate() {
@@ -384,16 +386,18 @@ function dblAdd(src, gold, rw) {
   const D = dblDay(), g = payAmt(gold), r = payRw(rw);
   if (!(g > 0) && !Object.keys(r).length) return false;
   if (D.n >= DBL_DAY || D.p.length >= DBL_KEEP) return false;
-  D.n++; D.p.push({ s: src === "daily" ? "daily" : "back", g, rw: r, c0: Math.floor(+S.bible.total || 0), m0: Math.floor(+S.mem.total || 0), d: dayKey(), nd: S.bible.noteDay === dayKey() ? 1 : 0 });
+  if (roffOn()) return false;
+  D.n++; D.st.reg++; D.p.push({ s: src === "daily" ? "daily" : "back", g, rw: r, c0: Math.floor(+S.bible.total || 0), m0: Math.floor(+S.mem.total || 0), d: dayKey(), nd: S.bible.noteDay === dayKey() ? 1 : 0, t: Date.now() });
   return true;
 }
 function dblGold() { return dblState().p.reduce((a, p) => a + (p.g || 0), 0); }
 function dblCheck() {
-  const D = dblState(); if (!D.p.length) return;
+  const D = dblState(); if (!D.p.length || roffOn()) return;
   const c = +S.bible.total || 0, m = +S.mem.total || 0, nd = S.bible.noteDay || "";
   const done = D.p.filter(p => c >= p.c0 + 1 || m >= p.m0 + 5 || (nd && (nd > p.d || (nd === p.d && !p.nd))));
   if (!done.length) return;
   D.p = D.p.filter(p => done.indexOf(p) < 0); D.got += done.length;
+  done.forEach(p => { if (p.t) { if (Date.now() - p.t <= 864e5) D.st.fast++; else D.st.slow++; } });
   let g = 0; const rw = {};
   done.forEach(p => { g += p.g || 0; for (const k in p.rw || {}) rw[k] = (rw[k] || 0) + p.rw[k]; });
   if (g > 0) S.gold += g; grant(rw);
@@ -403,7 +407,7 @@ function dblCheck() {
 /* ---------- 5) 달란트 항아리 ---------- */
 function jarAdd(g) { if (!(g > 0) || !isFinite(g)) return; jarState().g += g * JAR_RATE; }
 function jarOnMem() { const J = jarState(); J.n = Math.min(9999, J.n + 1); if (J.n === JAR_MEM && J.g >= 1) payNote("달란트 항아리를 열 수 있어요 · 암송 탭"); }
-function jarReady() { const J = jarState(); return J.n >= JAR_MEM && J.g >= 1; }
+function jarReady() { const J = jarState(); return J.n >= JAR_MEM && J.g >= 1 && !roffOn(); }
 function jarOpen() {
   if (!jarReady()) return;
   const J = jarState(), g = J.g; S.gold += g; J.g = 0; J.n = Math.max(0, J.n - JAR_MEM); J.open++; J.tot += g;
@@ -426,8 +430,8 @@ function bookDone(b, announce) {
   const B = S.bible, F = firstsState(), first = !F.bk[b];
   F.br[b] = +B.rounds || 0; F.bc[b] = (F.bc[b] || 0) + 1; if (first) F.bk[b] = dayKey();
   const base = bookRw(b), rw = first ? { manna: base.manna * 2, stamp: base.stamp * 2 } : base;
-  grant(rw); wardCV = null;
-  if (announce) celebrateLater({ ic: "bible", title: `${BOOKS[b][0]} ${first ? "첫 완독!" : "완독!"}`, sub: (first ? "처음 끝까지 읽었어요 · 첫 완독 선물 2배<br>" : `${F.bc[b]}번째 완독<br>`) + `<span class="rws">${rwHTML(rw)}</span>` + bookGroupLine(b), tone: first ? "rare" : "manna", sound: "pass", ms: 3000 });
+  const off = roffOn(); if (off) roffEsc(rw); else grant(rw); wardCV = null;
+  if (announce) celebrateLater({ ic: "bible", title: `${BOOKS[b][0]} ${first ? "첫 완독!" : "완독!"}`, sub: (first ? "처음 끝까지 읽었어요 · 첫 완독 선물 2배<br>" : `${F.bc[b]}번째 완독<br>`) + `<span class="rws">${rwHTML(rw)}</span>` + (off ? `<br><span class="muted">보상 끄기 주간이라 주가 끝나면 드려요</span>` : "") + bookGroupLine(b), tone: first ? "rare" : "manna", sound: "pass", ms: 3000 });
   return rw;
 }
 /* 읽은 시간으로 확인된 장이 그 권의 마지막 남은 장이면 완독 */
@@ -527,7 +531,7 @@ function buildFestCard() {
     else if (a === "shop") { festUI.shop = !festUI.shop; festUI.k = {}; sfx("tick"); festRender(true); }
     else if (a === "buy") festBuy(b.dataset.k, b.dataset.id);
   });
-  updaters.daily.push({ ready: () => festClaimable() > 0, update: force => festRender(force) });
+  updaters.daily.push({ ready: () => !roffOn() && festClaimable() > 0, update: force => festRender(force) });
 }
 function festPart(id, key, html, force) { const box = $(id); if (!box) return null; if (!force && festUI.k[id] === key) return null; festUI.k[id] = key; box.innerHTML = typeof html === "function" ? html() : html; return box; }
 function festRender(force) {
@@ -551,13 +555,13 @@ function festRender(force) {
   if (hb) { const ic = $("fsIc"); if (ic) ic.appendChild(pixIcon("lamp", 32)); }
   const tb = festPart("fsTrk", JSON.stringify([se.key, F.lv, F.cf, F.cd, F.dev, wardCount()]), () => festTrackHTML(se), force);
   if (tb) { try { tb.scrollLeft = Math.max(0, (Math.min(F.cf, F.dev ? F.cd : F.cf) - 1) * 62); } catch (e) {} }   // 받을 차례 한 칸 앞부터
-  const wk = c.weeks.length ? c.weeks[c.weeks.length - 1] : null, cl = festClaimable();
-  festPart("fsInfo", JSON.stringify([se.key, F.dev, c.dv.cur, wk, F.wk, cl, F.tok, festUI.shop]), () => {
+  const wk = c.weeks.length ? c.weeks[c.weeks.length - 1] : null, cl = festClaimable(), off = roffOn();
+  festPart("fsInfo", JSON.stringify([se.key, F.dev, c.dv.cur, wk, F.wk, cl, F.tok, festUI.shop, off]), () => {
     const dev = F.dev ? `<div class="fs-dev on">헌신 길이 열려 있어요 · 레벨마다 토큰 ${FEST_DEV_TOK}, 5레벨마다 ${D.set ? "절기 옷 한 벌" : "은괴·자수정"}, 마지막 레벨에 칭호 '${WIT[D.title] ? WIT[D.title].n : ""}'</div>`
       : `<div class="fs-dev">${ri("lock")}<span>헌신 길: 7일 안에 말씀 5일이면 열려요 · 최근 7일 <b class="num">${c.dv.cur.n}/${c.dv.cur.need}일</b><br><small>열리면 지난 레벨 보상까지 모두 받아요 · 안식한 날은 빼고 셈해요</small></span></div>`;
     const wkb = wk ? F.wk[wk.wk] || 0 : 0, items = wk && wk.items.length ? wk.items.map((it, i) => { const ok = (wkb >> i) & 1; const v = it.u === "분" ? `${(Math.min(it.v, it.g) / 60).toFixed(1)}/${(it.g / 60).toFixed(1)}시간` : `${Math.min(it.v, it.g)}/${it.g}${it.u}`; return `<span class="${ok ? "ok" : ""}">${ok ? "✓ " : ""}${it.n} ${v}</span>`; }).join("") : `<span>이번 주는 쉬어 가요</span>`;
     return dev + `<div class="fs-wk"><b>이번 주 목표</b><small>채울 때마다 XP ${FEST_WEEK_XP} · 토큰 ${FEST_WEEK_TOK}</small><div>${items}</div></div>
-      <div class="row-btns fs-btns"><button type="button" class="buy num${cl ? "" : " ghost"}" data-act="claim"${cl ? "" : " disabled"}><span class="act">${cl ? `보상 ${cl}개 받기` : "받을 보상 없음"}</span></button><button type="button" class="buy num ghost fs-shopbtn" data-act="shop"><span class="act">${festUI.shop ? "상점 닫기" : "절기 상점"}</span><small>${ri("tok")}${F.tok}</small></button></div>
+      <div class="row-btns fs-btns"><button type="button" class="buy num${cl && !off ? "" : " ghost"}" data-act="claim"${cl && !off ? "" : " disabled"}><span class="act">${off ? "보상 끄기 주간" : cl ? `보상 ${cl}개 받기` : "받을 보상 없음"}</span>${off && cl ? `<small>끝나면 ${cl}개</small>` : ""}</button><button type="button" class="buy num ghost fs-shopbtn" data-act="shop"><span class="act">${festUI.shop ? "상점 닫기" : "절기 상점"}</span><small>${ri("tok")}${F.tok}</small></button></div>
       <p class="muted fs-foot">레벨을 건너뛰는 방법은 없어요 · 보상은 영구, 끝나는 날 못 받은 보상은 자동으로 받고 남은 토큰은 광석으로 바꿔 드려요 · ${D.when} 다시 열려요</p>`;
   }, force);
   festPart("fsShop", JSON.stringify([se.key, festUI.shop, F.tok, wardCount()]), () => festUI.shop ? festShopHTML(se) : "", force);

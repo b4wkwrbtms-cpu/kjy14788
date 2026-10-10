@@ -9,8 +9,12 @@ async function page(b, save, opts = {}) {
   const p = await ctx.newPage(); p.errs = []; p.on('pageerror', e => p.errs.push(e.message));
   await p.goto('http://localhost:8766/dbg.html'); await p.waitForTimeout(1800);
   p.celebs = [];
-  for (let i = 0; i < 3; i++) { if (await p.locator('#back').isVisible()) { await p.click('#backGo').catch(() => {}); await p.waitForTimeout(1600); } }
-  for (let i = 0; i < 8; i++) { if (await p.locator('#celeb').isVisible()) { p.celebs.push(await p.locator('#celebT').textContent()); if (opts.shotCeleb && p.celebs[p.celebs.length - 1].indexOf(opts.shotCeleb[0]) >= 0) await p.screenshot({ path: opts.shotCeleb[1] }); await p.click('#celeb').catch(() => {}); await p.waitForTimeout(350); } }
+  for (let i = 0; i < 24; i++) {
+    await p.waitForTimeout(300);
+    if (await p.locator('#celeb').isVisible()) { p.celebs.push(await p.locator('#celebT').textContent()); if (opts.shotCeleb && p.celebs[p.celebs.length - 1].indexOf(opts.shotCeleb[0]) >= 0) await p.screenshot({ path: opts.shotCeleb[1] }); await p.click('#celeb', { timeout: 2000 }).catch(() => {}); await p.waitForTimeout(250); }
+    else if (await p.locator('#back').isVisible()) await p.click('#backGo', { timeout: 2500 }).catch(() => {});
+    else if (i > 12) break;
+  }
   await p.addStyleTag({ content: '.toast{display:none!important}' });
   await p.evaluate(() => { window.__noFloat = true; window.__noAtk = true; });
   return p;

@@ -1,0 +1,16 @@
+run(600);
+E(`(() => { const L = attLog(), H = habitState(); for (let d = "2026-05-01"; d <= "2026-10-07"; d = addDays(d, 1)) { L[d] = Object.assign(L[d] || {}, { a: 1, c: 2, s: 50, m: 6 }); H.td[d] = (H.td[d] || 0) | 1; S.met.d[d] = { g: 600, rs: 900, t1: 450, fF: 1, tg: 2 }; } attVer++; measUI.first = null; })()`);
+T("정보").click(); run(300);
+const perf = (name, code, n) => { const r = E(`(() => { const t0 = process.hrtime ? 0 : 0; const a = Date.now; let s = 0; for (let i = 0; i < ${n}; i++) { ${code}; } return 1; })()`); };
+const t = (name, code, n) => { const t0 = process.hrtime.bigint(); for (let i = 0; i < n; i++) E(code); const ms = Number(process.hrtime.bigint() - t0) / 1e6 / n; out("[cost]", name, ms.toFixed(3), "ms"); };
+t("measTick", "measTick()", 2000);
+t("measRender force", "measRender(true)", 50);
+t("measRows", "measRows()", 100);
+t("measChecks", "measChecks()", 100);
+t("measWeeks(8)", "measWeeks(8)", 100);
+t("stewRender force", "stewRender(true)", 100);
+t("roffRender force", "roffRender(true)", 100);
+t("ladderRows", "ladderRows()", 200);
+t("updateUI(info)", "updateUI(false)", 200);
+out("[size] met bytes", E("JSON.stringify(S.met).length"), "| days", E("Object.keys(S.met.d).length"));
+out("errors", errors.length, errors.slice(0, 3).join("\n"));

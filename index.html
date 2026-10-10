@@ -1057,6 +1057,72 @@ body.modal { overflow: hidden; }
 .eco-nx:empty { display: none; }
 .eco-nx b { font: 400 14px/1.2 var(--display); color: var(--fg); display: block; margin-bottom: 2px; }
 .chip[hidden] { display: none !important; }
+
+/* ===== 옷장 (v30) ===== */
+.wd-room canvas.wd-cv { width: 100%; height: auto; aspect-ratio: 320/170; image-rendering: pixelated; border-radius: 8px; display: block; }
+.wd-slots { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+.wd-sl { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 1px; min-height: 60px; padding: 4px 2px 4px; border: 2px solid var(--edge); border-radius: 10px; background: radial-gradient(circle at 50% 35%, #2c3760, #11172a 80%); box-shadow: inset 0 0 0 1px #3a4774; color: var(--fg); font: 12px/1.15 var(--display); cursor: pointer; }
+.wd-sl img { width: 36px; height: 36px; image-rendering: pixelated; }
+.wd-sl-e { display: block; width: 32px; height: 32px; margin: 2px; border-radius: 7px; border: 1px dashed #46548c; }
+.wd-sl small { position: absolute; right: 4px; top: 2px; font: 10px/1 var(--body); color: var(--muted); }
+.wd-sl.on { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold), 0 0 10px rgba(255,213,74,.25); }
+.wd-sum-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.wd-sum-h b { font: 18px var(--display); font-weight: 400; }
+.wd-best { min-height: 44px; padding: 6px 12px; border-radius: 10px; border: 2px solid rgba(0,0,0,.55); background: var(--rare); color: #1f0b3a; font: 14px var(--display); cursor: pointer; box-shadow: inset 0 2px 0 rgba(255,255,255,.5), 0 3px 0 #6a4cad; }
+.wd-best:active { transform: translateY(2px); box-shadow: none; }
+.wd-chips, .wd-sets, .wd-cats { display: flex; flex-wrap: wrap; gap: 5px; }
+.wd-chips span, .wd-cats span { padding: 3px 7px; border-radius: 7px; background: #11172a; border: 1px solid #2c3760; font-size: 12.5px; color: var(--muted); }
+.wd-chips b, .wd-cats b { color: var(--good); font-weight: 400; font-family: var(--display); }
+.wd-sets span { padding: 3px 8px; border-radius: 7px; border: 1px solid var(--sc); color: var(--fg); font-size: 12.5px; background: rgba(0,0,0,.22); }
+.wd-sets b { color: var(--sc); font-weight: 400; font-family: var(--display); }
+.wd-bar { display: flex; flex-direction: column; gap: 6px; }
+.wd-bar .seg button { min-height: 44px; }
+.wd-list { display: flex; flex-direction: column; gap: 8px; }
+.wd-lh { display: flex; align-items: baseline; gap: 8px; padding: 2px 2px 0; }
+.wd-lh b { font: 18px var(--display); font-weight: 400; }
+.wd-lh small { color: var(--muted); font-size: 12px; }
+.wd-lopts { display: flex; gap: 6px; }
+.wd-lopts button { flex: 1; min-height: 44px; border-radius: 9px; border: 2px solid var(--edge); background: #1a2240; color: var(--muted); font: 14px var(--display); cursor: pointer; }
+.wd-lopts button[aria-pressed="true"] { color: var(--fg); border-color: var(--gold); }
+.wd-up .icon { cursor: pointer; }
+.wd-up .icon img { width: 44px; height: 44px; image-rendering: pixelated; border-radius: 6px; }
+.wd-up.locked .icon img { filter: grayscale(.75) brightness(.7); }
+.wd-up.wd-eq { box-shadow: inset 0 0 0 1px var(--gc), inset 0 2px 0 1px rgba(255,255,255,.04), 0 3px 0 rgba(0,0,0,.35), 0 0 12px rgba(255,255,255,.06); }
+.wd-up.wd-eq .icon { box-shadow: inset 0 0 0 1px var(--gc), inset 0 -4px 0 rgba(0,0,0,.25); }
+.wd-up .up-desc { line-height: 1.42; }
+.wd-up .up-desc .wd-k { color: #dfe6f3; }
+.wd-up .up-desc b { color: var(--gold); }
+.wd-d { color: #b8c2de; font-style: normal; }
+.wd-setln { font-family: var(--display); }
+.wd-key { color: var(--gold); }
+.wd-new { margin-left: 6px; padding: 0 5px; border-radius: 5px; background: #ff5f7a; color: #fff; font: 11px/16px var(--display); vertical-align: 2px; }
+.wd-bts { display: flex; flex-direction: column; gap: 7px; align-items: stretch; }
+.wd-bts .buy { min-width: 92px; }
+.wd-bts .buy.wd-enh { min-height: 44px; padding-top: 3px; padding-bottom: 5px; }
+.wd-max { font: 13px var(--display); color: #6fd3ff; text-align: center; }
+.wd-set { gap: 7px; }
+.wd-set-h { display: flex; gap: 10px; align-items: center; }
+.wd-set-ic { width: 58px; height: 58px; flex: none; border-radius: 10px; background: radial-gradient(circle at 50% 38%, #2c3760, #11172a 78%); border: 2px solid var(--edge); box-shadow: inset 0 0 0 1px var(--sc); }
+.wd-set-h b { font: 17px var(--display); font-weight: 400; }
+.wd-set-h small { display: block; color: var(--muted); font-size: 12px; line-height: 1.35; }
+.wd-pcs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.wd-pc { padding: 0; aspect-ratio: 1; min-height: 44px; border-radius: 8px; border: 2px solid var(--edge); background: #11172a; cursor: pointer; display: grid; place-items: center; overflow: hidden; }
+.wd-pc img { width: 100%; height: 100%; image-rendering: pixelated; }
+.wd-pc.off img { filter: grayscale(1) brightness(.42); }
+.wd-pc.eq { border-color: var(--sc); }
+.wd-bon { display: flex; flex-wrap: wrap; gap: 4px; }
+.wd-bon span { font-size: 12px; padding: 2px 7px; border-radius: 6px; background: #11172a; color: var(--muted); border: 1px solid #2c3760; }
+.wd-bon span.on { color: var(--fg); border-color: var(--sc); background: rgba(0,0,0,.25); }
+.wd-next { font-size: 12.5px; color: var(--gold); }
+.wd-hint { margin: 0 2px; }
+.wd-coll-h { display: flex; justify-content: space-between; align-items: baseline; }
+.wd-coll-h b { font: 20px var(--display); font-weight: 400; }
+.wd-cbar > i { background-color: var(--rare); }
+.wd-mss { display: flex; flex-direction: column; gap: 3px; }
+.wd-ms { display: grid; grid-template-columns: 52px 1fr auto; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); padding: 4px 7px; border-radius: 7px; background: #11172a; }
+.wd-ms b { font-family: var(--display); font-weight: 400; color: var(--fg); }
+.wd-ms.on, .wd-ms.on b { color: var(--good); }
+.wd-ms small .rw { font-size: 12px; }
 </style>
 
 <div class="wrap">
@@ -1456,7 +1522,7 @@ function freshState() {
     study: { running: false, lastConfirm: 0, sessionMs: 0, subject: "", today: 0, depth: 0, streak: 0, best: 0, last: "", total: 0, log: [], beeped: false, rec: null, sPrev: null },
     mem: { sets: 1, setDay: "", v: {}, streak: 0, best: 0, last: "", total: 0, rec: null, sPrev: null },
     sound: true, char: "choi", buyN: 1, autoUp: false,
-    ach: {}, att: { log: {}, best: 0, mk: {}, ms: {} }, away: null, plan: null, planFin: 0, planHist: [], t: Date.now(), habit: null, fx: { shake: 1, flash: 1 }, eco: null, tabSeen: null,
+    ach: {}, att: { log: {}, best: 0, mk: {}, ms: {} }, away: null, plan: null, planFin: 0, planHist: [], t: Date.now(), habit: null, fx: { shake: 1, flash: 1 }, eco: null, tabSeen: null, ward: wardNew(),
   };
 }
 let S = freshState();
@@ -1488,40 +1554,37 @@ const treVal = id => treEff(T(id), S.tre[id]);
 let idolBuff = { type: "", t: 0 };
 
 function stats() {
-  const L = legCount(), now = Date.now();
-  const wp = wPower(S.wi, S.wl) * (own("acc", 1) ? 1.5 : 1);
-  const add = 1 + (own("shirt", 0) ? 0.75 : 0) + (own("shirt", 1) ? 1 : 0) + (own("shoes", 1) ? 1 : 0) + (own("aura", 1) ? 1 : 0)
-    + treVal("badge") * (own("hair", 1) ? 2 : 1) + charmEff(CHARMS[0], S.charms.red);
-  let mul = (1 + 5 * legLv("hair")) * (1 + legLv("shirt")) * (1 + 2 * legLv("aura"))
-    * (L >= 3 ? 4.5 : 1) * (L >= 6 ? 2 : 1) * (L >= 7 ? 3 : 1)
+  const W = wardStats(), now = Date.now();
+  const wp = wPower(S.wi, S.wl) * (1 + W.wpn / 100);
+  const add = 1 + W.dmg / 100 + treVal("badge") * (W.badge2 ? 2 : 1) + charmEff(CHARMS[0], S.charms.red);
+  let mul = W.xdmg
     * (petLv("legend") ? 2 + 0.2 * petLv("legend") : 1)
-    * (own("arm", 1) ? 1 + 0.01 * Math.floor(S.floor / 5) : 1)
+    * (W.floor5 ? 1 + 0.01 * Math.floor(S.floor / 5) : 1)
     * (S.active.rage > 0 ? 3 : 1) * (idolBuff.t > 0 && idolBuff.type === "rage" ? 3 : 1) * (S.promo ? 4 : 1)
-    * (1 + 0.03 * (typeof costN === "number" ? costN : 0)) * (skillOn("night") ? 3 : 1);
+    * (skillOn("night") ? 3 : 1);
   const atk = wp * add * mul * careerAtk();
-  const aps = (2 + 0.1 * S.coffee) * (1 + treVal("tumbler")) * (1 + 0.1 * legLv("shoes")) * (L >= 5 ? 1.1 : 1)
+  const aps = (2 + 0.1 * S.coffee) * (1 + treVal("tumbler")) * (1 + W.aps / 100) * W.xaps
     * (now < S.sneakerUntil ? 3 : 1) * (S.active.haste > 0 ? 2 : 1) * (idolBuff.t > 0 && idolBuff.type === "haste" ? 2 : 1) * (skillOn("rush") ? 2 : 1) * careerAps();
-  const crit = (idolBuff.t > 0 && idolBuff.type === "crit") ? 1 : Math.min(1, 0.05 + (own("tie", 0) ? 0.25 : 0) + careerCrit());
-  const critMul = (1.5 + 3 * legLv("tie") + (L >= 2 ? 3.5 : 0)) * careerCritMul();
+  const crit = (idolBuff.t > 0 && idolBuff.type === "crit") ? 1 : Math.min(1, 0.05 + W.crit / 100 + careerCrit());
+  const critMul = (1.5 + W.critd / 100) * careerCritMul();
   const heroDps = atk * aps * (1 + crit * (critMul - 1));
-  const cl = petLv("clone");
-  const clone = cl ? heroDps * (0.3 + 0.1 * cl) * (cl >= 10 ? 2 : 1) * careerPet() : 0;
-  const cat = petLv("cat") ? atk * (1.5 + 0.5 * petLv("cat")) / 2.5 * 1.4 * careerPet() : 0;
-  const bossBonus = (own("tie", 1) ? 2 : 1) * careerBoss();
+  const cl = petLv("clone"), petK = 1 + W.pet / 100;
+  const clone = cl ? heroDps * (0.3 + 0.1 * cl) * (cl >= 10 ? 2 : 1) * careerPet() * petK : 0;
+  const cat = petLv("cat") ? atk * (1.5 + 0.5 * petLv("cat")) / 2.5 * 1.4 * careerPet() * petK : 0;
+  const bossBonus = (1 + W.boss / 100) * careerBoss();
   return { atk, aps, interval: 1000 / aps, crit, critMul, heroDps, clone, cat, tap: atk * 0.5, bossBonus, dps: heroDps + clone + cat };
 }
 function goldMult() {
-  const L = legCount();
-  return (1 + treVal("wallet")) * (1 + (own("arm", 0) ? 1 : 0) + (own("aura", 0) ? 0.5 : 0) + 10 * legLv("arm") + (L >= 1 ? 5 : 0))
+  return (1 + treVal("wallet")) * (1 + wardStats().gold / 100)
     * (1 + 0.2 * petLv("intern")) * (1 + charmEff(CHARMS[1], S.charms.yellow)) * (S.active.gold2 > 0 ? 2 : 1) * (S.promo ? 4 : 1) * careerGold();
 }
-function stampMult() { return (1 + treVal("review")) * (own("hair", 0) ? 1.5 : 1) * (legCount() >= 4 ? 1.5 : 1) * (1 + charmEff(CHARMS[2], S.charms.blue)); }
-const rewardBoost = () => 1 + 0.1 * legLv("acc");
-const readMult = () => (1 + 0.1 * Math.min(10, readStreak())) * rewardBoost();
-const oreMult = () => rewardBoost() * (1 + 0.05 * petLv("robot")) * (1 + 0.1 * S.pick) * (isWeekend() ? 1.3 : 1) * (1 + 0.05 * Math.min(20, studyStreak()));
+function stampMult() { const W = wardStats(); return (1 + treVal("review")) * (1 + W.stamp / 100) * W.xstamp * (1 + charmEff(CHARMS[2], S.charms.blue)); }
+const rewardBoost = () => 1;
+const readMult = () => (1 + 0.1 * Math.min(10, readStreak())) * (1 + wardStats().manna / 100);
+const oreMult = () => (1 + wardStats().ore / 100) * (1 + 0.05 * petLv("robot")) * (1 + 0.1 * S.pick) * (isWeekend() ? 1.3 : 1) * (1 + 0.05 * Math.min(20, studyStreak()));
 const retireGain = () => S.maxFloor < 50 ? 0 : Math.floor(Math.pow(S.maxFloor / 10, 1.6) * stampMult());
-const bossTimeOf = kind => TIME_LIMIT[kind] ? TIME_LIMIT[kind] + treVal("pin") + careerBossTime() : 0;
-const vaultTickets = () => 3 + (own("acc", 0) ? 1 : 0);
+const bossTimeOf = kind => TIME_LIMIT[kind] ? TIME_LIMIT[kind] + treVal("pin") + careerBossTime() + wardStats().btime : 0;
+const vaultTickets = () => 3 + (wardStats().vault ? 1 : 0);
 const pickCost = lv => 500 * Math.pow(2.2, lv);
 const coffeeCost = lv => 300 * Math.pow(1.8, lv);
 
@@ -1705,20 +1768,7 @@ function charProgress(c) { return !c.req ? 0 : { chap: S.bible.total, study: S.s
 const charUnlocked = c => !c.req || charProgress(c) >= c.req.v;
 const curChar = () => { const c = CHARS.find(x => x.id === S.char); return c && charUnlocked(c) ? c : CHARS[0]; };
 const setCh = (s, i, ch) => s.slice(0, i) + ch + s.slice(i + 1);
-function heroLookFor(c) {
-  const pal = Object.assign({}, PAL.hero, c.pal);
-  let hair = c.hair, aura = null;
-  SLOTS.forEach(sl => {
-    let idx = S.look[sl.id];
-    if (idx == null || idx < 0 || !own(sl.id, idx)) { idx = -1; for (let i = 2; i >= 0; i--) if (own(sl.id, i)) { idx = i; break; } }
-    if (idx < 0) return;
-    const lk = sl.items[idx].look;
-    Object.keys(lk).forEach(k => { if (k === "hair") { if (sl.id !== "hair" || idx > 0 || c.id === "choi") hair = lk.hair; } else if (k === "aura") aura = lk.aura; else if (!(sl.id === "hair" && idx === 0 && c.id !== "choi")) pal[k] = lk[k]; });
-  });
-  if (hair === "bald") pal.e = pal.e || "#ffd54a";
-  return { map: heroMap(hair), pal: heroPal(pal), aura, hair };
-}
-function heroLook() { const lk = heroLookFor(curChar()), o = typeof curOutfit === "function" ? curOutfit() : null; return o ? applyOutfit(lk, o) : lk; }
+/* 겉모습(heroLook·heroLookFor)은 옷장(wardLook)에서 만듦 */
 
 const skinIdx = () => (S.skin >= 0 && S.skin <= S.wi) ? S.skin : S.wi;
 function wPal(i, t) {
@@ -3302,7 +3352,7 @@ function heroStrike(st) {
   const crit = Math.random() < st.crit;
   if (!jobStrike(st, crit)) hit(st.atk * (crit ? st.critMul : 1), crit, "hero");
   if (crit && petLv("legend")) legendCheer();
-  if (curFx() === "laser") laser = 1;
+  if (WEAPONS[skinIdx()].fx === "laser") laser = 1;
   hitCount++;
   const il = petLv("idol");
   if (il && hitCount % 10 === 0) { idolBuff = { type: ["haste", "rage", "crit"][Math.floor(Math.random() * 3)], t: 3 + 0.5 * il }; cheerHearts(); addFloat(318, GROUND - 100, { haste: "응원: 공속 2배!", rage: "응원: 피해 3배!", crit: "응원: 치명 100%!" }[idolBuff.type], "#ff8fc8", 20); }
@@ -4618,12 +4668,7 @@ function draw(t) {
   // 분신
   drawClones(t, look, pose);
   // 곽준영
-  if (look.aura) {
-    const a = 0.22 + Math.sin(t / 250) * 0.06;
-    const gr = ctx.createRadialGradient(hx + 36, hy + 44, 8, hx + 36, hy + 44, 74);
-    gr.addColorStop(0, hexA(look.aura, a)); gr.addColorStop(1, hexA(look.aura, 0));
-    ctx.fillStyle = gr; ctx.fillRect(hx - 44, hy - 34, 160, 160);
-  }
+  if (look.aura) drawWardAura(ctx, look.aura, hx + 10 * hs, hy + 13 * hs, hs, t, reduceMotion, 1.6);
   drawJobAura(t, hx, hy);
   reflect(() => drawSprite(ctx, look.map, look.pal, hx, hy - (look.top || 0) * hs, hs, { pretty: true }));
   ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(hx + 6, GROUND - 3, 60, 6);
@@ -4634,7 +4679,7 @@ function draw(t) {
     const P = SWING_POSE[anim.type || "chop"], dir = Math.sign(P[1] - P[0]) || 1;
     for (let g = 1; g <= 3; g++) { ctx.save(); ctx.globalAlpha = 0.3 * smear / g; drawHeldWeapon(ctx, px, py, ang - dir * g * 0.42, WS, t, true); ctx.restore(); }
   }
-  drawHeldWeapon(ctx, px, py, ang, WS, t, false); heroHand.x = px; heroHand.y = py;
+  drawHeldWeapon(ctx, px, py, ang, WS, t, false, 1.8); heroHand.x = px; heroHand.y = py;
   if (laser > 0) { ctx.strokeStyle = hexA("#ff3b3b", laser); ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(px + 80, py + 10); ctx.lineTo(MON_X, GROUND - 60); ctx.stroke(); }
   // 적
   if (mon) {
@@ -4804,7 +4849,7 @@ function sfx(name) {
 let sfxSnap = null, lastMemRes = null;
 function sfxWatch() {
   if (!S) return;
-  const snap = { w: S.wi * 100 + S.wl, pets: Object.values(S.pets || {}).reduce((a, b) => a + b, 0), cos: JSON.stringify(S.cos || {}).length + JSON.stringify(S.look || {}).length,
+  const snap = { w: S.wi * 100 + S.wl, pets: Object.values(S.pets || {}).reduce((a, b) => a + b, 0), cos: (S.ward && S.ward.ops) || 0,
     tre: JSON.stringify(S.tre || S.treasures || {}).length, chap: S.bible.total, ret: S.retires, buff: ["haste", "gold2", "rage"].filter(b => S.active[b] > 0).length };
   if (sfxSnap) {
     if (snap.ret > sfxSnap.ret) sfx("retire");
@@ -5321,7 +5366,7 @@ function doRetire(promo) {
   const prevMax = S.maxFloor;
   Object.assign(S, { gold: 0, floor: 1, k: 1, maxFloor: 1, auto: true, wi: 0, wl: 1, coffee: 0, promo: !!promo });
   const qc = quickCommute(prevMax);
-  if (own("shoes", 0)) S.sneakerUntil = Date.now() + 3 * 60000;
+  if (wardStats().sneaker) S.sneakerUntil = Date.now() + 3 * 60000;
   floats = []; spawnWait = 0; lift = null; intro = null; spawn(); updateUI(true); save();
   celebrate({ ic: "retire", title: promo ? "영전 퇴사!" : "사표 수리!", sub: (promo ? `다음 퇴사까지 월급과 피해 4배<br>` : "") + (qc ? `출근 버스로 ${qc.f}층까지 바로 · ${WEAPONS[S.wi].n} +${S.wl}<br>` : `${S.retires + 1}번째 회사 1층부터 다시<br>`) + `<span class="rws">${rwHTML({ stamp: gain })}</span>`, tone: "stamp", ms: 2800 });
 }
@@ -5336,7 +5381,7 @@ const testOf = s => s <= 0 ? "refHint" : s === 1 ? "ref" : s === 2 ? "first" : s
 function addDays(key, n) { const [y, m, d] = key.split("-").map(Number); return dayKey(new Date(y, m - 1, d + n)); }
 const memRec = no => S.mem.v[no] || null;
 const memStreak = () => (S.mem.last === dayKey() || S.mem.last === yesterdayKey()) ? S.mem.streak : 0;
-const memMult = () => (1 + 0.05 * Math.min(20, memStreak())) * rewardBoost();
+const memMult = () => (1 + 0.05 * Math.min(20, memStreak())) * (1 + wardStats().mem / 100);
 const memMastered = () => VERSES.filter(v => (memRec(v.no) || {}).s >= MEM_MASTER).length;
 function memQueue() { const t = dayKey(); return VERSES.filter(v => v.day <= S.mem.sets && (!memRec(v.no) || memRec(v.no).due <= t)); }
 function memReward(s) { return { manna: Math.round(4 * (s + 1) * memMult()), stamp: s >= 2 ? 1 + Math.floor(s / 3) : 0, gold: goldBase(Math.max(1, S.floor)) * 2 * (s + 1) * goldMult() }; }
@@ -5518,10 +5563,10 @@ function celebNext() {
   celebOn = true; box.hidden = false;
   box.setAttribute("data-c", o.tone || "gold");
   const ic = $("celebIc"); ic.innerHTML = "";
-  const icon = o.icon || pixIcon(o.ic || "star", 76); ic.appendChild(icon);
+  const icon = o.icon || (o.wid && WIT[o.wid] ? wardBig(o.wid, 76) : null) || pixIcon(o.ic || "star", 76); ic.appendChild(icon);
   $("celebT").textContent = o.title || ""; $("celebS").innerHTML = o.sub || "";
   box.classList.remove("go"); void box.offsetWidth; box.classList.add("go");
-  celebFx(o.tone || "gold");
+  if (!o.quiet) celebFx(o.tone || "gold"); else { const cf = $("celebFx"); if (cf) cf.innerHTML = ""; }
   if (o.sound) sfx(o.sound);
   celebT = setTimeout(celebNext, o.ms || 2100);
 }
@@ -5559,7 +5604,7 @@ const TAB_META = {
   mem: ["200구절을 간격 반복으로 마음에 새기기", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
   study: ["공부한 시간만큼 광산을 파요", () => `<span>${ri("ore")}${fmtR(S.ore)}</span>`],
   pet: ["만나로 동료를 들이고 키워요", () => `<span>${ri("manna")}${fmtR(S.manna)}</span>`],
-  suit: ["광석으로 정장·부적 사기", () => `<span>${ri("ore")}${fmtR(S.ore)}</span>` + (S.silver ? `<span>${ri("silver")}${fmtR(S.silver)}</span>` : "")],
+  suit: ["옷 모으고 입기 · 세트·이펙트·오라·칭호", () => `<span>${ri("ore")}${fmtR(S.ore)}</span>` + (S.silver ? `<span>${ri("silver")}${fmtR(S.silver)}</span>` : "")],
   treasure: ["결재도장으로 보물 강화", () => `<span>${ri("stamp")}${fmtR(S.stamp)}</span>`],
   daily: ["출근부·연속 지키기·일일 업무·업적", () => `<span>${ri("cal")}출근 ${attTotal()}일</span><span>${ri("shield")}${habitState().sh}</span>`],
   info: ["인사 기록·경제·도감·설정·백업", () => `<span>${rankName()}${curJob() ? " · " + curJob().team : ""}</span>`],
@@ -5586,115 +5631,1021 @@ function renderTabHead() {
   document.addEventListener("focusout", () => setTimeout(() => { if (document.body && !isField(document.activeElement)) document.body.classList.remove("typing"); }, 60));
 })();
 
-/* ===================== 코스튬: 판타지 무기 스킨 12종 + 곽준영 의상 6종 =====================
-   모양만 바뀌고 성능은 그대로. 말씀·공부·암송·층 기록을 채우면 열리고, 모은 개수마다 모든 피해 +3%. */
-const WSKINS = [
-  { id: "frost", n: "서리검", d: "빛나는 하늘색 칼날", m: [".............", "......b......", "......b......", ".....Wbd.....", ".....Wbd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".e...Wfd...e.", "..g..Wbd..g..", "..ggggegggg..", "....GGGGG....", "......h......", "......H......", "......h......", "......H......", "......h......", ".....ppp.....", "......p......", "............."], p: {"W": "#f2fdff", "b": "#8ff0ff", "d": "#3cb6e6", "f": "#ffffff", "g": "#2a3a5e", "G": "#1a2440", "e": "#7fe9ff", "h": "#1a2440", "H": "#3b5a8a", "p": "#7fe9ff"}, fx: "frost", gx: 6, gy: 24, cond: ["study", 300] },
-  { id: "flame", n: "화염검", d: "날을 따라 불꽃이 타오름", m: ["......x......", ".....xfx.....", ".....Wfd.....", "...x.Wfd.....", "...bxWfd..x..", "....bWfdxb...", ".....Wfdb....", "...x.Wfd.....", "...bxWfd..x..", "....bWfdxb...", ".....Wfdb....", "...x.Wfd.....", "...bxWfd..x..", "....bWfdxb...", ".....Wfdb....", ".....Wfd.....", "....bWfdb....", "....bWfdb....", "....bWfdb....", "....bWfdb....", "..ggggjgggg..", "...gGGGGGg...", "......h......", "......H......", "......h......", "......H......", "......h......", ".....ppp.....", "......x......", "............."], p: {"W": "#fff2b8", "b": "#ff7a1a", "d": "#c8380c", "f": "#ffe58a", "x": "#ffd54a", "g": "#3a2626", "G": "#241616", "j": "#ff3b3b", "h": "#3a2a22", "H": "#6b4a2e", "p": "#ff7a1a"}, fx: "flame", gx: 6, gy: 24, cond: ["floor", 100] },
-  { id: "crystal", n: "수정 대검", d: "통째로 깎은 수정 칼날", m: ["......b......", ".....Wbd.....", "....Wbbbd....", "....Wfbbd....", "....Wbbfd....", "....Wbbbd....", "....Wfbbd....", "....Wbbfd....", "....Wbbbd....", "....Wfbbd....", "....Wbbfd....", "....Wbbbd....", "....Wfbbd....", "....Wbbfd....", "....Wbbbd....", "....Wfbbd....", "....Wbbfd....", "....Wbbbd....", "....Wfbbd....", "....Wbbfd....", "g...Wbbbd...g", ".gggggjggggg.", "..GGGGGGGGG..", "......h......", "......H......", "......h......", "......H......", "......h......", ".....ppp.....", "......j......"], p: {"W": "#ffffff", "b": "#cfefff", "d": "#7fb8e6", "f": "#a8e0ff", "g": "#c9d2e6", "G": "#8d97b6", "j": "#3b7bd6", "h": "#3b4566", "H": "#5a6482", "p": "#c9d2e6"}, fx: "frost", gx: 6, gy: 25, cond: ["chap", 50] },
-  { id: "sakura", n: "벚꽃검", d: "꽃잎이 흩날리는 분홍 칼", m: [".............", ".......W.....", "......bW.....", "......bW..xy.", ".....dbW.....", ".....bbW.....", ".....bdW.....", ".xy..bbW.....", ".....dbW.....", ".....bbW.....", ".....bdW.....", ".....bbW.....", ".....dbW..xy.", ".....bbW.....", ".....bdW.....", ".xy..bbW.....", ".....dbW.....", ".....bbW.....", ".....bdW..xy.", ".....bbW.....", "....GggggG...", ".....gGgg....", "......H......", "......h......", "......H......", "......h......", "......H......", "......p......", ".............", "............."], p: {"W": "#ffffff", "b": "#ffb3c8", "d": "#e0708f", "g": "#d9a06b", "G": "#a8703f", "h": "#6e2a3e", "H": "#ff8fb0", "p": "#d9a06b", "x": "#ffd6e2", "y": "#ff8fb0"}, fx: "holy", gx: 6, gy: 24, cond: ["mem", 10] },
-  { id: "volt", n: "번개창", d: "번개가 흐르는 긴 창", m: ["......b......", ".....bWb.....", ".....bWd.....", "....bbWbb....", "...bbyWbdb...", "....bbybb....", "....byWdb....", ".....byb.....", "...g.bWbdg...", "....ggggg....", "....gGGGg....", "......h......", "......h......", "......H......", "......h......", "......h......", "......H......", "......h......", "......h......", "......H......", "......h......", "......h......", "......H......", "......h......", "......h......", "......H......", "......h......", "......h......", "......H......", ".....ppp....."], p: {"W": "#ffffff", "b": "#7fe9ff", "d": "#2f8fd8", "y": "#ffe14a", "g": "#ffd54a", "G": "#b8941c", "h": "#1d2a4a", "H": "#3b5a8a", "p": "#ffd54a"}, fx: "spark", gx: 6, gy: 22, cond: ["boss", 200] },
-  { id: "venom", n: "독룡 단검", d: "톱니 달린 초록 단검", m: [".............", ".............", ".............", ".............", ".............", ".............", "......W......", ".....Wbd.....", ".....Wbd.....", "....Wbfbbd...", "....Wbfbbdd..", "....Wbfbbd...", "....Wbfbbdd..", "....Wbfbbd...", "....Wbfbbdd..", "....Wbfbbd...", "....Wbfbbdd..", ".G..Wbbbbd.G.", "..g.Wbbbbdg..", "...gggjggg...", "......h......", "......H......", "......h......", "......H......", "......h......", ".....ppp.....", "......j......", ".............", ".............", "............."], p: {"W": "#d8ffb0", "b": "#7fe36a", "d": "#2f9a3a", "f": "#c8ff6a", "g": "#7a4fd6", "G": "#4a2a8a", "j": "#c8ff6a", "h": "#3a2050", "H": "#7a4fd6", "p": "#7a4fd6"}, fx: "leaf", gx: 6, gy: 22, cond: ["retire", 1] },
-  { id: "halberd", n: "황금 도끼창", d: "금 자루에 수정 도끼날", m: ["......b......", "......W......", ".....bWb.....", ".....bbb....b", "......b..bbbW", "......bbbbbbW", ".....gggbdbbW", "....ggjgbdbbW", ".....GGGbdbbW", "....ggggbdbbW", ".....gggbdbbW", "......h...bbW", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", ".....ggg.....", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", "......h......", "......h......", ".....bbb.....", "......b......"], p: {"W": "#ffffff", "b": "#bff0ff", "d": "#6fc0e6", "g": "#ffd54a", "G": "#c9962a", "h": "#e0b040", "H": "#a8761c", "j": "#3b7bd6", "p": "#ffd54a"}, fx: "gold", gx: 6, gy: 21, cond: ["rstreak", 14] },
-  { id: "scythe", n: "달빛 낫", d: "초승달처럼 휜 큰 낫", m: ["..WWWWWWW.g..", ".Wbbbbbbbggg.", "Wbbbbddddgmg.", "Wbbd.....ggG.", "Wbd.......h..", "Wb........h..", "Wd........H..", ".W........h..", "..........h..", "..........h..", "..........H..", "..........h..", "..........h..", "..........h..", "..........H..", "..........h..", "..........h..", "..........h..", "..........H..", "..........h..", "..........h..", "..........h..", "..........H..", "..........h..", "..........h..", "..........h..", "..........H..", "..........h..", "..........h..", ".........ppp."], p: {"W": "#ffffff", "b": "#d9d2ff", "d": "#8f7cd6", "g": "#c9a6ff", "G": "#7a4fd6", "h": "#2a2440", "H": "#4a3f6e", "p": "#c9a6ff", "m": "#fff7c2"}, fx: "cosmic", gx: 10, gy: 21, cond: ["floor", 300] },
-  { id: "hammer", n: "얼음 망치", d: "수정 덩어리를 금테로 감은 망치", m: [".............", ".WWWgWWWgWWW.", ".Wbbgbbbgbbd.", "bWbbgbbbgbbdd", "bWbbgbjbgbbdd", "bWbbgbjbgbbdd", "bWbbgbbbgbbdd", ".Wbbgbbbgbbd.", ".Wddgdddgddd.", ".....ggg.....", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", ".....ggg.....", "......j......"], p: {"W": "#ffffff", "b": "#bff0ff", "d": "#6fc0e6", "g": "#ffd54a", "G": "#c9962a", "h": "#e0b040", "H": "#a8761c", "j": "#3b7bd6", "p": "#ffd54a"}, fx: "frost", gx: 6, gy: 21, cond: ["sstreak", 7] },
-  { id: "fang", n: "용의 송곳니", d: "드래곤 이빨을 깎은 칼", m: [".............", ".....W.......", ".....W.......", ".....Wd......", ".....Wd......", ".....Wd......", ".....Wd......", "....Wbd......", "....dWbd.....", ".....Wbd.....", ".....Wbd.....", "....dWbd.....", ".....Wbd.....", ".....Wbd.....", "....d.Wbd....", "......Wbd....", "......Wbd....", "....d.Wbd....", "......Wbd....", "....Wbd......", "..GgggjgggG..", "...ggggggg...", "......h......", "......H......", "......h......", "......H......", "......h......", ".....ppp.....", "......j......", "............."], p: {"W": "#fffaf0", "b": "#efe4cf", "d": "#b8a888", "g": "#5a2a2a", "G": "#3a1616", "j": "#ff3b3b", "h": "#4a2a1a", "H": "#7a4a2a", "p": "#5a2a2a"}, fx: "flame", gx: 6, gy: 23, cond: ["floor", 500] },
-  { id: "star", n: "별빛 지팡이", d: "별 수정이 박힌 지팡이", m: [".....rr.z....", "...r..b...r..", "..z...b....r.", ".....bbb.....", ".r.bbbWbbb..r", "r...bWbbb...z", "....bbbbb....", ".r..bb.bb...r", ".............", "..z........r.", "...r......r..", ".....RRRz....", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", "......h......", "......h......", "......h......", "......H......", "......h......", "......h......", ".....ppp....."], p: {"W": "#ffffff", "b": "#ffe14a", "d": "#e0a020", "r": "#c9a6ff", "R": "#7a4fd6", "h": "#3a2c8f", "H": "#6a5ad6", "p": "#ffe14a", "z": "#ff9be0"}, fx: "cosmic", gx: 6, gy: 22, cond: ["mem", 50] },
-  { id: "holy", n: "성검", d: "날개 코등이의 흰 금빛 검", m: ["......b......", "......b......", ".....Wbd.....", ".....Wbd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", ".....Wfd.....", "V....Wfd....V", ".V...Wfd...V.", ".VV..Wbd..VV.", "...gggjggg...", "...gGGGGGg...", "......h......", "......H......", "......h......", "......H......", "......h......", ".....ppp.....", "......j......", "............."], p: {"W": "#ffffff", "b": "#f4f1e6", "d": "#c9c2a8", "f": "#ffe27a", "g": "#ffd54a", "G": "#c9962a", "j": "#3b7bd6", "h": "#f4f1e6", "H": "#c9962a", "p": "#ffd54a", "V": "#ffffff"}, fx: "holy", gx: 6, gy: 24, cond: ["round", 1] }
+/* ===================== 옷장 데이터 (v30): 세트 14종 · 무기 이펙트 13종 · 오라 10종 · 칭호 15종 = 122벌 =====================
+   부위 9칸: 머리·상의·넥타이·팔토시·신발·소품(세트 부위) + 오라·무기 이펙트·칭호.
+   모든 옷: 입으면 부위 효과(부위마다 다른 능력치) + 가지고만 있어도 보유 효과(모든 피해 +). 등급과 강화(+10)로 커짐.
+   uq = 예전 정장·오라의 고유 효과(가지고만 있어도), perk = 입었을 때만 붙는 효과.
+   그림: pal = 몸 색 바꾸기, hair = 머리 모양, f = 앞에 덧그림(덮어씀), b = 뒤에 덧그림(빈칸에만), c = 그 아이템 전용 색.
+   덧그림 줄 번호 y는 주인공 그림 기준 (0 = 맨 윗줄, -3 까지 머리 위). 글자는 18칸.
+   c에 없는 글자(s S g k r m j w t a x B p b h e W Y)는 지금 입은 몸 색을 따름. */
+var WSLOT = [
+  { id: "head", n: "머리", k: "crit", base: 2 },
+  { id: "top", n: "상의", k: "dmg", base: 40 },
+  { id: "tie", n: "넥타이", k: "critd", base: 60 },
+  { id: "arm", n: "팔토시", k: "gold", base: 50 },
+  { id: "shoes", n: "신발", k: "aps", base: 4 },
+  { id: "prop", n: "소품", k: "boss", base: 40 },
+  { id: "aura", n: "오라", k: "dmg", base: 30 },
+  { id: "wfx", n: "무기 이펙트", k: "wpn", base: 40 },
+  { id: "title", n: "칭호", k: "", base: 0 },
 ];
-const OUTFITS = [
-  { id: "devil", n: "악마 스트릿", d: "뿔과 꼬리가 달린 오버핏 재킷, 민트 머리", pal: {"j": "#1c1c26", "a": "#24242f", "x": "#ff5fa2", "w": "#2c2c3a", "t": "#7dff9a", "B": "#ff5fa2", "p": "#17171e", "b": "#3a1830", "h": "#8fe8bd", "e": "#d2ffe8", "H": "#2fbf6e", "L": "#2fbf6e", "l": "#ff5fa2", "O": "#7dff9a"}, front: ["...H..........H...", "...HH........HH...", "....HHH....HHH....", ".....HH....HH.....", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..a...............", "..aO..............", "..a...............", "..................", "..................", "...jjjjjjjjjjj....", "..................", "..................", "..................", "..................", ".................."], back: ["..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..L...............", ".L................", ".L................", "L.................", "L.l...............", ".lll..............", "..l..............."], cond: ["floor", 200] },
-  { id: "cat", n: "고양이 코트", d: "고양이 귀 머리띠와 주황 포인트 코트, 금발", pal: {"j": "#1d1d2c", "a": "#1d1d2c", "x": "#ff9b3d", "w": "#f6ead2", "t": "#ff9b3d", "B": "#ff9b3d", "p": "#f6ead2", "b": "#1d1d2c", "h": "#f2d27a", "e": "#fff2b8", "N": "#1d1d2c", "n": "#ff9b3d"}, front: ["..................", ".....N......N.....", "....NnN....NnN....", "....NnnN..NnnN....", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "...jjjj...........", "...jjj............", "..................", "..................", ".................."], back: ["..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", ".................."], cond: ["chap", 30] },
-  { id: "cyber", n: "사이버 후드", d: "안테나 후드와 빛나는 바이저", pal: {"j": "#262b40", "a": "#262b40", "x": "#6fd3ff", "w": "#11141f", "t": "#6fd3ff", "B": "#6fd3ff", "p": "#1a1d2b", "b": "#11141f", "g": "#6fd3ff", "k": "#e6fbff", "q": "#2f3550", "Q": "#6fd3ff"}, front: ["..................", ".....Q............", ".....Q............", ".....qqqqqqq......", "....qqqqqqqqqq....", "...qqqqqqqqqqqq...", "...qqqQQQQQQQQq...", "...qqqQ...........", "...qqqQ...........", "...qqq............", "...qqq............", "....qq............", "....qq............", ".....q............", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", ".................."], back: ["..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", ".................."], cond: ["study", 600] },
-  { id: "ice", n: "서리 기사", d: "얼음 왕관과 푸른 망토", pal: {"j": "#cfe8ff", "a": "#9fd2f5", "x": "#ffd54a", "w": "#ffffff", "t": "#3b7bd6", "B": "#ffd54a", "p": "#6d8fb8", "b": "#3b4566", "R": "#bff0ff", "C": "#2b5ea8", "c": "#e6f6ff"}, front: ["..................", ".......R...R......", ".......R.R.R......", "......RRRRRRR.....", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..cc........cc....", "..cc..............", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", ".................."], back: ["..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..CC..............", "..CC..............", "..CC..............", "..CC..............", "..CC..............", ".CCC..............", ".CCC..............", ".CCCC.............", "CCCCC.............", "CCCC..............", "CCC...............", ".................."], cond: ["sstreak", 14] },
-  { id: "mage", n: "별빛 마법사", d: "별 박힌 고깔모자와 남색 로브", pal: {"j": "#3a2c8f", "a": "#3a2c8f", "x": "#ffd54a", "w": "#2a2070", "t": "#ffd54a", "B": "#ffd54a", "p": "#3a2c8f", "b": "#1d1640", "C": "#4a3aa8", "c": "#6a5ad6", "z": "#ffe14a"}, front: ["......CC..........", ".......CCC........", ".......CCCC.......", "......CCCCCz......", "......CCCCCCC.....", ".....zzzzzzzzz....", "..cCCCCCCCCCCCCc..", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "......z...........", "...........z......", "..................", "..................", "..................", ".....jjjjjjj......", ".....jjjjjjjj.....", "....jjjjjjjjjj....", "..................", ".................."], back: ["..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", ".................."], cond: ["mem", 30] },
-  { id: "paladin", n: "황금 성기사", d: "금빛 후광과 흰 날개", pal: {"j": "#f4f1e6", "a": "#ffd54a", "x": "#ffd54a", "w": "#ffffff", "t": "#ffd54a", "B": "#ffd54a", "p": "#e8e2cc", "b": "#c9962a", "R": "#ffe14a", "V": "#ffffff", "v": "#dfe6f3"}, front: [".......RRRRR......", "......R.....R.....", ".......RRRRR......", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", ".................."], back: ["..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "..................", "...V..............", "..VV..............", ".VVV..............", "VVVV..............", "VVVv..............", ".VVv..............", "..vv..............", "..................", "..................", "..................", "..................", "..................", "..................", "..................", ".................."], cond: ["rstreak", 30] }
+var WBODY = ["head", "top", "tie", "arm", "shoes", "prop"];
+var WGRADE = [
+  { n: "일반", c: "#b9c1d6", m: 0 },
+  { n: "고급", c: "#7fe3a0", m: 1 },
+  { n: "희귀", c: "#6fd3ff", m: 1.6 },
+  { n: "영웅", c: "#c9a6ff", m: 2.5 },
+  { n: "전설", c: "#ffb13b", m: 4 },
+  { n: "신화", c: "#ff6b6b", m: 6.4 },
 ];
-const OUTFIT_TOP = 3;   // 의상은 머리 위로 3줄 더 (뿔·귀·모자·후광)
-const COND_INFO = {
-  study: ["공부 누적", v => `${+(v / 60).toFixed(1)}시간`, () => S.study.total || 0],
-  floor: ["최고 층", v => `${v}층`, () => S.bestFloor || 0],
-  chap: ["말씀 누적", v => `${v}장`, () => S.bible.total || 0],
-  mem: ["암송 완료", v => `${v}구절`, () => memMastered()],
-  boss: ["보스 처치", v => `${v}마리`, () => S.bossKills || 0],
-  retire: ["퇴사", v => `${v}회`, () => S.retires || 0],
-  rstreak: ["말씀 연속 최고", v => `${v}일`, () => S.bible.best || 0],
-  sstreak: ["공부 연속 최고", v => `${v}일`, () => S.study.best || 0],
-  round: ["성경 통독", v => `${v}독`, () => S.bible.rounds || 0],
+var WSTAT = {
+  dmg: ["모든 피해", "%"], xdmg: ["모든 피해", "x"], crit: ["치명타 확률", "%"], critd: ["치명 피해", "%"],
+  aps: ["공격 속도", "%"], gold: ["보스 월급", "%"], boss: ["보스 피해", "%"], wpn: ["무기 공격력", "%"],
+  pet: ["동료 피해", "%"], ore: ["광석", "%"], manna: ["말씀 만나", "%"], mem: ["암송 보상", "%"],
+  stamp: ["퇴사 도장", "%"], btime: ["보스 제한 시간", "초"], jobcd: ["직무 스킬 대기", "-%"],
+  xstamp: ["퇴사 도장", "x"], xaps: ["공격 속도", "x"],
 };
-const condCur = c => COND_INFO[c.cond[0]][2]();
-const condProg = c => Math.max(0, Math.min(1, condCur(c) / c.cond[1]));
-const condText = c => { const [t, v] = c.cond, I = COND_INFO[t], cur = I[2](); return `${I[0]} ${I[1](v)} (지금 ${t === "study" ? I[1](cur) : I[1](Math.floor(cur))})`; };
-let costOwnedSet = new Set(), costN = 0;
-const costOwned = c => costOwnedSet.has(c.id);
-const curSkin = () => { const k = S.wskin ? WSKINS.find(s => s.id === S.wskin) : null; return k && costOwned(k) ? k : null; };
-const curOutfit = () => { const o = S.outfit ? OUTFITS.find(s => s.id === S.outfit) : null; return o && costOwned(o) ? o : null; };
-const curFx = () => { const k = curSkin(); return k ? k.fx : WEAPONS[skinIdx()].fx; };
-function refreshCostumes(announce) {
-  const all = [...OUTFITS.map(c => ["o", c]), ...WSKINS.map(c => ["w", c])];
-  const now = all.filter(([, c]) => condCur(c) >= c.cond[1]);
-  costOwnedSet = new Set(now.map(([, c]) => c.id)); costN = costOwnedSet.size;
-  if (!announce) return;
-  if (!Array.isArray(S.costSeen)) {
-    S.costSeen = now.map(([, c]) => c.id);
-    if (now.length) setTimeout(() => toast(`코스튬 ${now.length}개가 열려 있어요 · 정장 탭에서 입어 보세요`), 1600);
-    return;
-  }
-  now.forEach(([kind, c]) => {
-    if (S.costSeen.includes(c.id)) return;
-    S.costSeen.push(c.id);
-    celebrate({ icon: kind === "o" ? outfitBig(c) : skinBig(c), title: kind === "o" ? "의상 코스튬 해금!" : "무기 코스튬 해금!", sub: `${c.n} · 정장 탭에서 입어 보세요<br><span class="muted">모은 코스튬마다 모든 피해 +3%</span>`, tone: "rare", ms: 2800 });
+var WOWN_BASE = 2;       // 보유 효과: 모든 피해 +2% x 등급 배율 x 강화
+var WENH_MAX = 10;
+var WCOND = {
+  floor: ["최고층", v => `${v}층`],
+  chap: ["말씀 누적", v => `${v}장`],
+  study: ["공부 누적", v => `${+(v / 60).toFixed(1)}시간`],
+  sstreak: ["공부 연속 최고", v => `${v}일`],
+  rstreak: ["말씀 연속 최고", v => `${v}일`],
+  astreak: ["출근 연속 최고", v => `${v}일`],
+  mem: ["암송 완료", v => `${v}구절`],
+  memp: ["암송 통과", v => `${v}번`],
+  round: ["성경 통독", v => `${v}독`],
+  planfin: ["읽기 플랜 완주", v => `${v}번`],
+  boss: ["보스 처치", v => `${v}마리`],
+  retire: ["퇴사", v => `${v}회`],
+  att: ["출근 누적", v => `${v}일`],
+  rank: ["직급", v => ["사원", "주임", "대리", "과장", "차장", "부장", "이사", "상무", "전무", "사장"][v] || v],
+  job: ["팀 배치", v => ({ sales: "영업팀", dev: "개발팀", plan: "기획팀", hr: "인사총무팀" })[v] || v],
+};
+/* 머리 모양 추가: 민머리(투구용)·영업 2:8 가르마 */
+var WHAIR = {
+  none: Array(24).fill(".................."),
+  sales: ["..................", "......hhhhhhh.....", ".....hhhhheeeeh...", "....hhhhhhheeeeh..", "....hhhhhhhhhhhh..", "....hhhhhhhhhh....", "....hh.h..........", "....hh............"].concat(Array(16).fill("..................")),
+};
+
+/* ---------- 세트 ---------- */
+/* own: 가지고만 있어도 세트 효과 (회장님 세트 = 예전 전설 정장 효과 그대로, 전설 오라까지 7벌) */
+var WSETS = [
+  { id: "rookie", n: "신입사원 세트", g: 1, d: "첫 출근 날의 마음가짐 · 공부로 캔 광석으로 사요", col: "#7fe3a0",
+    bonus: { 2: { dmg: 50 }, 4: { gold: 100 }, 6: { xdmg: 1.5 } } },
+  { id: "elite", n: "엘리트 정장 세트", g: 2, d: "다림질 칼주름, 일 잘하는 사람 · 광석으로 사요", col: "#6fd3ff",
+    bonus: { 2: { critd: 100 }, 4: { boss: 100 }, 6: { xdmg: 2 } } },
+  { id: "chair", n: "회장님 세트", g: 4, own: true, d: "회사의 주인이 입는 옷 · 가지고만 있어도 소장 효과 (전설의 철야 오라까지 7벌)", col: "#ffb13b",
+    bonus: { 1: { gold: 500 }, 2: { critd: 350 }, 3: { xdmg: 4.5 }, 4: { xstamp: 1.5 }, 5: { xaps: 1.1 }, 6: { xdmg: 2 }, 7: { xdmg: 3 } } },
+  { id: "sales", n: "영업팀 정장", g: 3, job: "sales", d: "계약은 옷차림에서 시작된다 · 영업팀에 배치되면 열려요", col: "#ffd54a",
+    bonus: { 2: { crit: 10 }, 4: { gold: 200 }, 6: { xdmg: 2.5, jobcd: 20 } } },
+  { id: "dev", n: "개발팀 후드", g: 3, job: "dev", d: "편한 옷이 버그를 잡는다 · 개발팀에 배치되면 열려요", col: "#6fd3ff",
+    bonus: { 2: { aps: 15 }, 4: { critd: 200 }, 6: { xdmg: 2.5, jobcd: 20 } } },
+  { id: "plan", n: "기획팀 셋업", g: 3, job: "plan", d: "로드맵은 블레이저 주머니에 · 기획팀에 배치되면 열려요", col: "#ff7a9a",
+    bonus: { 2: { boss: 100 }, 4: { btime: 3 }, 6: { xdmg: 2.5, jobcd: 20 } } },
+  { id: "hr", n: "인사총무팀 가디건", g: 3, job: "hr", d: "회사 살림은 우리가 챙긴다 · 인사총무팀에 배치되면 열려요", col: "#7fe3a0",
+    bonus: { 2: { pet: 100 }, 4: { gold: 150 }, 6: { xdmg: 2.5, jobcd: 20 } } },
+  { id: "devil", n: "악마 스트릿", g: 3, d: "높이 오를수록 하나씩 열려요", col: "#7dff9a",
+    bonus: { 2: { crit: 8 }, 4: { critd: 250 }, 6: { xdmg: 2.5 } } },
+  { id: "cat", n: "고양이 코트", g: 3, d: "말씀을 읽을수록 하나씩 열려요", col: "#ff9b3d",
+    bonus: { 2: { gold: 150 }, 4: { aps: 12 }, 6: { xdmg: 2.5 } } },
+  { id: "cyber", n: "사이버 후드", g: 3, d: "공부한 시간만큼 하나씩 열려요", col: "#6fd3ff",
+    bonus: { 2: { wpn: 100 }, 4: { aps: 15 }, 6: { xdmg: 2.5 } } },
+  { id: "ice", n: "서리 기사", g: 3, d: "공부를 며칠 이어 하면 열려요", col: "#bff0ff",
+    bonus: { 2: { boss: 120 }, 4: { btime: 4 }, 6: { xdmg: 2.5 } } },
+  { id: "mage", n: "별빛 마법사", g: 3, d: "암송할수록 하나씩 열려요", col: "#c9a6ff",
+    bonus: { 2: { dmg: 150 }, 4: { mem: 30 }, 6: { xdmg: 2.5 } } },
+  { id: "paladin", n: "황금 성기사", g: 3, d: "말씀을 며칠 이어 읽으면 열려요", col: "#ffe14a",
+    bonus: { 2: { dmg: 150 }, 4: { boss: 200 }, 6: { xdmg: 2.5 } } },
+  { id: "armor", n: "말씀의 전신갑주", g: 5, d: "그러므로 하나님의 전신갑주를 취하라 (엡 6:13) · 강화는 만나로", col: "#ffe9a0",
+    bonus: { 2: { dmg: 300 }, 4: { boss: 300, btime: 5 }, 6: { xdmg: 5, manna: 30 }, 7: { xdmg: 1.5, crit: 10 } } },
+];
+
+/* ---------- 아이템 ---------- */
+var WITEMS = [
+  /* 신입사원 세트 (예전 정장 1단) */
+  { id: "rk_head", set: "rookie", slot: "head", n: "단정한 가르마", cost: { ore: 150 }, old: ["hair", 0], uq: { d: "퇴사 도장 +50%", fx: { stamp: 50 } }, look: { keep: 1, hair: "neat", pal: { h: "#2a2a35" } } },
+  { id: "rk_top", set: "rookie", slot: "top", n: "신입 셔츠", cost: { ore: 150 }, old: ["shirt", 0], uq: { d: "곽준영·동료 피해 +75%", fx: { dmg: 75 } }, look: { pal: { w: "#eef1f7" } } },
+  { id: "rk_tie", set: "rookie", slot: "tie", n: "넥타이핀 넥타이", cost: { ore: 150 }, old: ["tie", 0], uq: { d: "치명타 확률 +25%", fx: { crit: 25 } }, look: { pal: { t: "#3b7bd6" }, f: { 14: ".........QQ......." }, c: { Q: "#e9edf6" } } },
+  { id: "rk_arm", set: "rookie", slot: "arm", n: "사무용 팔토시", cost: { ore: 150 }, old: ["arm", 0], uq: { d: "보스 월급 +100%", fx: { gold: 100 } }, look: { pal: { a: "#5b6274" } } },
+  { id: "rk_shoes", set: "rookie", slot: "shoes", n: "운동화", cost: { ore: 150 }, old: ["shoes", 0], uq: { d: "퇴사 직후 3분 동안 공격 속도 3배", fx: { sneaker: 1 } }, look: { pal: { b: "#eef1f7" } } },
+  { id: "rk_prop", set: "rookie", slot: "prop", n: "손목시계", cost: { ore: 150 }, old: ["acc", 0], uq: { d: "지하 문서고 하루 입장 +1회", fx: { vault: 1 } }, look: { pal: { x: "#c9ced8" } } },
+  /* 엘리트 정장 세트 (예전 정장 2단) */
+  { id: "el_head", set: "elite", slot: "head", n: "올백 포마드", cost: { ore: 600 }, old: ["hair", 1], uq: { d: "보물 사원증 효과 2배", fx: { badge2: 1 } }, look: { hair: "slick", pal: { h: "#141418", e: "#8d97b6" } } },
+  { id: "el_top", set: "elite", slot: "top", n: "다림질 정장", cost: { ore: 600 }, old: ["shirt", 1], uq: { d: "모든 피해 +100%", fx: { dmg: 100 } }, look: { pal: { w: "#eef1f7", j: "#3b4566", a: "#3b4566" } } },
+  { id: "el_tie", set: "elite", slot: "tie", n: "실크 넥타이", cost: { ore: 600 }, old: ["tie", 1], uq: { d: "보스 피해 +100%", fx: { boss: 100 } }, look: { pal: { t: "#7c5cff" } } },
+  { id: "el_arm", set: "elite", slot: "arm", n: "강철 팔토시", cost: { ore: 600 }, old: ["arm", 1], uq: { d: "5층마다 모든 피해 +1%", fx: { floor5: 1 } }, look: { pal: { a: "#c9ced8" } } },
+  { id: "el_shoes", set: "elite", slot: "shoes", n: "광낸 구두", cost: { ore: 600 }, old: ["shoes", 1], uq: { d: "모든 피해 +100%", fx: { dmg: 100 } }, look: { pal: { b: "#3a2414" } } },
+  { id: "el_prop", set: "elite", slot: "prop", n: "커프스 단추", cost: { ore: 600 }, old: ["acc", 1], uq: { d: "무기 공격력 +50%", fx: { wpn: 50 } }, look: { pal: { x: "#ffd54a" } } },
+  /* 회장님 세트 (예전 전설 정장) — 고유 효과는 강화할수록 커짐 (+4에서 최대, 예전 5강) */
+  { id: "ch_head", set: "chair", slot: "head", n: "전설의 광채 대머리", cost: { ore: 2000 }, old: ["hair", 2], uq: { lv: 1, d: lv => `모든 피해 x${1 + 5 * lv}`, fx: lv => ({ xdmg: 1 + 5 * lv }) }, look: { hair: "bald", pal: { e: "#ffd54a" } } },
+  { id: "ch_top", set: "chair", slot: "top", n: "전설의 회장 수트", cost: { ore: 2000 }, old: ["shirt", 2], uq: { lv: 1, d: lv => `모든 피해 x${1 + lv}`, fx: lv => ({ xdmg: 1 + lv }) }, look: { pal: { w: "#f4f1e6", j: "#1b1b1b", a: "#1b1b1b", B: "#ffd54a" }, f: { 13: "............Y....." } } },
+  { id: "ch_tie", set: "chair", slot: "tie", n: "전설의 금빛 넥타이", cost: { ore: 2000 }, old: ["tie", 2], uq: { lv: 1, d: lv => `치명 피해 +${300 * lv}%`, fx: lv => ({ critd: 300 * lv }) }, look: { pal: { t: "#ffd54a" } } },
+  { id: "ch_arm", set: "chair", slot: "arm", n: "전설의 팔토시", cost: { ore: 2000 }, old: ["arm", 2], uq: { lv: 1, d: lv => `보스 월급 +${1000 * lv}%`, fx: lv => ({ gold: 1000 * lv }) }, look: { pal: { a: "#ffd54a" } } },
+  { id: "ch_shoes", set: "chair", slot: "shoes", n: "전설의 금장 구두", cost: { ore: 2000 }, old: ["shoes", 2], uq: { lv: 1, d: lv => `공격 속도 +${10 * lv}%`, fx: lv => ({ aps: 10 * lv }) }, look: { pal: { b: "#ffd54a" } } },
+  { id: "ch_prop", set: "chair", slot: "prop", n: "전설의 회장 반지", cost: { ore: 2000 }, old: ["acc", 2], uq: { lv: 1, d: lv => `만나·광석·암송 보상 +${10 * lv}%`, fx: lv => ({ manna: 10 * lv, ore: 10 * lv, mem: 10 * lv }) }, look: { pal: { x: "#ff6bd6" } } },
+
+  /* 영업팀 정장: 네이비 핀스트라이프 + 금빛 포인트 + 서류가방 */
+  { id: "sa_head", set: "sales", slot: "head", n: "자신감 2:8 가르마", cond: ["job", "sales"],
+    look: { hair: "sales", pal: { h: "#16161e", e: "#5b6684" }, f: { 8: ".....Q............" }, c: { Q: "#e9edf6" } } },
+  { id: "sa_top", set: "sales", slot: "top", n: "네이비 핀스트라이프 정장", cond: ["job", "sales"],
+    look: { pal: { j: "#1f2a4f", a: "#1f2a4f", w: "#f4f6fb", p: "#1f2a4f", B: "#121420" },
+      f: { 13: "....L.......Y.....", 15: "....L.....L.......", 17: "......L.....L....." }, c: { L: "#34436f", Y: "#ffd54a" } } },
+  { id: "sa_tie", set: "sales", slot: "tie", n: "골드 실크 넥타이", cond: ["job", "sales"],
+    look: { pal: { t: "#ffd54a" }, f: { 15: ".........TT......." }, c: { T: "#b8861c" } } },
+  { id: "sa_arm", set: "sales", slot: "arm", n: "금장 커프스", cond: ["job", "sales"], look: { pal: { a: "#1f2a4f", x: "#ffd54a" } } },
+  { id: "sa_shoes", set: "sales", slot: "shoes", n: "브라운 옥스퍼드", cond: ["job", "sales"], look: { pal: { b: "#7a4220" } } },
+  { id: "sa_prop", set: "sales", slot: "prop", n: "계약서 서류가방", cond: ["job", "sales"],
+    look: { f: { 19: "..KK..............", 20: "CCCC..............", 21: "CYCC..............", 22: "CCCC..............", 23: "DDDD.............." },
+      c: { K: "#3a2414", C: "#8a5a2e", D: "#5a3618", Y: "#ffd54a" } } },
+
+  /* 개발팀 후드: 헤드셋 + 차콜 후드티 + 노트북 */
+  { id: "dv_head", set: "dev", slot: "head", n: "노이즈 캔슬링 헤드셋", cond: ["job", "dev"],
+    look: { f: { 0: ".......DDDD.......", 1: "......D...........", 2: ".....D............", 3: ".....D............", 4: ".....D............", 5: ".....D............", 6: "....EEE...........", 7: "....EcE...........", 8: "....EEE...........", 9: "......D...........", 10: ".......Dc........." },
+      c: { D: "#9aa3b8", E: "#2a2e38", c: "#6fd3ff" } } },
+  { id: "dv_top", set: "dev", slot: "top", n: "차콜 후드티", cond: ["job", "dev"],
+    look: { pal: { j: "#3a4152", a: "#3a4152", w: "#161a26", p: "#2c3a55", B: "#1b1f2a" },
+      f: { 10: "....H.............", 11: "...HHHH...........", 12: "...H..............", 15: "...........cc....." }, c: { H: "#4d566c", c: "#6fd3ff" } } },
+  { id: "dv_tie", set: "dev", slot: "tie", n: "네온 후드 끈", cond: ["job", "dev"],
+    look: { pal: { t: "#6fd3ff" }, f: { 12: ".........ww.......", 13: "........tjjt......", 14: "........tjjt......", 15: "........tjjt......", 16: "........tjjt......", 17: "........T..T......" }, c: { T: "#e6fbff" } } },
+  { id: "dv_arm", set: "dev", slot: "arm", n: "스마트워치", cond: ["job", "dev"], look: { pal: { a: "#3a4152", x: "#6fd3ff" } } },
+  { id: "dv_shoes", set: "dev", slot: "shoes", n: "화이트 스니커즈", cond: ["job", "dev"],
+    look: { pal: { b: "#eef1f7" }, f: { 23: ".....c......c....." }, c: { c: "#6fd3ff" } } },
+  { id: "dv_prop", set: "dev", slot: "prop", n: "코딩 노트북", cond: ["job", "dev"],
+    look: { f: { 13: "LLLL..............", 14: "LkcL..............", 15: "LckL..............", 16: "LcLL..............", 17: "LLLL..............", 18: "lll..............." },
+      c: { L: "#c9ced8", l: "#8d97b6", k: "#0e1a2a", c: "#6fd3ff" } } },
+
+  /* 기획팀 셋업: 안경 + 카멜 블레이저·검정 터틀넥 + 태블릿 */
+  { id: "pl_head", set: "plan", slot: "head", n: "로즈골드 안경", cond: ["job", "plan"], look: { hair: "side", pal: { h: "#3a2a22", e: "#7a5a46", g: "#ff8fa8" } } },
+  { id: "pl_top", set: "plan", slot: "top", n: "카멜 블레이저 & 터틀넥", cond: ["job", "plan"],
+    look: { pal: { j: "#c9a06b", a: "#c9a06b", w: "#1b1b22", p: "#2a2a33", B: "#1b1b22" }, f: { 14: "...........N......" }, c: { N: "#9a7444" } } },
+  { id: "pl_tie", set: "plan", slot: "tie", n: "실버 펜던트", cond: ["job", "plan"],
+    look: { pal: { t: "#1b1b22" }, f: { 13: ".........P........", 15: ".........PP......." }, c: { P: "#e9edf6" } } },
+  { id: "pl_arm", set: "plan", slot: "arm", n: "핑크 스마트밴드", cond: ["job", "plan"], look: { pal: { a: "#c9a06b", x: "#ff7a9a" } } },
+  { id: "pl_shoes", set: "plan", slot: "shoes", n: "블랙 로퍼", cond: ["job", "plan"], look: { pal: { b: "#1b1b22" }, f: { 23: ".......Y......Y..." }, c: { Y: "#d6a24a" } } },
+  { id: "pl_prop", set: "plan", slot: "prop", n: "기획서 태블릿", cond: ["job", "plan"],
+    look: { f: { 13: "TTTT..............", 14: "TVuT..............", 15: "TpuT..............", 16: "TpuT..............", 17: "TTTT.............." },
+      c: { T: "#2a2e38", V: "#f4f6fb", p: "#ff7a9a", u: "#7c5cff" } } },
+
+  /* 인사총무팀 가디건: 연필 + 초록 가디건·사원증 + 결재 도장 */
+  { id: "hr_head", set: "hr", slot: "head", n: "귀에 꽂은 연필", cond: ["job", "hr"],
+    look: { hair: "neat", pal: { h: "#2a2420" }, f: { 6: ".RYYYy............" }, c: { R: "#ff8fa3", Y: "#ffd54a", y: "#f2c9a0" } } },
+  { id: "hr_top", set: "hr", slot: "top", n: "그린 니트 가디건", cond: ["job", "hr"],
+    look: { pal: { j: "#3f7a5a", a: "#3f7a5a", w: "#f4f6fb", p: "#8a7a5a", B: "#4a3a2a" }, f: { 14: "............O.....", 16: "............O....." }, c: { O: "#efe6c9" } } },
+  { id: "hr_tie", set: "hr", slot: "tie", n: "사원증 목걸이", cond: ["job", "hr"],
+    look: { pal: { t: "#7fe3a0" }, f: { 16: ".........II.......", 17: ".........iI......." }, c: { I: "#f4f6fb", i: "#6fd3ff" } } },
+  { id: "hr_arm", set: "hr", slot: "arm", n: "검정 팔토시", cond: ["job", "hr"], look: { pal: { a: "#2a2e38", x: "#7fe3a0" } } },
+  { id: "hr_shoes", set: "hr", slot: "shoes", n: "편한 단화", cond: ["job", "hr"], look: { pal: { b: "#4a4f5e" } } },
+  { id: "hr_prop", set: "hr", slot: "prop", n: "결재 도장", cond: ["job", "hr"],
+    look: { f: { 16: "..H...............", 17: "..h...............", 19: ".RRR..............", 20: ".YYY..............", 21: ".RRR..............", 22: ".rrr.............." },
+      c: { H: "#c98a5a", h: "#8a5a3a", R: "#c8322e", Y: "#ffd54a", r: "#ff5a4a" } } },
+
+  /* 악마 스트릿 (최고층) */
+  { id: "dl_head", set: "devil", slot: "head", n: "악마 뿔 & 민트 머리", cond: ["floor", 150],
+    look: { pal: { h: "#8fe8bd", e: "#d2ffe8" }, f: { "-3": "...H..........H...", "-2": "...HH........HH...", "-1": "....HHH....HHH....", 0: ".....HH....HH....." }, c: { H: "#2fbf6e" } } },
+  { id: "dl_top", set: "devil", slot: "top", n: "오버핏 악마 재킷", cond: ["floor", 200],
+    look: { pal: { j: "#1c1c26", a: "#1c1c26", w: "#2c2c3a", p: "#17171e", B: "#ff5fa2" }, f: { 18: "...jjjjjjjjjjj...." } } },
+  { id: "dl_tie", set: "devil", slot: "tie", n: "민트 독 넥타이", cond: ["floor", 250], look: { pal: { t: "#7dff9a" } } },
+  { id: "dl_arm", set: "devil", slot: "arm", n: "가시 장갑", cond: ["floor", 300],
+    look: { pal: { a: "#24242f", x: "#ff5fa2" }, f: { 13: "..a...............", 14: "..aO..............", 15: "..a..............." }, c: { O: "#7dff9a" } } },
+  { id: "dl_shoes", set: "devil", slot: "shoes", n: "핑크 밑창 부츠", cond: ["floor", 400], look: { pal: { b: "#3a1830" }, f: { 23: "....PPPP..PPPPP..." }, c: { P: "#ff5fa2" } } },
+  { id: "dl_prop", set: "devil", slot: "prop", n: "악마 꼬리", cond: ["floor", 500],
+    look: { b: { 17: "..L...............", 18: ".L................", 19: ".L................", 20: "L.................", 21: "L.l...............", 22: ".lll..............", 23: "..l..............." }, c: { L: "#2fbf6e", l: "#ff5fa2" } } },
+
+  /* 고양이 코트 (말씀 누적) */
+  { id: "ct_head", set: "cat", slot: "head", n: "고양이 귀 머리띠", cond: ["chap", 5],
+    look: { pal: { h: "#f2d27a", e: "#fff2b8" }, f: { "-2": ".....N......N.....", "-1": "....NnN....NnN....", 0: "....NnnN..NnnN...." }, c: { N: "#1d1d2c", n: "#ff9b3d" } } },
+  { id: "ct_top", set: "cat", slot: "top", n: "주황 포인트 코트", cond: ["chap", 15],
+    look: { pal: { j: "#1d1d2c", a: "#1d1d2c", w: "#f6ead2", p: "#f6ead2", B: "#ff9b3d" }, f: { 19: "...jjjj...........", 20: "...jjj............" } } },
+  { id: "ct_tie", set: "cat", slot: "tie", n: "방울 넥타이", cond: ["chap", 30], look: { pal: { t: "#ff9b3d" }, f: { 17: ".........Y........" }, c: { Y: "#ffe14a" } } },
+  { id: "ct_arm", set: "cat", slot: "arm", n: "고양이 손토시", cond: ["chap", 50], look: { pal: { a: "#ff9b3d", x: "#ffb3c1" } } },
+  { id: "ct_shoes", set: "cat", slot: "shoes", n: "흰 양말 부츠", cond: ["chap", 80], look: { pal: { b: "#f6ead2" } } },
+  { id: "ct_prop", set: "cat", slot: "prop", n: "줄무늬 꼬리", cond: ["chap", 120],
+    look: { b: { 12: ".V................", 13: ".n................", 14: "nN................", 15: "n.................", 16: "N.................", 17: "n.................", 18: ".N................", 19: "..nn.............." }, c: { n: "#ff9b3d", N: "#c9701c", V: "#fff4e0" } } },
+
+  /* 사이버 후드 (공부 누적) */
+  { id: "cy_head", set: "cyber", slot: "head", n: "안테나 바이저 후드", cond: ["study", 180],
+    look: { pal: { g: "#6fd3ff", k: "#e6fbff" }, f: { "-2": ".....Q............", "-1": ".....Q............", 0: ".....qqqqqqq......", 1: "....qqqqqqqqqq....", 2: "...qqqqqqqqqqqq...", 3: "...qqqQQQQQQQQq...", 4: "...qqqQ...........", 5: "...qqqQ...........", 6: "...qqq............", 7: "...qqq............", 8: "....qq............", 9: "....qq............", 10: ".....q............" },
+      c: { q: "#2f3550", Q: "#6fd3ff" } } },
+  { id: "cy_top", set: "cyber", slot: "top", n: "사이버 슈트", cond: ["study", 360],
+    look: { pal: { j: "#262b40", a: "#262b40", w: "#11141f", p: "#1a1d2b", B: "#6fd3ff" }, f: { 16: "...Q..............", 21: "......Q.....Q....." }, c: { Q: "#6fd3ff" } } },
+  { id: "cy_tie", set: "cyber", slot: "tie", n: "네온 케이블 타이", cond: ["study", 600], look: { pal: { t: "#6fd3ff" } } },
+  { id: "cy_arm", set: "cyber", slot: "arm", n: "빛나는 손목 단말", cond: ["study", 900], look: { pal: { a: "#262b40", x: "#6fd3ff" } } },
+  { id: "cy_shoes", set: "cyber", slot: "shoes", n: "LED 부츠", cond: ["study", 1320], look: { pal: { b: "#11141f" }, f: { 23: ".......Q......Q..." }, c: { Q: "#6fd3ff" } } },
+  { id: "cy_prop", set: "cyber", slot: "prop", n: "홀로 드론", cond: ["study", 1800],
+    look: { b: { 0: "z.z...............", 1: "qqq...............", 2: ".Q................", 3: ".o................" }, c: { z: "#c9d2e6", q: "#2f3550", Q: "#6fd3ff", o: "#2b8fb8" } } },
+
+  /* 서리 기사 (공부 연속) */
+  { id: "ic_head", set: "ice", slot: "head", n: "얼음 왕관", cond: ["sstreak", 2],
+    look: { f: { "-2": ".......R...R......", "-1": ".......R.R.R......", 0: "......RRRRRRR....." }, c: { R: "#bff0ff" } } },
+  { id: "ic_top", set: "ice", slot: "top", n: "서리 갑옷", cond: ["sstreak", 4],
+    look: { pal: { j: "#cfe8ff", a: "#cfe8ff", w: "#ffffff", p: "#6d8fb8", B: "#ffd54a" }, f: { 12: "..cc........cc....", 13: "..cc.............." }, c: { c: "#e6f6ff" } } },
+  { id: "ic_tie", set: "ice", slot: "tie", n: "푸른 기사 넥타이", cond: ["sstreak", 7], look: { pal: { t: "#3b7bd6" } } },
+  { id: "ic_arm", set: "ice", slot: "arm", n: "서리 건틀릿", cond: ["sstreak", 10], look: { pal: { a: "#9fd2f5", x: "#ffd54a" } } },
+  { id: "ic_shoes", set: "ice", slot: "shoes", n: "빙하 부츠", cond: ["sstreak", 14], look: { pal: { b: "#3b4566" }, f: { 22: ".....c......c....." }, c: { c: "#bff0ff" } } },
+  { id: "ic_prop", set: "ice", slot: "prop", n: "푸른 망토", cond: ["sstreak", 21],
+    look: { b: { 12: "..CC..............", 13: "..CC..............", 14: "..CC..............", 15: "..CC..............", 16: "..CC..............", 17: ".CCC..............", 18: ".CCC..............", 19: ".CCCC.............", 20: "CCCCC.............", 21: "CCCC..............", 22: "CCC..............." }, c: { C: "#2b5ea8" } } },
+
+  /* 별빛 마법사 (암송: 앞의 둘은 통과 횟수, 나머지는 암송 완료 구절) */
+  { id: "mg_head", set: "mage", slot: "head", n: "별 고깔모자", cond: ["memp", 10],
+    look: { f: { "-3": "......CC..........", "-2": ".......CCC........", "-1": ".......CCCC.......", 0: "......CCCCCz......", 1: "......CCCCCCC.....", 2: ".....zzzzzzzzz....", 3: "..cCCCCCCCCCCCCc.." }, c: { C: "#4a3aa8", c: "#6a5ad6", z: "#ffe14a" } } },
+  { id: "mg_top", set: "mage", slot: "top", n: "남색 별 로브", cond: ["memp", 30],
+    look: { pal: { j: "#3a2c8f", a: "#3a2c8f", w: "#2a2070", p: "#3a2c8f", B: "#ffd54a" }, f: { 14: "......z...........", 15: "...........z......", 19: ".....jjjjjjj......", 20: ".....jjjjjjjj.....", 21: "....jjjjjjjjjj...." }, c: { z: "#ffe14a" } } },
+  { id: "mg_tie", set: "mage", slot: "tie", n: "금빛 별 넥타이", cond: ["mem", 5], look: { pal: { t: "#ffd54a" } } },
+  { id: "mg_arm", set: "mage", slot: "arm", n: "마법사 소매", cond: ["mem", 15], look: { pal: { a: "#4a3aa8", x: "#ffe14a" } } },
+  { id: "mg_shoes", set: "mage", slot: "shoes", n: "밤하늘 신발", cond: ["mem", 30], look: { pal: { b: "#1d1640" } } },
+  { id: "mg_prop", set: "mage", slot: "prop", n: "떠다니는 마법서", cond: ["mem", 45],
+    look: { b: { 8: "...z..............", 9: "CCC...............", 10: "CzC...............", 11: "CCC...............", 12: "vvv..............." }, c: { C: "#4a3aa8", z: "#ffe14a", v: "#f4f1e6" } } },
+
+  /* 황금 성기사 (말씀 연속) */
+  { id: "pd_head", set: "paladin", slot: "head", n: "금빛 후광", cond: ["rstreak", 3],
+    look: { f: { "-3": ".......RRRRR......", "-2": "......R.....R.....", "-1": ".......RRRRR......" }, c: { R: "#ffe14a" } } },
+  { id: "pd_top", set: "paladin", slot: "top", n: "백금 성의", cond: ["rstreak", 7], look: { pal: { j: "#f4f1e6", a: "#f4f1e6", w: "#ffffff", p: "#e8e2cc", B: "#ffd54a" } } },
+  { id: "pd_tie", set: "paladin", slot: "tie", n: "황금 넥타이", cond: ["rstreak", 10], look: { pal: { t: "#ffd54a" } } },
+  { id: "pd_arm", set: "paladin", slot: "arm", n: "황금 건틀릿", cond: ["rstreak", 14], look: { pal: { a: "#ffd54a", x: "#fff2b8" } } },
+  { id: "pd_shoes", set: "paladin", slot: "shoes", n: "황금 장화", cond: ["rstreak", 21], look: { pal: { b: "#c9962a" } } },
+  { id: "pd_prop", set: "paladin", slot: "prop", n: "흰 날개", cond: ["rstreak", 30],
+    look: { b: { 9: "...V..............", 10: "..VV..............", 11: ".VVV..............", 12: "VVVV..............", 13: "VVVv..............", 14: ".VVv..............", 15: "..vv.............." }, c: { V: "#ffffff", v: "#dfe6f3" } } },
+
+  /* 말씀의 전신갑주 (신화, 엡 6:13-18 개역한글) — 강화는 만나로 */
+  { id: "ar_head", set: "armor", slot: "head", n: "구원의 투구", cond: ["round", 1], vs: "구원의 투구와 성령의 검 곧 하나님의 말씀을 가지라 (엡 6:17)",
+    look: { hair: "none", f: { "-2": "........GG........", "-1": ".......GGGG.......", 0: "......MMGGMM......", 1: ".....MMMMMMMM.....", 2: "....MMmmMMMMMM....", 3: "....MMMMMMMMMMMM..", 4: "....MMMMMMMMMMMM..", 5: "....GGGGGGGUGGGG..", 6: "....MM............", 7: "....MM............", 8: "....MM............" },
+      c: { M: "#dfe6f3", m: "#ffffff", G: "#ffd54a", U: "#6fd3ff" } } },
+  { id: "ar_top", set: "armor", slot: "top", n: "의의 흉배", cond: ["chap", 300], vs: "의의 흉배를 붙이고 (엡 6:14)",
+    look: { pal: { j: "#c9d2e6", a: "#c9d2e6", w: "#f4f1e6", p: "#8a7a5a", B: "#6b4a2e" },
+      f: { 12: "..MM........MM....", 13: "..MM..G...........", 14: ".....GGG..........", 15: "......G...........", 16: "......G..........." }, c: { M: "#eef2fa", G: "#ffd54a" } } },
+  { id: "ar_tie", set: "armor", slot: "tie", n: "진리의 허리띠", cond: ["chap", 100], vs: "진리로 너희 허리 띠를 띠고 (엡 6:14)",
+    look: { pal: { t: "#e8edf7", B: "#ffd54a" }, f: { 19: ".........U........" }, c: { U: "#6fd3ff" } } },
+  { id: "ar_arm", set: "armor", slot: "arm", n: "기도의 손토시", cond: ["rstreak", 40], vs: "모든 기도와 간구로 하되 무시로 성령 안에서 기도하고 (엡 6:18)", look: { pal: { a: "#c9d2e6", x: "#ffd54a" } } },
+  { id: "ar_shoes", set: "armor", slot: "shoes", n: "평안의 복음의 신", cond: ["att", 100], vs: "평안의 복음의 예비한 것으로 신을 신고 (엡 6:15)",
+    look: { pal: { b: "#a8743a" }, f: { 21: ".....K.K..K.K.....", 23: "...V......V......." }, c: { K: "#6b4a2e", V: "#ffffff" } } },
+  { id: "ar_prop", set: "armor", slot: "prop", n: "믿음의 방패", cond: ["mem", 50], vs: "모든 것 위에 믿음의 방패를 가지고 (엡 6:16)",
+    look: { f: { 12: ".GGG..............", 13: "GMgMG.............", 14: "GgggG.............", 15: "GMgMG.............", 16: "GMgMG.............", 17: "GMMMG.............", 18: ".GMG..............", 19: "..G..............." }, c: { G: "#ffd54a", M: "#3b5fae", g: "#fff2b8" } } },
+  { id: "w_spirit", set: "armor", slot: "wfx", n: "성령의 검", g: 5, cond: ["mem", 100], vs: "성령의 검 곧 하나님의 말씀을 가지라 (엡 6:17)", fx: "spirit", perk: { xdmg: 2 }, d: "흰 불꽃과 금빛 빛줄기가 칼날을 감쌈" },
+
+  /* 무기 이펙트: 무기 모양은 그대로, 둘레에만 효과 */
+  { id: "w_flame", slot: "wfx", n: "화염", g: 1, cond: ["floor", 100], fx: "flame", perk: { critd: 50 }, d: "날을 따라 불꽃이 타오름" },
+  { id: "w_volt", slot: "wfx", n: "번개", g: 1, cond: ["boss", 200], fx: "volt", perk: { aps: 5 }, d: "칼날 위로 전기가 튐" },
+  { id: "w_venom", slot: "wfx", n: "맹독", g: 1, cond: ["retire", 1], fx: "venom", perk: { boss: 30 }, d: "초록 독이 뚝뚝 떨어짐" },
+  { id: "w_frost", slot: "wfx", n: "서리", g: 2, cond: ["study", 300], fx: "frost", perk: { btime: 2 }, d: "얼음 조각이 칼날을 감쌈" },
+  { id: "w_crystal", slot: "wfx", n: "수정", g: 2, cond: ["chap", 50], fx: "crystal", perk: { ore: 10 }, d: "무지갯빛으로 반짝이는 수정 가루" },
+  { id: "w_sakura", slot: "wfx", n: "벚꽃", g: 2, cond: ["memp", 20], fx: "sakura", perk: { mem: 20 }, d: "휘두를 때마다 꽃잎이 흩날림" },
+  { id: "w_blizzard", slot: "wfx", n: "눈보라", g: 2, cond: ["sstreak", 7], fx: "blizzard", perk: { aps: 6 }, d: "눈송이가 칼날 둘레를 맴돎" },
+  { id: "w_gold", slot: "wfx", n: "황금", g: 3, cond: ["rstreak", 14], fx: "gold", perk: { gold: 100 }, d: "금빛 광택이 칼날을 훑고 지나감" },
+  { id: "w_moon", slot: "wfx", n: "달빛", g: 3, cond: ["floor", 300], fx: "moon", perk: { crit: 5 }, d: "초승달 두 개가 칼날을 돎" },
+  { id: "w_dragon", slot: "wfx", n: "용염", g: 4, cond: ["floor", 500], fx: "dragon", perk: { xdmg: 1.5 }, d: "검붉은 용의 불꽃" },
+  { id: "w_star", slot: "wfx", n: "별빛", g: 4, cond: ["mem", 50], fx: "star", perk: { manna: 20 }, d: "작은 별들이 무기를 따라 돎" },
+  { id: "w_holy", slot: "wfx", n: "성광", g: 4, cond: ["round", 1], fx: "holy", perk: { xdmg: 1.5, boss: 100 }, d: "칼날에서 빛줄기가 뻗어 나옴" },
+
+  /* 오라 */
+  { id: "a_yellow", slot: "aura", n: "노란 야근 오라", g: 1, cost: { ore: 150 }, old: ["aura", 0], uq: { d: "보스 월급 +50%", fx: { gold: 50 } }, aura: { k: "flame", c1: "#ffd54a", c2: "#fff3b0" } },
+  { id: "a_blue", slot: "aura", n: "파란 새벽 오라", g: 2, cost: { ore: 600 }, old: ["aura", 1], uq: { d: "모든 피해 +100%", fx: { dmg: 100 } }, aura: { k: "flame", c1: "#3b9bff", c2: "#bfe9ff" } },
+  { id: "a_night", slot: "aura", n: "전설의 철야 오라", g: 4, set: "chair", cost: { ore: 2000 }, old: ["aura", 2], uq: { lv: 1, d: lv => `모든 피해 x${1 + 2 * lv}`, fx: lv => ({ xdmg: 1 + 2 * lv }) }, aura: { k: "flame", c1: "#9a5cff", c2: "#ffb3f0", ember: 1 } },
+  { id: "a_word", slot: "aura", n: "말씀 빛 오라", g: 3, cond: ["chap", 100], perk: { manna: 15 }, aura: { k: "pillar", c1: "#ffe27a", c2: "#ffffff" }, d: "발밑에서 금빛 기둥이 솟음" },
+  { id: "a_study", slot: "aura", n: "집중 불꽃 오라", g: 3, cond: ["study", 1200], perk: { ore: 15 }, aura: { k: "flame", c1: "#2fd6ff", c2: "#e6fbff" }, d: "푸른 불꽃이 몸을 감쌈" },
+  { id: "a_mem", slot: "aura", n: "암송 별무리 오라", g: 3, cond: ["mem", 30], perk: { mem: 20 }, aura: { k: "orbit", c1: "#c9a6ff", c2: "#ffe14a" }, d: "별무리가 허리를 따라 돎" },
+  { id: "a_dawn", slot: "aura", n: "새벽 기도 오라", g: 4, cond: ["rstreak", 30], perk: { xdmg: 1.5 }, aura: { k: "rays", c1: "#ffb36b", c2: "#ffe9c9" }, d: "등 뒤로 새벽빛이 퍼짐" },
+  { id: "a_boss", slot: "aura", n: "보스 사냥꾼 오라", g: 2, cond: ["boss", 2000], perk: { boss: 50 }, aura: { k: "embers", c1: "#ff4a3a", c2: "#ffb36b" }, d: "붉은 불티가 피어오름" },
+  { id: "a_wind", slot: "aura", n: "퇴사 바람 오라", g: 2, cond: ["retire", 15], perk: { stamp: 20 }, aura: { k: "wind", c1: "#cfe8ff", c2: "#ffffff" }, d: "사표 바람이 몸을 휘감음" },
+  { id: "a_att", slot: "aura", n: "개근 오라", g: 2, cond: ["att", 60], perk: { gold: 80 }, aura: { k: "sparkle", c1: "#7fe3a0", c2: "#e6ffe9" }, d: "초록 반짝이가 톡톡 튐" },
+
+  /* 칭호 (강화 없음) — 문구는 측정형·서술형, 일부는 성경 인물 */
+  { id: "t_seed", slot: "title", n: "말씀 새싹", g: 1, cond: ["chap", 10], perk: { manna: 10 }, d: "말씀 10장을 읽었습니다" },
+  { id: "t_plan", slot: "title", n: "플랜 완주자", g: 2, cond: ["planfin", 1], perk: { manna: 20, dmg: 30 }, d: "읽기 플랜을 끝까지 마쳤습니다" },
+  { id: "t_word", slot: "title", n: "말씀의 사람", g: 3, cond: ["chap", 500], perk: { manna: 30, dmg: 80 }, d: "말씀 500장을 읽었습니다" },
+  { id: "t_round", slot: "title", n: "성경 통독자", g: 4, cond: ["round", 1], perk: { dmg: 200, manna: 30 }, d: "성경 66권 1189장을 모두 읽었습니다" },
+  { id: "t_study1", slot: "title", n: "공부 새내기", g: 1, cond: ["study", 300], perk: { ore: 10 }, d: "공부 5시간을 채웠습니다" },
+  { id: "t_study2", slot: "title", n: "집중의 달인", g: 2, cond: ["sstreak", 14], perk: { ore: 20, aps: 5 }, d: "14일 동안 하루도 빠짐없이 공부했습니다" },
+  { id: "t_study3", slot: "title", n: "에스라의 학자", g: 3, cond: ["study", 6000], perk: { ore: 30, dmg: 80 }, d: "여호와의 율법을 연구하여 준행하며 … 가르치기로 결심하였었더라 (스 7:10) · 공부 100시간" },
+  { id: "t_mem1", slot: "title", n: "암송 꿈나무", g: 1, cond: ["memp", 10], perk: { mem: 20 }, d: "암송 시험을 10번 통과했습니다" },
+  { id: "t_mem2", slot: "title", n: "말씀을 마음에 둔 사람", g: 3, cond: ["mem", 100], perk: { mem: 30, critd: 150 }, d: "주의 말씀을 내 마음에 두었나이다 (시 119:11) · 암송 완료 100구절" },
+  { id: "t_att", slot: "title", n: "개근상", g: 2, cond: ["astreak", 14], perk: { gold: 80 }, d: "14일 동안 하루도 빠짐없이 출근했습니다" },
+  { id: "t_streak", slot: "title", n: "베뢰아 사람", g: 3, cond: ["rstreak", 30], perk: { dmg: 100 }, d: "날마다 성경을 상고하므로 (행 17:11) · 말씀 30일 연속" },
+  { id: "t_boss", slot: "title", n: "보스 킬러", g: 2, cond: ["boss", 1000], perk: { boss: 80 }, d: "보스 1000마리를 쓰러뜨렸습니다" },
+  { id: "t_floor", slot: "title", n: "고층 정복자", g: 3, cond: ["floor", 500], perk: { dmg: 100 }, d: "500층에 올랐습니다" },
+  { id: "t_retire", slot: "title", n: "프로 퇴사러", g: 2, cond: ["retire", 10], perk: { stamp: 20 }, d: "사표를 10번 냈습니다" },
+  { id: "t_ceo", slot: "title", n: "사장님", g: 4, cond: ["rank", 9], perk: { gold: 300, dmg: 100 }, d: "평사원에서 사장이 되었습니다" },
+];
+/* 옷장 도감: 모은 개수 단계마다 영구 효과 + 한 번 받는 선물 */
+var WCOLL = [
+  { n: 5, fx: { dmg: 20 }, rw: { ore: 200 } },
+  { n: 10, fx: { gold: 50 }, rw: { ore: 400, silver: 1 } },
+  { n: 20, fx: { critd: 50 }, rw: { ore: 600, silver: 2 } },
+  { n: 30, fx: { aps: 3 }, rw: { ore: 800, silver: 3 } },
+  { n: 45, fx: { dmg: 50 }, rw: { ore: 1000, silver: 4 } },
+  { n: 60, fx: { boss: 80 }, rw: { ore: 1500, silver: 5 } },
+  { n: 80, fx: { critd: 100 }, rw: { ore: 2000, silver: 6, ame: 2 } },
+  { n: 100, fx: { dmg: 100 }, rw: { ore: 3000, silver: 8, ame: 3 } },
+  { n: 122, fx: { xdmg: 2 }, rw: { ore: 5000, silver: 10, ame: 5 } },
+];
+/* 예전 무기 스킨 → 무기 이펙트, 예전 의상 → 세트 */
+var WOLD_SKIN = { frost: "w_frost", flame: "w_flame", crystal: "w_crystal", sakura: "w_sakura", volt: "w_volt", venom: "w_venom", halberd: "w_gold", scythe: "w_moon", hammer: "w_blizzard", fang: "w_dragon", star: "w_star", holy: "w_holy" };
+var WOLD_OUTFIT = { devil: "devil", cat: "cat", cyber: "cyber", ice: "ice", mage: "mage", paladin: "paladin" };
+var WOLD_SLOT = { hair: "head", shirt: "top", tie: "tie", arm: "arm", shoes: "shoes", acc: "prop", aura: "aura" };
+
+/* ===================== 옷장 (v30) =====================
+   2층 구조: 입은 옷 = 착용 효과(부위마다 다른 능력치 + 입었을 때 효과), 가진 옷 = 보유 효과(모든 피해 +) + 고유 효과.
+   겉모습은 덧입기로 따로 (능력치는 그대로). 세트는 같은 세트 2·4·6벌, 회장님 세트는 가지고만 있어도(소장 효과).
+   열쇠는 말씀·공부·암송 기록과 층·퇴사 기록, 사는 옷은 공부로 캔 광석. 강화: 고급~전설은 광석, 신화는 만나.
+   이미 가진 옷은 자동으로 도감에 들어가고, 모은 수마다 영구 효과 + 선물. 무기 이펙트·오라는 모양을 덮지 않음. */
+var WIT = {}, WSETX = {}, WSLOTX = {};
+(function wardIndex() {
+  WSLOT.forEach(s => { WSLOTX[s.id] = s; });
+  WSETS.forEach(s => { WSETX[s.id] = s; });
+  WITEMS.forEach(it => { if (!it.g) it.g = it.set && WSETX[it.set] ? WSETX[it.set].g : 1; WIT[it.id] = it; });
+  Object.keys(WHAIR).forEach(k => { HAIR[k] = WHAIR[k]; });
+})();
+var wardDirty = 1, wardStatC = null, wardCV = null, wardNewsCheck = true;
+var WARD_FLAG = { sneaker: 1, vault: 1, badge2: 1, floor5: 1 };
+var WFX_STYLE = { flame: "flame", volt: "spark", venom: "leaf", frost: "frost", crystal: "frost", sakura: "holy", blizzard: "frost", gold: "gold", moon: "cosmic", dragon: "flame", star: "cosmic", holy: "holy", spirit: "holy" };
+var WFX_PAL = { flame: ["#ff7a1a", "#ffd54a"], volt: ["#5cc8ff", "#ffffff"], venom: ["#3fc04a", "#c8ff6a"], frost: ["#8ff0ff", "#ffffff"], crystal: ["#bfe4ff", "#ffffff"], sakura: ["#ff8fb0", "#ffe3ec"], blizzard: ["#a9dcff", "#ffffff"], gold: ["#ffc23b", "#fff6cf"], moon: ["#b18cff", "#fff7c2"], dragon: ["#c8202c", "#ff8a2a"], star: ["#ffe14a", "#ff9be0"], holy: ["#ffe27a", "#ffffff"], spirit: ["#ffffff", "#ffd54a"] };
+
+/* ---------- 저장 ---------- */
+function wardNew() { return { v: 1, own: {}, eq: {}, look: {}, seen: [], nv: [], coll: 0, ops: 0 }; }
+function wardState() { if (!S.ward || typeof S.ward !== "object") S.ward = wardNew(); return S.ward; }
+function wardMerge(w, d) {
+  if (!w || typeof w !== "object" || w.v !== 1 || !w.own || typeof w.own !== "object") return wardFromOld(d || {});
+  const o = wardNew();
+  Object.keys(w.own).forEach(id => { const it = WIT[id]; if (!it) return; const e = Math.floor(+w.own[id] || 0); o.own[id] = it.slot === "title" ? 0 : Math.max(0, Math.min(WENH_MAX, e)); });
+  WSLOT.forEach(s => {
+    const e = w.eq && w.eq[s.id]; if (typeof e === "string" && o.own[e] != null && WIT[e].slot === s.id) o.eq[s.id] = e;
+    const l = w.look && w.look[s.id]; if (l === "-") o.look[s.id] = "-"; else if (typeof l === "string" && o.own[l] != null && WIT[l].slot === s.id && l !== o.eq[s.id]) o.look[s.id] = l;
   });
+  o.seen = Array.isArray(w.seen) ? w.seen.filter((x, i, a) => WIT[x] && a.indexOf(x) === i) : null;
+  o.nv = Array.isArray(w.nv) ? w.nv.filter((x, i, a) => o.own[x] != null && a.indexOf(x) === i).slice(-40) : [];
+  o.coll = Math.max(0, Math.min(WCOLL.length, Math.floor(+w.coll || 0)));
+  o.ops = Math.max(0, Math.floor(+w.ops || 0));
+  if (w.mig && typeof w.mig === "object") o.mig = { outfit: WSETX[w.mig.outfit] ? w.mig.outfit : "", wskin: WIT[w.mig.wskin] ? w.mig.wskin : "", look: w.mig.look && typeof w.mig.look === "object" ? w.mig.look : null };
+  return o;
 }
-/* 의상 입힌 지도: 기본 몸 + 머리 모양 위에 3줄을 더 얹고, 뒤(꼬리·망토·날개)는 빈칸에만, 앞(뿔·귀·모자)은 덮어씀 */
-var outfitMapCache;
-function outfitMap(hair, o) {
-  outfitMapCache = outfitMapCache || {};
-  const key = hair + "|" + o.id; if (outfitMapCache[key]) return outfitMapCache[key];
-  const base = heroMap(hair), rows = [];
-  for (let y = 0; y < OUTFIT_TOP; y++) rows.push(".".repeat(18).split(""));
-  base.forEach(r => rows.push(r.split("")));
-  for (let y = 0; y < rows.length; y++) for (let x = 0; x < 18; x++) {
-    const b = o.back[y] ? o.back[y][x] : "."; if (b && b !== "." && rows[y][x] === ".") rows[y][x] = b;
-    const f = o.front[y] ? o.front[y][x] : "."; if (f && f !== ".") rows[y][x] = f;
+/* 예전 정장(S.cos)·오라·의상·무기 스킨 → 옷장. 예전 전설은 강화 단계 그대로(전설 +n → 고유 효과 n단계) */
+function wardFromOld(d) {
+  const w = wardNew(), cos = (d && d.cos) || {};
+  WITEMS.forEach(it => {
+    if (!it.old) return; const a = cos[it.old[0]]; if (!Array.isArray(a) || !a[it.old[1]]) return;
+    w.own[it.id] = it.old[1] === 2 ? Math.max(0, Math.min(WENH_MAX, Math.floor(+a[2] || 1) - 1)) : 0;
+  });
+  const old = !!(d && (Object.keys(cos).length || Array.isArray(d.costSeen) || d.wskin || d.outfit || (+d.bestFloor || 0) > 1 || (d.bible && +d.bible.total)));
+  if (old) { w.seen = null; w.mig = { outfit: WOLD_OUTFIT[d.outfit] || "", wskin: WOLD_SKIN[d.wskin] || "", look: d.look && typeof d.look === "object" ? Object.assign({}, d.look) : null }; }
+  return w;
+}
+
+/* ---------- 열쇠(조건) ---------- */
+function wardCondVal(k) {
+  if (!wardCV) wardCV = {};
+  if (k in wardCV) return wardCV[k];
+  let v = 0;
+  if (k === "floor") v = +S.bestFloor || 0;
+  else if (k === "chap") v = (S.bible && +S.bible.total) || 0;
+  else if (k === "study") v = (S.study && +S.study.total) || 0;
+  else if (k === "sstreak") v = Math.max((S.study && +S.study.best) || 0, studyStreak());
+  else if (k === "rstreak") v = Math.max((S.bible && +S.bible.best) || 0, readStreak());
+  else if (k === "astreak") v = Math.max((S.att && +S.att.best) || 0, attStreak());
+  else if (k === "mem") v = memMastered();
+  else if (k === "memp") v = (S.mem && +S.mem.total) || 0;
+  else if (k === "round") v = (S.bible && +S.bible.rounds) || 0;
+  else if (k === "planfin") v = +S.planFin || 0;
+  else if (k === "boss") v = +S.bossKills || 0;
+  else if (k === "retire") v = +S.retires || 0;
+  else if (k === "att") v = attTotal();
+  else if (k === "rank") v = rankIdx();
+  return (wardCV[k] = v);
+}
+function wardCondOk(it) { if (!it.cond) return false; const k = it.cond[0], v = it.cond[1]; if (k === "job") return (S.jobs || []).indexOf(v) >= 0; return wardCondVal(k) >= v; }
+function wardCondProg(it) { if (!it.cond) return 0; const k = it.cond[0], v = it.cond[1]; if (k === "job") return wardCondOk(it) ? 1 : 0; return Math.max(0, Math.min(1, wardCondVal(k) / v)); }
+function wardCondText(it) {
+  const k = it.cond[0], v = it.cond[1], I = WCOND[k];
+  if (k === "job") return `${I[1](v)} 배치 (인사 기록에서 직무 고르기)`;
+  const cur = wardCondVal(k);
+  return `${I[0]} ${I[1](v)} (지금 ${k === "study" || k === "rank" ? I[1](cur) : I[1](Math.floor(cur))})`;
+}
+
+/* ---------- 수치 ---------- */
+function wardMul(g) { return (WGRADE[g] || WGRADE[1]).m; }
+function wardEqVal(it, e) { const sl = WSLOTX[it.slot]; return sl && sl.k ? sl.base * wardMul(it.g) * (1 + 0.1 * e) : 0; }
+function wardOwnVal(it, e) { return WOWN_BASE * wardMul(it.g) * (1 + 0.1 * e); }
+function wardUqLv(e) { return Math.min(5, (e || 0) + 1); }
+function wardUqFx(it, e) { return !it.uq ? null : typeof it.uq.fx === "function" ? it.uq.fx(wardUqLv(e)) : it.uq.fx; }
+function wardUqText(it, e) { return !it.uq ? "" : typeof it.uq.d === "function" ? it.uq.d(wardUqLv(e)) : it.uq.d; }
+function wardScale(fx, k) { const o = {}; for (const key in fx) { const v = fx[key]; o[key] = key[0] === "x" ? 1 + (v - 1) * k : key === "btime" || key === "jobcd" || WARD_FLAG[key] ? v : v * k; } return o; }
+function wardSetPieces(set) { return WITEMS.filter(it => it.set === set.id); }
+function wardSetSize(set) { return wardSetPieces(set).length; }
+function wardSetN(set) {
+  const W = wardState(); let n = 0;
+  if (set.own) { for (const id in W.own) if (WIT[id] && WIT[id].set === set.id) n++; return n; }
+  WSLOT.forEach(sl => { const id = W.eq[sl.id]; if (id && W.own[id] != null && WIT[id].set === set.id) n++; });
+  return n;
+}
+function wardEnhCost(it, e) {
+  if (it.g >= 5) return { manna: Math.round(30 * Math.pow(1.35, e)) };
+  if (it.g === 4) return { ore: Math.ceil(1500 * Math.pow(1.6, e)), silver: 5 * (e + 1) };
+  const base = [0, 40, 100, 250][it.g] || 40, c = { ore: Math.ceil(base * Math.pow(1.5, e)) };
+  if (it.g === 3 && e >= 5) c.silver = e - 4;
+  return c;
+}
+function wardStats() {
+  const W = wardState();
+  if (wardStatC && wardStatC.w === W && wardStatC.v === wardDirty) return wardStatC.s;
+  const s = { dmg: 0, xdmg: 1, xaps: 1, xstamp: 1, crit: 0, critd: 0, aps: 0, gold: 0, boss: 0, wpn: 0, pet: 0, ore: 0, manna: 0, mem: 0, stamp: 0, btime: 0, jobcd: 0, sneaker: 0, vault: 0, badge2: 0, floor5: 0 };
+  const add = fx => { if (!fx) return; for (const key in fx) { const v = fx[key]; if (key[0] === "x") s[key] = (s[key] || 1) * v; else if (WARD_FLAG[key]) s[key] = 1; else s[key] = (s[key] || 0) + v; } };
+  for (const id in W.own) { const it = WIT[id]; if (!it) continue; const e = W.own[id] || 0; s.dmg += wardOwnVal(it, e); add(wardUqFx(it, e)); }
+  WSLOT.forEach(sl => {
+    const id = W.eq[sl.id]; if (!id || W.own[id] == null) return; const it = WIT[id], e = W.own[id] || 0;
+    if (sl.k) s[sl.k] += wardEqVal(it, e);
+    if (it.perk) add(wardScale(it.perk, 1 + 0.1 * e));
+  });
+  WSETS.forEach(set => { const n = wardSetN(set); Object.keys(set.bonus).forEach(t => { if (n >= +t) add(set.bonus[t]); }); });
+  for (let i = 0; i < W.coll && i < WCOLL.length; i++) add(WCOLL[i].fx);
+  s.jobcd = Math.min(60, s.jobcd);
+  wardStatC = { w: W, v: wardDirty, s }; return s;
+}
+function wardNum(v) { const a = Math.abs(v); return a >= 100 ? Math.round(v).toLocaleString("ko-KR") : String(+v.toFixed(1)); }
+function wardFxText(fx, sep) {
+  const out = [];
+  for (const key in fx) {
+    const v = fx[key], N = WSTAT[key];
+    if (key === "sneaker" || key === "vault" || key === "badge2" || key === "floor5" || !N) continue;
+    if (key[0] === "x") out.push(`${N[0]} x${wardNum(v)}`);
+    else if (key === "btime") out.push(`${N[0]} +${wardNum(v)}초`);
+    else if (key === "jobcd") out.push(`${N[0]} −${wardNum(v)}%`);
+    else out.push(`${N[0]} +${wardNum(v)}%`);
   }
-  return (outfitMapCache[key] = rows.map(r => r.join("")));
+  return out.join(sep || " · ");
 }
-const applyOutfit = (lk, o) => ({ map: outfitMap(lk.hair || "neat", o), pal: Object.assign({}, lk.pal, o.pal), aura: lk.aura, top: OUTFIT_TOP });
-const SKIN_GLOW = { frost: "#7fe9ff", flame: "#ff7a1a", spark: "#7fe9ff", holy: "#fff2b8", gold: "#ffd54a", cosmic: "#c9a6ff", leaf: "#8fff6a" };
-/* 무기 스킨 그리기: (gx, gy) 손잡이 칸이 쥔 손 자리 */
-function drawSkinWeapon(ctx, k, px, py, angle, sc, t, still) {
-  ctx.save(); ctx.translate(px, py); ctx.rotate(angle);
-  const cy = -k.gy * 0.55 * sc, col = SKIN_GLOW[k.fx] || "#ffffff", pulse = still ? 0.3 : 0.24 + Math.sin(t / 240) * 0.08;
-  const gr = ctx.createRadialGradient(0, cy, 1, 0, cy, 14 * sc); gr.addColorStop(0, hexA(col, pulse)); gr.addColorStop(1, hexA(col, 0));
-  ctx.fillStyle = gr; ctx.fillRect(-15 * sc, cy - 15 * sc, 30 * sc, 30 * sc);
-  drawSprite(ctx, k.m, k.p, -(k.gx + 0.5) * sc, -(k.gy + 0.5) * sc, sc, { pretty: true });
-  if (!still) {
-    for (let s = 0; s < 7; s++) {
-      const life = (t / 800 + s / 7) % 1, up = k.fx === "frost" ? 1 : -1;
-      const c2 = k.fx === "flame" ? (s % 2 ? "#ff6b3b" : "#ffd54a") : k.fx === "leaf" ? "#c8ff6a" : k.fx === "cosmic" ? (s % 2 ? "#c9a6ff" : "#ff9be0") : k.fx === "holy" ? (s % 2 ? "#ffd6e2" : "#fff7c2") : col;
-      ctx.fillStyle = hexA(c2, 1 - life);
-      ctx.fillRect(Math.sin(s * 2.3 + t / 380) * 5 * sc - sc / 2, cy + (s % 3 - 1) * 4 * sc + up * life * 10 * sc, sc, sc);
+function wardCount(pred) { const W = wardState(); let n = 0; for (const id in W.own) if (WIT[id] && (!pred || pred(WIT[id]))) n++; return n; }
+
+/* ---------- 해금 · 도감 ---------- */
+function wardTick(announce) {
+  if (!S) return;
+  const W = wardState(); wardCV = null;
+  let fresh = 0;
+  for (let i = 0; i < WITEMS.length; i++) {
+    const it = WITEMS[i]; if (!it.cond || W.own[it.id] != null) continue;
+    if (wardCondOk(it)) { W.own[it.id] = 0; fresh++; if (!W.eq[it.slot]) W.eq[it.slot] = it.id; if (W.seen) W.nv.push(it.id); }
+  }
+  if (fresh) { wardDirty++; wardNewsCheck = true; }
+  if (!announce) return;
+  if (W.seen == null) { wardMigrate(); return; }
+  if (wardNewsCheck) {
+    wardNewsCheck = false;
+    const news = Object.keys(W.own).filter(id => W.seen.indexOf(id) < 0);
+    news.forEach(id => W.seen.push(id));
+    if (news.length > 2) {
+      celebrateLater({ wid: news[0], title: `새 옷 ${news.length}벌 해금!`, sub: news.slice(0, 4).map(id => WIT[id].n).join(" · ") + (news.length > 4 ? ` 외 ${news.length - 4}벌` : "") + `<br><span class="muted">옷장에서 입어 보세요 · 가지고만 있어도 모든 피해 +</span>`, tone: "rare", sound: "pass", ms: 3000 });
+    } else news.forEach(id => {
+      const it = WIT[id], why = it.cond ? `${WCOND[it.cond[0]][0]} 달성` : "";
+      const t = it.slot === "title" ? "칭호 획득!" : it.slot === "aura" ? "새 오라 해금!" : it.slot === "wfx" ? "무기 이펙트 해금!" : "새 옷 해금!";
+      celebrateLater({ wid: id, title: t, sub: `${it.n} · ${WGRADE[it.g].n}<br><span class="muted">${why}${it.set && WSETX[it.set] ? ` · ${WSETX[it.set].n} ${wardCount(x => x.set === it.set)}/${wardSetSize(WSETX[it.set])}` : ""} · 옷장에서 입어 보세요</span>`, tone: it.g >= 4 ? "rare" : "ore", sound: "pass", ms: 2800 });
+    });
+  }
+  wardCollTick(true);
+}
+function wardCollTick(announce) {
+  const W = wardState(), n = wardCount();
+  while (W.coll < WCOLL.length && n >= WCOLL[W.coll].n) {
+    const m = WCOLL[W.coll]; W.coll++; wardDirty++;
+    Object.keys(m.rw).forEach(k => { S[k] = (+S[k] || 0) + m.rw[k]; });
+    if (announce) celebrateLater({ ic: "suit", title: `옷장 도감 ${m.n}벌!`, sub: `${wardFxText(m.fx)} (영구)<br><span class="rws">${rwHTML(m.rw)}</span>`, tone: "ore", sound: "pass", ms: 2800 });
+  }
+}
+/* 예전 저장에서 처음 열 때: 이미 열린 옷은 조용히 받고, 가장 좋은 옷을 입히고, 예전 겉모습을 덧입기로 지킴 */
+function wardMigrate() {
+  const W = wardState(), mig = W.mig || {};
+  W.seen = Object.keys(W.own); W.nv = [];
+  wardAutoBest(mig.wskin);
+  if (mig.look) Object.keys(mig.look).forEach(o => {
+    const sl = WOLD_SLOT[o], idx = +mig.look[o]; if (!sl || !(idx >= 0)) return;
+    const it = WITEMS.find(x => x.old && x.old[0] === o && x.old[1] === idx);
+    if (it && W.own[it.id] != null && W.eq[sl] !== it.id) W.look[sl] = it.id;
+  });
+  if (mig.outfit) wardSetPieces(WSETX[mig.outfit]).forEach(it => { if (W.own[it.id] != null) W.look[it.slot] = W.eq[it.slot] === it.id ? "" : it.id; });
+  if (mig.wskin && W.own[mig.wskin] != null) W.look.wfx = W.eq.wfx === mig.wskin ? "" : mig.wskin;
+  Object.keys(W.look).forEach(k => { if (!W.look[k]) delete W.look[k]; });
+  delete W.mig; wardDirty++;
+  const n = wardCount();
+  celebrateLater({ ic: "suit", title: "옷장이 새로 열렸어요", sub: `정장·코스튬·무기 스킨이 옷장 하나로 합쳐졌어요 · 지금 ${n}벌<br><span class="muted">모든 옷에 능력치 · 세트 효과 · 겉모습은 덧입기로 따로</span>`, tone: "rare", sound: "pass", ms: 3600 });
+  wardCollTick(true);
+}
+
+/* ---------- 입기 · 사기 · 강화 ---------- */
+function wardScore() { const st = stats(); return st.dps * Math.sqrt(st.bossBonus) * Math.pow(goldMult(), 0.25); }
+function wardTryEq(eq) { const W = wardState(), keep = W.eq; W.eq = eq; wardDirty++; const v = wardScore(); W.eq = keep; wardDirty++; return v; }
+function wardAutoBest(prefer) {
+  const W = wardState(), owned = Object.keys(W.own).map(id => WIT[id]).filter(Boolean);
+  const pick = (slot, base) => {
+    const c = owned.filter(it => it.slot === slot); if (!c.length) return base[slot] || "";
+    let best = null, bv = -1;
+    c.forEach(it => { const v = wardMul(it.g) * (1 + 0.1 * (W.own[it.id] || 0)) + (it.id === prefer ? 0.001 : 0) + 0.01 * wardCount(x => x.set && x.set === it.set); if (v > bv) { bv = v; best = it; } });
+    return best.id;
+  };
+  const base = {}; WBODY.forEach(sl => { const id = pick(sl, W.eq); if (id) base[sl] = id; });
+  ["aura", "wfx", "title"].forEach(sl => { const id = pick(sl, W.eq); if (id) base[sl] = id; });
+  let best = Object.assign({}, base), bv = wardTryEq(best);
+  WSETS.forEach(set => {
+    if (set.own) return;
+    const pcs = wardSetPieces(set).filter(it => W.own[it.id] != null); if (pcs.length < 2) return;
+    const cand = Object.assign({}, best); pcs.forEach(it => { cand[it.slot] = it.id; });
+    const v = wardTryEq(cand); if (v > bv * 1.0001) { bv = v; best = cand; }
+  });
+  ["aura", "wfx", "title"].forEach(sl => {
+    owned.filter(it => it.slot === sl).forEach(it => { if (best[sl] === it.id) return; const cand = Object.assign({}, best, { [sl]: it.id }), v = wardTryEq(cand); if (v > bv * 1.0001) { bv = v; best = cand; } });
+  });
+  W.eq = best; Object.keys(W.look).forEach(k => { if (W.look[k] === W.eq[k]) delete W.look[k]; });
+  wardDirty++;
+}
+function wardBuy(id) {
+  const it = WIT[id], W = wardState(); if (!it || !it.cost || W.own[id] != null) return false;
+  const need = it.cost.ore || 0; if ((S.ore || 0) < need) { toast(`광석이 ${fmtR(need - (S.ore || 0))} 모자라요 · 공부 탭 타이머로 광산을 파요`); return false; }
+  S.ore -= need; W.own[id] = 0; W.ops++; if (W.seen && W.seen.indexOf(id) < 0) W.seen.push(id);
+  const cur = W.eq[it.slot] && WIT[W.eq[it.slot]];
+  if (!cur || it.g > cur.g) W.eq[it.slot] = id;
+  wardDirty++;
+  celebrate({ icon: wardBig(id, 92), title: it.g >= 4 ? "전설 옷 구매!" : "새 옷!", sub: `${it.n} · ${WGRADE[it.g].n}<br><span class="muted">${W.eq[it.slot] === id ? "바로 입었어요" : "옷장에서 입을 수 있어요"} · 가지고만 있어도 모든 피해 +${wardNum(wardOwnVal(it, 0))}%</span>`, tone: it.g >= 4 ? "rare" : "ore" });
+  wardCollTick(true);
+  return true;
+}
+function wardEquip(id) {
+  const it = WIT[id], W = wardState(); if (!it || W.own[id] == null) return;
+  W.eq[it.slot] = id; if (W.look[it.slot] === id) delete W.look[it.slot]; wardDirty++;
+  toast(`${hbJosa(it.n, "을", "를")} 입었어요 · ${WSLOTX[it.slot].k ? "입으면 " + wardFxText({ [WSLOTX[it.slot].k]: wardEqVal(it, W.own[id]) }) : wardFxText(it.perk || {})}`);
+}
+function wardSetLook(slot, v) {
+  const W = wardState();
+  if (v === "-" || v === "") { if (v === "-") W.look[slot] = "-"; else delete W.look[slot]; }
+  else { const it = WIT[v]; if (!it || it.slot !== slot || W.own[v] == null) return; if (W.eq[slot] === v) delete W.look[slot]; else W.look[slot] = v; }
+  wardDirty++;
+}
+function wardEnh(id) {
+  const it = WIT[id], W = wardState(); if (!it || W.own[id] == null || it.slot === "title") return false;
+  const e = W.own[id]; if (e >= WENH_MAX) return false;
+  const c = wardEnhCost(it, e);
+  for (const k in c) if ((+S[k] || 0) < c[k]) { toast(`${ECO_NAME[k] || k} ${fmtR(c[k] - (+S[k] || 0))} 모자라요`); return false; }
+  for (const k in c) S[k] -= c[k];
+  W.own[id] = e + 1; W.ops++; wardDirty++;
+  if (e + 1 >= WENH_MAX) celebrate({ icon: wardBig(id, 92), title: "옷 강화 MAX!", sub: `${it.n} +${WENH_MAX}`, tone: "rare" });
+  return true;
+}
+function wardWearSet(setId, mode) {
+  const set = WSETX[setId], W = wardState(); if (!set) return;
+  const pcs = wardSetPieces(set).filter(it => W.own[it.id] != null); if (!pcs.length) { toast("아직 이 세트 옷이 없어요"); return; }
+  pcs.forEach(it => { if (mode === "look") wardSetLook(it.slot, it.id); else { W.eq[it.slot] = it.id; if (W.look[it.slot] === it.id) delete W.look[it.slot]; } });
+  wardDirty++;
+  toast(mode === "look" ? `${set.n} ${pcs.length}벌을 덧입었어요 · 능력치는 그대로` : `${set.n} ${pcs.length}벌을 입었어요`);
+}
+
+/* ---------- 겉모습 ---------- */
+function wardShown(slot) {
+  const W = wardState(), l = W.look[slot];
+  if (l === "-") return null;
+  if (l && W.own[l] != null && WIT[l]) return WIT[l];
+  const e = W.eq[slot]; return e && W.own[e] != null ? WIT[e] : null;
+}
+var WL_POOL = "0123456789!#$%&*+-/:;<=>?@^_~ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ", WL_ORDER = ["top", "tie", "arm", "shoes", "head", "prop"];
+/* 몸 그림 + 부위 옷 덧그림 (아이템 전용 색 글자는 겹치지 않게 새 글자로 바꿔 씀) */
+function wardCompose(c, sh) {
+  const pal = Object.assign({}, PAL.hero, c.pal); let hair = c.hair, top = 0;
+  const use = WL_ORDER.map(sl => sh[sl]).filter(it => it && it.look && !(it.look.keep && c.id !== "choi"));
+  use.forEach(it => { const L = it.look; if (L.pal) Object.assign(pal, L.pal); if (L.hair) hair = L.hair; [L.f, L.b].forEach(m => { if (m) Object.keys(m).forEach(y => { if (+y < 0) top = 3; }); }); });
+  if (hair === "bald") pal.e = pal.e || "#ffd54a";
+  const rows = []; for (let y = 0; y < top; y++) rows.push(".".repeat(18).split(""));
+  heroMap(hair).forEach(r => rows.push(r.split("")));
+  let pi = 0; const remap = use.map(it => { const m = {}; Object.keys(it.look.c || {}).forEach(ch => { const nc = WL_POOL[pi++ % WL_POOL.length]; m[ch] = nc; pal[nc] = it.look.c[ch]; }); return m; });
+  ["b", "f"].forEach(layer => use.forEach((it, j) => {
+    const m = it.look[layer]; if (!m) return;
+    Object.keys(m).forEach(yk => {
+      const y = +yk + top, src = m[yk]; if (y < 0 || y >= rows.length) return;
+      for (let x = 0; x < 18 && x < src.length; x++) { const ch = src[x]; if (ch === ".") continue; const out = remap[j][ch] || ch; if (layer === "b") { if (rows[y][x] === ".") rows[y][x] = out; } else rows[y][x] = out; }
+    });
+  }));
+  return { map: rows.map(r => r.join("")), pal: heroPal(pal), hair, top };
+}
+var wardLookCache = new Map();
+function wardLookWith(c, sh) {
+  const key = c.id + "|" + WSLOT.map(s => sh[s.id] ? sh[s.id].id : "").join(",");
+  let v = wardLookCache.get(key);
+  if (!v) {
+    v = wardCompose(c, sh); v.aura = sh.aura ? sh.aura.aura : null; v.wfx = sh.wfx ? sh.wfx.fx : ""; v.title = sh.title || null;
+    if (wardLookCache.size > 24) wardLookCache.clear();
+    wardLookCache.set(key, v);
+  }
+  return v;
+}
+function wardLook(c) { const sh = {}; WSLOT.forEach(s => { sh[s.id] = wardShown(s.id); }); return wardLookWith(c, sh); }
+function heroLookFor(c) { return wardLook(c); }
+function heroLook() { return wardLook(curChar()); }
+function wardWfxShown() { const it = wardShown("wfx"); return it ? it.fx : ""; }
+function curFx() { const fx = wardWfxShown(); return fx ? WFX_STYLE[fx] || "steel" : WEAPONS[skinIdx()].fx; }
+
+/* ---------- 오라 그리기 (곽준영 뒤, 몸 가운데 cx·cy, s = 그림 한 칸 크기) ---------- */
+function wardRnd(i) { const x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); }
+function wardPlus(g, x, y, s, col, a) { g.fillStyle = hexA(col, Math.min(1, a * (g.__gain || 1))); g.fillRect(x - s / 2, y - s * 1.5, s, s * 3); g.fillRect(x - s * 1.5, y - s / 2, s * 3, s); }
+function drawWardAura(g, au, cx, cy, s, t, still, gain) {
+  if (!au || !g || !g.createRadialGradient) return;
+  const tt = still ? 0 : t, c1 = au.c1, c2 = au.c2 || au.c1, ga = gain || 1, gp = g.__gain;
+  g.save(); g.globalCompositeOperation = "lighter"; g.__gain = ga;
+  const hA = (c, a) => hexA(c, Math.min(1, a * ga));
+  const a0 = still ? 0.3 : 0.24 + Math.sin(tt / 260) * 0.06, R = 22 * s;
+  const gr = g.createRadialGradient(cx, cy, 2, cx, cy, R); gr.addColorStop(0, hA(c1, a0)); gr.addColorStop(1, hA(c1, 0));
+  g.fillStyle = gr; g.fillRect(cx - R, cy - R, R * 2, R * 2);
+  const k = au.k;
+  if (k === "flame") {
+    for (let i = 0; i < 18; i++) {
+      const life = still ? wardRnd(i) : (tt / 820 + i / 18) % 1, side = i % 2 ? 1 : -1, w0 = 7 + 4 * wardRnd(i + 40);
+      const x = cx + side * w0 * s * (1 - 0.45 * life) + (still ? 0 : Math.sin(tt / 210 + i) * 0.8 * s), y = cy + 11 * s - life * 25 * s, z = s * (2.4 - 1.7 * life);
+      g.fillStyle = hA(life < 0.4 ? c2 : c1, (1 - life) * 0.85); g.fillRect(x - z / 2, y - z / 2, z, z);
     }
+    if (au.ember) for (let i = 0; i < 6; i++) { const life = still ? wardRnd(i + 20) : (tt / 1100 + i / 6) % 1; g.fillStyle = hA("#ff9b3d", 1 - life); g.fillRect(cx + (wardRnd(i + 9) - 0.5) * 22 * s, cy + 10 * s - life * 26 * s, s, s); }
+  } else if (k === "pillar") {
+    const top = cy - 24 * s, bot = cy + 13 * s, lg = g.createLinearGradient(0, bot, 0, top);
+    lg.addColorStop(0, hA(c1, still ? 0.34 : 0.28 + Math.sin(tt / 400) * 0.06)); lg.addColorStop(1, hA(c1, 0));
+    g.fillStyle = lg; g.fillRect(cx - 6 * s, top, 12 * s, bot - top);
+    g.fillStyle = hA(c2, 0.25); g.fillRect(cx - 1.5 * s, top, 3 * s, bot - top);
+    for (let i = 0; i < 8; i++) { const life = still ? wardRnd(i) : (tt / 1300 + i / 8) % 1; g.fillStyle = hA(c2, (1 - life) * 0.9); g.fillRect(cx + (wardRnd(i + 3) - 0.5) * 11 * s, bot - life * (bot - top), s, s); }
+  } else if (k === "orbit") {
+    for (let i = 0; i < 7; i++) { const an = (still ? 0 : tt / 900) + i * 0.9; wardPlus(g, cx + Math.cos(an) * 13 * s, cy + 2 * s + Math.sin(an) * 3.5 * s, s * 0.7, i % 2 ? c1 : c2, 0.9); }
+    for (let i = 0; i < 4; i++) { const an = -(still ? 0 : tt / 1300) + i * 1.57; wardPlus(g, cx + Math.cos(an) * 8 * s, cy - 11 * s + Math.sin(an) * 2 * s, s * 0.5, c2, 0.8); }
+  } else if (k === "rays") {
+    const L = 27 * s, rg = g.createRadialGradient(cx, cy - 2 * s, 3 * s, cx, cy - 2 * s, L); rg.addColorStop(0, hA(c2, 0.42)); rg.addColorStop(0.5, hA(c1, 0.18)); rg.addColorStop(1, hA(c1, 0)); g.fillStyle = rg;
+    for (let i = 0; i < 9; i++) { const an = (still ? 0 : tt / 4000) + i * 0.698; g.beginPath(); g.moveTo(cx, cy - 2 * s); g.lineTo(cx + Math.cos(an - 0.07) * L, cy - 2 * s + Math.sin(an - 0.07) * L); g.lineTo(cx + Math.cos(an + 0.07) * L, cy - 2 * s + Math.sin(an + 0.07) * L); g.closePath(); g.fill(); }
+    const g2 = g.createRadialGradient(cx, cy - 2 * s, 1, cx, cy - 2 * s, 9 * s); g2.addColorStop(0, hA(c2, 0.5)); g2.addColorStop(1, hA(c2, 0)); g.fillStyle = g2; g.fillRect(cx - 9 * s, cy - 11 * s, 18 * s, 18 * s);
+  } else if (k === "embers") {
+    const g2 = g.createRadialGradient(cx, cy + 12 * s, 1, cx, cy + 12 * s, 14 * s); g2.addColorStop(0, hA(c1, 0.32)); g2.addColorStop(1, hA(c1, 0)); g.fillStyle = g2; g.fillRect(cx - 14 * s, cy + 6 * s, 28 * s, 12 * s);
+    for (let i = 0; i < 11; i++) { const life = still ? wardRnd(i) : (tt / 1200 + i / 11) % 1; const x = cx + (wardRnd(i + 5) - 0.5) * 24 * s + Math.sin(tt / 300 + i) * 1.5 * s; g.fillStyle = hA(i % 2 ? c1 : c2, 1 - life); g.fillRect(x, cy + 12 * s - life * 28 * s, s, s); }
+  } else if (k === "wind") {
+    g.lineWidth = Math.max(1, s * 0.7);
+    for (let j = 0; j < 3; j++) {
+      const a0 = (still ? 0 : tt / 520) + j * 2.1, yc = cy + (j - 1) * 8 * s; g.strokeStyle = hA(j === 1 ? c1 : c2, 0.55); g.beginPath();
+      for (let q = 0; q <= 8; q++) { const an = a0 + q * 0.2, x = cx + Math.cos(an) * 12 * s, y = yc + Math.sin(an) * 4 * s; if (q) g.lineTo(x, y); else g.moveTo(x, y); }
+      g.stroke();
+    }
+  } else if (k === "sparkle") {
+    for (let i = 0; i < 9; i++) { const on = still ? 0.8 : (Math.sin(tt / 300 + i * 1.7) + 1) / 2, an = i * 0.7 + 0.3, r = (8 + wardRnd(i) * 7) * s; wardPlus(g, cx + Math.cos(an) * r, cy + Math.sin(an) * r * 1.1, s * (0.35 + on * 0.6), i % 2 ? c1 : c2, 0.4 + on * 0.6); }
   }
-  ctx.restore();
+  g.__gain = gp; g.restore();
 }
-/* 손에 든 무기: 스킨을 입었으면 스킨, 아니면 원래 무기 (모양 바꾸기 포함) */
-function drawHeldWeapon(ctx, px, py, angle, sc, t, still) {
-  const k = curSkin();
-  if (k) return drawSkinWeapon(ctx, k, px, py, angle, sc * 0.66, t, still);
-  const wi = skinIdx(); drawWeapon(ctx, wi, wi === S.wi ? S.wl : 5, px, py, angle, sc, t, still);
+
+/* ---------- 무기 이펙트 그리기 (무기 쥔 손이 0,0, 칼날은 위쪽 -2 ~ -15칸) ---------- */
+function drawWfxBack(g, fx, sc, t, still, gain) {
+  if (!g || !g.createRadialGradient) return;
+  const ga = gain || 1;
+  const P = WFX_PAL[fx] || ["#ffffff", "#ffffff"], big = fx === "dragon" || fx === "holy" || fx === "spirit";
+  g.save(); g.globalCompositeOperation = "lighter";
+  const pulse = (still ? 0.3 : 0.26 + Math.sin(t / 260) * 0.08) * ga, cy = -9 * sc, r = (big ? 15 : 12) * sc;
+  const gr = g.createRadialGradient(0, cy, 1, 0, cy, r); gr.addColorStop(0, hexA(P[0], Math.min(0.9, pulse + (big ? 0.08 : 0)))); gr.addColorStop(1, hexA(P[0], 0));
+  g.fillStyle = gr; g.fillRect(-r, cy - r, r * 2, r * 2);
+  if (fx === "holy" || fx === "spirit") {
+    g.fillStyle = hexA(P[1], fx === "spirit" ? 0.3 : 0.24);
+    for (let i = 0; i < 6; i++) { const an = (still ? 0 : t / 2600) + i * 1.047, L = (11 + (i % 2) * 4) * sc; g.beginPath(); g.moveTo(0, cy); g.lineTo(Math.cos(an - 0.08) * L, cy + Math.sin(an - 0.08) * L); g.lineTo(Math.cos(an + 0.08) * L, cy + Math.sin(an + 0.08) * L); g.closePath(); g.fill(); }
+  }
+  g.restore();
 }
-function skinIconCanvas(k, size, sc) {
-  return iconCanvas(g => { g.save(); g.translate(size / 2, size / 2); g.rotate(Math.PI / 4); drawSprite(g, k.m, k.p, -6.5 * sc, -(k.m.length / 2) * sc, sc, { pretty: true }); g.restore(); }, size);
+function drawWfxFront(g, fx, sc, t, still, gain) {
+  if (!g) return;
+  const P = WFX_PAL[fx] || ["#ffffff", "#ffffff"], R = wardRnd, ga = gain || 1, zk = 0.6 + 0.4 * ga, gp = g.__gain;
+  const box = (x, y, w, h, col, a) => { g.fillStyle = hexA(col, Math.min(1, a * ga)); g.fillRect(x - w * (zk - 1) / 2, y - h * (zk - 1) / 2, w * zk, h * zk); };
+  g.save(); g.__gain = ga; if (fx !== "venom" && fx !== "sakura") g.globalCompositeOperation = "lighter";
+  if (fx === "flame" || fx === "dragon" || fx === "spirit") {
+    const n = fx === "dragon" ? 14 : 13, cols = fx === "dragon" ? ["#ffb35a", "#ff5a1a", "#7a0c14"] : fx === "spirit" ? ["#ffffff", "#fff2b8", "#ffd54a"] : ["#fff3b0", "#ffb13b", "#ff5a1a"];
+    for (let i = 0; i < n; i++) {
+      const life = still ? R(i) : (t / (fx === "dragon" ? 460 : 540) + i / n) % 1, side = i % 2 ? 1 : -1;
+      const x = side * (1.1 + 1.9 * R(i + 1)) * sc * (1 - 0.3 * life) + (still ? 0 : Math.sin(t / 170 + i) * 0.6 * sc), y = (-2 - 13 * R(i + 3)) * sc - life * (fx === "dragon" ? 8 : 6) * sc, z = sc * ((fx === "dragon" ? 2.2 : 1.8) - 1.2 * life);
+      box(x - z / 2, y - z / 2, z, z, life < 0.35 ? cols[0] : life < 0.7 ? cols[1] : cols[2], 1 - life);
+    }
+    if (fx === "spirit") for (let i = 0; i < 4; i++) { const life = still ? R(i + 30) : (t / 1300 + i / 4) % 1; wardPlus(g, (R(i + 11) - 0.5) * 8 * sc, -4 * sc - life * 16 * sc, sc * 0.45, "#ffd54a", 1 - life); }
+  } else if (fx === "volt") {
+    const seed = still ? 3 : Math.floor(t / 80); g.lineWidth = Math.max(1, sc * 0.45);
+    for (let k = 0; k < 2; k++) {
+      let x = 0, y = -(3 + 11 * R(seed * 3 + k)) * sc; const dir = R(seed + k * 7) < 0.5 ? -1 : 1;
+      g.strokeStyle = hexA(k ? "#ffffff" : P[0], 0.9); g.beginPath(); g.moveTo(x, y);
+      for (let q = 0; q < 4; q++) { x += dir * (0.9 + R(seed + q + k * 5) * 1.2) * sc; y += (R(seed * 2 + q + k) - 0.5) * 3 * sc; g.lineTo(x, y); }
+      g.stroke(); box(x - sc / 2, y - sc / 2, sc, sc, "#ffffff", 0.9);
+    }
+  } else if (fx === "venom") {
+    for (let i = 0; i < 5; i++) { const life = still ? R(i) * 0.6 : (t / 950 + i / 5) % 1, x = (R(i) - 0.5) * 3 * sc, y0 = -(4 + 10 * R(i + 7)) * sc; box(x - sc / 2, y0 + life * life * 15 * sc, sc, sc * (1 + life), life < 0.5 ? P[1] : P[0], 1 - life); }
+    for (let i = 0; i < 4; i++) { const on = still ? 0.8 : (Math.sin(t / 240 + i * 1.9) + 1) / 2; box((R(i + 20) - 0.5) * 4 * sc, -(3 + 12 * R(i + 21)) * sc, sc * 0.8, sc * 0.8, P[1], 0.3 + on * 0.6); }
+  } else if (fx === "frost" || fx === "blizzard") {
+    const n = fx === "blizzard" ? 10 : 6, sp = fx === "blizzard" ? 700 : 950;
+    for (let i = 0; i < n; i++) {
+      const an = (still ? 0 : t / sp) + i * (6.283 / n), x = Math.cos(an) * (fx === "blizzard" ? 5 : 3.5) * sc, y = -9 * sc + Math.sin(an) * (fx === "blizzard" ? 7.5 : 6) * sc, z = sc * (fx === "blizzard" ? 0.8 : 1);
+      if (fx === "blizzard") box(x - z / 2, y - z / 2, z, z, "#ffffff", Math.sin(an) > 0 ? 0.95 : 0.45);
+      else { box(x - z / 2, y - z * 1.5, z, z * 3, "#e6f6ff", 0.85); box(x - z * 1.5, y - z / 2, z * 3, z, "#8ff0ff", 0.6); }
+    }
+    for (let i = 0; i < 4; i++) { const life = still ? R(i) : (t / 1600 + i / 4) % 1; box((R(i + 4) - 0.5) * 6 * sc, -12 * sc + life * 14 * sc, sc * 0.7, sc * 0.7, "#ffffff", (1 - life) * 0.7); }
+  } else if (fx === "crystal") {
+    for (let i = 0; i < 7; i++) { const on = still ? 0.8 : (Math.sin(t / 260 + i * 1.3) + 1) / 2; const col = `hsl(${Math.round((i * 52 + (still ? 0 : t / 12)) % 360)},90%,76%)`; g.fillStyle = col; g.globalAlpha = Math.min(1, (0.35 + on * 0.65) * ga); const x = (R(i) - 0.5) * 6 * sc, y = -(2 + 13 * R(i + 2)) * sc, z = sc * (0.4 + on * 0.7); g.fillRect(x - z / 2, y - z * 1.5, z, z * 3); g.fillRect(x - z * 1.5, y - z / 2, z * 3, z); g.globalAlpha = 1; }
+  } else if (fx === "sakura") {
+    for (let i = 0; i < 7; i++) { const life = still ? R(i) : (t / 1500 + i / 7) % 1, dir = i % 2 ? 1 : -1; const x = (R(i) - 0.5) * 2 * sc + dir * life * 7 * sc + (still ? 0 : Math.sin(t / 300 + i) * sc), y = -(3 + 11 * R(i + 4)) * sc + life * 7 * sc; box(x, y, sc * 1.4, sc * 0.8, i % 3 ? P[0] : P[1], 1 - life); }
+  } else if (fx === "gold") {
+    const p = still ? 0.4 : (t % 1700) / 1700, yb = -(1 + p * 15) * sc; box(-2 * sc, yb, 4 * sc, sc, "#fff6cf", p < 0.85 ? 0.85 : (1 - p) * 5);
+    for (let i = 0; i < 3; i++) { const on = still ? 0.7 : (Math.sin(t / 330 + i * 2.1) + 1) / 2; wardPlus(g, (R(i + 2) - 0.5) * 5 * sc, -(3 + 11 * R(i + 6)) * sc, sc * (0.3 + on * 0.5), "#ffd54a", on); }
+  } else if (fx === "moon") {
+    for (let k = 0; k < 2; k++) {
+      const an = (still ? 0.6 : t / 800) + k * Math.PI, x = Math.cos(an) * 4.5 * sc, y = -9 * sc + Math.sin(an) * 6.5 * sc, z = sc * 0.8;
+      box(x, y - z * 2, z, z * 4, P[1], 0.95); box(x - z, y - z * 2.6, z, z, P[1], 0.95); box(x - z, y + z * 1.6, z, z, P[1], 0.95); box(x + z, y - z, z * 0.6, z * 2, P[0], 0.6);
+    }
+    for (let i = 0; i < 4; i++) { const on = still ? 0.6 : (Math.sin(t / 280 + i * 1.6) + 1) / 2; box((R(i + 8) - 0.5) * 7 * sc, -(2 + 13 * R(i + 9)) * sc, sc * 0.6, sc * 0.6, P[0], on); }
+  } else if (fx === "star") {
+    for (let i = 0; i < 5; i++) { const an = (still ? 0 : t / 900) + i * 1.257, on = still ? 0.8 : (Math.sin(t / 220 + i * 2) + 1) / 2; wardPlus(g, Math.cos(an) * 5 * sc, -9 * sc + Math.sin(an) * 7 * sc, sc * (0.4 + on * 0.5), i % 2 ? P[0] : P[1], 0.6 + on * 0.4); }
+  } else if (fx === "holy") {
+    for (let i = 0; i < 6; i++) { const life = still ? R(i) : (t / 1400 + i / 6) % 1; box((R(i + 1) - 0.5) * 5 * sc, -(2 + 12 * R(i + 5)) * sc - life * 6 * sc, sc * 0.8, sc * 0.8, "#ffffff", (1 - life) * 0.9); }
+  }
+  g.__gain = gp; g.restore();
 }
-const skinIcon = k => skinIconCanvas(k, 80, 2.2);
-function skinBig(k, css = 96) {
-  const d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))), size = Math.round(css * d);
-  const c = skinIconCanvas(k, size, size / 34); c.className = "pix"; if (c.style) c.style.width = c.style.height = css + "px"; return c;
+function drawHeldWeapon(ctx, px, py, angle, sc, t, still, gain) {
+  const fx = wardWfxShown(), wi = skinIdx();
+  if (fx) { ctx.save(); ctx.translate(px, py); ctx.rotate(angle); drawWfxBack(ctx, fx, sc, t, still, gain); ctx.restore(); }
+  drawWeapon(ctx, wi, wi === S.wi ? S.wl : 5, px, py, angle, sc, t, still);
+  if (fx && !(still && t)) { ctx.save(); ctx.translate(px, py); ctx.rotate(angle); drawWfxFront(ctx, fx, sc, t, still, gain); ctx.restore(); }
 }
-const outfitIcon = o => iconCanvas(g => { const lk = applyOutfit(heroLookFor(CHARS[0]), o); drawSprite(g, lk.map, lk.pal, 17, 6, 2.6, { pretty: true }); }, 80);
-const outfitBig = o => { const lk = applyOutfit(heroLookFor(curChar()), o); return bigSprite(lk.map, lk.pal, 96); };
+/* 칭호 명패 */
+function drawWardTitle(g, it, cx, y, k) {
+  if (!it || !g || !g.fillText) return;
+  k = k || 1; const col = WGRADE[it.g].c, txt = it.n;
+  g.save(); g.font = `${Math.round(12 * k)}px "Do Hyeon", sans-serif`; g.textAlign = "center"; g.textBaseline = "middle";
+  const w = (g.measureText ? g.measureText(txt).width : txt.length * 11 * k) + 14 * k, h = 17 * k;
+  g.fillStyle = "rgba(10,14,26,.86)"; g.fillRect(cx - w / 2, y, w, h);
+  g.fillStyle = col; g.fillRect(cx - w / 2, y, w, Math.max(1, k)); g.fillRect(cx - w / 2, y + h - Math.max(1, k), w, Math.max(1, k)); g.fillRect(cx - w / 2, y, Math.max(1, k), h); g.fillRect(cx + w / 2 - Math.max(1, k), y, Math.max(1, k), h);
+  g.fillStyle = col; g.fillText(txt, cx, y + h / 2 + 0.5 * k);
+  g.restore();
+}
+
+/* ---------- 아이콘 ---------- */
+var wardIconCache = new Map(), WARD_CROP = { head: [-3, 12], top: [6, 22], tie: [7, 20], arm: [8, 21], shoes: [13, 24] };
+function wardSceneCanvas(size, sh, opt) {
+  opt = opt || {};
+  const c = document.createElement("canvas"); c.width = c.height = size; const g = c.getContext && c.getContext("2d"); if (!g) return c;
+  g.imageSmoothingEnabled = false;
+  const ch = opt.char || CHARS[0], lk = wardLookWith(ch, sh), top = lk.top || 0, cr = opt.crop || [-top, 24], rows = cr[1] - cr[0], u = Math.max(1, Math.floor(size * (opt.zoom || 0.84) / rows));
+  const x0 = Math.round(size / 2 - 9 * u - (opt.weapon ? 3 * u : 0)), y0 = Math.round((size - rows * u) / 2) - cr[0] * u;
+  if (opt.aura && lk.aura) drawWardAura(g, lk.aura, x0 + 10 * u, y0 + 13 * u, u, 0, true);
+  if (opt.dim) { g.globalAlpha = 0.55; drawSprite(g, lk.map, lk.pal, x0, y0 - (lk.top || 0) * u, u, { pretty: true, solid: "#1a2240" }); g.globalAlpha = 1; }
+  else drawSprite(g, lk.map, lk.pal, x0, y0 - (lk.top || 0) * u, u, { pretty: true });
+  if (opt.weapon) {
+    const fx = sh.wfx ? sh.wfx.fx : "", px = x0 + 15.5 * u, py = y0 + 16 * u, ang = 0.35, ws = u * 1.25, wi = skinIdx();
+    if (fx) { g.save(); g.translate(px, py); g.rotate(ang); drawWfxBack(g, fx, ws, 0, true); g.restore(); }
+    drawWeapon(g, wi, wi === S.wi ? S.wl : 5, px, py, ang, ws, 0, true);
+    if (fx) { g.save(); g.translate(px, py); g.rotate(ang); drawWfxFront(g, fx, ws, 0, true); g.restore(); }
+  }
+  return c;
+}
+function wardItemCanvas(it, size) {
+  const sh = {}, slot = it.slot;
+  if (slot === "aura") { sh.aura = it; return wardSceneCanvas(size, sh, { aura: true, zoom: 0.62 }); }
+  if (slot === "wfx") { sh.wfx = it; return wardWeaponCanvas(it, size); }
+  if (slot === "title") return wardTitleCanvas(it, size);
+  sh[slot] = it; return wardSceneCanvas(size, sh, { zoom: 0.92, crop: WARD_CROP[slot] && !(slot === "prop") ? WARD_CROP[slot] : null });
+}
+function wardWeaponCanvas(it, size) {
+  const c = document.createElement("canvas"); c.width = c.height = size; const g = c.getContext && c.getContext("2d"); if (!g) return c;
+  g.imageSmoothingEnabled = false; const sc = size / 22, wi = skinIdx(), px = size * 0.36, py = size * 0.84, ang = 0.62;
+  g.save(); g.translate(px, py); g.rotate(ang); drawWfxBack(g, it.fx, sc, 0, true); g.restore();
+  drawWeapon(g, wi, wi === S.wi ? S.wl : 5, px, py, ang, sc, 0, true);
+  g.save(); g.translate(px, py); g.rotate(ang); drawWfxFront(g, it.fx, sc, 0, true); g.restore();
+  return c;
+}
+function wardTitleCanvas(it, size) {
+  const c = document.createElement("canvas"); c.width = c.height = size; const g = c.getContext && c.getContext("2d"); if (!g) return c;
+  const col = WGRADE[it.g].c, u = size / 20;
+  g.fillStyle = "#140f1c"; g.fillRect(2 * u, 4 * u, 16 * u, 12 * u);
+  g.fillStyle = col; g.fillRect(3 * u, 5 * u, 14 * u, 10 * u);
+  g.fillStyle = shade(col, -0.35); g.fillRect(3 * u, 13 * u, 14 * u, 2 * u); g.fillRect(1 * u, 7 * u, 2 * u, 6 * u); g.fillRect(17 * u, 7 * u, 2 * u, 6 * u);
+  g.fillStyle = "#fff8e0"; g.fillRect(5 * u, 7 * u, 10 * u, 1.4 * u); g.fillRect(6 * u, 10 * u, 8 * u, 1.2 * u);
+  return c;
+}
+function wardIconURL(it) {
+  const key = it.id + (it.slot === "wfx" ? "|" + skinIdx() + "|" + (S.wi === skinIdx() ? S.wl : 5) : "");
+  if (wardIconCache.has(key)) return wardIconCache.get(key);
+  let url = "";
+  try { const c = wardItemCanvas(it, 80); url = c.toDataURL ? c.toDataURL("image/png") : ""; } catch (e) {}
+  if (wardIconCache.size > 400) wardIconCache.clear();
+  wardIconCache.set(key, url); return url;
+}
+function wardSetURL(set) {
+  const key = "set|" + set.id; if (wardIconCache.has(key)) return wardIconCache.get(key);
+  let url = "";
+  try { const sh = {}; wardSetPieces(set).forEach(it => { if (WBODY.indexOf(it.slot) >= 0 || it.slot === "aura") sh[it.slot] = it; }); const c = wardSceneCanvas(80, sh, { aura: !!sh.aura }); url = c.toDataURL ? c.toDataURL("image/png") : ""; } catch (e) {}
+  wardIconCache.set(key, url); return url;
+}
+function wardBig(id, css) {
+  const it = WIT[id]; if (!it) return pixIcon("suit", css || 76);
+  const d = uiDpr(), size = Math.round((css || 76) * d);
+  let c;
+  if (it.slot === "wfx") c = wardWeaponCanvas(it, size);
+  else if (it.slot === "title") c = wardTitleCanvas(it, size);
+  else { const sh = {}; WSLOT.forEach(s => { sh[s.id] = wardShown(s.id); }); sh[it.slot] = it; c = wardSceneCanvas(size, sh, { aura: it.slot === "aura", char: curChar(), zoom: it.slot === "aura" ? 0.62 : 0.84 }); }
+  c.className = "pix"; if (c.style) c.style.width = c.style.height = (css || 76) + "px";
+  return c;
+}
+function wardPreview(id) {
+  const it = WIT[id]; if (!it) return;
+  const own = wardState().own[id] != null;
+  celebrate({ icon: wardBig(id, 120), title: `미리 입기 · ${it.n}`, sub: `${WGRADE[it.g].n}${it.set && WSETX[it.set] ? " · " + WSETX[it.set].n : ""}<br><span class="muted">${own ? "가지고 있어요" : it.cost ? `광석 ${fmtR(it.cost.ore)}으로 살 수 있어요` : "열쇠: " + wardCondText(it)}</span>`, tone: "ore", quiet: true, ms: 3600 });
+}
+
+/* ---------- 옷방 그림 ---------- */
+function drawRoom() {
+  const c = $("roomCv"); if (!c || !c.getContext) return; const g = c.getContext("2d"); if (!g) return; g.imageSmoothingEnabled = false;
+  g.fillStyle = "#3a1f2a"; g.fillRect(0, 0, 320, 170);
+  g.fillStyle = "#4a2836"; for (let x = 0; x < 320; x += 24) g.fillRect(x, 0, 12, 130);
+  g.fillStyle = "#6b3a2a"; g.fillRect(0, 130, 320, 40); g.fillStyle = "#5a3022"; for (let x = 0; x < 320; x += 32) g.fillRect(x, 130, 2, 40);
+  g.fillStyle = "#ffd54a"; g.fillRect(0, 128, 320, 3);
+  const look = heroLook();
+  // 옷걸이: 지금 보이는 상의·넥타이·팔토시·신발 색
+  g.fillStyle = "#8d97b6"; g.fillRect(14, 22, 70, 3);
+  ["j", "t", "a", "b"].forEach((k, i) => { g.fillStyle = look.pal[k] || "#cfd6ea"; g.fillRect(18 + i * 16, 26, 12, 22); g.fillStyle = "rgba(0,0,0,.25)"; g.fillRect(18 + i * 16, 44, 12, 4); });
+  // 거울
+  g.fillStyle = "#c9a43a"; g.fillRect(206, 18, 92, 112); g.fillStyle = "#8fb3c9"; g.fillRect(212, 24, 80, 100);
+  g.fillStyle = "rgba(255,255,255,.25)"; g.fillRect(220, 30, 6, 60); g.fillRect(230, 30, 3, 40);
+  const draw = (x, y, sc, flip, alpha) => {
+    g.save(); g.globalAlpha = alpha;
+    if (look.aura) drawWardAura(g, look.aura, x + 9 * sc, y + 13 * sc, sc, 0, true);
+    drawSprite(g, look.map, look.pal, x, y - (look.top || 0) * sc, sc, { flip, pretty: true });
+    g.restore();
+  };
+  g.save(); g.beginPath(); g.rect(212, 24, 80, 100); g.clip(); draw(236, 58, 2.35, true, 0.75); g.restore();
+  draw(110, 44, 3.5, false, 1);
+  drawHeldWeapon(g, 110 + 15.5 * 3.5, 44 + 16 * 3.5, 0.35, 3.4, 0, true);
+  if (look.title) drawWardTitle(g, look.title, 110 + 9 * 3.5, 44 - (look.top || 0) * 3.5 - 6 - 17, 1);
+  g.fillStyle = "#ffd54a"; g.font = '15px "Do Hyeon", sans-serif'; g.textAlign = "left"; g.textBaseline = "top";
+  g.fillText("곽준영의 옷장", 10, 140);
+  g.fillStyle = "#e9edf6"; g.textAlign = "right"; g.fillText(`${wardCount()} / ${WITEMS.length}벌`, 310, 140);
+}
+
+/* ---------- 옷장 탭 ---------- */
+var wardUI = { mode: "eq", view: "slot", slot: "top", nvShow: null };
+function wardBtn(b) { return `<button type="button" class="buy num${b.cls ? " " + b.cls : ""}${b.xc ? " " + b.xc : ""}"${b.ok ? "" : " disabled"}${b.act ? ` data-act="${b.act}"` : ""}${b.id ? ` data-id="${b.id}"` : ""}${b.set ? ` data-set="${b.set}"` : ""}>${btnInner(b)}</button>`; }
+function wardCostLabel(c) { const k = c.manna ? "manna" : "ore"; return { label: `${k === "manna" ? "만나" : "광석"} ${fmtR(c[k])}`, ok: (+S[k] || 0) >= c[k] && (!c.silver || (+S.silver || 0) >= c.silver), cls: k === "manna" ? "manna" : "ore", silver: c.silver || 0 }; }
+function wardRowHTML(it) {
+  const W = wardState(), own = W.own[it.id] != null, e = own ? W.own[it.id] : 0, sl = WSLOTX[it.slot], gr = WGRADE[it.g];
+  const isEq = W.eq[it.slot] === it.id, sh = wardShown(it.slot), isShown = !!(sh && sh.id === it.id), isNew = (wardUI.nvShow || []).indexOf(it.id) >= 0;
+  const L = [];
+  if (sl.k) L.push(`<span class="wd-k">입으면</span> ${wardFxText({ [sl.k]: wardEqVal(it, e) })}${it.perk ? " · " + wardFxText(wardScale(it.perk, 1 + 0.1 * e)) : ""}`);
+  else if (it.perk) L.push(`<span class="wd-k">달면</span> ${wardFxText(it.perk)}`);
+  L.push(`<span class="wd-k">보유</span> 모든 피해 +${wardNum(wardOwnVal(it, e))}%${it.uq ? ` · <b>고유</b> ${wardUqText(it, e)}` : ""}`);
+  if (it.slot === "title" && it.d) L.push(`<i class="wd-d">${escapeHtml(it.d)}</i>`);
+  else if (it.vs) L.push(`<i class="wd-d">${escapeHtml(it.vs)}</i>`);
+  else if (it.d && !own) L.push(`<i class="wd-d">${escapeHtml(it.d)}</i>`);
+  if (it.set && WSETX[it.set]) { const set = WSETX[it.set]; L.push(`<span class="wd-setln" style="color:${set.col}">${set.n}</span> ${set.own ? `소장 ${wardSetN(set)}/${wardSetSize(set)}` : `입은 ${wardSetN(set)}/${wardSetSize(set)}`}`); }
+  if (!own) L.push(it.cond ? `<span class="wd-key">열쇠</span> ${wardCondText(it)}` : `<span class="wd-key">사기</span> 공부로 캔 광석`);
+  let b1, b2 = "";
+  if (!own && it.cost) b1 = wardBtn({ label: `광석 ${fmtR(it.cost.ore)}`, sub: "사기", ok: (S.ore || 0) >= it.cost.ore, cls: "ore", act: "buy", id: it.id });
+  else if (!own) b1 = wardBtn({ label: "미리 입기", sub: `${Math.floor(wardCondProg(it) * 100)}%`, ok: true, cls: "ghost", act: "prev", id: it.id });
+  else if (wardUI.mode === "look") b1 = isShown ? wardBtn({ label: "보이는 중", ok: false, cls: "ghost" }) : wardBtn({ label: "덧입기", sub: "겉모습만", ok: true, cls: "rare", act: "look", id: it.id });
+  else b1 = isEq ? wardBtn({ label: "입는 중", ok: false, cls: "ghost" }) : wardBtn({ label: "입기", sub: sl.k ? "능력치" : "칭호 달기", ok: true, cls: "rare", act: "eq", id: it.id });
+  if (own && it.slot !== "title" && wardUI.mode === "eq") {
+    if (e < WENH_MAX) { const c = wardEnhCost(it, e), cl = wardCostLabel(c); b2 = wardBtn({ label: cl.label, sub: `+${e + 1} 강화${cl.silver ? ` · 은괴 ${cl.silver}` : ""}`, ok: cl.ok, cls: cl.cls, xc: "wd-enh", act: "enh", id: it.id }); }
+    else b2 = `<span class="wd-max num">+${WENH_MAX} MAX</span>`;
+  }
+  const lvb = own && e > 0 ? `<span class="lvb num${e >= WENH_MAX ? " mx" : ""}">+${e}</span>` : "";
+  const prog = !own && it.cond ? `<div class="qbar"><i style="width:${Math.round(wardCondProg(it) * 100)}%"></i></div>` : "";
+  return `<div class="up wd-up${own ? "" : " locked"}${isEq ? " wd-eq" : ""}${isShown ? " wd-shown" : ""}" data-id="${it.id}" style="--gc:${gr.c}">
+    <div class="icon" data-act="prev" data-id="${it.id}"><img class="pix" alt="" src="${wardIconURL(it)}">${lvb}</div>
+    <div class="up-info"><div class="up-name"><span class="nm" style="color:${gr.c}">${escapeHtml(it.n)}</span><span class="lv num">${gr.n}${isEq ? " · 착용" : ""}${isShown && !isEq ? " · 덧입음" : ""}</span>${isNew ? `<span class="wd-new">NEW</span>` : ""}</div>
+    <div class="up-desc num">${L.join("<br>")}</div>${prog}</div>
+    <div class="wd-bts">${b1}${b2}</div></div>`;
+}
+function wardSlotItems(slot) {
+  const W = wardState(), rank = it => {
+    const own = W.own[it.id] != null;
+    if (own) return [0, W.eq[slot] === it.id ? 0 : 1, -it.g, -(W.own[it.id] || 0)];
+    if (it.cost) return [1, 0, it.cost.ore, 0];
+    return [2, 0, -wardCondProg(it), it.g];
+  };
+  return WITEMS.filter(it => it.slot === slot).map(it => ({ it, r: rank(it) })).sort((a, b) => { for (let i = 0; i < 4; i++) if (a.r[i] !== b.r[i]) return a.r[i] - b.r[i]; return 0; }).map(x => x.it);
+}
+function wardSetHTML(set) {
+  const W = wardState(), pcs = wardSetPieces(set), ownN = pcs.filter(it => W.own[it.id] != null).length, n = wardSetN(set), gr = WGRADE[set.g];
+  const bon = Object.keys(set.bonus).map(t => `<span class="${n >= +t ? "on" : ""}">${set.own ? "소장 " : ""}${t}벌 ${wardFxText(set.bonus[t])}</span>`).join("");
+  const next = pcs.filter(it => W.own[it.id] == null).sort((a, b) => wardCondProg(b) - wardCondProg(a))[0];
+  const nextTxt = !next ? "모두 모았어요!" : next.cost ? `다음: ${escapeHtml(next.n)} · 광석 ${fmtR(next.cost.ore)}` : `다음: ${escapeHtml(next.n)} · ${wardCondText(next)}`;
+  const pcsHTML = pcs.map(it => `<button type="button" class="wd-pc${W.own[it.id] != null ? "" : " off"}${W.eq[it.slot] === it.id ? " eq" : ""}" data-act="prev" data-id="${it.id}" aria-label="${escapeHtml(it.n)}"><img class="pix" alt="" src="${wardIconURL(it)}"></button>`).join("");
+  return `<div class="card wd-set" style="--sc:${set.col}">
+    <div class="wd-set-h"><img class="pix wd-set-ic" alt="" src="${wardSetURL(set)}"><div><b style="color:${gr.c}">${escapeHtml(set.n)}</b> <small>${gr.n} · 가진 ${ownN}/${pcs.length}${set.own ? "" : ` · 입은 ${n}/${pcs.length}`}</small><small class="wd-d">${escapeHtml(set.d)}</small></div></div>
+    <div class="wd-pcs">${pcsHTML}</div>
+    <div class="wd-bon">${bon}</div>
+    <div class="wd-next">${nextTxt}</div>
+    ${ownN ? `<div class="row-btns">${set.own ? "" : wardBtn({ label: "세트 입기", sub: "능력치", ok: true, cls: "rare", act: "seteq", set: set.id })}${wardBtn({ label: "겉모습만", sub: "덧입기", ok: true, cls: "ghost", act: "setlook", set: set.id })}</div>` : ""}
+  </div>`;
+}
+function wardSetOrder() {
+  const W = wardState(), js = S.jobs || [];
+  return WSETS.slice().map((s, i) => ({ s, i, o: wardSetPieces(s).filter(it => W.own[it.id] != null).length, lock: s.job && js.indexOf(s.job) < 0 }))
+    .sort((a, b) => (a.lock - b.lock) || (b.o > 0) - (a.o > 0) || (b.o - a.o) || (a.i - b.i)).map(x => x.s);
+}
+function wardListKey() {
+  const W = wardState(), money = [S.ore, S.silver, S.manna].map(v => Math.floor(+v || 0));
+  let prog = "";
+  if (wardUI.view === "slot") WITEMS.forEach(it => { if (it.slot === wardUI.slot && W.own[it.id] == null && it.cond) prog += Math.floor(wardCondProg(it) * 100) + ","; });
+  else WITEMS.forEach(it => { if (W.own[it.id] == null && it.cond) prog += Math.floor(wardCondProg(it) * 100) + ","; });
+  return JSON.stringify([wardUI.mode, wardUI.view, wardUI.slot, W.own, W.eq, W.look, money, prog, wardUI.nvShow, skinIdx(), S.wl, (S.jobs || []).join()]);
+}
+function wardListUpdate() {
+  const box = $("wdList"); if (!box) return; wardCV = null;
+  const W = wardState();
+  if (wardUI.nvShow == null) { wardUI.nvShow = W.nv.slice(); }
+  if (W.nv.length) { W.nv.forEach(id => { if (wardUI.nvShow.indexOf(id) < 0) wardUI.nvShow.push(id); }); W.nv = []; }
+  const key = wardListKey(); if (box._k === key) return; box._k = key;
+  const segM = $("wdMode"), segV = $("wdView");
+  if (segM) segM.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === wardUI.mode));
+  if (segV) segV.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.view === wardUI.view));
+  if (wardUI.view === "set") { box.innerHTML = `<p class="muted wd-hint">세트는 같은 세트를 2·4·6벌 입으면 효과가 커져요. 회장님 세트는 가지고만 있어도 쌓여요.</p>` + wardSetOrder().map(wardSetHTML).join(""); return; }
+  const sl = WSLOTX[wardUI.slot], items = wardSlotItems(wardUI.slot), own = items.filter(it => W.own[it.id] != null).length;
+  const head = `<div class="wd-lh"><b>${sl.n}</b><small>${own}/${items.length}벌${sl.k ? ` · 입으면 ${WSTAT[sl.k][0]}` : " · 하나를 달면 그 효과"}</small></div>`;
+  const lookOpts = wardUI.mode === "look" ? `<div class="wd-lopts"><button type="button" data-act="lookeq" data-slot="${sl.id}" aria-pressed="${!W.look[sl.id]}">입은 옷대로 보이기</button><button type="button" data-act="lookoff" data-slot="${sl.id}" aria-pressed="${W.look[sl.id] === "-"}">${sl.id === "title" || sl.id === "aura" || sl.id === "wfx" || sl.id === "prop" ? "안 보이기" : "기본 모습"}</button></div>` : "";
+  box.innerHTML = head + lookOpts + items.map(wardRowHTML).join("");
+}
+function wardSlotsUpdate() {
+  const box = $("wdSlots"); if (!box) return;
+  const W = wardState(), key = JSON.stringify([wardUI.slot, wardUI.view, W.eq, W.look, Object.keys(W.own).length, skinIdx(), S.wl]);
+  if (box._k === key) return; box._k = key;
+  box.innerHTML = WSLOT.map(s => {
+    const it = wardShown(s.id) || (W.eq[s.id] && WIT[W.eq[s.id]]), n = WITEMS.filter(x => x.slot === s.id && W.own[x.id] != null).length;
+    return `<button type="button" class="wd-sl${wardUI.view === "slot" && wardUI.slot === s.id ? " on" : ""}" data-slot="${s.id}">${it ? `<img class="pix" alt="" src="${wardIconURL(it)}">` : `<i class="wd-sl-e"></i>`}<span>${s.n}</span><small class="num">${n}</small></button>`;
+  }).join("");
+}
+function wardSumUpdate() {
+  const box = $("wdSum"); if (!box) return;
+  const W = wardState(), st = wardStats(), key = JSON.stringify([wardDirty, W.own, W.eq]);
+  if (box._k === key) return; box._k = key;
+  const chips = [];
+  const pct = (k, n) => { if (st[k] > 0.05) chips.push(`<span>${n} <b>+${wardNum(st[k])}%</b></span>`); };
+  pct("dmg", "모든 피해"); if (st.xdmg > 1.0001) chips.push(`<span>모든 피해 <b>x${wardNum(st.xdmg)}</b></span>`); if (st.xaps > 1.0001) chips.push(`<span>공격 속도 <b>x${wardNum(st.xaps)}</b></span>`); if (st.xstamp > 1.0001) chips.push(`<span>퇴사 도장 <b>x${wardNum(st.xstamp)}</b></span>`);
+  pct("crit", "치명타"); pct("critd", "치명 피해"); pct("aps", "공격 속도"); pct("boss", "보스 피해"); pct("gold", "보스 월급"); pct("wpn", "무기"); pct("pet", "동료"); pct("manna", "만나"); pct("ore", "광석"); pct("mem", "암송"); pct("stamp", "도장");
+  if (st.btime) chips.push(`<span>보스 시간 <b>+${wardNum(st.btime)}초</b></span>`); if (st.jobcd) chips.push(`<span>직무 스킬 대기 <b>−${wardNum(st.jobcd)}%</b></span>`);
+  const sets = WSETS.map(s => ({ s, n: wardSetN(s) })).filter(x => x.n > 0 && (x.s.own || x.n >= 2 || x.n === 1)).map(({ s, n }) => {
+    const tiers = Object.keys(s.bonus).map(Number), got = tiers.filter(t => n >= t), nx = tiers.find(t => n < t);
+    if (!got.length && !s.own && n < 2) return "";
+    return `<span style="--sc:${s.col}"><b>${escapeHtml(s.n)}</b> ${s.own ? "소장 " : ""}${n}벌${got.length ? "" : " (효과 전)"}${nx ? ` · ${nx}벌까지 ${nx - n}` : " · 최대"}</span>`;
+  }).filter(Boolean);
+  box.innerHTML = `<div class="wd-chips num">${chips.join("") || `<span>아직 입은 옷이 없어요</span>`}</div>`
+    + (sets.length ? `<div class="wd-sets">${sets.join("")}</div>` : "")
+    + `<p class="muted">모은 옷 ${wardCount()}/${WITEMS.length}벌 · 착용 효과는 입은 옷만, 보유 효과는 가진 옷 모두 · 겉모습은 덧입기로 따로 골라요</p>`;
+}
+function wardCollUpdate() {
+  const box = $("wdColl"); if (!box) return;
+  const W = wardState(), n = wardCount(), key = n + "|" + W.coll; if (box._k === key) return; box._k = key;
+  const cat = (lab, f) => { const all = WITEMS.filter(f).length, got = wardCount(f); return `<span>${lab} <b>${got}/${all}</b></span>`; };
+  const ms = WCOLL.map((m, i) => `<div class="wd-ms${i < W.coll ? " on" : ""}"><b class="num">${m.n}벌</b><span>${wardFxText(m.fx)}</span><small>${i < W.coll ? "받음" : rwHTML(m.rw)}</small></div>`).join("");
+  box.innerHTML = `<div class="wd-coll-h"><b class="num">${n} / ${WITEMS.length}벌</b><span class="num">${Math.floor(n / WITEMS.length * 100)}%</span></div>
+    <div class="qbar wd-cbar"><i style="width:${n / WITEMS.length * 100}%"></i></div>
+    <div class="wd-cats">${cat("옷", it => WBODY.indexOf(it.slot) >= 0)}${cat("무기 이펙트", it => it.slot === "wfx")}${cat("오라", it => it.slot === "aura")}${cat("칭호", it => it.slot === "title")}</div>
+    <div class="wd-mss">${ms}</div>`;
+}
+var wardRoomKey = "";
+function wardRoomUpdate() {
+  const W = wardState(), lk = heroLook(), k = [WSLOT.map(s => (wardShown(s.id) || {}).id || "").join(), curChar().id, skinIdx(), S.wl, wardCount()].join("|");
+  if (k !== wardRoomKey) { wardRoomKey = k; drawRoom(); }
+  wardSlotsUpdate();
+  return lk && W;
+}
+function wardClick(e) {
+  let t = e.target; const root = panels.suit;
+  while (t && t !== root && !(t.dataset && (t.dataset.act || t.dataset.mode || t.dataset.view || t.dataset.slot))) t = t.parentElement || t.parent;
+  if (!t || t === root || !t.dataset || t.disabled) return;
+  const d = t.dataset, W = wardState();
+  if (d.mode) { wardUI.mode = d.mode; sfx("tick"); }
+  else if (d.view) { wardUI.view = d.view; sfx("tick"); }
+  else if (d.act === "lookeq") { wardSetLook(d.slot, ""); sfx("tick"); }
+  else if (d.act === "lookoff") { wardSetLook(d.slot, "-"); sfx("tick"); }
+  else if (d.slot && !d.act) { wardUI.slot = d.slot; wardUI.view = "slot"; sfx("tick"); }
+  else if (d.act === "prev") { wardPreview(d.id); return; }
+  else if (d.act === "buy") { if (wardBuy(d.id)) sfx("buy"); }
+  else if (d.act === "eq") { wardEquip(d.id); sfx("tick"); }
+  else if (d.act === "look") { wardSetLook(WIT[d.id].slot, d.id); sfx("tick"); toast(`${hbJosa(WIT[d.id].n, "을", "를")} 덧입었어요 · 능력치는 그대로`); }
+  else if (d.act === "enh") { const d0 = stats().dps; if (wardEnh(d.id)) { sfx("upgrade"); const row = t.closest ? t.closest(".up") : null; if (row) rowPop(row, `+${W.own[d.id]}!`); dpsPop(d0); } }
+  else if (d.act === "seteq") { wardWearSet(d.set, "eq"); sfx("tick"); }
+  else if (d.act === "setlook") { wardWearSet(d.set, "look"); sfx("tick"); }
+  else if (d.act === "best") { const d0 = stats().dps; wardAutoBest(); sfx("tick"); toast("가장 좋은 조합으로 입었어요 · 겉모습은 덧입기 그대로"); dpsPop(d0); }
+  else return;
+  wardDirty++; updateUI(true); save();
+}
+function buildWardTab() {
+  const room = el("div", "card hero-card wd-room");
+  room.innerHTML = `<canvas id="roomCv" width="320" height="170" class="wd-cv"></canvas><div class="wd-slots" id="wdSlots"></div>`;
+  addCustom("suit", room, () => wardRoomUpdate());
+  const sum = el("div", "card wd-sum");
+  sum.innerHTML = `<div class="wd-sum-h"><b>옷장 효과</b><button type="button" class="wd-best" data-act="best">가장 좋은 조합 입기</button></div><div id="wdSum"></div>`;
+  addCustom("suit", sum, () => wardSumUpdate());
+  const bar = el("div", "wd-bar");
+  bar.innerHTML = `<div class="seg" id="wdMode"><button type="button" data-mode="eq" aria-pressed="true">착용 · 능력치</button><button type="button" data-mode="look" aria-pressed="false">덧입기 · 겉모습</button></div><div class="seg" id="wdView"><button type="button" data-view="slot" aria-pressed="true">부위별</button><button type="button" data-view="set" aria-pressed="false">세트별</button></div>`;
+  panels.suit.appendChild(bar);
+  const list = el("div", "wd-list"); list.id = "wdList";
+  addCustom("suit", list, () => wardListUpdate());
+  secTitle("suit", "옷장 도감", "모은 수마다 영구 효과 + 선물");
+  const coll = el("div", "card wd-coll"); coll.id = "wdColl";
+  addCustom("suit", coll, () => wardCollUpdate());
+  panels.suit.addEventListener("click", wardClick);
+  updaters.suit.push({ update() {}, ready: () => !!(S && S.ward && S.ward.nv && S.ward.nv.length) });
+}
+/* 정보 탭 도감 칸: 세트 14 + 무기 이펙트·오라·칭호 */
+function wardInfoCells(parent, cell) {
+  const out = [];
+  WSETS.forEach(set => { const c = cell(parent, () => { const img = document.createElement("img"); img.className = "pix"; img.alt = ""; img.src = wardSetURL(set); if (img.style) { img.style.width = img.style.height = "40px"; } return img; }); out.push({ c, f: it => it.set === set.id, all: wardSetSize(set) }); });
+  [["wfx", "무기"], ["aura", "오라"], ["title", "칭호"]].forEach(([sl]) => { const it0 = WITEMS.find(x => x.slot === sl); const c = cell(parent, () => { const img = document.createElement("img"); img.className = "pix"; img.alt = ""; img.src = wardIconURL(it0); if (img.style) { img.style.width = img.style.height = "40px"; } return img; }); out.push({ c, f: it => it.slot === sl, all: WITEMS.filter(x => x.slot === sl).length }); });
+  return () => out.forEach(o => { const n = wardCount(o.f); o.c.em.textContent = `${n}/${o.all}`; o.c.d.classList.toggle("off", !n); o.c.d.classList.toggle("max", n >= o.all); });
+}
 
 /* ===================== 새 콘텐츠: 스킬 5종 + 자동, 황금 몹, 주간 목표 ===================== */
 Object.assign(UIICON, {
@@ -6415,7 +7366,7 @@ var TAB_UNLOCK = {
   study: { f: 3, any: st => (st.bible && st.bible.total > 0) || (st.study && st.study.total > 0), d: "3층에 열려요 · 말씀 1장을 읽어도 열려요" },
   mem: { f: 5, any: st => (st.bible && st.bible.total > 0) || (st.mem && st.mem.total > 0), d: "5층에 열려요 · 말씀 1장을 읽어도 열려요" },
   pet: { f: 10, d: "10층에 열려요" },
-  suit: { f: 15, any: st => (st.ore || 0) >= 150, d: "15층에 열려요 · 공부로 광석 150을 캐도 열려요" },
+  suit: { f: 15, any: st => (st.ore || 0) >= 150 || !!(st.ward && st.ward.own && Object.keys(st.ward.own).length), d: "15층에 열려요 · 말씀 5장을 읽거나 공부로 광석 150을 캐도 열려요" },
   treasure: { f: 25, any: st => (st.stamp || 0) >= 10, d: "25층에 열려요 · 결재도장 10개를 모아도 열려요" },
   retire: { f: 40, any: st => (st.retires || 0) > 0, d: "40층에 열려요" },
 };
@@ -6425,7 +7376,7 @@ var TAB_INTRO = {
   mem: "200구절을 간격 반복으로 외워요. 통과할수록 다음 복습이 1·2·4·7·15·30·60일 뒤로 미뤄져요.",
   study: "공부 타이머를 켜면 공부한 시간만큼 광산을 파서 광석·은괴·자수정을 캐요. 25분마다 집중 확인.",
   pet: "만나로 동료를 들이면 같이 싸우고 월급을 늘려 줘요.",
-  suit: "광석으로 정장과 부적을 사서 능력치를 올려요. 퇴사해도 남아요.",
+  suit: "말씀·공부·암송 기록으로 옷을 모으고 입어요. 입은 옷은 부위 효과, 가진 옷은 모두 보유 효과. 세트·무기 이펙트·오라·칭호까지 모두 능력치가 있고 퇴사해도 남아요.",
   treasure: "결재도장으로 보물을 강화하면 퇴사해도 남는 힘이 돼요.",
   daily: "다음 목표, 출근부, 연속 지키기, 일일 업무, 주간 목표, 업적이 모여 있어요.",
   info: "인사 기록과 내 기록, 이번 주 경제, 도감, 화면 설정, 백업이 있어요.",
@@ -6439,6 +7390,7 @@ var GR_GUIDE = [
   ["퇴사와 빠른 출근", "퇴사 탭 게이지가 +50%를 넘으면 초록, +200%를 넘으면 크게 이득이에요. 퇴사하면 이번 회사 최고층의 40%까지 출근 버스로 바로 올라가요."],
   ["자리 비운 동안", "앱을 닫아 두어도 12시간까지 전투와 월급이 계산돼요."],
   ["이번 주 경제", "정보 탭에서 재화마다 이번 주에 번 것·쓴 것과 용도를 볼 수 있어요. 일주일치보다 많이 고이면 쓸 곳을 알려 줘요."],
+  ["옷장", "입은 옷은 부위마다 다른 능력치(착용 효과), 가진 옷은 모두 모든 피해 +(보유 효과). 같은 세트를 2·4·6벌 입으면 세트 효과, 회장님 세트는 가지고만 있어도 쌓여요. 겉모습은 덧입기로 따로 고르고, 잠긴 옷도 눌러서 미리 입어 볼 수 있어요. 강화는 공부로 캔 광석, 말씀의 전신갑주는 말씀으로 받은 만나로 해요."],
 ];
 var ECO_KEYS = ["manna", "stamp", "ore", "silver", "ame"];
 var ECO_NAME = { manna: "만나", stamp: "도장", ore: "광석", silver: "은괴", ame: "자수정" };
@@ -6449,7 +7401,7 @@ var ECO_USE = {
   silver: "공부 7층마다 · 전설 무기와 전설 정장에 써요",
   ame: "공부 21층마다 · 전설 무기를 여는 데 써요",
 };
-var ECO_SINK = { manna: ["pet", "동료"], stamp: ["treasure", "보물"], ore: ["suit", "정장"], silver: ["weapon", "무기"], ame: ["weapon", "무기"] };
+var ECO_SINK = { manna: ["pet", "동료"], stamp: ["treasure", "보물"], ore: ["suit", "옷장"], silver: ["weapon", "무기"], ame: ["weapon", "무기"] };
 var grUI = { strip: "", ladder: "", t: 0 }, treMemo = { k: "", v: 0 }, tabCols = 0;
 
 /* ---------- 저장값 ---------- */
@@ -6729,8 +7681,12 @@ function ecoNext() {
     if (tr) { const need = Math.max(0, tr.c - S.stamp); out.push(need ? `${tr.n} 강화까지 도장 ${fmtR(need)} · 말씀 약 ${need}장 (장마다 1)` : `${tr.n} 강화 바로 할 수 있어요`); }
   }
   if (tabOpen("suit")) {
-    const wk = ecoSum(weekKey(), dayKey()), sm = Math.max(0, (S.week && S.week.study) || 0), opm = sm >= 10 && wk.inc[2] > 0 ? wk.inc[2] / sm : 0, need = Math.max(0, CHARM_PRICE - S.ore);
-    out.push(need ? `부적 한 장까지 광석 ${fmtR(need)}` + (opm ? ` · 공부 약 ${Math.ceil(need / opm)}분` : "") : `부적 한 장 바로 살 수 있어요 (광석 ${CHARM_PRICE})`);
+    const wk = ecoSum(weekKey(), dayKey()), sm = Math.max(0, (S.week && S.week.study) || 0), opm = sm >= 10 && wk.inc[2] > 0 ? wk.inc[2] / sm : 0;
+    const W = wardState(), opts = [{ c: CHARM_PRICE, t: "부적 한 장" }];
+    WITEMS.forEach(it => { if (W.own[it.id] == null && it.cost) opts.push({ c: it.cost.ore, t: `${it.n} 사기` }); });
+    WSLOT.forEach(sl => { const id = W.eq[sl.id]; if (!id || sl.id === "title" || W.own[id] == null || W.own[id] >= WENH_MAX) return; const c = wardEnhCost(WIT[id], W.own[id]); if (c.ore && !c.silver) opts.push({ c: c.ore, t: `${WIT[id].n} +${W.own[id] + 1} 강화` }); });
+    const o = opts.sort((a, b) => a.c - b.c)[0], need = Math.max(0, o.c - S.ore);
+    out.push(need ? `${o.t}까지 광석 ${fmtR(need)}` + (opm ? ` · 공부 약 ${Math.ceil(need / opm)}분` : "") : `${o.t} 바로 할 수 있어요 (광석 ${fmtR(o.c)})`);
   }
   return out;
 }
@@ -6757,7 +7713,7 @@ function growTick() {
 }
 
 /* ===================== 탭 ===================== */
-const TABS = [["weapon", "무기"], ["bible", "말씀"], ["mem", "암송"], ["study", "공부"], ["pet", "동료"], ["suit", "정장"], ["treasure", "보물"], ["daily", "업무"], ["info", "정보"], ["retire", "퇴사"]];
+const TABS = [["weapon", "무기"], ["bible", "말씀"], ["mem", "암송"], ["study", "공부"], ["pet", "동료"], ["suit", "옷장"], ["treasure", "보물"], ["daily", "업무"], ["info", "정보"], ["retire", "퇴사"]];
 let curTab = "weapon";
 const panels = {}, tabBtns = {}, updaters = {};
 TABS.forEach(([id, label]) => {
@@ -6982,7 +7938,7 @@ function renderTools() {
     $("wStars").innerHTML = [1, 2, 3, 4, 5].map(n => `<i class="${n <= S.wl ? "on" : ""}"></i>`).join("") + (S.wl > 5 ? ` <span class="muted">초월 ${S.wl - 5}</span>` : "");
     $("wPow").textContent = `${i + 1}번째 무기 · 무기 공격력 ${fmt(wPower(i, S.wl))}`;
     $("wStory").hidden = !w.leg; $("wStory").textContent = w.story || "";
-    const sk = curSkin(), skn = $("wSkin"); if (skn) { skn.hidden = !sk; if (sk) skn.textContent = `무기 코스튬 '${sk.n}'을(를) 들고 있어요 · 성능은 이 무기 그대로`; }
+    const wf = wardShown("wfx"), skn = $("wSkin"); if (skn) { skn.hidden = !wf; if (wf) skn.textContent = `무기 이펙트 '${wf.n}' · 무기 모양은 그대로, 둘레에만 효과 (옷장에서 바꿔요)`; }
     const ab = $("wAuto"), ah = S.autoUp ? `<span class="act">자동 강화</span><small><i class="sw"></i>켜짐</small>` : `<span class="act">자동 강화</span><small><i class="sw"></i>꺼짐</small>`;
     if (ab._h !== ah) { ab._h = ah; ab.innerHTML = ah; ab.classList.toggle("on", !!S.autoUp); ab.setAttribute("aria-pressed", S.autoUp ? "true" : "false"); }
     const b = $("wBtn"), N = bulkN(), wp = N === 1 ? null : wPlan(N === 0 ? 500 : N);
@@ -7771,7 +8727,7 @@ function drawMine(depth, running, now) {
     ang = p < 0.72 ? 0.3 - 1.7 * (p / 0.72) : -1.4 + 2.5 * ((p - 0.72) / 0.28);
     if (p >= 0.9 && mineHitCyc !== cyc) { mineHitCyc = cyc; hit = true; }
   } else ang = 0.45 + Math.sin(t * 2) * 0.04;
-  if (look.aura) { const ag = g.createRadialGradient(hx + 18, hy + 26, 2, hx + 18, hy + 26, 40); ag.addColorStop(0, hexA(look.aura, .4)); ag.addColorStop(1, hexA(look.aura, 0)); g.fillStyle = ag; g.fillRect(hx - 24, hy - 16, 84, 84); }
+  if (look.aura) drawWardAura(g, look.aura, hx + 9 * hs, hy + 13 * hs, hs, now, false, 1.3);
   g.fillStyle = "rgba(0,0,0,.35)"; g.fillRect(hx + 6, MINE_GY + 1, 26, 3);
   drawSprite(g, look.map, look.pal, hx, hy - (look.top || 0) * hs, hs, { pretty: true });
   g.save(); g.translate(hx + 15.5 * hs, hy + 16 * hs); g.rotate(ang); drawSprite(g, WSPR.pen, WEAPONS[1].p, -4 * 2.2, -15.5 * 2.2, 2.2, { pretty: true }); g.restore();
@@ -7816,84 +8772,10 @@ function mineTick(now) {
   }));
 })();
 
-/* ---------- 정장 탭 ---------- */
+/* ---------- 옷장 탭 ---------- */
 (() => {
-  addCustom("suit", el("div", "card", `<div class="sec-title" style="margin:0">전설 세트 효과 <small id="setN"></small></div><div class="muted" id="setList"></div>
-    <p class="muted">정장은 공부로 캔 광석으로 사요. 산 아이템 효과는 모두 적용되고, 착용은 모양만 바꿔요. 전설 아이템은 광석과 은괴로 5강까지.</p>`), () => {
-    const L = legCount(); $("setN").textContent = `전설 ${L} / 7`;
-    $("setList").innerHTML = SET_FX.map((f, i) => `<span style="color:${i < L ? "var(--good)" : "var(--muted)"}">${i + 1}개: ${f}</span>`).join(" · ");
-  });
-  const room = el("div", "card hero-card");
-  room.innerHTML = `<canvas id="roomCv" width="320" height="170" style="width:100%;height:auto;aspect-ratio:320/170;image-rendering:pixelated;border-radius:8px"></canvas>
-    <div class="seg" id="slotSeg" style="display:grid;grid-template-columns:repeat(5,1fr)"></div>`;
-  let roomKey = "";
-  addCustom("suit", room, () => {
-    const k = JSON.stringify(S.cos) + JSON.stringify(S.look) + skinIdx() + S.wl + "|" + (S.outfit || "") + "|" + (S.wskin || "") + "|" + costN;
-    if (k === roomKey) return; roomKey = k; drawRoom();
-  });
-  const groups = {};
-  const filters = [["all", "전체"], ["cost", "코스튬"], ...SLOTS.map(s => [s.id, s.n]), ["charm", "부적"]];
-  let suitFilter = "all";
-  filters.forEach(([id, n]) => {
-    const b = el("button", "", n); b.setAttribute("aria-pressed", id === "all");
-    b.addEventListener("click", () => {
-      suitFilter = id; room.querySelectorAll("#slotSeg button").forEach(o => o.setAttribute("aria-pressed", o === b));
-      Object.keys(groups).forEach(g => groups[g].hidden = !(suitFilter === "all" || suitFilter === g || (suitFilter === "cost" && (g === "outfit" || g === "wskin"))));
-    });
-    room.querySelector("#slotSeg").appendChild(b);
-  });
-  const mkGroup = (id, title, sub) => { const g = el("div", "panel"); g.appendChild(el("h3", "sec-title", title + (sub ? ` <small>${sub}</small>` : ""))); panels.suit.appendChild(g); groups[id] = g; return g; };
-  // 코스튬: 의상 6종, 무기 12종 (기록으로 해금, 모양만)
-  const og = mkGroup("outfit", "의상 코스튬", "기록으로 열려요 · 모양만 바뀜");
-  const costHead = el("div", "cost-head num"); og.appendChild(costHead);
-  updaters.suit.push({ ready: () => false, update() { const h = `모은 코스튬 <b>${costN}</b> / ${OUTFITS.length + WSKINS.length} · 모든 피해 <b class="c-good">+${costN * 3}%</b>`; if (costHead._h !== h) { costHead._h = h; costHead.innerHTML = h; } } });
-  const costRow = (c, kind, grp) => addRow("suit", {
-    icon: kind === "o" ? outfitIcon(c) : skinIcon(c),
-    name: () => c.n, lv: () => costOwned(c) ? ((kind === "o" ? curOutfit() : curSkin()) === c ? " 착용 중" : "") : "",
-    locked: () => !costOwned(c), legOwned: () => (kind === "o" ? curOutfit() : curSkin()) === c,
-    desc: () => costOwned(c) ? c.d : `${c.d}<br>해금: ${condText(c)}`,
-    bar: () => condProg(c),
-    btn: () => !costOwned(c) ? { label: "잠김", sub: `${Math.floor(condProg(c) * 100)}%`, ok: false, cls: "ghost" } : (kind === "o" ? curOutfit() : curSkin()) === c ? { label: "벗기", ok: true, cls: "ghost" } : { label: "입기", ok: true, cls: "rare" },
-    noDot: true,
-    click: () => {
-      if (!costOwned(c)) return;
-      if (kind === "o") S.outfit = curOutfit() === c ? null : c.id; else S.wskin = curSkin() === c ? null : c.id;
-      toast((kind === "o" ? S.outfit : S.wskin) ? `${c.n} 착용! (모양만 바뀌어요)` : `${c.n}을(를) 벗었어요`);
-    },
-  }, grp);
-  OUTFITS.forEach(o => costRow(o, "o", og));
-  const wg = mkGroup("wskin", "무기 코스튬", "무기 모양만 바뀜 · 성능은 그대로");
-  WSKINS.forEach(k => costRow(k, "w", wg));
-  SLOTS.forEach(sl => {
-    const grp = mkGroup(sl.id, sl.n);
-    sl.items.forEach((it, i) => addRow("suit", {
-      icon: iconCanvas(g => {
-        const pal = Object.assign({}, PAL.hero); let hair = "neat";
-        Object.keys(it.look).forEach(k => { if (k === "hair") hair = it.look.hair; else if (k !== "aura") pal[k] = it.look[k]; });
-        const map = heroMap(hair);
-        if (it.look.aura) { const gr = g.createRadialGradient(20, 20, 2, 20, 20, 20); gr.addColorStop(0, hexA(it.look.aura, .6)); gr.addColorStop(1, hexA(it.look.aura, 0)); g.fillStyle = gr; g.fillRect(0, 0, 40, 40); }
-        drawSprite(g, map, heroPal(pal), 6, 1, 1.55, { pretty: true });
-      }),
-      name: () => it.n, lv: () => it.leg && legLv(sl.id) ? ` +${legLv(sl.id)}` : (own(sl.id, i) ? " 보유" : ""),
-      locked: () => !own(sl.id, i), legOwned: () => it.leg && own(sl.id, i),
-      desc: () => (typeof it.d === "function" ? it.d(Math.max(1, legLv(sl.id))) : it.d) + (own(sl.id, i) ? (heroLookIdx(sl.id) === i ? " · 착용 중" : " · 눌러서 착용") : ""),
-      btn: () => {
-        if (!own(sl.id, i)) return { label: `광석 ${fmtR(it.price)}`, sub: it.leg ? "전설" : "구매", ok: S.ore >= it.price, cls: "ore" };
-        if (it.leg && legLv(sl.id) < LEG_MAX) { const c = legUpCost(legLv(sl.id)); return { label: `광석 ${fmtR(c.ore)}`, sub: `은괴 ${c.silver} · 강화`, ok: S.ore >= c.ore && S.silver >= c.silver, cls: "ore" }; }
-        if (heroLookIdx(sl.id) !== i) return { label: "착용", ok: true, cls: "ghost" };
-        return { label: it.leg ? "최대" : "착용 중", ok: false, cls: "ghost" };
-      },
-      noDot: true,
-      click: () => {
-        if (!own(sl.id, i)) { if (S.ore < it.price) return; S.ore -= it.price; S.cos[sl.id] = S.cos[sl.id] || [0, 0, 0]; S.cos[sl.id][i] = 1; S.look[sl.id] = i;
-          const pal = Object.assign({}, PAL.hero); let hair = "neat"; Object.keys(it.look).forEach(k => { if (k === "hair") hair = it.look.hair; else if (k !== "aura") pal[k] = it.look[k]; });
-          celebrate({ icon: bigSprite(heroMap(hair), heroPal(pal), 92), title: it.leg ? "전설 정장!" : "새 정장!", sub: `${it.n} · 바로 입었어요`, tone: it.leg ? "rare" : "ore" }); return; }
-        if (it.leg && legLv(sl.id) < LEG_MAX) { const c = legUpCost(legLv(sl.id)); if (S.ore < c.ore || S.silver < c.silver) return; S.ore -= c.ore; S.silver -= c.silver; S.cos[sl.id][2]++; return; }
-        S.look[sl.id] = i;
-      },
-    }, grp));
-  });
-  const cg = mkGroup("charm", "포스트잇 부적", "개수만큼 쌓이는 강화석");
+  buildWardTab();
+  const cg = el("div", "panel"); cg.appendChild(el("h3", "sec-title", `포스트잇 부적 <small>개수만큼 쌓이는 강화석</small>`)); panels.suit.appendChild(cg);
   CHARMS.forEach(c => addRow("suit", {
     icon: iconCanvas(g => { g.fillStyle = { red: "#ff6b6b", yellow: "#ffd54a", blue: "#6fd3ff" }[c.id]; g.fillRect(8, 6, 24, 24); g.fillStyle = "rgba(0,0,0,.25)"; g.fillRect(8, 26, 24, 4); g.fillStyle = "#1b1f2a"; g.fillRect(12, 12, 16, 2); g.fillRect(12, 17, 12, 2); }),
     name: () => c.n, lv: () => ` ${S.charms[c.id]}개`,
@@ -7903,34 +8785,6 @@ function mineTick(now) {
     rep: { cost: () => CHARM_PRICE, have: () => S.ore, unit: "광석" },
   }, cg));
 })();
-/* 옷방: 거울 앞에 선 곽준영 */
-function drawRoom() {
-  const c = $("roomCv"); if (!c) return; const g = c.getContext("2d"); g.imageSmoothingEnabled = false;
-  g.fillStyle = "#3a1f2a"; g.fillRect(0, 0, 320, 170);
-  g.fillStyle = "#4a2836"; for (let x = 0; x < 320; x += 24) g.fillRect(x, 0, 12, 130);
-  g.fillStyle = "#6b3a2a"; g.fillRect(0, 130, 320, 40); g.fillStyle = "#5a3022"; for (let x = 0; x < 320; x += 32) g.fillRect(x, 130, 2, 40);
-  g.fillStyle = "#ffd54a"; g.fillRect(0, 128, 320, 3);
-  // 옷걸이
-  g.fillStyle = "#8d97b6"; g.fillRect(14, 22, 70, 3);
-  SLOTS.slice(0, 4).forEach((s, i) => { const lk = s.items[Math.max(0, heroLookIdx(s.id))].look; g.fillStyle = lk.w || lk.t || lk.a || lk.h || "#cfd6ea"; g.fillRect(18 + i * 16, 26, 12, 22); });
-  // 거울
-  g.fillStyle = "#c9a43a"; g.fillRect(206, 18, 92, 112); g.fillStyle = "#8fb3c9"; g.fillRect(212, 24, 80, 100);
-  g.fillStyle = "rgba(255,255,255,.25)"; g.fillRect(220, 30, 6, 60); g.fillRect(230, 30, 3, 40);
-  const look = heroLook();
-  const draw = (x, y, sc, flip, alpha) => {
-    g.save(); g.globalAlpha = alpha;
-    if (look.aura) { const gr = g.createRadialGradient(x + 9 * sc, y + 13 * sc, 2, x + 9 * sc, y + 13 * sc, 18 * sc); gr.addColorStop(0, hexA(look.aura, .45)); gr.addColorStop(1, hexA(look.aura, 0)); g.fillStyle = gr; g.fillRect(x - 6 * sc, y - 5 * sc, 24 * sc, 24 * sc); }
-    drawSprite(g, look.map, look.pal, x, y - (look.top || 0) * sc, sc, { flip, pretty: true });
-    g.restore();
-  };
-  draw(236, 58, 2.35, true, 0.75);
-  draw(110, 44, 3.5, false, 1);
-  drawHeldWeapon(g, 110 + 15.5 * 3.5, 44 + 16 * 3.5, 0.35, 3.4, 0, true);
-  g.fillStyle = "#ffd54a"; g.font = '15px "Do Hyeon", sans-serif'; g.textAlign = "left"; g.textBaseline = "top";
-  g.fillText("곽준영의 옷방", 10, 140);
-  g.fillStyle = "#e9edf6"; g.textAlign = "right"; g.fillText(`전설 ${legCount()}/7`, 310, 140);
-}
-function heroLookIdx(slot) { let idx = S.look[slot]; if (idx == null || idx < 0 || !own(slot, idx)) { idx = -1; for (let i = 2; i >= 0; i--) if (own(slot, i)) return i; } return idx; }
 
 /* ---------- 보물 탭 ---------- */
 /* 보물 아이콘: 금빛 메달 + 보물 이름 첫 글자 (보물마다 테두리 색이 다름) */
@@ -8956,7 +9810,7 @@ function castJob(sk, auto) {
   const left = skillLeft(sk);
   if (left > 0) { if (!auto) toast(`${sk.n}: ${Math.ceil(left)}초 뒤에 다시 쓸 수 있어요 · ${sk.d}`); return false; }
   if (!canFight()) { if (!auto) toast("적이 나타나면 쓸 수 있어요"); return false; }
-  S.skillCd = S.skillCd || {}; S.skillCd[sk.id] = Date.now() + sk.cd * 1000;
+  S.skillCd = S.skillCd || {}; S.skillCd[sk.id] = Date.now() + sk.cd * 1000 * (1 - wardStats().jobcd / 100);
   if (sk.dur) skillUntil[sk.id] = Date.now() + sk.dur * 1000;
   jobCut = { t: 0, dur: 950, name: sk.n + "!", team: `${j.team} · ${heroTitle()}`, col: j.col };
   sfx("buff");
@@ -9676,14 +10530,14 @@ function legUnlockTry(k) {
   addCustom("info", card, () => {
     const st = stats();
     const rows = [
-      ["직급", rankName() + (curJob() ? " · " + curJob().n : "")], ["퇴사 횟수", S.retires + "회"], ["최고 층수", S.bestFloor + "층"], ["공격력", fmt(st.atk)], ["초당 피해", fmt(st.dps)],
+      ["직급", rankName() + (curJob() ? " · " + curJob().n : "")], ["칭호", (wardShown("title") || {}).n || "없음"], ["퇴사 횟수", S.retires + "회"], ["최고 층수", S.bestFloor + "층"], ["공격력", fmt(st.atk)], ["초당 피해", fmt(st.dps)],
       ["보스 월급", "x" + fmt(goldMult())], ["말씀 보상", "x" + readMult().toFixed(1)], ["광석 배율", "x" + oreMult().toFixed(2)],
       ["말씀 누적", S.bible.total + "장"], ["공부 누적", (S.study.total / 60).toFixed(1) + "시간"], ["황금 몹", (S.goldenKills || 0) + "마리"], ["출근 누적", `${attTotal()}일 · 연속 ${attStreak()}`], ["읽기 플랜", planShort()],
     ];
     $("pfStats").innerHTML = rows.map(([a, b]) => `<span>${a}</span><b>${b}</b>`).join("");
     const g = $("pfCv").getContext("2d"); g.imageSmoothingEnabled = false; g.clearRect(0, 0, 112, 112);
     const look = heroLook(), t = performance.now();
-    if (look.aura) { const gr = g.createRadialGradient(46, 56, 4, 46, 56, 56); gr.addColorStop(0, hexA(look.aura, .45)); gr.addColorStop(1, hexA(look.aura, 0)); g.fillStyle = gr; g.fillRect(0, 0, 112, 112); }
+    if (look.aura) drawWardAura(g, look.aura, 18 + 10 * 3.6, 12 + 13 * 3.6, 3.6, t, true);
     drawSprite(g, look.map, look.pal, 18, 12 - (look.top || 0) * 3.6, 3.6, { pretty: true });
     drawHeldWeapon(g, 18 + 15.5 * 3.6, 12 + 16 * 3.6, 0.35, 3.0, t, false);
   });
@@ -9693,21 +10547,14 @@ function legUnlockTry(k) {
   const tCells = TREASURES.map(t => cell(tc, () => treIcon(t)));
   const pc = mkColl("동료", "만나");
   const pCells = PETS.map(p => cell(pc, () => petIcon(p.id)));
-  const sc = mkColl("정장", "광석 · 금테는 전설 5강");
-  const sCells = [];
-  SLOTS.forEach(sl => sl.items.forEach((it, i) => sCells.push({ sl, i, it, c: cell(sc, () => iconCanvas(g => {
-    const pal = Object.assign({}, PAL.hero); let hair = "neat";
-    Object.keys(it.look).forEach(k => { if (k === "hair") hair = it.look.hair; else if (k !== "aura") pal[k] = it.look[k]; });
-    const map = heroMap(hair);
-    if (it.look.aura) { const gr = g.createRadialGradient(20, 20, 2, 20, 20, 20); gr.addColorStop(0, hexA(it.look.aura, .6)); gr.addColorStop(1, hexA(it.look.aura, 0)); g.fillStyle = gr; g.fillRect(0, 0, 40, 40); }
-    drawSprite(g, map, heroPal(pal), 6, 1, 1.55, { pretty: true });
-  })) })));
+  const sc = mkColl("옷장", "세트 14 · 무기 이펙트 · 오라 · 칭호");
+  const wardCellsUpd = wardInfoCells(sc, cell);
   const wc = mkColl("무기", "모은 무기");
   let wKey = "";
   addCustom("info", el("div"), () => {
     TREASURES.forEach((t, i) => { const lv = S.tre[t.id], mx = t.max && lv >= t.max; tCells[i].em.textContent = mx ? "MAX" : "Lv." + lv; tCells[i].d.classList.toggle("off", !lv); tCells[i].d.classList.toggle("max", !!mx); });
     PETS.forEach((p, i) => { const lv = petLv(p.id); pCells[i].em.textContent = lv ? "Lv." + lv : p.floor + "층"; pCells[i].d.classList.toggle("off", !lv); });
-    sCells.forEach(({ sl, i, it, c }) => { const o = own(sl.id, i), lv = it.leg ? legLv(sl.id) : 0; c.em.textContent = !o ? "" : it.leg ? (lv >= LEG_MAX ? "MAX" : "+" + lv) : "보유"; c.d.classList.toggle("off", !o); c.d.classList.toggle("max", it.leg && lv >= LEG_MAX); });
+    wardCellsUpd();
     const k = S.wi + "-" + S.wl; if (k === wKey) return; wKey = k; wc.innerHTML = "";
     WEAPONS.forEach((w, i) => { const c = cell(wc, () => weaponIcon(i, i < S.wi ? 5 : S.wl)); c.em.textContent = i < S.wi ? "MAX" : i === S.wi ? "+" + S.wl : ""; c.d.classList.toggle("off", i > S.wi); c.d.classList.toggle("max", i < S.wi); });
   });
@@ -9845,7 +10692,7 @@ function legUnlockTry(k) {
 (() => {
   const card = el("div", "card");
   card.innerHTML = `<div class="sec-title" style="margin:0">퇴사 (환생)</div><div id="rGauge"></div><p class="muted" id="rBody"></p>
-    <p class="muted">초기화: 골드, 층, 무기, 커피<br>유지: 만나, 도장, 광석, 광물, 동료, 정장, 부적, 보물, 곡괭이, 전설무기 해금, 말씀·공부 기록<br>빠른 출근: ${QC_MIN}층 넘게 올랐다면 다음 회사는 최고층의 ${Math.round(QC_FRAC * 100)}%까지 출근 버스로 바로 올라가요</p>
+    <p class="muted">초기화: 골드, 층, 무기, 커피<br>유지: 만나, 도장, 광석, 광물, 동료, 옷장, 부적, 보물, 곡괭이, 전설무기 해금, 말씀·공부 기록<br>빠른 출근: ${QC_MIN}층 넘게 올랐다면 다음 회사는 최고층의 ${Math.round(QC_FRAC * 100)}%까지 출근 버스로 바로 올라가요</p>
     <div class="row-btns" id="rRow"><button class="btn" id="rBtn">사표 제출</button><button class="btn manna" id="rPromo">영전 퇴사 (만나 300)</button></div>
     <div class="row-btns" id="rConfirm" hidden><span class="muted" id="rAsk" style="align-self:center"></span><button class="btn" id="rNo">취소</button><button class="btn warn" id="rYes">진짜 퇴사</button></div>
     <p class="muted">영전 퇴사는 도장을 1.5배로 받고, 다음 퇴사 때까지 월급과 피해가 4배가 돼요.</p>
@@ -9871,7 +10718,7 @@ function updateUI(force) {
   rollDay();
   if (backReady && (attWatch !== dayKey() || backWant)) { attWatch = dayKey(); backWant = false; backMaybeOpen(); }
   planDailyCheck(); careerTick(); proofSweep(); celebFlush(); growTick();
-  refreshCostumes(true);
+  wardTick(true);
   $("gold").textContent = fmt(S.gold);
   const st = stats();
   $("dps").textContent = fmt(st.dps);
@@ -9923,6 +10770,7 @@ function merge(d) {
   HB_KINDS.forEach(k => { const X = s[k]; if (X && X.rec && !(X.rec.d && X.rec.until && X.rec.need)) X.rec = null; });
   s.habit = habitMerge(d.habit, s); s.fx = fxMerge(d.fx);
   s.eco = ecoMerge(d.eco); s.tabSeen = tabSeenMerge(d.tabSeen, s);
+  s.ward = wardMerge(d.ward, d);
   return s;
 }
 function load() {
@@ -9941,7 +10789,7 @@ setInterval(() => { studyTick(); updateUI(false); if (rd) updateReaderState(); b
 function start(data) {
   if (data && data.S) S = merge(data.S); else load();
   cloud.base = S.t;
-  rollDay(); habitGuard(); refreshCostumes(false);
+  rollDay(); habitGuard(); wardTick(false);
   let tab = "weapon"; try { tab = localStorage.getItem(SAVE_KEY + "-tab") || "weapon"; } catch (e) {}
   if (!panels[tab] || !tabOpen(tab)) tab = "weapon";
   bibleBook = 0;

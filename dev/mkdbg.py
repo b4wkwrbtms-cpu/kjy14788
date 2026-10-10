@@ -11,6 +11,9 @@ window.__bgInfo = () => ({ key: bgKey, kind: bgSet && bgSet.kind, cache: [...bgC
 '''
 out=s.replace(anchor,hook)
 for a in ('atkTimer += dt;','catTimer += dt;','cactusTimer += dt;'):
+    if a.startswith('atkTimer') and out.count(a)==0:   # v35: 공격 시계는 고정 틱(part_feel)에서
+        a2='atkTimer += FEEL_DT;'; assert out.count(a2)==1, a2
+        out=out.replace(a2, 'atkTimer += window.__noAtk ? 0 : FEEL_DT;'); continue
     assert out.count(a)==1, a
     out=out.replace(a, a.replace('+= dt;','+= window.__noAtk ? 0 : dt;'))
 fa='function addFloat(x, y, text, color, size = 26, pop = false, style = "") {'

@@ -1,4 +1,4 @@
-/* ===================== 옷장 데이터 (v30 · v31 절기 옷 추가): 세트 16종 · 무기 이펙트 13종 · 오라 10종 · 칭호 27종 = 146벌 =====================
+/* ===================== 옷장 데이터 (v30): 세트 14종 · 무기 이펙트 13종 · 오라 10종 · 칭호 15종 = 122벌 =====================
    부위 9칸: 머리·상의·넥타이·팔토시·신발·소품(세트 부위) + 오라·무기 이펙트·칭호.
    모든 옷: 입으면 부위 효과(부위마다 다른 능력치) + 가지고만 있어도 보유 효과(모든 피해 +). 등급과 강화(+10)로 커짐.
    uq = 예전 정장·오라의 고유 효과(가지고만 있어도), perk = 입었을 때만 붙는 효과.
@@ -50,9 +50,6 @@ var WCOND = {
   att: ["출근 누적", v => `${v}일`],
   rank: ["직급", v => ["사원", "주임", "대리", "과장", "차장", "부장", "이사", "상무", "전무", "사장"][v] || v],
   job: ["팀 배치", v => ({ sales: "영업팀", dev: "개발팀", plan: "기획팀", hr: "인사총무팀" })[v] || v],
-  start: ["첫걸음 꾸러미", () => "열기"],
-  bk: ["처음 끝낸 권", v => v],
-  fest: ["절기 순례", v => v],
 };
 /* 머리 모양 추가: 민머리(투구용)·영업 2:8 가르마 */
 var WHAIR = {
@@ -89,10 +86,6 @@ var WSETS = [
     bonus: { 2: { dmg: 150 }, 4: { mem: 30 }, 6: { xdmg: 2.5 } } },
   { id: "paladin", n: "황금 성기사", g: 3, d: "말씀을 며칠 이어 읽으면 열려요", col: "#ffe14a",
     bonus: { 2: { dmg: 150 }, 4: { boss: 200 }, 6: { xdmg: 2.5 } } },
-  { id: "harvest", n: "추수감사 세트", g: 3, fest: "thanks", d: "추수감사 순례에서 얻어요 · 해마다 10~11월에 다시 열려요", col: "#ffb35a",
-    bonus: { 2: { gold: 150 }, 4: { ore: 20 }, 6: { xdmg: 2.5 } } },
-  { id: "advent", n: "대림 순례자 세트", g: 3, fest: "advent", d: "대림·성탄 순례에서 얻어요 · 해마다 대림절에 다시 열려요", col: "#9a6bff",
-    bonus: { 2: { manna: 15 }, 4: { dmg: 150 }, 6: { xdmg: 2.5 } } },
   { id: "armor", n: "말씀의 전신갑주", g: 5, d: "그러므로 하나님의 전신갑주를 취하라 (엡 6:13) · 강화는 만나로", col: "#ffe9a0",
     bonus: { 2: { dmg: 300 }, 4: { boss: 300, btime: 5 }, 6: { xdmg: 5, manna: 30 }, 7: { xdmg: 1.5, crit: 10 } } },
 ];
@@ -243,32 +236,6 @@ var WITEMS = [
   { id: "pd_prop", set: "paladin", slot: "prop", n: "흰 날개", cond: ["rstreak", 30],
     look: { b: { 9: "...V..............", 10: "..VV..............", 11: ".VVV..............", 12: "VVVV..............", 13: "VVVv..............", 14: ".VVv..............", 15: "..vv.............." }, c: { V: "#ffffff", v: "#dfe6f3" } } },
 
-  /* 추수감사 세트 (절기 순례) */
-  { id: "hv_head", set: "harvest", slot: "head", n: "밀짚모자", cond: ["fest", "thanks"],
-    look: { f: { "-2": ".......yyyyy......", "-1": "......yYYYYYy.....", 0: "......YYYYYYY.....", 1: "......RRRRRRR.....", 2: "..yYYYYYYYYYYYYy.." }, c: { Y: "#e8c66a", y: "#c9a24a", R: "#c0392b" } } },
-  { id: "hv_top", set: "harvest", slot: "top", n: "멜빵 작업복", cond: ["fest", "thanks"],
-    look: { pal: { w: "#e9d8b0", j: "#3b6aa8", a: "#e9d8b0", p: "#3b6aa8", B: "#5a3a1a" }, f: { 12: ".....D......D.....", 13: ".....D......D.....", 16: "........DDD......." }, c: { D: "#2a4f80" } } },
-  { id: "hv_tie", set: "harvest", slot: "tie", n: "보리 이삭 넥타이", cond: ["fest", "thanks"],
-    look: { pal: { t: "#e8c66a" }, f: { 13: ".........y........", 15: "..........y.......", 17: ".........y........" }, c: { y: "#b8861c" } } },
-  { id: "hv_arm", set: "harvest", slot: "arm", n: "목장갑", cond: ["fest", "thanks"],
-    look: { pal: { a: "#e9d8b0", x: "#f4f1e6" }, f: { 15: "...............GG.", 16: "...............GG.", 18: "...GG............." }, c: { G: "#f4f1e6" } } },
-  { id: "hv_shoes", set: "harvest", slot: "shoes", n: "초록 장화", cond: ["fest", "thanks"],
-    look: { pal: { b: "#3a7a3a" }, f: { 22: ".....KKK..KKK.....", 23: "....KKKK..KKKKK..." }, c: { K: "#3a7a3a" } } },
-  { id: "hv_prop", set: "harvest", slot: "prop", n: "과일 바구니", cond: ["fest", "thanks"],
-    look: { f: { 19: ".rgy..............", 20: "OOOO..............", 21: "OoOo..............", 22: "OOOO.............." }, c: { r: "#e74c3c", g: "#7fe36a", y: "#ffd54a", O: "#a0703a", o: "#7a4f24" } } },
-  /* 대림 순례자 세트 (절기 순례) */
-  { id: "av_head", set: "advent", slot: "head", n: "대림절 촛불 화관", cond: ["fest", "advent"],
-    look: { f: { "-3": ".......F.F.F.F....", "-2": ".......P.P.K.P....", "-1": ".......P.P.K.P....", 0: "......GGGGGGGGG...", 1: ".....GgGrGgGrGgG.." }, c: { F: "#ffd54a", P: "#7a4fd6", K: "#ff8fc8", G: "#2f7a3a", g: "#4fa85a", r: "#e74c3c" } } },
-  { id: "av_top", set: "advent", slot: "top", n: "보라 순례자 로브", cond: ["fest", "advent"],
-    look: { pal: { j: "#5a3a9a", a: "#5a3a9a", w: "#f4f1e6", p: "#3a2a6a", B: "#ffd54a" }, f: { 13: "......Y...........", 15: "......Y...........", 17: "......Y...........", 19: ".....jjjjjjjj....." }, c: { Y: "#ffd54a" } } },
-  { id: "av_tie", set: "advent", slot: "tie", n: "별 브로치 스카프", cond: ["fest", "advent"],
-    look: { pal: { t: "#e9e2ff" }, f: { 13: ".........Z........", 14: "........ZzZ.......", 15: ".........Z........" }, c: { Z: "#ffd54a", z: "#fff6cf" } } },
-  { id: "av_arm", set: "advent", slot: "arm", n: "금테 소매", cond: ["fest", "advent"], look: { pal: { a: "#7a5ac0", x: "#ffd54a" } } },
-  { id: "av_shoes", set: "advent", slot: "shoes", n: "순례자 샌들", cond: ["fest", "advent"],
-    look: { pal: { b: "#8a5a2e" }, f: { 22: ".....k.k..k.k.....", 23: "....SbbS..SbbbS..." }, c: { k: "#5a3618" } } },
-  { id: "av_prop", set: "advent", slot: "prop", n: "별빛 등불", cond: ["fest", "advent"],
-    look: { f: { 7: "..Y...............", 8: ".LLL..............", 9: ".LyL..............", 10: ".LYL..............", 11: ".LLL..............", 12: "..D...............", 13: "..D...............", 14: "..D...............", 15: "..D...............", 16: "..D...............", 17: "..D...............", 18: "..D...............", 19: "..D...............", 20: "..D...............", 21: "..D..............." },
-      c: { L: "#2a2e38", y: "#fff6cf", Y: "#ffd54a", D: "#8a5a2e" } } },
   /* 말씀의 전신갑주 (신화, 엡 6:13-18 개역한글) — 강화는 만나로 */
   { id: "ar_head", set: "armor", slot: "head", n: "구원의 투구", cond: ["round", 1], vs: "구원의 투구와 성령의 검 곧 하나님의 말씀을 가지라 (엡 6:17)",
     look: { hair: "none", f: { "-2": "........GG........", "-1": ".......GGGG.......", 0: "......MMGGMM......", 1: ".....MMMMMMMM.....", 2: "....MMmmMMMMMM....", 3: "....MMMMMMMMMMMM..", 4: "....MMMMMMMMMMMM..", 5: "....GGGGGGGUGGGG..", 6: "....MM............", 7: "....MM............", 8: "....MM............" },
@@ -327,19 +294,6 @@ var WITEMS = [
   { id: "t_floor", slot: "title", n: "고층 정복자", g: 3, cond: ["floor", 500], perk: { dmg: 100 }, d: "500층에 올랐습니다" },
   { id: "t_retire", slot: "title", n: "프로 퇴사러", g: 2, cond: ["retire", 10], perk: { stamp: 20 }, d: "사표를 10번 냈습니다" },
   { id: "t_ceo", slot: "title", n: "사장님", g: 4, cond: ["rank", 9], perk: { gold: 300, dmg: 100 }, d: "평사원에서 사장이 되었습니다" },
-  /* 칭호: 첫걸음 · 성경 묶음 완독 · 절기 순례 완주 */
-  { id: "t_first", slot: "title", n: "첫걸음", g: 1, cond: ["start", 1], perk: { manna: 5 }, d: "첫 말씀과 첫 집중을 마치고 첫걸음 꾸러미를 열었습니다" },
-  { id: "t_torah", slot: "title", n: "모세오경 완독", g: 2, cond: ["bk", "torah"], perk: { manna: 10, dmg: 30 }, d: "창세기부터 신명기까지 다섯 권을 처음 끝까지 읽었습니다" },
-  { id: "t_gospel", slot: "title", n: "복음서 완독", g: 2, cond: ["bk", "gospel"], perk: { manna: 10, crit: 3 }, d: "마태·마가·누가·요한복음을 처음 끝까지 읽었습니다" },
-  { id: "t_paul", slot: "title", n: "바울서신 완독", g: 3, cond: ["bk", "paul"], perk: { mem: 15, dmg: 60 }, d: "로마서부터 빌레몬서까지 열세 권을 처음 끝까지 읽었습니다" },
-  { id: "t_ot", slot: "title", n: "구약 완독", g: 4, cond: ["bk", "ot"], perk: { dmg: 120, manna: 15 }, d: "구약 39권을 처음 끝까지 읽었습니다" },
-  { id: "t_nt", slot: "title", n: "신약 완독", g: 4, cond: ["bk", "nt"], perk: { dmg: 120, manna: 15 }, d: "신약 27권을 처음 끝까지 읽었습니다" },
-  { id: "t_thanks", slot: "title", n: "감사의 사람", g: 3, cond: ["fest", "thanks"], perk: { gold: 80, manna: 10 }, d: "범사에 감사하라 (살전 5:18) · 추수감사 순례 완주" },
-  { id: "t_advent", slot: "title", n: "대림의 순례자", g: 3, cond: ["fest", "advent"], perk: { dmg: 80, manna: 10 }, d: "평강의 왕이라 할것임이라 (사 9:6) · 대림·성탄 순례 완주" },
-  { id: "t_epiphany", slot: "title", n: "별을 따라온 사람", g: 3, cond: ["fest", "epiphany"], perk: { crit: 4, manna: 10 }, d: "저희가 별을 보고 가장 크게 기뻐하고 기뻐하더라 (마 2:10) · 주현 순례 완주" },
-  { id: "t_lent", slot: "title", n: "광야의 동행자", g: 3, cond: ["fest", "lent"], perk: { boss: 80, manna: 10 }, d: "사람이 떡으로만 살것이 아니요 (마 4:4) · 사순 순례 완주" },
-  { id: "t_easter", slot: "title", n: "부활의 증인", g: 3, cond: ["fest", "easter"], perk: { dmg: 80, mem: 10 }, d: "내 증인이 되리라 (행 1:8) · 부활 순례 완주" },
-  { id: "t_pentecost", slot: "title", n: "성령의 사람", g: 3, cond: ["fest", "pentecost"], perk: { aps: 6, manna: 10 }, d: "성령으로 행할찌니 (갈 5:25) · 성령강림 순례 완주" },
 ];
 /* 옷장 도감: 모은 개수 단계마다 영구 효과 + 한 번 받는 선물 */
 var WCOLL = [

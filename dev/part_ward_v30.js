@@ -66,40 +66,11 @@ function wardCondVal(k) {
   else if (k === "rank") v = rankIdx();
   return (wardCV[k] = v);
 }
-function wardCondOk(it) {
-  if (!it.cond) return false; const k = it.cond[0], v = it.cond[1];
-  if (k === "job") return (S.jobs || []).indexOf(v) >= 0;
-  if (k === "start") return !!firstsState().start;
-  if (k === "bk") { const g = bkGroupProg(v); return g.n >= g.size; }
-  if (k === "fest") return false;   // 절기 순례 보상·절기 상점에서만
-  return wardCondVal(k) >= v;
-}
-/* 절기 옷: 지금 순례면 받는 레벨까지 (마지막 레벨 너머는 상점 토큰), 아니면 0 */
-function wardFestProg(it) {
-  const se = festCur(); if (!se || se.id !== it.cond[1]) return 0;
-  const F = festState(), D = FEST_DEF[se.id];
-  if (it.slot === "title") return Math.min(1, Math.max(F.lv / se.maxL, F.tok / FEST_TITLE_TOK));
-  const at = (FEST_SET_ORDER.indexOf(it.slot) + 1) * 5;
-  return at > 0 && at <= se.maxL && D.set === it.set ? Math.min(1, Math.max(F.lv / at, F.tok / FEST_PIECE_TOK)) : Math.min(1, F.tok / FEST_PIECE_TOK);
-}
-function wardCondProg(it) {
-  if (!it.cond) return 0; const k = it.cond[0], v = it.cond[1];
-  if (k === "job") return wardCondOk(it) ? 1 : 0;
-  if (k === "start") { if (wardCondOk(it)) return 1; const p = startProg(); return (p.c + p.s / 25) / 2; }
-  if (k === "bk") { const g = bkGroupProg(v); return Math.max(0, Math.min(1, g.n / g.size)); }
-  if (k === "fest") return wardFestProg(it);
-  return Math.max(0, Math.min(1, wardCondVal(k) / v));
-}
+function wardCondOk(it) { if (!it.cond) return false; const k = it.cond[0], v = it.cond[1]; if (k === "job") return (S.jobs || []).indexOf(v) >= 0; return wardCondVal(k) >= v; }
+function wardCondProg(it) { if (!it.cond) return 0; const k = it.cond[0], v = it.cond[1]; if (k === "job") return wardCondOk(it) ? 1 : 0; return Math.max(0, Math.min(1, wardCondVal(k) / v)); }
 function wardCondText(it) {
   const k = it.cond[0], v = it.cond[1], I = WCOND[k];
   if (k === "job") return `${I[1](v)} 배치 (인사 기록에서 직무 고르기)`;
-  if (k === "start") return "첫걸음 꾸러미 열기 (첫 말씀 1장 + 첫 집중 25분 · 업무 탭)";
-  if (k === "bk") { const g = bkGroupProg(v); return `${g.name} ${g.size}권 처음 끝까지 읽기 (지금 ${g.n}권)`; }
-  if (k === "fest") {
-    const D = FEST_DEF[v], se = festCur(); if (!D) return "절기 순례";
-    if (se && se.id === v) { const F = festState(), at = it.slot === "title" ? se.maxL : (FEST_SET_ORDER.indexOf(it.slot) + 1) * 5; return `${D.n} 진행 중 · ${at > 0 && at <= se.maxL ? `헌신 길 Lv ${at} 또는 ` : ""}절기 상점 토큰 ${it.slot === "title" ? FEST_TITLE_TOK : FEST_PIECE_TOK} (지금 Lv ${F.lv} · 토큰 ${F.tok})`; }
-    return `${D.n}에서 얻어요 · ${D.when}`;
-  }
   const cur = wardCondVal(k);
   return `${I[0]} ${I[1](v)} (지금 ${k === "study" || k === "rank" ? I[1](cur) : I[1](Math.floor(cur))})`;
 }
@@ -177,7 +148,7 @@ function wardTick(announce) {
     if (news.length > 2) {
       celebrateLater({ wid: news[0], title: `새 옷 ${news.length}벌 해금!`, sub: news.slice(0, 4).map(id => WIT[id].n).join(" · ") + (news.length > 4 ? ` 외 ${news.length - 4}벌` : "") + `<br><span class="muted">옷장에서 입어 보세요 · 가지고만 있어도 모든 피해 +</span>`, tone: "rare", sound: "pass", ms: 3000 });
     } else news.forEach(id => {
-      const it = WIT[id], why = !it.cond ? "" : it.cond[0] === "bk" ? `${bkGroupProg(it.cond[1]).name} 모두 처음 끝냄` : it.cond[0] === "start" ? "첫걸음 꾸러미" : `${WCOND[it.cond[0]][0]} 달성`;
+      const it = WIT[id], why = it.cond ? `${WCOND[it.cond[0]][0]} 달성` : "";
       const t = it.slot === "title" ? "칭호 획득!" : it.slot === "aura" ? "새 오라 해금!" : it.slot === "wfx" ? "무기 이펙트 해금!" : "새 옷 해금!";
       celebrateLater({ wid: id, title: t, sub: `${it.n} · ${WGRADE[it.g].n}<br><span class="muted">${why}${it.set && WSETX[it.set] ? ` · ${WSETX[it.set].n} ${wardCount(x => x.set === it.set)}/${wardSetSize(WSETX[it.set])}` : ""} · 옷장에서 입어 보세요</span>`, tone: it.g >= 4 ? "rare" : "ore", sound: "pass", ms: 2800 });
     });

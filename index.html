@@ -2225,8 +2225,8 @@ const petIcon = id => iconCanvas((g) => {
   else if (id === "robot") drawSprite(g, PET2.robot.idle, PET2PAL.robot, 2, -4, 2, { pretty: true });
   else drawSprite(g, PET2[id].idle, PET2PAL[id], 2, 2, 2, { pretty: true });
 });
-const weaponIcon = (i, lv, size = 40) => { const d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))); return iconCanvas((g, s) => drawWeapon(g, i, lv, s / 2, s - 3 * d, 0.6, s / 20, 0, true), size * d); };
-function weaponBig(i, lv, css = 88) { const d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))), s = Math.round(css * d); const c = iconCanvas(g => drawWeapon(g, i, lv, s / 2, s - 3 * d, 0.6, s / 20, 0, true), s); c.className = "pix"; if (c.style) c.style.width = c.style.height = css + "px"; return c; }
+const weaponIcon = (i, lv, size = 40) => { const d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))); return iconCanvas((g, s) => wpnIconDraw(g, i, lv, s, false), size * d); };
+function weaponBig(i, lv, css = 88) { const d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))), s = Math.round(css * d); const c = iconCanvas(g => wpnIconDraw(g, i, lv, s, true), s); c.className = "pix"; if (c.style) c.style.width = c.style.height = css + "px"; return c; }
 function petBig(id, css = 84) {
   if (id === "clone") return bigSprite(heroMap(PET_HAIR[id]), clonePal(heroPal(PAL.hero)), css);
   return bigSprite(PET2[id].act, PET2PAL[id], css);
@@ -8845,7 +8845,7 @@ function dexRender() {
    5) 실행 의도: 언제·무엇 다음에·어디서 읽을지, 맥락 일치율(계획한 시각 ±60분). 웹 푸시(수파베이스 kjy-noti 함수, 5분마다):
       아직 안 읽은 날만, 하루 2번까지, 알림 온 날을 세 번 이어서 그냥 넘기면 쉼, 문구 24개를 돌려 씀.
    merge·freshState 에서 부르므로 함수 선언과 var 만 씀 */
-var GAME_V = 38;
+var GAME_V = 39;
 var PATCH_DAYS = { 28: "2026-10-09", 29: "2026-10-10", 30: "2026-10-10", 31: "2026-10-10" };
 var MEAS_KEEP = 150;
 var SRBAI_Q = ["나도 모르게 저절로 하게 된다", "일부러 기억하지 않아도 하게 된다", "깊이 생각하지 않고도 하게 된다", "하고 있다는 걸 알아차리기 전에 이미 시작한다"];
@@ -10781,9 +10781,9 @@ function celebMore() {
 /* ---- 업데이트 안내 한 번 (예전 기록만, 출근 카드 뒤에) ---- */
 function feelArrive() {
   try {
-    if (localStorage.getItem(SAVE_KEY + "-feel38")) return;
-    localStorage.setItem(SAVE_KEY + "-feel38", "1");
-    if (!isFreshSave(S)) celebrateLater({ ic: "weapon", title: "곽준영이 몸 전체로 싸워요", sub: "휴대폰 '동작 줄이기'가 켜져 있으면 몸 동작까지 꺼졌었어요 · 이제 그 설정은 화면 흔들림만 줄여요<br>정보 › 인사 기록에서 직무를 눌러 <b>동작 미리 보기</b>로 다섯 직무 동작을 볼 수 있어요", tone: "gold", ms: 5200, keep: 1 });
+    if (localStorage.getItem(SAVE_KEY + "-feel39")) return;
+    localStorage.setItem(SAVE_KEY + "-feel39", "1");
+    if (!isFreshSave(S)) celebrateLater({ ic: "weapon", title: "무기 새 그림이 잘 보여요", sub: "무기 목록·카드에서 무기를 세워서 크게, 그 무기 색 빛을 둘렀어요<br>전투에서도 무기 둘레가 그 무기 색으로 빛나고, 무기 모양을 바꾸면 베기 색도 바뀌어요", tone: "gold", ms: 5200, keep: 1 });
   } catch (e) {}
 }
 
@@ -10817,6 +10817,12 @@ function wPal(i, t) {
   if (w.fx === "rgb") { const h = (t / 8) % 360, hs = k => `hsl(${(h + k) % 360},90%,62%)`; return Object.assign({}, D.p, { c: hs(0), m: hs(90), n: hs(180), o: hs(270), e: hs(40) }); }
   return D.p;
 }
+/* v39 무기 테두리 빛 색 = 그 무기의 이펙트 색 (RGB 키보드는 색이 돎 — 12단계로 끊어 그림 캐시가 늘지 않게) */
+function wpnRimCol(i, t) {
+  const D = WPN36[i], w = WEAPONS[i];
+  if (w && w.fx === "rgb") return `hsl(${Math.floor(((t || 0) / 8) % 360 / 30) * 30},90%,62%)`;
+  return D && D.vfx ? D.vfx[1] : D && D.gl ? D.gl.c : fxColor(w);
+}
 function fxColor(w) { const i = WEAPONS.indexOf(w), D = WPN36[i]; return D && D.vfx ? D.vfx[1] : D && D.gl ? D.gl.c : (w.p.c || w.p.a || w.p.d || "#ffd54a"); }
 /* 무기 그리기: (px, py) = 손, angle 만큼 기울임 (0 = 칼끝이 위). lv = 강화 단계(1~5, 초월은 그 이상) */
 function drawWeapon(ctx, i, lv, px, py, angle, sc, t, still) {
@@ -10829,6 +10835,13 @@ function drawWeapon(ctx, i, lv, px, py, angle, sc, t, still) {
   const pulse = still ? 0 : Math.sin(t / 220) * 0.08;
   if (D.gl) glow(bx + (D.gl.x + 0.5) * u, by + (D.gl.y + 0.5) * u, D.gl.r * u, D.gl.c, (lit ? 0.46 : 0.24) + pulse);   // 화면·광선·불꽃처럼 스스로 빛나는 부분
   else if (lit) glow(0, by + 7 * u, 13 * u, fxColor(w), 0.32 + pulse + (w.leg ? 0.12 : 0));
+  {                                                                         // v39: 무기 색 테두리 빛 — 어두운 배경·이펙트 속에서도 새 모양이 보이게 (실루엣을 네 방향으로 살짝 밀어 깖)
+    const rc = wpnRimCol(i, t), o = Math.max(0.6, u * 0.42), a0 = ctx.globalAlpha;
+    ctx.globalAlpha = a0 * (still ? 0.95 : 0.78);
+    drawSprite(ctx, D.m, pal, bx + o, by, u, { pretty: true, solid: rc }); drawSprite(ctx, D.m, pal, bx - o, by, u, { pretty: true, solid: rc });
+    drawSprite(ctx, D.m, pal, bx, by + o, u, { pretty: true, solid: rc }); drawSprite(ctx, D.m, pal, bx, by - o, u, { pretty: true, solid: rc });
+    ctx.globalAlpha = a0;
+  }
   drawSprite(ctx, D.m, pal, bx, by, u, { pretty: true });
   if (lv >= 3 || w.leg) {                                                   // 강화 반짝임: 무기 몸 위에서 작은 십자가 반짝 (3강부터, 5강·전설은 4개)
     const n = still ? 2 : lv >= 5 || w.leg ? 4 : 2;
@@ -10851,6 +10864,19 @@ function drawWeapon(ctx, i, lv, px, py, angle, sc, t, still) {
     }
   }
   ctx.restore();
+}
+/* v39 무기 그림 아이콘: 세워서 크게 + 무기 색 빛 (목록 40px · 카드 96px · 축하 88px). 예전엔 34° 기울여 작게 그려서 새 모양이 막대처럼 보였음 */
+function wpnIconDraw(g, i, lv, s, big) {
+  const D = WPN36[i]; if (!D) { drawWeapon(g, i, lv, s / 2, s * 0.92, 0.6, s / 20, 0, true); return; }
+  const u = s * (big ? 0.0315 : 0.0335), sc = u * (WPN36_GRIP + 0.5) / 15.5, py = s * 0.06 + (WPN36_GRIP + 0.5) * u + u;
+  const col = WEAPONS[i].fx === "rgb" ? "#ff6bd6" : wpnRimCol(i, 0), cy = s * 0.4, R = s * 0.5;
+  const gr = g.createRadialGradient(s / 2, cy, 1, s / 2, cy, R); gr.addColorStop(0, hexA(col, big ? 0.5 : 0.42)); gr.addColorStop(1, hexA(col, 0)); g.fillStyle = gr; g.fillRect(0, 0, s, s);
+  if (big && D.vfx) {                                                        // 카드·축하: 그 무기로 휘두를 때 나오는 초승달 색을 뒤에
+    g.save(); g.globalAlpha = 0.85; g.strokeStyle = hexA(D.vfx[1], 0.75); g.lineWidth = s * 0.06; g.lineCap = "round";
+    g.beginPath(); g.arc(s * 0.38, s * 0.52, s * 0.36, -1.15, 0.55); g.stroke();
+    g.strokeStyle = hexA(D.vfx[2], 0.8); g.lineWidth = s * 0.022; g.beginPath(); g.arc(s * 0.38, s * 0.52, s * 0.36, -1.0, 0.45); g.stroke(); g.restore();
+  }
+  drawWeapon(g, i, lv, s / 2 + (D.cx - 6) * u, py, 0, sc, 0, true);
 }
 /* 곽준영 무기에서 나온 이펙트(휘두르기 초승달·베기·타격 빛·불꽃)는 들고 있는 무기 색 — 참고 게임처럼 무기를 바꾸면 이펙트 색도 바뀜.
    옷장 '무기 이펙트'는 무기 둘레 장식(불꽃·서리 등)과 타격음 꼬리로 남음. RGB 키보드는 색이 계속 돎 */
@@ -11081,8 +11107,10 @@ function renderTools() {
     const i = S.wi, w = WEAPONS[i], key = i + "-" + S.wl + "-" + skinIdx();
     if (key !== lastKey) {
       lastKey = key;
-      const c = $("wPrev").getContext("2d"); c.imageSmoothingEnabled = false; c.clearRect(0, 0, 96, 96);
-      drawWeapon(c, skinIdx(), skinIdx() === i ? S.wl : 5, 48, 92, 0.5, 4.6, 0, true);
+      const cv0 = $("wPrev"), d = Math.max(1, Math.min(3, Math.round((typeof window !== "undefined" && window.devicePixelRatio) || 1))), sz = 96 * d;
+      if (cv0.width !== sz) { cv0.width = sz; cv0.height = sz; }
+      const c = cv0.getContext("2d"); c.imageSmoothingEnabled = false; c.clearRect(0, 0, sz, sz);
+      wpnIconDraw(c, skinIdx(), skinIdx() === i ? S.wl : 5, sz, true);
     }
     $("wName").className = "wname" + (w.leg ? " leg" : "");
     $("wName").innerHTML = `${w.n}<span class="plus">+${S.wl}</span>`;
@@ -13158,7 +13186,7 @@ function jobStrike(st, crit) {
   const dmg = st.atk * (crit ? st.critMul : 1);
   if (j.id === "sales") {   // 금빛 초승달 베기 · 치명타면 반짝이와 동전
     const [x, y] = monHitPoint(0.5), up = jobHitN % 2;
-    jvAdd("slash", { x: x - 4, y, r: crit ? 48 : 34, ang: up ? -0.45 : 0.5, col: "#ffd54a", dur: crit ? 240 : 170, th: crit ? 15 : 9, span: 1.25, drift: 8 });
+    jvAdd("slash", { x: x - 4, y, r: crit ? 48 : 34, ang: up ? -0.45 : 0.5, col: typeof feelFxPal === "function" ? feelFxPal(performance.now())[1] : "#ffd54a", dur: crit ? 240 : 170, th: crit ? 15 : 9, span: 1.25, drift: 8 });
     if (crit) { jGold(x, y - 10, 5); jvAdd("star", { x: x + 20, y: y - 28, r: 7, col: "#ffd54a", dur: 420 }); jvAdd("star", { x: x - 24, y: y + 10, r: 5, col: "#fff3b0", dur: 360 }); addFloat(x - 40, y - 46, "계약!", "#ffd54a", 22, true); sfx("coin"); }
     return false;   // 피해는 원래 근접 타격 그대로
   }

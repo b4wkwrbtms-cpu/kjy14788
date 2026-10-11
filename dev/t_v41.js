@@ -66,7 +66,7 @@ const m = E(`JSON.stringify((() => { const d = JSON.parse(JSON.stringify(S)); d.
 check("다섯 직무 그대로 · 대표 감사팀", m === JSON.stringify({ jobs: ["sales", "dev", "plan", "hr", "audit"], job: "audit" }), m);
 
 out("[5] 오프라인 정산은 잠깐 효과를 빼고");
-E(`S.floor = 40; S.k = 1; S.maxFloor = 60; S.wi = 6; S.wl = 3; 0`);
+E(`S.floor = 40; S.k = 1; S.maxFloor = 60; S.wi = 6; S.wl = 3; for (const k in skillUntil) skillUntil[k] = 0; idolBuff.t = 0; 0`); // 자동 스킬이 켜져 있던 순간이면 기준값이 달라지므로 먼저 끔
 const plain = E(`JSON.stringify(simulateOfflineV40(3600))`);
 E(`S.active.rage = 600; S.active.haste = 600; S.active.gold2 = 600; 0`);
 const buffedRaw = E(`JSON.stringify(simulateOfflineV40(3600))`);

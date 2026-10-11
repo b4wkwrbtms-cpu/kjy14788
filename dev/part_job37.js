@@ -12,7 +12,7 @@ JOBS.push({ id: "audit", n: "감사", team: "감사팀", type: "정밀 저격형
 JSK.probe = { id: "j_probe", key: "probe", job: "audit", n: "전수 조사", cd: 45, ic: "jsk_probe", d: "정밀 사격 6발 (한 발에 초당 피해 3.5배)" };
 JSK.censure = { id: "j_censure", key: "censure", job: "audit", n: "징계 확정", cd: 70, dur: 8, ic: "jsk_censure", d: "8초 동안 모든 공격이 치명타 · 치명타 피해 2배" };
 /* 기본 공격 설명을 대표 동작에 맞춤 (직무 고르기 창 · 인사 기록 '대표 동작' 줄) */
-[["sales", "몬스터에 붙어 베기 · 마무리 돌진 찌르기 · 치명타마다 '계약!'"], ["dev", "떨어져서 지팡이 끝 코드 탄 · 마무리는 하늘에서 번개"],
+[["sales", "몬스터에 붙어 베기 · 전직 공격: 솟구치는 검기 · 지면 강타 · 관통 검기 · 치명타마다 '계약!'"], ["dev", "떨어져서 지팡이 끝 코드 탄 · 마무리는 하늘에서 번개"],
  ["plan", "떨어져서 레이저 포인터 사격 · 마무리 3연발"], ["hr", "떨어져서 결재 도장 투척 · 마무리는 큰 도장이 쾅"]].forEach(([id, a]) => { const j = JOBS.find(x => x.id === id); if (j) j.atk = a; });
 /* 직무 칸: 대리·과장·부장 + 이사(새로) + 사장 → 다섯 */
 RANKS.forEach(r => { if (r.n === "이사") r.job = true; });

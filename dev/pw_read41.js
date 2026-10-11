@@ -1,0 +1,43 @@
+// 말씀 탭 → 이어 읽기 → 본문 화면: 시간이 어떻게 보이고 세지는지 (390px)
+const { chromium, devices } = require('playwright');
+const fs = require('fs');
+const fontRoutes = require('./pw_fonts.js');
+const PREFIX = process.argv[2] || 'rd41', PAGE = process.argv[3] || 'dbg.html';
+(async () => {
+  const b = await chromium.launch();
+  const save = JSON.parse(fs.readFileSync('restore/save_v30.json', 'utf8'));
+  const ctx = await b.newContext({ ...devices['iPhone 14 Pro'], timezoneId: 'Asia/Seoul', viewport: { width: 390, height: 760 } }); await fontRoutes(ctx);
+  await ctx.addInitScript(f => { if (!sessionStorage.getItem('fixed')) { sessionStorage.setItem('fixed', '1'); ['menu34', 'feel35', 'feel36', 'feel37', 'feel38', 'feel39', 'feel40', 'feel41'].forEach(k => localStorage.setItem('yageun-knight-v3-' + k, '1')); const s = JSON.parse(f); s.t = Date.now(); s.habit = Object.assign(s.habit || {}, { intro: 1 }); localStorage.setItem('yageun-knight-v3', JSON.stringify(s)); } }, JSON.stringify(save));
+  const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+  await p.route('**/bible/krv/*.json', r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(Array.from({ length: 50 }, (_, c) => Array.from({ length: 25 }, (_, v) => `${c + 1}장 ${v + 1}절 본문입니다. 태초에 하나님이 천지를 창조하시니라 땅이 혼돈하고 공허하며 흑암이 깊음 위에 있고`))) }));
+  await p.goto('http://localhost:8766/' + PAGE); await p.waitForTimeout(1500);
+  for (let i = 0; i < 24; i++) { await p.waitForTimeout(300); if (await p.locator('#celeb').isVisible()) await p.click('#celeb', { timeout: 1500 }).catch(() => {}); else if (await p.locator('#back').isVisible()) await p.click('#backGo', { timeout: 1500 }).catch(() => {}); else if (i > 10) break; }
+  await p.evaluate(() => { window.__noAtk = true; });
+  await p.click('#tabs button[data-g="word"]'); await p.waitForTimeout(700);
+  await p.screenshot({ path: `uishots/${PREFIX}_tab.png`, fullPage: true });
+  const tabs = await p.evaluate(() => [...document.querySelectorAll('.tab-sub button, .th-seg button, [data-tab]')].map(b => (b.dataset.tab || '') + ':' + b.textContent.trim()).slice(0, 20));
+  console.log('sub tabs', tabs);
+  console.log('timer card', await p.evaluate(() => { const b = document.getElementById('rtBtn'); return b ? b.textContent + ' | visible=' + !!b.offsetParent : 'none'; }));
+  await p.evaluate(() => window.__ev('rollDay(); S.bible.rsec = 0; S.bible.pused = 0; S.bible.today = []; studyStart(); updateUI(true); 0'));
+  await p.waitForTimeout(400);
+  const rb = p.locator('#rtBtn'); await rb.scrollIntoViewIfNeeded().catch(() => {});
+  await p.screenshot({ path: `uishots/${PREFIX}_card.png` });
+  console.log('btn', await rb.textContent(), '| sub', await p.evaluate(() => (document.getElementById('rtSub') || {}).textContent));
+  await rb.click();
+  await p.waitForTimeout(1500);
+  await p.screenshot({ path: `uishots/${PREFIX}_reader0.png` });
+  const st = () => p.evaluate(() => ({ state: (document.getElementById('rdState') || {}).textContent, tm: (document.getElementById('rdTimer') || {}).textContent, timer: !!window.__ev('S.bible.timer'), study: window.__ev('S.study.running'), paused: window.__ev('!!S.study.pausedByRead'), done: window.__ev('rd ? isToday(rd.b, rd.c) : null') }));
+  console.log('t0', await st());
+  await p.waitForTimeout(3000);
+  console.log('t3', await st());
+  await p.screenshot({ path: `uishots/${PREFIX}_reader3.png` });
+  await p.evaluate(() => { window.__ev('S.bible.rsec = 900; 0'); const b = document.getElementById('rdBody'); b.scrollTop = b.scrollHeight; b.dispatchEvent(new Event('scroll')); });
+  await p.waitForTimeout(1200);
+  console.log('bottom', await st());
+  await p.screenshot({ path: `uishots/${PREFIX}_reader_done.png` });
+  await p.click('[data-r="close"]'); await p.waitForTimeout(800);
+  console.log('closed', await p.evaluate(() => ({ timer: !!window.__ev('S.bible.timer'), study: window.__ev('S.study.running'), btn: (document.getElementById('rtBtn') || {}).textContent })));
+  await p.screenshot({ path: `uishots/${PREFIX}_after.png` });
+  console.log('errors', errs.length ? errs.slice(0, 3) : 'none');
+  await b.close();
+})();

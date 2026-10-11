@@ -10,7 +10,7 @@ const P = {
 run(800);
 for (let i = 0; i < 8; i++) { if ($("celeb") && !$("celeb").hidden) $("celeb").click(); if ($("back") && !$("back").hidden && $("backGo")) $("backGo").click(); run(200); }
 E(`window.__P = ${JSON.stringify(P)}; 0`);
-if (process.env.BAL) { E(`(() => { const o = ${process.env.BAL}; for (const k in o) BAL[k] = (o[k] && typeof o[k] === "object" && !Array.isArray(o[k])) ? Object.assign({}, BAL[k], o[k]) : o[k]; if (typeof hpReset === "function") hpReset(); WITEMS.forEach(it => { if (it.set === "chair" && it.cost) it.cost.ore = BAL.chairOre; }); })(); 0`); }
+if (process.env.BAL) { E(`(() => { const o = ${process.env.BAL}; for (const k in o) BAL[k] = (o[k] && typeof o[k] === "object" && !Array.isArray(o[k])) ? Object.assign({}, BAL[k], o[k]) : o[k]; if (typeof hpReset === "function") hpReset(); WITEMS.forEach(it => { if (it.set === "chair" && it.cost) it.cost.ore = BAL.chairOre; }); if (typeof wtabBuild === "function") wtabBuild(); if (typeof ward43Costs === "function") ward43Costs(); })(); 0`); }
 E(String.raw`
 window.__bot = {};
 (function (B) {
@@ -88,7 +88,10 @@ window.__bot = {};
       };
       WITEMS.forEach(it => {
         const own = S.ward.own[it.id];
-        if (own == null && it.cost && (free("ore") >= (it.cost.ore || 0))) tryOp("buy " + it.id, it.cost.ore || 1, () => { const W2 = wardState(); S.ore -= it.cost.ore || 0; W2.own[it.id] = 0; const cur = W2.eq[it.slot] && WIT[W2.eq[it.slot]]; W2.eq[it.slot] = it.id; return true; });
+        if (own == null && it.cost && Object.keys(it.cost).every(k => free(k) >= it.cost[k])) {
+          let oreEq = 0; for (const k in it.cost) oreEq += it.cost[k] * ({ ore: 1, silver: 40, manna: 3, ame: 400 }[k] || 1);
+          tryOp("buy " + it.id, oreEq || 1, () => { const W2 = wardState(); for (const k in it.cost) S[k] -= it.cost[k]; W2.own[it.id] = 0; W2.eq[it.slot] = it.id; return true; });
+        }
         else if (own != null && it.slot !== "title" && own < WENH_MAX) {
           const c = wardEnhCost(it, own); let afford = true, oreEq = 0;
           for (const k in c) { if (free(k) < c[k]) afford = false; oreEq += c[k] * ({ ore: 1, silver: 40, manna: 3, ame: 400 }[k] || 1); }

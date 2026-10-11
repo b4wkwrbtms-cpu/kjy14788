@@ -85,13 +85,13 @@ check("한 방이 이어져도 한 판이 너무 길지 않음 (2분 안에 끝�
 
 out("[11] 찌르기 고도화 (영업 마무리)");
 E(`S.rank = 2; S.jobs = ["sales"]; S.job = "sales"; jskKey = null; renderJobSkills(); window.__k = {}; const _ja = jvAdd; jvAdd = function (k, o) { window.__k[k] = (window.__k[k] || 0) + 1; return _ja(k, o); }; 0`);
-E(`fHero.mv = "lunge"; warriorFx(MON_X - 10, GROUND - 60, false); 0`);
+E(`window.__mv0 = fHero.mv; fHero.mv = "lunge"; warriorFx(MON_X - 10, GROUND - 60, false); 0`);
 const k1 = JSON.parse(E(`JSON.stringify(window.__k)`));
 check("관통 검기(v40) + 꽂힘·소닉붐·관통 뿜음·두 겹 초승달", k1.kpierce >= 1 && k1.tburst >= 1 && k1.tboom >= 1 && k1.texit >= 1 && k1.kwave >= 2, JSON.stringify(k1));
 E(`window.__k = {}; fHero.mv = "jab"; warriorFx(MON_X - 10, GROUND - 60, false); 0`);
 const k2 = JSON.parse(E(`JSON.stringify(window.__k)`));
 check("터치 찌르기: 작은 꽂힘만 (소닉붐 없음)", k2.tburst >= 1 && !k2.tboom && !k2.texit, JSON.stringify(k2));
-E(`fHero.mv = ""; 0`);
+E(`fHero.mv = window.__mv0; 0`);   // 시험으로 바꾼 기술 이름을 되돌림 (빈 이름이면 다음 프레임 FEEL_MOVES[""] 오류)
 run(1500);
 
 out(`  통과 ${ok.length} · 실패 ${bad.length}` + (bad.length ? "  → " + bad.join(" / ") : ""));

@@ -38,7 +38,6 @@ function jobSubs() { const js = (typeof S !== "undefined" && S && S.jobs) || [];
 function jobSubMul() { return 1 + JOB_SUB_BONUS * jobSubs().length; }
 /* 매 타격: 겸직 직무 색 불꽃 (피해는 careerAtk 배율에 이미 들어 있음) */
 function jobAttrFx(x, y) {
-  if (reduceMotion) return;
   jobSubs().forEach((id, i) => {
     const c = JOB_ATTR[id].col;
     for (let k = 0; k < 2; k++) sparks.push({ x, y, vx: 2 + Math.random() * 6, vy: -3 + (i - 1.5) * 1.6 + Math.random() * 2, life: 0.85, c, line: true });
@@ -53,7 +52,7 @@ function jobSubProc(st) {
     if (!mon || mon.dying) return;
     const A = JOB_ATTR[id], px = x + [0, 14, -12, 22][i % 4], py = y + [0, -16, 12, -4][i % 4];
     let d = st.atk * JOB_SUB_PROC, crit = false;
-    if (!reduceMotion) jvAdd("sphere", { x: px, y: py, R: 24, col: A.col, dur: 320 });
+    jvAdd("sphere", { x: px, y: py, R: 24, col: A.col, dur: 320 });
     if (id === "sales") { jGold(px, py - 10, 4); jvAdd("star", { x: px + 14, y: py - 26, r: 8, col: "#ffd54a", dur: 420 }); }
     else if (id === "dev") { const segs = []; let qx = o.x, qy = o.y; for (let k = 0; k < 3; k++) { const nx = px + (Math.random() - .5) * 46, ny = py + (Math.random() - .5) * 56; segs.push(jBoltPts(qx, qy, nx, ny, 6, 16)); qx = nx; qy = ny; } jvAdd("chain", { dur: 260, segs }); jvAdd("crackle", { x: px, y: py, r: 26, col: "#bfefff", dur: 220 }); }
     else if (id === "plan") { jvAdd("pointer", { dur: 200, x0: o.x, y0: o.y, x1: px, y1: py - 6, snipe: mon.kind >= 1 }); if (mon.kind >= 1) d *= 2; }
@@ -69,7 +68,7 @@ function jobSubProc(st) {
 }
 /* 원거리 직무로 터치했을 때: 총구·지팡이에서 탄이 날아가 보이게 (피해는 feelTap이 이미 넣음) */
 function jobTapFx(ix, iy) {
-  const j = curJob(); if (!j || reduceMotion) return;
+  const pv = typeof jobPreviewId === "function" ? jobPreviewId() : "", j = (pv && jobById(pv)) || curJob(); if (!j) return;
   const kit = FEEL_KIT_OF[j.id]; if (!kit || kit === "melee") return;
   const o = feelMuzzle(fHero.mv && FEEL_MOVES[fHero.mv].tap ? fHero.mv : FEEL_KITS[kit].tap);
   if (kit === "gun") jvAdd("pointer", { dur: 110, x0: o.x, y0: o.y, x1: ix, y1: iy, snipe: false });

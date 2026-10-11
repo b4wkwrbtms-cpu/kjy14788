@@ -73,7 +73,8 @@ var FEEL_KITS = {
   snipe:  { n: "저격수", chain: ["n_aim", "n_aim2", "n_pierce"],  tap: "n_tap", grip: "gun",   range: true,  stand: [-66, 40] },
 };
 var FEEL_KIT_OF = { sales: "melee", plan: "gun", dev: "magic", hr: "summon", audit: "snipe" };
-function feelKitId() { const j = typeof curJob === "function" && typeof S !== "undefined" && S ? curJob() : null; return (j && FEEL_KIT_OF[j.id]) || "melee"; }
+function feelMainKitId() { const j = typeof curJob === "function" && typeof S !== "undefined" && S ? curJob() : null; return (j && FEEL_KIT_OF[j.id]) || "melee"; }
+function feelKitId() { const pv = typeof jobPreviewId === "function" ? jobPreviewId() : ""; return (pv && FEEL_KIT_OF[pv]) || feelMainKitId(); }   // v38: '동작 미리 보기' 동안은 그 직무 동작
 function feelKit() { return FEEL_KITS[feelKitId()]; }
 /* v37 서는 자리: 대표 직무가 바뀌면 곽준영은 뒤로·몬스터는 앞으로 미끄러지듯(≈0.3초) 옮김. HERO_X·MON_X(let)를 매 프레임 여기서 정함 */
 var feelStand = { h: 0, m: 0, on: false };
@@ -284,7 +285,7 @@ function feelStrikeReady(h) {
 }
 /* 내려치는 순간 뒷발을 뒤로 빼며 땅을 밀어냄 → 뒷발 자리에 작은 먼지 (v36) */
 function feelStepDust(mv) {
-  if (reduceMotion) return;
+  if (feelBodyK() <= 0) return;
   const B = (FEEL_KEYS[mv] || FEEL_KEYS.chop).B;
   addDust(HERO_X + B.dx + (RIG_LEG.B.c + 0.5 + B.fB) * 3.5, GROUND - 3, mv === "lunge" ? 3 : 2, -1, false);
 }
@@ -355,7 +356,7 @@ function feelTick(st) {
   if (h.frz > 0) h.frz--;                                                  // 히트스톱 중엔 프레임·판정·버퍼 시간이 멈춤 (CP-13 advanceMove)
   else { if (h.buf > 0) h.buf--; fHeroM.update(); }
   if (V.frz > 0) V.frz--;
-  else if (!reduceMotion) { if (V.kbF > 0) { V.kbx += 3; V.kbF--; } else if (V.kbx > 0) V.kbx = Math.max(0, V.kbx - 1.5); }   // 넉백 3 px/f (P-FEEL-17), 돌아오기 1.5 px/f (튜닝)
+  else if (feelBodyK() > 0) { if (V.kbF > 0) { V.kbx += 3; V.kbF--; } else if (V.kbx > 0) V.kbx = Math.max(0, V.kbx - 1.5); }   // 넉백 3 px/f (P-FEEL-17), 돌아오기 1.5 px/f (튜닝)
 }
 function feelVictim() { if (feelV.m !== mon) { feelV.m = mon; feelV.frz = 0; feelV.kbF = 0; feelV.kbx = 0; feelV.whiteUntil = -1; feelV.whiteNew = false; } return feelV; }
 function feelMonFrozen() { return !!(mon && feelV.m === mon && feelV.frz > 0); }
@@ -394,13 +395,13 @@ function feelImpact(b) {
   if (flashK() > 0 && now - V.lastWhite >= FEEL_FLASH_GAP) { V.whiteUntil = now + 1; V.whiteNew = true; V.lastWhite = now; }
   mon.red = Math.max(mon.red, 0.7);
   const dir = M ? M.dir : [1, 0];
-  if (!reduceMotion) {
+  if (feelBodyK() > 0) {                                                     // v38: 맞고 밀리기·찌그러짐은 몸 동작 설정을 따름 (휴대폰 동작 줄이기와 따로)
     V.kbF = Math.max(V.kbF, R.kb);
     mon.squash = Math.max(mon.squash, b.mv === "chop" ? (big ? 1.2 : 0.85) : b.mv === "lunge" ? 0.75 : 0.5);
     mon.tilt = Math.max(mon.tilt, b.mv === "rise" ? (big ? 1 : 0.7) : 0.3);
   }
   const [ix, iy] = b.x != null ? [b.x, b.y] : feelHitPoint(b.mv);
-  if (!reduceMotion) {
+  {                                                                         // 불꽃·먼지는 늘 (화면이 흔들리는 게 아니라서)
     const FP = feelFxPal(performance.now());                                // v36: 불꽃도 무기 이펙트 색
     for (let i = 0; i < R.sparks; i++) { const sp = 3 + Math.random() * (big ? 10 : 7); sparks.push({ x: ix, y: iy, vx: dir[0] * sp + (Math.random() - .5) * 3, vy: dir[1] * sp + (Math.random() - .5) * 3 - 1, life: 1, c: i % 3 ? FP[2] : i % 2 ? FP[1] : "#ffffff", line: true }); }
     if (melee) addBurst(ix, iy, big);
@@ -414,7 +415,7 @@ function feelImpact(b) {
     if (mon.kind >= 1 && d >= 8) triggerImpactFrame(ix, iy);                // 만화식 임팩트 프레임은 보스급에 큰 한 방일 때만
     cam.kick = Math.max(cam.kick, 0.6);
     if (fancy && performance.now() - critFxT > 420) { critFxT = performance.now(); critLines = 1; }
-    if (!reduceMotion) { const col = monColor(); for (let i = 0; i < 5; i++) debris.push({ x: ix + (Math.random() - .5) * 20, y: iy, vx: dir[0] * (2 + Math.random() * 5), vy: -3 - Math.random() * 5, life: 1, c: col, s: 4 + Math.random() * 4 }); }
+    { const col = monColor(); for (let i = 0; i < 5; i++) debris.push({ x: ix + (Math.random() - .5) * 20, y: iy, vx: dir[0] * (2 + Math.random() * 5), vy: -3 - Math.random() * 5, life: 1, c: col, s: 4 + Math.random() * 4 }); }
     const stl = slashStyle(); if (fancy && (stl === "holy" || stl === "gold")) addSkyStrike(MON_X, true);
     sfx("crit");
   }
@@ -434,7 +435,7 @@ function feelKill(boss) {
   feelTrauma(K.trauma, boss ? 1 : FEEL_SHAKE.killCap); feelKick([1, -0.2], K.kick);
   feelMark(MON_X - 6, boss ? 76 : 46, "kill");
   if (boss) triggerImpactFrame(MON_X - 10, GROUND - monSize().h * 0.5);
-  if (!reduceMotion) { const { w: mw, h: mh } = monSize(), col = monColor(); for (let i = 0; i < (boss ? 10 : 6); i++) debris.push({ x: MON_X + (Math.random() - .5) * mw * 0.5, y: GROUND - mh * (0.3 + Math.random() * 0.5), vx: 2 + Math.random() * 6, vy: -4 - Math.random() * 6, life: 1, c: col, s: 4 + Math.random() * 5 }); }
+  { const { w: mw, h: mh } = monSize(), col = monColor(); for (let i = 0; i < (boss ? 10 : 6); i++) debris.push({ x: MON_X + (Math.random() - .5) * mw * 0.5, y: GROUND - mh * (0.3 + Math.random() * 0.5), vx: 2 + Math.random() * 6, vy: -4 - Math.random() * 6, life: 1, c: col, s: 4 + Math.random() * 5 }); }
 }
 /* 맞는 자리 = 맞는 순간 칼끝 (이펙트 = 판정, AP-FEEL-11), 몬스터 몸 안으로 맞춤 */
 function feelBox() {
@@ -508,9 +509,12 @@ function feelEaseOut(k) { return 1 - Math.pow(1 - k, 3); }
 function feelEaseIn(k) { return k * k; }
 function feelEaseIO(k) { return 0.5 - 0.5 * Math.cos(Math.PI * k); }
 function feelLerp(P, Q, k) { const o = {}; for (const key in FEEL_IDLE) o[key] = P[key] + (Q[key] - P[key]) * k; return o; }
+/* v38 곽준영 몸 동작 크기: 설정 › 화면 '곽준영 몸 동작' (1 기본 · 0.5 약하게 · 0 끄기 = 팔·무기만).
+   휴대폰 '동작 줄이기'는 화면 흔들림·카메라만 줄이고 몸 동작은 안 건드림 (사용자 아이폰에서 몸이 안 움직이던 원인) */
+function feelBodyK() { const f = typeof fxSet === "function" && typeof S !== "undefined" && S ? fxSet() : null, v = f ? +f.body : 1; return f && f.body != null && v >= 0 && v <= 1 ? v : 1; }
 function feelIdle() {
   const o = Object.assign({}, FEEL_IDLE);
-  if (!reduceMotion) { const now = performance.now(); o.hip = Math.floor(now / 620) % 2; o.wa = FEEL_IDLE.wa + Math.sin(now / 700) * 0.05; }   // 숨쉬기: 골반 1칸(무릎은 곧게)
+  if (feelBodyK() > 0) { const now = performance.now(); o.hip = Math.floor(now / 620) % 2; o.wa = FEEL_IDLE.wa + Math.sin(now / 700) * 0.05; }   // 숨쉬기: 골반 1칸(무릎은 곧게)
   return o;
 }
 /* 프레임 fr(소수 = 틱 사이 보간, CP-01 alpha)의 자세 */
@@ -529,8 +533,9 @@ function feelFrame() { const h = fHero; return h.f + (h.frz > 0 || fHeroM.cur ==
 function feelPoseRaw() { const h = fHero; return h.mv && h.fd ? feelPoseAt(h.mv, h.fd, h.p0 || FEEL_IDLE, feelFrame()) : feelIdle(); }
 function feelPoseNow() {
   const P = feelPoseRaw();
-  if (reduceMotion) { P.dx = 0; P.lift = 0; RIG_BODY_KEYS.forEach(k => { P[k] = 0; }); }       // 움직임 줄이기: 팔·무기만 움직임
-  else P.dx += feelShakeOff(fHero.frz, fHero.frzMax, fHero.vs);                               // 공격자는 완전히 멈추지 않음 (P-FEEL-15 ⑦)
+  const bk = feelBodyK();
+  if (bk < 1) { P.dx *= bk; P.lift *= bk; RIG_BODY_KEYS.forEach(k => { P[k] *= bk; }); }      // 설정 '곽준영 몸 동작': 약하게 = 반만 · 끄기 = 팔·무기만
+  P.dx += feelShakeOff(fHero.frz, fHero.frzMax, fHero.vs);                                     // 공격자는 완전히 멈추지 않음 (P-FEEL-15 ⑦, 동작 줄이기면 0)
   P.ang = P.wa;
   return P;
 }
@@ -688,20 +693,20 @@ function feelMuzzle(mv) {
 }
 /* 쏘는 순간(판정 첫 틱): 반동 카메라 킥 + 종이 탄피 (G-SHT-02: 섬광·킥·반동·탄피) */
 function feelRelease(h) {
-  const M = h && h.mv && FEEL_MOVES[h.mv]; if (!M || !M.shot || reduceMotion) return;
+  const M = h && h.mv && FEEL_MOVES[h.mv]; if (!M || !M.shot) return;
   feelKick([-1, -0.15], M.kit === "snipe" ? 5 : 2.5);
   if (typeof jobParts !== "undefined") for (let i = 0; i < (M.shot > 1 ? 3 : 1); i++)
     jobParts.push({ kind: "paper", x: heroHand.x - 6, y: heroHand.y - 4, vx: -1.2 - Math.random() * 1.6, vy: -3 - Math.random() * 2.2, g: 0.32, life: 1, dur: 650 + Math.random() * 200, c: "#f4f1e6", s: 4 });
 }
 /* 그림 이펙트 (렌더만, 게임 상태는 안 바꿈): 총구 섬광 · 저격 조준선(예고) · 코드 마법진 · 결재판 */
 function feelKitFx(gx, gy, pose, t) {
-  const h = fHero, M = h.mv && FEEL_MOVES[h.mv]; if (!M || M.kit === "melee" || reduceMotion || !h.fd) return;
+  const fk = typeof flashK === "function" ? flashK() : 1, h = fHero, M = h.mv && FEEL_MOVES[h.mv]; if (!M || M.kit === "melee" || !h.fd) return;
   const fd = h.fd, fr = feelFrame(), W = fd.startup - fd.strike, S = fd.startup, A = S + fd.active;
   const pal = feelFxPal(t), tx = gx + Math.sin(pose.wa) * FEEL_BLADE, ty = gy - Math.cos(pose.wa) * FEEL_BLADE;
   ctx.save();
   if (M.shot) {
     const n = M.shot, gap = n > 1 ? fd.active / n : 1;
-    for (let i = 0; i < n; i++) { const k = (fr - (S + i * gap)) / 2.2; if (k >= 0 && k < 1) feelFlash(tx, ty, pose.wa, (M.kit === "snipe" ? 2.3 : 1.5) * (1 - 0.4 * k), pal, 1 - k); }
+    for (let i = 0; i < n; i++) { const k = (fr - (S + i * gap)) / 2.2; if (k >= 0 && k < 1 && fk > 0) feelFlash(tx, ty, pose.wa, (M.kit === "snipe" ? 2.3 : 1.5) * (1 - 0.4 * k) * (0.6 + 0.4 * fk), pal, (1 - k) * fk); }
   }
   if (M.sight && fr < S && fr > W * 0.25 && mon) {
     const [ax, ay] = feelHitPoint(h.mv), k = Math.min(1, (fr - W * 0.25) / Math.max(1, S - W * 0.25));
@@ -759,7 +764,7 @@ function feelBlade(look, hx0, hy0, hs, p) {
    히트스톱 동안은 기술 프레임이 멈추므로 궤적도 멈춤(프리즈 프레임). 찌르기·돌진은 짧은 직선만. 색은 무기 이펙트 색(feelFxPal) */
 var FEEL_SMEAR_LIFE = 12;
 function feelSmear(look, hx0, hy0, hs, t) {
-  const h = fHero; if (reduceMotion || !h.mv || !h.fd || !FEEL_MOVES[h.mv].smear) return;
+  const h = fHero; if (feelBodyK() <= 0 || !h.mv || !h.fd || !FEEL_MOVES[h.mv].smear) return;
   const fd = h.fd, W = fd.startup - fd.strike, A = fd.startup + fd.active, fr = feelFrame(), thrust = h.mv === "jab" || h.mv === "lunge";
   const life = thrust ? 3 : FEEL_SMEAR_LIFE;
   if (fr <= W || fr > A + life) return;

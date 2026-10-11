@@ -62,9 +62,9 @@ const realNow = Date.now;
 class FakeDate extends Date { constructor(...a) { if (a.length) super(...a); else super(wall); } static now() { return wall; } }
 global.Date.now = () => wall;
 const document = { hidden: false, activeElement: null, getElementById: id => qsa(body, "#" + id)[0] || null, createElement: t => new El(t), createTextNode: t => { const e = new El("#text"); e._text = t; e.isText = true; return e; }, querySelectorAll: s => qsa(body, s), addEventListener(t, f) { (docL[t] = docL[t] || []).push(f); } }; const docL = {};
-const window = { matchMedia: () => ({ matches: false }), scrollTo() {}, claude: undefined };
+const window = { matchMedia: () => ({ matches: !!process.env.RM }), scrollTo() {}, claude: undefined };
 const sandbox = { document, window, localStorage: { getItem: k => store.has(k) ? store.get(k) : null, setItem: (k, v) => store.set(k, v) },
-  requestAnimationFrame: f => { rafCb = f; }, matchMedia: () => ({ matches: false }), performance: { now: () => now }, setInterval: (f, ms) => intervals.push(f), setTimeout: (f) => { try { f(); } catch (e) { errors.push("timeout: " + e.stack); } }, clearTimeout() {}, console, Math, Date: FakeDate };
+  requestAnimationFrame: f => { rafCb = f; }, matchMedia: () => ({ matches: !!process.env.RM }), performance: { now: () => now }, setInterval: (f, ms) => intervals.push(f), setTimeout: (f) => { try { f(); } catch (e) { errors.push("timeout: " + e.stack); } }, clearTimeout() {}, console, Math, Date: FakeDate };
 const script = html.match(/<script>([\s\S]*)<\/script>/)[1].replace("const $ = id => document.getElementById(id);", "const $ = id => document.getElementById(id); window.__ev = c => eval(c);");
 const fn = new Function(...Object.keys(sandbox), script);
 try { fn(...Object.values(sandbox)); } catch (e) { errors.push("boot: " + e.stack); }

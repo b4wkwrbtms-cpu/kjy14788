@@ -24,7 +24,7 @@
 
 ## 시험
 - t_v43.js 50개(체력 바 [10] 포함) · t_boot43.js · 회귀 t_v42r 24 · t_v41 25 · t_v40 11 · t_v38 9 · t_job37 26 · t_stand37 10 · t_ui35 7 · t_feel3 16(restore/save.json). t_v42/t_v42r의 fHero.mv = "" → 원래 값으로 되돌리게 고침.
-- 캡처: pw_v43.js [prefix page all|icons|battle|ward|grow|chars], pw_v43bt.js, pw_v43w.js, pw_v43hp.js(프레임 몽타주), pw_v43hp2.js(맞은 뒤 시간 기록) — 모두 reducedMotion·사용자 기록. 서버: pwa 폴더 python http.server 8766.
+- 캡처: pw_v43.js [prefix page all|icons|battle|ward|grow|chars], pw_v43bt.js, pw_v43w.js, pw_v43hp.js(프레임 몽타주), pw_v43hp2.js(맞은 뒤 시간 기록), pw_v43bt3.js + bc_sheet.py(등급별 전투 비교: 공격·스킬 자동·숫자 끄고 S.gold 0으로 자동 강화 막음 → uishots/v43bc_report.png) — 사용자 기록으로. 서버: pwa 폴더 python http.server 8766.
 
 ## 다음에 볼 것
 - 사용자 반응: 새 무기 그림·색, 등급 이펙트 양(초월이 너무 번쩍이면 grays/gnova 간격 늘리기), 옷 값(출장 20/6 · 총수 90/35), 체력 자국 속도(hold 110 · τ 210).

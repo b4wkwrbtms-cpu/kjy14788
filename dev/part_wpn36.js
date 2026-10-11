@@ -28,6 +28,12 @@ function wPal(i, t) {
   if (w.fx === "rgb") { const h = (t / 8) % 360, hs = k => `hsl(${(h + k) % 360},90%,62%)`; return Object.assign({}, D.p, { c: hs(0), m: hs(90), n: hs(180), o: hs(270), e: hs(40) }); }
   return D.p;
 }
+/* v39 무기 테두리 빛 색 = 그 무기의 이펙트 색 (RGB 키보드는 색이 돎 — 12단계로 끊어 그림 캐시가 늘지 않게) */
+function wpnRimCol(i, t) {
+  const D = WPN36[i], w = WEAPONS[i];
+  if (w && w.fx === "rgb") return `hsl(${Math.floor(((t || 0) / 8) % 360 / 30) * 30},90%,62%)`;
+  return D && D.vfx ? D.vfx[1] : D && D.gl ? D.gl.c : fxColor(w);
+}
 function fxColor(w) { const i = WEAPONS.indexOf(w), D = WPN36[i]; return D && D.vfx ? D.vfx[1] : D && D.gl ? D.gl.c : (w.p.c || w.p.a || w.p.d || "#ffd54a"); }
 /* 무기 그리기: (px, py) = 손, angle 만큼 기울임 (0 = 칼끝이 위). lv = 강화 단계(1~5, 초월은 그 이상) */
 function drawWeapon(ctx, i, lv, px, py, angle, sc, t, still) {
@@ -40,6 +46,13 @@ function drawWeapon(ctx, i, lv, px, py, angle, sc, t, still) {
   const pulse = still ? 0 : Math.sin(t / 220) * 0.08;
   if (D.gl) glow(bx + (D.gl.x + 0.5) * u, by + (D.gl.y + 0.5) * u, D.gl.r * u, D.gl.c, (lit ? 0.46 : 0.24) + pulse);   // 화면·광선·불꽃처럼 스스로 빛나는 부분
   else if (lit) glow(0, by + 7 * u, 13 * u, fxColor(w), 0.32 + pulse + (w.leg ? 0.12 : 0));
+  {                                                                         // v39: 무기 색 테두리 빛 — 어두운 배경·이펙트 속에서도 새 모양이 보이게 (실루엣을 네 방향으로 살짝 밀어 깖)
+    const rc = wpnRimCol(i, t), o = Math.max(0.6, u * 0.42), a0 = ctx.globalAlpha;
+    ctx.globalAlpha = a0 * (still ? 0.95 : 0.78);
+    drawSprite(ctx, D.m, pal, bx + o, by, u, { pretty: true, solid: rc }); drawSprite(ctx, D.m, pal, bx - o, by, u, { pretty: true, solid: rc });
+    drawSprite(ctx, D.m, pal, bx, by + o, u, { pretty: true, solid: rc }); drawSprite(ctx, D.m, pal, bx, by - o, u, { pretty: true, solid: rc });
+    ctx.globalAlpha = a0;
+  }
   drawSprite(ctx, D.m, pal, bx, by, u, { pretty: true });
   if (lv >= 3 || w.leg) {                                                   // 강화 반짝임: 무기 몸 위에서 작은 십자가 반짝 (3강부터, 5강·전설은 4개)
     const n = still ? 2 : lv >= 5 || w.leg ? 4 : 2;
@@ -62,6 +75,19 @@ function drawWeapon(ctx, i, lv, px, py, angle, sc, t, still) {
     }
   }
   ctx.restore();
+}
+/* v39 무기 그림 아이콘: 세워서 크게 + 무기 색 빛 (목록 40px · 카드 96px · 축하 88px). 예전엔 34° 기울여 작게 그려서 새 모양이 막대처럼 보였음 */
+function wpnIconDraw(g, i, lv, s, big) {
+  const D = WPN36[i]; if (!D) { drawWeapon(g, i, lv, s / 2, s * 0.92, 0.6, s / 20, 0, true); return; }
+  const u = s * (big ? 0.0315 : 0.0335), sc = u * (WPN36_GRIP + 0.5) / 15.5, py = s * 0.06 + (WPN36_GRIP + 0.5) * u + u;
+  const col = WEAPONS[i].fx === "rgb" ? "#ff6bd6" : wpnRimCol(i, 0), cy = s * 0.4, R = s * 0.5;
+  const gr = g.createRadialGradient(s / 2, cy, 1, s / 2, cy, R); gr.addColorStop(0, hexA(col, big ? 0.5 : 0.42)); gr.addColorStop(1, hexA(col, 0)); g.fillStyle = gr; g.fillRect(0, 0, s, s);
+  if (big && D.vfx) {                                                        // 카드·축하: 그 무기로 휘두를 때 나오는 초승달 색을 뒤에
+    g.save(); g.globalAlpha = 0.85; g.strokeStyle = hexA(D.vfx[1], 0.75); g.lineWidth = s * 0.06; g.lineCap = "round";
+    g.beginPath(); g.arc(s * 0.38, s * 0.52, s * 0.36, -1.15, 0.55); g.stroke();
+    g.strokeStyle = hexA(D.vfx[2], 0.8); g.lineWidth = s * 0.022; g.beginPath(); g.arc(s * 0.38, s * 0.52, s * 0.36, -1.0, 0.45); g.stroke(); g.restore();
+  }
+  drawWeapon(g, i, lv, s / 2 + (D.cx - 6) * u, py, 0, sc, 0, true);
 }
 /* 곽준영 무기에서 나온 이펙트(휘두르기 초승달·베기·타격 빛·불꽃)는 들고 있는 무기 색 — 참고 게임처럼 무기를 바꾸면 이펙트 색도 바뀜.
    옷장 '무기 이펙트'는 무기 둘레 장식(불꽃·서리 등)과 타격음 꼬리로 남음. RGB 키보드는 색이 계속 돎 */

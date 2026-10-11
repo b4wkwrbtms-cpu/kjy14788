@@ -5111,7 +5111,7 @@ function draw(t) {
   drawPixelFx(t, hx);
   rings.forEach(r => {
     const k = 1 - r.life, rad = (r.big ? 26 : 12) + k * (r.big ? 110 : (r.crit ? 70 : 48));
-    ctx.strokeStyle = hexA(r.crit ? "#ffb13b" : "#ffffff", r.life * 0.9); ctx.lineWidth = (r.big ? 10 : 6) * r.life + 1;
+    ctx.strokeStyle = hexA(r.col || (r.crit ? "#ffb13b" : "#ffffff"), r.life * 0.9); ctx.lineWidth = (r.big ? 10 : 6) * r.life + 1;
     ctx.beginPath(); ctx.arc(r.x, r.y, rad, 0, Math.PI * 2); ctx.stroke();
     if (r.life > 0.6) { ctx.fillStyle = hexA("#ffffff", (r.life - 0.6) * 2); ctx.beginPath(); ctx.arc(r.x, r.y, 10 + k * 22, 0, Math.PI * 2); ctx.fill(); }
   });
@@ -7137,8 +7137,8 @@ function castSkill(s, auto) {
   sfx("buff"); addFloat(HERO_X + 30, GROUND - 150, s.n + "!", "#ffd54a", 30, true);
   if (s.id === "stamp") skillFx.push({ kind: "stamp", t: 0, dur: 900, hitAt: 260, dmg: st.dps * 20 });
   else if (s.id === "resign") skillFx.push({ kind: "letter", t: 0, dur: 1000, hitAt: 380 });
-  else if (s.id === "rush") { rings.push({ x: HERO_X + 30, y: GROUND - 50, life: 1, crit: false, big: true }); screenFlash = Math.max(screenFlash, 0.15); flashCol = "#c98a4a"; }
-  else if (s.id === "night") { rings.push({ x: HERO_X + 30, y: GROUND - 50, life: 1, crit: true, big: true }); screenFlash = Math.max(screenFlash, 0.25); flashCol = "#5a48c8"; say("오늘은 끝장을 본다!", 2); }
+  else if (s.id === "rush") { const wc = typeof feelFxPal === "function" ? feelFxPal(performance.now())[1] : "#c98a4a"; rings.push({ x: HERO_X + 30, y: GROUND - 50, life: 1, crit: false, big: true, col: wc }); screenFlash = Math.max(screenFlash, 0.15); flashCol = wc; }
+  else if (s.id === "night") { const wp = typeof feelFxPal === "function" ? feelFxPal(performance.now()) : ["#5a48c8", "#ffb13b"]; rings.push({ x: HERO_X + 30, y: GROUND - 50, life: 1, crit: true, big: true, col: wp[1] }); screenFlash = Math.max(screenFlash, 0.25); flashCol = wp[0]; say("오늘은 끝장을 본다!", 2); }
   else if (s.id === "party") {
     let n = 0; const cl = petLv("cat"), ca = petLv("cactus"), il = petLv("idol");
     petPartyHop(); if (petLv("ddeok") && mon && !mon.dying) ddeokThrow();
@@ -8845,7 +8845,7 @@ function dexRender() {
    5) 실행 의도: 언제·무엇 다음에·어디서 읽을지, 맥락 일치율(계획한 시각 ±60분). 웹 푸시(수파베이스 kjy-noti 함수, 5분마다):
       아직 안 읽은 날만, 하루 2번까지, 알림 온 날을 세 번 이어서 그냥 넘기면 쉼, 문구 24개를 돌려 씀.
    merge·freshState 에서 부르므로 함수 선언과 var 만 씀 */
-var GAME_V = 39;
+var GAME_V = 40;
 var PATCH_DAYS = { 28: "2026-10-09", 29: "2026-10-10", 30: "2026-10-10", 31: "2026-10-10" };
 var MEAS_KEEP = 150;
 var SRBAI_Q = ["나도 모르게 저절로 하게 된다", "일부러 기억하지 않아도 하게 된다", "깊이 생각하지 않고도 하게 된다", "하고 있다는 걸 알아차리기 전에 이미 시작한다"];
@@ -10781,9 +10781,9 @@ function celebMore() {
 /* ---- 업데이트 안내 한 번 (예전 기록만, 출근 카드 뒤에) ---- */
 function feelArrive() {
   try {
-    if (localStorage.getItem(SAVE_KEY + "-feel39")) return;
-    localStorage.setItem(SAVE_KEY + "-feel39", "1");
-    if (!isFreshSave(S)) celebrateLater({ ic: "weapon", title: "무기 새 그림이 잘 보여요", sub: "무기 목록·카드에서 무기를 세워서 크게, 그 무기 색 빛을 둘렀어요<br>전투에서도 무기 둘레가 그 무기 색으로 빛나고, 무기 모양을 바꾸면 베기 색도 바뀌어요", tone: "gold", ms: 5200, keep: 1 });
+    if (localStorage.getItem(SAVE_KEY + "-feel40")) return;
+    localStorage.setItem(SAVE_KEY + "-feel40", "1");
+    if (!isFreshSave(S)) celebrateLater({ ic: "weapon", title: "무기 색 = 스킬 색 · 전직 공격", sub: "무기 모양을 바꾸면 직무 스킬과 기본 공격 이펙트가 그 무기 색으로 바뀌어요<br>영업(전사)은 전직 공격으로 싸워요: 솟구치는 검기 · 지면 강타 · 관통 검기", tone: "gold", ms: 5400, keep: 1 });
   } catch (e) {}
 }
 
@@ -13186,7 +13186,7 @@ function jobStrike(st, crit) {
   const dmg = st.atk * (crit ? st.critMul : 1);
   if (j.id === "sales") {   // 금빛 초승달 베기 · 치명타면 반짝이와 동전
     const [x, y] = monHitPoint(0.5), up = jobHitN % 2;
-    jvAdd("slash", { x: x - 4, y, r: crit ? 48 : 34, ang: up ? -0.45 : 0.5, col: typeof feelFxPal === "function" ? feelFxPal(performance.now())[1] : "#ffd54a", dur: crit ? 240 : 170, th: crit ? 15 : 9, span: 1.25, drift: 8 });
+    warriorFx(x, y, crit);   // v40 전직 공격: 올려베기 솟구치는 검기 · 내려치기 지면 강타 · 마무리 관통 검기 (무기 색)
     if (crit) { jGold(x, y - 10, 5); jvAdd("star", { x: x + 20, y: y - 28, r: 7, col: "#ffd54a", dur: 420 }); jvAdd("star", { x: x - 24, y: y + 10, r: 5, col: "#fff3b0", dur: 360 }); addFloat(x - 40, y - 46, "계약!", "#ffd54a", 22, true); sfx("coin"); }
     return false;   // 피해는 원래 근접 타격 그대로
   }
@@ -13637,22 +13637,25 @@ var JFX_DRAW = {
 };
 function drawJobFx(t) {
   if (!jobFx.length && !jobProj.length && !jobParts.length && !(jobMarks.m && jobMarks.n)) return;
+  if (typeof tintSync === "function") tintSync(t);
   ctx.save();
   if (jobMarks.m && jobMarks.m === mon && !mon.dying && jobMarks.n) {   // 인주 자국 (적 몸에 남음)
     const { w: mw, h: mh } = msz(), ox = MON_X + mon.kb * 26;
     jobMarks.pos.forEach(p => jSeal(ox + p[0] * mw, GROUND - p[1] * mh, 8, p[2], 0.82, "인"));
   }
-  for (const f of jobFx) { if (f.t < 0) continue; const d = JFX_DRAW[f.kind]; if (d) { try { d(f, t); } catch (e) { jobFxErr = f.kind + ": " + e; } } }
+  for (const f of jobFx) { if (f.t < 0) continue; const d = JFX_DRAW[f.kind]; if (d) { tintOn = jobTintOn(f); try { d(f, t); } catch (e) { jobFxErr = f.kind + ": " + e; } tintOn = false; } }
   for (const p of jobProj) {
     const k = Math.min(1, p.t / p.dur);
     if (p.kind === "code") {
+      tintOn = !p.noTint && !!tintPal;
       const x = p.x0 + (p.tx - p.x0) * k, y = p.y0 + (p.ty - p.y0) * k - Math.sin(k * Math.PI) * 8, ang = Math.atan2(p.ty - p.y0, p.tx - p.x0);
       jvComet(x, y, ang, 54, p.crit ? 8 : 6, p.chain ? "#ff6bd6" : "#6fd3ff", 1, p.seed);
       ctx.globalAlpha = 1; ctx.fillStyle = "#e6f6ff"; ctx.font = '10px "Do Hyeon", sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(p.g, x - 18, y - 12);
+      tintOn = false;
     } else if (p.kind === "stamp") {
       const arc = p.big ? 0 : 46, x = p.x0 + (p.tx - p.x0) * k, y = p.y0 + (p.ty - p.y0) * k * (p.big ? k : 1) - Math.sin(k * Math.PI) * arc;
       const k2 = Math.max(0, k - 0.15), px = p.x0 + (p.tx - p.x0) * k2, py = p.y0 + (p.ty - p.y0) * k2 * (p.big ? k2 : 1) - Math.sin(k2 * Math.PI) * arc;
-      jvComet(x, y, Math.atan2(y - py, x - px), 32, 5, "#7fe3a0", 0.75, p.seed);
+      tintOn = !p.noTint && !!tintPal; jvComet(x, y, Math.atan2(y - py, x - px), 32, 5, "#7fe3a0", 0.75, p.seed); tintOn = false;
       ctx.save(); ctx.translate(x, y); if (p.big) { ctx.rotate(-0.12); ctx.scale(2.2, 2.2); } else ctx.rotate(p.rot + k * 10);
       ctx.fillStyle = "#8a5a3a"; ctx.fillRect(-4, -14, 8, 12); ctx.fillStyle = "#c98a5a"; ctx.fillRect(-6, -18, 12, 6);
       ctx.fillStyle = "#e0403d"; ctx.fillRect(-9, -3, 18, 8); ctx.fillStyle = "#a8202a"; ctx.fillRect(-9, 3, 18, 2);
@@ -13662,7 +13665,7 @@ function drawJobFx(t) {
   for (const q of jobParts) {
     const a = Math.max(0, Math.min(1, q.life * (q.amb ? 1.4 : 2.2)));
     if (q.kind === "coin") { const w = Math.max(1, Math.abs(Math.cos(q.rot)) * 7); ctx.globalAlpha = a; ctx.fillStyle = "#b8860b"; ctx.fillRect(q.x - w / 2 - 1, q.y - 8, w + 2, 16); ctx.fillStyle = "#ffd54a"; ctx.fillRect(q.x - w / 2, q.y - 7, w, 14); if (w > 4) { ctx.fillStyle = "#fff7c2"; ctx.fillRect(q.x - w / 2 + 1, q.y - 5, 2, 5); } }
-    else if (q.kind === "digit") { ctx.globalAlpha = a * (q.amb ? 0.6 : 1); ctx.fillStyle = q.c; ctx.font = '12px "Do Hyeon", sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(q.s, q.x, q.y); }
+    else if (q.kind === "digit") { ctx.globalAlpha = a * (q.amb ? 0.6 : 1); ctx.fillStyle = !q.noTint && tintPal ? tintMap(q.c) : q.c; ctx.font = '12px "Do Hyeon", sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(q.s, q.x, q.y); }
     else { ctx.globalAlpha = a * (q.amb ? 0.7 : 1); ctx.fillStyle = q.c; ctx.fillRect(q.x - (q.s || 4) / 2, q.y - (q.s || 4) / 2, q.s || 4, q.s || 4); }
   }
   ctx.restore(); ctx.globalAlpha = 1;
@@ -13689,7 +13692,7 @@ JOBS.push({ id: "audit", n: "감사", team: "감사팀", type: "정밀 저격형
 JSK.probe = { id: "j_probe", key: "probe", job: "audit", n: "전수 조사", cd: 45, ic: "jsk_probe", d: "정밀 사격 6발 (한 발에 초당 피해 3.5배)" };
 JSK.censure = { id: "j_censure", key: "censure", job: "audit", n: "징계 확정", cd: 70, dur: 8, ic: "jsk_censure", d: "8초 동안 모든 공격이 치명타 · 치명타 피해 2배" };
 /* 기본 공격 설명을 대표 동작에 맞춤 (직무 고르기 창 · 인사 기록 '대표 동작' 줄) */
-[["sales", "몬스터에 붙어 베기 · 마무리 돌진 찌르기 · 치명타마다 '계약!'"], ["dev", "떨어져서 지팡이 끝 코드 탄 · 마무리는 하늘에서 번개"],
+[["sales", "몬스터에 붙어 베기 · 전직 공격: 솟구치는 검기 · 지면 강타 · 관통 검기 · 치명타마다 '계약!'"], ["dev", "떨어져서 지팡이 끝 코드 탄 · 마무리는 하늘에서 번개"],
  ["plan", "떨어져서 레이저 포인터 사격 · 마무리 3연발"], ["hr", "떨어져서 결재 도장 투척 · 마무리는 큰 도장이 쾅"]].forEach(([id, a]) => { const j = JOBS.find(x => x.id === id); if (j) j.atk = a; });
 /* 직무 칸: 대리·과장·부장 + 이사(새로) + 사장 → 다섯 */
 RANKS.forEach(r => { if (r.n === "이사") r.job = true; });
@@ -13831,6 +13834,134 @@ function drawJobPreviewTag(t, hx, hy) {
   const base = drawJobAura;
   drawJobAura = function (t, hx, hy) { base(t, hx, hy); drawJobPreviewTag(t, hx, hy); };
 })();
+
+/* ===================== v40 무기 색 = 스킬 색 · 전직 공격 =====================
+   사용자(2026-10-11 11:55): "무기가 바뀌면 스킬 색깔이 바뀌어야지, 전직하면 전직 공격이 바뀌어야지"
+   ① 직무 스킬(실적 돌파·계약 성사·핫픽스·무한 루프·PPT·로드맵 레이저·전수 조사 …)과 직무 기본 공격 이펙트를 그릴 때
+      색을 들고 있는 무기의 이펙트 색 3단(진한·가운데·밝은)으로 바꿔 칠함 — 밝기는 그대로 두고 색만 무기 쪽으로.
+      흰색·회색(채도 낮음)은 빛의 심이라 그대로. 금화·도장·인주·계약서·회의 인원·슬라이드 같은 '물건'과 겸직 속성(직무마다 제 색)은 그대로.
+   ② 전직 공격: 직무가 없으면 기본 베기(몸 동작 + 궤적만). 영업(전사)으로 전직하면 베기마다 검기가 나감 —
+      올려베기 = 솟구치는 검기 · 내려치기 = 지면 강타(땅이 갈라지며 빛) · 마무리 돌진 = 몬스터를 꿰뚫는 관통 검기 · 터치 = 날아가는 검기 */
+
+/* ---------- ① 무기 색으로 다시 칠하기 ---------- */
+var tintOn = false, jvNoTint = false, tintPal = null, tintKey = "", tintCache = new Map(), tintFrame = -1;
+var TINT_SKIP = { splat: 1, aseal: 1, seal: 1, contract: 1, meeting: 1, order: 1, ppt: 1, kwave: 1, kquake: 1, kpierce: 1 };
+function tintParse(c) {
+  if (typeof c !== "string") return null;
+  let m;
+  if (c[0] === "#") {
+    const h = c.length === 4 ? c.slice(1).split("").map(x => x + x).join("") : c.slice(1, 7);
+    const n = parseInt(h, 16); if (isNaN(n)) return null;
+    return [n >> 16 & 255, n >> 8 & 255, n & 255, 1];
+  }
+  if ((m = /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/i.exec(c))) return [+m[1], +m[2], +m[3], m[4] == null ? 1 : +m[4]];
+  if ((m = /^hsla?\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*(?:,\s*([\d.]+)\s*)?\)$/i.exec(c))) {
+    const H = (+m[1] % 360) / 360, Sx = +m[2] / 100, L = +m[3] / 100, q = L < 0.5 ? L * (1 + Sx) : L + Sx - L * Sx, p = 2 * L - q;
+    const f = t => { t = (t + 1) % 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < 1 / 2 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; };
+    return [Math.round(f(H + 1 / 3) * 255), Math.round(f(H) * 255), Math.round(f(H - 1 / 3) * 255), m[4] == null ? 1 : +m[4]];
+  }
+  return null;
+}
+function tintSync(t) {
+  const fr = typeof feelClock !== "undefined" ? feelClock.tick : 0; if (fr === tintFrame && tintPal) return; tintFrame = fr;
+  const pal = typeof feelFxPal === "function" ? feelFxPal(t || performance.now()) : null; if (!pal) { tintPal = null; return; }
+  const key = pal.join("|"); if (key === tintKey && tintPal) return;
+  tintKey = key; tintCache.clear(); tintPal = pal.map(c => tintParse(c) || [255, 213, 74, 1]);
+}
+/* 색 하나를 무기 팔레트로: 원래 밝기(L)에 맞춰 진한→가운데→밝은 사이를 고름, 투명도는 그대로 */
+function tintMap(c) {
+  if (!tintPal || typeof c !== "string") return c;
+  let v = tintCache.get(c); if (v !== undefined) return v;
+  const p = tintParse(c);
+  if (!p) v = c;
+  else {
+    const [r, g, b, a] = p, mx = Math.max(r, g, b) / 255, mn = Math.min(r, g, b) / 255, L = (mx + mn) / 2, d = mx - mn, Sx = d === 0 ? 0 : d / (1 - Math.abs(2 * L - 1));
+    if (Sx < 0.18 || d < 0.08) v = c;                                     // 흰색·회색·검정: 빛의 심·그림자는 그대로
+    else {
+      const P = tintPal, lo = L <= 0.55, k = lo ? Math.min(1, L / 0.55) : Math.min(1, (L - 0.55) / 0.4), A = lo ? P[0] : P[1], B = lo ? P[1] : P[2];
+      v = `rgba(${Math.round(A[0] + (B[0] - A[0]) * k)},${Math.round(A[1] + (B[1] - A[1]) * k)},${Math.round(A[2] + (B[2] - A[2]) * k)},${a})`;
+    }
+  }
+  if (tintCache.size > 800) tintCache.clear();
+  tintCache.set(c, v); return v;
+}
+function tintNow(c) { tintSync(); return tintMap(c); }
+function jobTintOn(f) { return !!tintPal && !f.noTint && !TINT_SKIP[f.kind]; }
+/* 전투 캔버스의 색 지정(채우기·선·그림자·그라데이션)을 tintOn 동안만 무기 색으로 — 직무 이펙트 그리는 동안만 켬 */
+(function () {
+  if (typeof ctx === "undefined" || !ctx || typeof CanvasRenderingContext2D === "undefined") return;
+  const P = CanvasRenderingContext2D.prototype;
+  ["fillStyle", "strokeStyle", "shadowColor"].forEach(k => {
+    const D = Object.getOwnPropertyDescriptor(P, k); if (!D || !D.set || !D.get) return;
+    try { Object.defineProperty(ctx, k, { configurable: true, get() { return D.get.call(this); }, set(v) { D.set.call(this, tintOn && typeof v === "string" ? tintMap(v) : v); } }); } catch (e) {}
+  });
+  ["createRadialGradient", "createLinearGradient"].forEach(k => {
+    const f0 = ctx[k]; if (typeof f0 !== "function") return;
+    ctx[k] = function () { const g = f0.apply(ctx, arguments); if (tintOn && g && g.addColorStop) { const add = g.addColorStop.bind(g); g.addColorStop = (o, c) => add(o, tintMap(c)); } return g; };
+  });
+})();
+(function () {
+  const ds0 = drawSprite;                                                  // 잔상(한 색 실루엣)도 무기 색
+  drawSprite = function (c, map, pal, x, y, sc, opts) { if (tintOn && opts && opts.solid) opts = Object.assign({}, opts, { solid: tintMap(opts.solid) }); return ds0(c, map, pal, x, y, sc, opts); };
+  const js0 = jSparks;                                                     // 직무 이펙트 불꽃도 무기 색 (금화 불꽃·겸직 속성은 제 색)
+  jSparks = function (x, y, col, n, spd) { return js0(x, y, jvNoTint ? col : tintNow(col), n, spd); };
+  const jg0 = jGold; jGold = function (x, y, n) { const o = jvNoTint; jvNoTint = true; try { return jg0(x, y, n); } finally { jvNoTint = o; } };
+  const jv0 = jvAdd; jvAdd = function (kind, o) { if (jvNoTint && o) o.noTint = true; return jv0(kind, o); };
+  if (typeof jobSubProc === "function") { const sp0 = jobSubProc; jobSubProc = function (st) { const o = jvNoTint; jvNoTint = true; try { return sp0(st); } finally { jvNoTint = o; } }; }
+})();
+
+/* ---------- ② 영업(전사) 전직 공격: 검기 ---------- */
+function warriorFx(x, y, crit) {
+  const pal = feelFxPal(performance.now()).slice(), mv = fHero.mv, { h: mh } = msz(), big = crit ? 1.25 : 1;
+  if (mv === "rise") {                                                     // 솟구치는 검기: 땅에서 몬스터를 가르며 위로
+    jvAdd("kwave", { x: x - 6, y: GROUND - 18, vx: 30, vy: -420, r: 46 * big, ang: -Math.PI / 2 + 0.25, th: 15 * big, span: 1.15, dur: 300, pal });
+  } else if (mv === "chop") {                                              // 지면 강타: 땅이 갈라지며 빛이 새고 고리가 퍼짐
+    jvAdd("kquake", { x: x - 30, gy: GROUND - 2, dur: 420, pal, big });
+    jvAdd("shards", { x: x - 10, gy: GROUND - 2, n: crit ? 8 : 5, col: pal[1], dark: pal[0], h: crit ? 58 : 40, spread: 100, dur: 520, noTint: true });
+  } else if (mv === "lunge") {                                             // 마무리 관통 검기: 몬스터를 꿰뚫고 화면 끝까지
+    const yy = GROUND - mh * 0.45;
+    jvAdd("kpierce", { x0: HERO_X + 30, x1: MON_X + 230, y: yy, dur: 460, pal, big });
+    jvAdd("kwave", { x: x - 10, y: yy, vx: 520, vy: 0, r: 58 * big, ang: 0, th: 20 * big, span: 1.3, dur: 280, pal });
+  } else {                                                                 // 터치(찌르기) 등: 앞으로 날아가는 작은 검기
+    jvAdd("kwave", { x: x - 20, y, vx: 480, vy: 0, r: 30 * big, ang: 0, th: 10 * big, span: 1.2, dur: 220, pal });
+  }
+}
+JFX_DRAW.kwave = function (f) {
+  const k = f.t / f.dur, a = Math.max(0, 1 - k * k), P = f.pal, s = f.dur / 1000;
+  for (let g = 3; g >= 1; g--) {                                           // 꼬리 잔상
+    const kk = Math.max(0, k - g * 0.07);
+    jvCrescent(f.x + f.vx * kk * s, f.y + f.vy * kk * s, f.r * (0.9 + 0.3 * kk), f.ang, P[0], a * 0.32 / g, f.th * 0.75, f.span);
+  }
+  const x = f.x + f.vx * k * s, y = f.y + f.vy * k * s;
+  jvCrescent(x, y, f.r * (0.9 + 0.3 * k), f.ang, P[1], a, f.th, f.span);
+  jvCrescent(x, y, f.r * (0.82 + 0.3 * k), f.ang, P[2], a, f.th * 0.38, f.span * 0.92);
+};
+JFX_DRAW.kquake = function (f) {
+  const k = f.t / f.dur, a = Math.max(0, 1 - k), P = f.pal, L = (60 + 150 * Math.min(1, k / 0.3)) * (f.big || 1);
+  ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  for (let pass = 0; pass < 2; pass++) {                                   // 땅 갈라짐 (빛이 새어 나오는 금)
+    ctx.globalAlpha = a * (pass ? 1 : 0.5); ctx.strokeStyle = pass ? P[2] : P[1]; ctx.lineWidth = pass ? 1.8 : 6;
+    ctx.beginPath(); ctx.moveTo(f.x - 10, f.gy);
+    for (let i = 1; i <= 9; i++) ctx.lineTo(f.x - 10 + L * i / 9, f.gy - 1 + Math.sin(f.seed + i * 2.3) * 3.2);
+    ctx.stroke();
+  }
+  for (let i = 0; i < 4; i++) {                                            // 금에서 솟는 빛 조각
+    const px = f.x + 20 + i * L / 4.5, h = (18 + (i % 2) * 14) * (1 - k) * (f.big || 1);
+    ctx.globalAlpha = a * 0.8; ctx.fillStyle = P[1]; ctx.beginPath(); ctx.moveTo(px - 4, f.gy); ctx.lineTo(px, f.gy - h); ctx.lineTo(px + 4, f.gy); ctx.closePath(); ctx.fill();
+  }
+  ctx.restore();
+  jvHalo(f.x + 34, f.gy, (24 + 130 * k) * (f.big || 1), (24 + 130 * k) * 0.16 * (f.big || 1), P[1], a * 0.95, 0);
+};
+JFX_DRAW.kpierce = function (f) {
+  const k = f.t / f.dur, P = f.pal, ext = Math.min(1, k / 0.16), fade = k < 0.35 ? 1 : Math.max(0, 1 - (k - 0.35) / 0.65), x1 = f.x0 + (f.x1 - f.x0) * ext, b = f.big || 1;
+  jvBlade(f.x0, f.y, x1, f.y, (12 * fade + 3) * b, P[1], fade, f.seed, 0.22, 0.75);
+  jvBlade(f.x0, f.y, x1, f.y, (4 * fade + 1) * b, P[2], fade, f.seed + 3, 0.18, 0.7);
+  if (k < 0.5) {                                                           // 돌진 속도선
+    ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.strokeStyle = P[1]; ctx.lineWidth = 2;
+    for (let i = 0; i < 5; i++) { const yy = f.y - 26 + i * 13, L = 40 + ((f.seed * 7 + i * 13) % 30); ctx.globalAlpha = (1 - k / 0.5) * 0.7; ctx.beginPath(); ctx.moveTo(f.x0 - 30 - L, yy); ctx.lineTo(f.x0 - 30, yy); ctx.stroke(); }
+    ctx.restore();
+  }
+};
 
 /* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */
 function drawJobUi(t) {

@@ -163,6 +163,16 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .wname { font-family: var(--display); font-size: 20px; line-height: 1.15; }
 .wname .plus { color: var(--gold); margin-left: 4px; }
 .wname.leg { color: var(--rare); }
+.wgr { display: inline-block; font-family: var(--body, sans-serif); font-size: 11px; line-height: 16px; padding: 0 6px; border: 1px solid; border-radius: 9px; margin-right: 6px; vertical-align: 3px; background: rgba(10,14,26,.5); }
+.wgl { display: flex; flex-direction: column; gap: 6px; }
+.card.wgl .wgl-r { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 8px; align-items: center; padding: 6px 8px; border-radius: 10px; background: var(--panel-2); }
+.wgl-r.cur { box-shadow: inset 0 0 0 1px var(--gold); }
+.wgl-r.off { opacity: .62; }
+.wgl-t { color: var(--muted); font-size: 12px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wgl-n { grid-column: 1 / -1; font-size: 12px; color: var(--gold); padding: 0 2px; }
+.wgl-s { font-size: 12px; white-space: nowrap; }
+.wgl-s .ok { color: #7fe3a0; font-weight: normal; }
+.wgl-f { font-size: 12px; line-height: 1.55; margin: 4px 2px 0; }
 .story { font-size: 12.5px; color: var(--muted); font-style: italic; }
 .stars { display: flex; gap: 3px; }
 .stars i { width: 14px; height: 6px; border-radius: 1px; background: var(--line); }
@@ -1678,7 +1688,33 @@ const WEAPONS = [
   { n: "사직서 검", s: "sword", p: { a: "#f4f6fb", b: "#ffd54a", c: "#9aa3b8", d: "#9aa3b8", h: "#3b2a1a" }, leg: true, fx: "holy",
     story: "품 안에 늘 넣고 다니던 그 종이. 마침내 칼이 되었다." },
   { n: "은하 회장님 지팡이", s: "cane", p: { a: "#2a1a5a", b: "#120a2a", c: "#6fd3ff", d: "#ff6bd6", h: "#120a2a" }, leg: true, fx: "cosmic",
-    story: "본사 타워 꼭대기, 별들 사이에서 내려온 지팡이. 5강 뒤에도 끝없이 초월할 수 있다." },
+    story: "본사 타워 꼭대기, 별들 사이에서 내려온 지팡이. 회장님이 퇴근할 때 별 하나를 끄고 간다는 소문이 있다." },
+  /* v42 신화 */
+  { n: "황룡 만년필 창", s: "pen", p: { a: "#c0392b", b: "#5a120c", c: "#ffd54a", d: "#ffd54a", h: "#3a0c08" }, leg: true, fx: "flame",
+    story: "용의 수염으로 만든 펜촉. 서명하는 순간 계약서에 불길이 일어 다시는 번복되지 않는다." },
+  { n: "뇌신 스테이플러 망치", s: "stapler", p: { a: "#2b3a8a", b: "#141c4a", c: "#7fe9ff", h: "#ffd54a" }, leg: true, fx: "spark",
+    story: "한 번 박으면 천둥이 친다. 회의 자료 삼백 장을 한 번에 묶었다는 전설의 망치." },
+  { n: "빙하 재단기 도끼", s: "ruler", p: { a: "#bff0ff", b: "#4a8ab8" }, leg: true, fx: "frost",
+    story: "재단기 칼날에 만년설이 얼어붙었다. 이 칼로 자른 서류는 영원히 구겨지지 않는다." },
+  { n: "불사조 인감 망치", s: "stamp", p: { a: "#ff6b3b", b: "#7a1f0c", c: "#ffe08a", d: "#ff3b1a", h: "#3b1a0a" }, leg: true, fx: "ember",
+    story: "불에 타도 다시 살아나는 회사의 마지막 인감. 찍힌 자리에서 불꽃 깃털이 날린다." },
+  { n: "세계수 결재봉", s: "cane", p: { a: "#3fa04a", b: "#1f5a24", c: "#c8ff6a", d: "#ffe08a", h: "#3a2414" }, leg: true, fx: "holy",
+    story: "본사 정원 천 년 나무에서 꺾은 가지. 들고 있으면 서류에 새싹이 돋는다." },
+  { n: "심연의 서버 키", s: "sword", p: { a: "#1a1030", b: "#0a0614", c: "#9b5cff", d: "#5cf0ff", h: "#2a1a4a" }, leg: true, fx: "cosmic",
+    story: "지하 999층 서버실을 여는 열쇠. 꽂는 순간 모든 데이터가 칼날이 된다." },
+  /* v42 초월 */
+  { n: "태양 복사기 창", s: "pen", p: { a: "#fff2a8", b: "#ffb13b", c: "#ffffff", d: "#ffd54a", h: "#8a5a1a" }, leg: true, fx: "holy",
+    story: "복사할 때마다 태양이 한 장씩 늘어난다. 너무 눈부셔서 원본이 보이지 않는다." },
+  { n: "시간 정지 출입증", s: "card", p: { a: "#e6f9ff", b: "#6fa8d6", c: "#8ff0ff", d: "#ffffff", h: "#3b4566" }, leg: true, fx: "frost",
+    story: "찍는 순간 모든 시계가 멈춘다. 이 출입증 앞에서 지각이란 말은 사라졌다." },
+  { n: "은하 USB 성검", s: "sword", p: { a: "#f4f6fb", b: "#7c5cff", c: "#6fd3ff", d: "#ff6bd6", h: "#2a1a5a" }, leg: true, fx: "cosmic",
+    story: "은하 하나를 통째로 담은 USB. 꽂을 곳은 오직 악의 심장뿐이다." },
+  { n: "블랙홀 파쇄기 낫", s: "cane", p: { a: "#120a2a", b: "#000000", c: "#b18cff", d: "#ff6bd6", h: "#2a1a4a" }, leg: true, fx: "cosmic",
+    story: "넣으면 서류도 빛도 돌아오지 않는다. 사내 보안 등급: 측정 불가." },
+  { n: "창세 키보드 대검", s: "keyboard", p: { a: "#f4f6fb", b: "#c9ced8", c: "#ffd54a", h: "#8a5a1a" }, leg: true, fx: "rgb",
+    story: "첫 줄에 '빛이 있으라'라고 쳤더니 모니터가 켜졌다는 키보드." },
+  { n: "본사 타워 마스터키", s: "sword", p: { a: "#ffffff", b: "#ffd54a", c: "#fff2a8", d: "#ff6bd6", h: "#8a5a1a" }, leg: true, fx: "holy",
+    story: "회장실 위, 아무도 모르는 층의 문을 여는 열쇠. 5강 뒤에도 끝없이 돌파할 수 있다." },
 ];
 const LEG_START = 20, LAST_W = WEAPONS.length - 1;
 const legReq = k => ({ silver: 10 * (k + 1) * (k + 1), ame: 3 * (k + 1) });
@@ -3502,8 +3538,8 @@ function monColor(m = mon) { const p = m.pal; return p.g || p.s || p.b || p.d ||
 function spawn() {
   const base = { shake: 0, flash: 0, red: 0, kb: 0, squash: 0, tilt: 0, dying: 0, born: 0, fx: 0, fy: 0, vx: 0, vy: 0, rot: 0, crown: false };
   if (mode === "vault") {
-    const hp = hpBase(Math.max(1, S.maxFloor)) * 1.5;
-    mon = Object.assign(base, { name: `잠긴 서류함 · 지하 ${vaultRun.depth}m`, sprite: "chest", pal: PAL.chest, scale: 7, kind: 0, hp, max: hp });
+    const hp = vaultChestHp(vaultRun.n);
+    mon = Object.assign(base, { name: `잠긴 서류함 · 지하 ${vaultDepthOf(vaultRun.n + 1)}m`, sprite: "chest", pal: PAL.chest, scale: 7, kind: 0, hp, max: hp, hitN: 0 });
     entrance(mon); renderTop(true); return;
   }
   const f = S.floor, k = S.k, kind = bossKind(f, k), z = zoneOf(f), pre = cycleOf(f);
@@ -3575,7 +3611,7 @@ function missionLines() {
   DAILY.forEach(d => { if (!S.day.claimed[d.id] && (S.day[d.stat] || 0) < d.goal && out.length < 3) out.push(d.n); });
   const ready = DAILY.filter(d => !S.day.claimed[d.id] && (S.day[d.stat] || 0) >= d.goal).length;
   if (ready) out.unshift(`업무 보상 ${ready}개 받기`);
-  if (S.wl < 5 || S.wi === LAST_W ? S.gold >= wUp(S.wi, S.wl) : (S.gold >= wBuy(S.wi + 1) && (!WEAPONS[S.wi + 1].leg || S.legUnlock[S.wi + 1 - LEG_START]))) out.unshift("무기 강화하기");
+  if (S.wl < 5 || S.wi === LAST_W ? S.gold >= wUp(S.wi, S.wl) : (S.gold >= wBuy(S.wi + 1) && !wLocked(S.wi + 1))) out.unshift("무기 강화하기");
   return out.slice(0, 4);
 }
 function addFloat(x, y, text, color, size = 26, pop = false, style = "") {
@@ -3649,7 +3685,8 @@ function hit(amount, crit, src, px, py) {
   if ((src === "pet" || src === "clone") && skillOn("party")) amount *= 3;
   if (src === "pet" || src === "clone") amount *= careerPet();
   amount *= careerTaken();
-  if (mon.kind > 0 && mode === "tower") amount *= stats().bossBonus;
+  if (mon.kind > 0 && mode === "tower" && !pctHit) amount *= stats().bossBonus;
+  if (mode === "vault") mon.hitN = (mon.hitN || 0) + 1;
   mon.hp -= amount;
   if (feelHit(amount, crit, src, px, py)) return;   // v35: 곽준영 타격은 손맛 레시피로 (part_feel)
   const heavy = src === "hero" || src === "tap" || src === "jhero";
@@ -3698,12 +3735,15 @@ function kill() {
   for (let i = 0; i < (boss ? 26 : 14); i++) { const a = Math.random() * Math.PI * 2; sparks.push({ x: MON_X, y: GROUND - mh * 0.5, vx: Math.cos(a) * (4 + Math.random() * 9), vy: Math.sin(a) * (4 + Math.random() * 9) - 2, life: 1, c: i % 2 ? "#ffd54a" : monColor(), line: true }); }
   hitSound(1.2);
   if (mode === "vault") {
-    const g = goldBase(Math.max(1, S.maxFloor)) * 0.6 * goldMult(), st = Math.random() < 0.3 ? 1 : 0;
-    vaultRun.n++; vaultRun.depth += 40; vaultRun.gold += g; vaultRun.st += st;
-    S.gold += g; S.stamp += st;
-    if (vaultRun.depth % 1000 === 0) { S.stamp += 2; vaultRun.st += 2; addFloat(MON_X, 100, `${vaultRun.depth}m 돌파! 도장 +2`, "#ff7a6b", 24); }
+    const one = (mon.hitN || 0) <= 1, V = BAL.vault;
+    vaultRun.combo = one ? (vaultRun.combo || 0) + 1 : 0;
+    const stepN = vaultStepN(vaultRun.combo), from = vaultRun.depth;              // 한 방이 이어지면 서류함을 건너뛰며 더 빨리 내려감
+    spawnWait = Math.round(vaultWait(vaultRun.combo) * 1000);
+    vaultRun.n += stepN; vaultRun.depth = vaultDepthOf(vaultRun.n);
+    if (one) { vaultRun.one = (vaultRun.one || 0) + 1; vaultTime = Math.min(V.cap, vaultTime + V.one); addFloat(MON_X - 30, 170, vaultRun.combo >= 5 ? `한 방 ${vaultRun.combo}연속! ×${stepN}` : `한 방! +${V.one}초`, "#7fe9ff", 22, true); }
+    let msg = ""; for (let m = from + V.m; m <= vaultRun.depth; m += V.m) { const r = vaultReach(m, vaultRun); if (r) msg = r; }
     S.day.depth = Math.max(S.day.depth, vaultRun.depth);
-    addFloat(MON_X, 140, `+${fmt(g)}원` + (st ? " 도장 +1" : ""), "#ffd54a", 26, true);
+    if (msg) addFloat(MON_X, 120, msg, msg.indexOf("첫") >= 0 ? "#ff9b6b" : "#ffd54a", msg.indexOf("첫") >= 0 ? 24 : 20, true);
     return;
   }
   const f = S.floor, kind = mon.kind;
@@ -3716,7 +3756,7 @@ function kill() {
     addFloat(MON_X, 130, "+" + fmt(reward) + "원", "#ffd54a", 34, true);
     const sq = petLv("squirrel");
     if (sq && Math.random() * 100 < 2 + 0.5 * sq) { S.stamp++; addFloat(MON_X, 96, "다람쥐가 도장 +1", "#ff7a6b", 22); squirrelStamp(); }
-    if (kind === 3) { const st = 3 + Math.floor(f / 100) * 2; S.stamp += st; toast(`${mon.name} 격파! 월급 ${fmt(reward)}원, 결재도장 ${st}개`); say("드래곤도 퇴근시켰다! 오늘은 회식이다!"); }
+    if (kind === 3) { const st = 3 + Math.floor(f / 100) * 2; S.stamp += st; S.silver += BAL.chairSilver; toast(`${mon.name} 격파! 월급 ${fmt(reward)}원, 결재도장 ${st}개, 은괴 ${BAL.chairSilver}`); say("드래곤도 퇴근시켰다! 오늘은 회식이다!"); }
     else if (kind === 2) { toast(`${mon.name} 칼퇴시킴! 월급 ${fmt(reward)}원`); say(["월급 들어왔다! 오늘은 치킨이다!", `${mon.name}님, 오늘은 일찍 들어가세요!`, "결재 완료! 다음 층으로!"][Math.floor(Math.random() * 3)], 3); }
   }
   S.k++;
@@ -3734,13 +3774,14 @@ function failBoss() { toast("시간 초과! 한 층 아래에서 무기를 키�
 function startVault() {
   rollDay();
   if (S.day.vaultUsed >= vaultTickets() || mode === "vault") return;
-  S.day.vaultUsed++; mode = "vault"; vaultTime = 30; vaultRun = { n: 0, gold: 0, st: 0, depth: 0 };
+  S.day.vaultUsed++; mode = "vault"; vaultTime = BAL.vault.t0; vaultRun = { n: 0, gold: 0, st: 0, depth: 0, one: 0, best0: vaultBestGet() };
   floats = []; spawnWait = 0; lift = null; intro = null; spawn(); save();
   window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
 }
 function endVault() {
   mode = "tower";
-  toast(`지하 ${vaultRun.depth}m까지 내려감! 서류함 ${vaultRun.n}개, ${fmt(vaultRun.gold)}원, 도장 ${vaultRun.st}개`);
+  const R = vaultRun, got = ["stamp", "ore", "silver", "ame"].filter(k => R[k]).map(k => `${ECO_NAME[k] || k} ${fmtR(R[k])}`).join(" · ");
+  celebrate({ ic: "chest", title: `지하 ${R.depth}m${R.depth > (R.best0 || 0) ? " · 새 기록!" : ""}`, sub: `서류함 ${R.n}개 · 한 방 ${R.one || 0}번<br><span class="rws">${fmt(R.gold)}원${got ? " · " + got : ""}</span>`, tone: "ore", ms: 2600 });
   floats = []; spawnWait = 0; lift = null; intro = null; S.k = 1; spawn(); save();
 }
 
@@ -5505,7 +5546,7 @@ function step(dt) {
       if (catTimer >= 2500) { catTimer -= 2500; const big = Math.random() < 0.1; catAttack(big); hit(st.atk * (1.5 + 0.5 * cl) * (big ? 5 : 1), false, "pet"); }
     }
     const ca = petLv("cactus");
-    if (ca && mon && !mon.dying) { cactusTimer += dt; if (cactusTimer >= 2000) { cactusTimer -= 2000; fireNeedles(); hit(mon.hp * (1 + 0.1 * ca) / 100 / (mon.kind ? 5 : 1), false, "pet"); } }
+    if (ca && mon && !mon.dying) { cactusTimer += dt; if (cactusTimer >= 2000) { cactusTimer -= 2000; fireNeedles(); pctHit = true; try { hit(mon.hp * (1 + 0.1 * ca) / 100 / (mon.kind ? 5 : 1), false, "pet"); } finally { pctHit = false; } } }
     if (mode === "tower" && mon && TIME_LIMIT[mon.kind] && !mon.dying && spawnWait <= 0) { bossTime -= sec; if (bossTime <= 0) failBoss(); }
     if (mode === "tower" && mon && mon.golden && !mon.dying && spawnWait <= 0) { goldenTime -= sec; if (goldenTime <= 0) goldenEscape(); }
   }
@@ -5553,7 +5594,7 @@ function renderTop(full) {
   $("monHp").textContent = `${fmt(Math.max(0, mon.hp))} / ${fmt(mon.max)}`;
   const timed = mode === "vault" || TIME_LIMIT[mon.kind] > 0 || !!mon.golden;
   if (timed) {
-    const left = mode === "vault" ? vaultTime : mon.golden ? goldenTime : bossTime, total = mode === "vault" ? 30 : mon.golden ? GOLDEN_SEC : bossTimeOf(mon.kind);
+    const left = mode === "vault" ? vaultTime : mon.golden ? goldenTime : bossTime, total = mode === "vault" ? BAL.vault.cap : mon.golden ? GOLDEN_SEC : bossTimeOf(mon.kind);
     $("timerBar").style.width = Math.max(0, left / total * 100) + "%";
     $("timerLabel").textContent = Math.max(0, Math.ceil(left)) + "초";
   }
@@ -7159,7 +7200,7 @@ function skillPhys(dt) {
       if (!reduceMotion) shakeAmt = Math.max(shakeAmt, 16);
       screenFlash = Math.max(screenFlash, 0.35); flashCol = f.kind === "stamp" ? "#ff2a2a" : "#ffffff";
       triggerImpactFrame(MON_X, y, true); hitSound(1.4);
-      hit(f.kind === "stamp" ? f.dmg : mon.max * (mon.kind ? 0.05 : 0.25), true, "skill", MON_X - 10, y);
+      if (f.kind !== "stamp") pctHit = true; try { hit(f.kind === "stamp" ? f.dmg : mon.max * (mon.kind ? 0.05 : 0.25), true, "skill", MON_X - 10, y); } finally { pctHit = false; }
     }
   });
   skillFx = skillFx.filter(f => f.t < f.dur);
@@ -7833,7 +7874,7 @@ var TAB_UNLOCK = {
   retire: { f: 40, any: st => (st.retires || 0) > 0, d: "40층에 열려요" },
 };
 var TAB_INTRO = {
-  weapon: "보스를 잡아 받은 월급으로 무기와 커피를 강화해요. 자동 강화를 켜 두면 알아서 사요.",
+  weapon: "보스를 잡아 받은 월급으로 무기와 커피를 강화해요. 무기는 일반부터 초월까지 7등급 42개, 고급부터는 공부·말씀으로 모은 재료로 한 번 열어 두면 퇴사해도 열린 채예요.",
   bible: "개역한글 본문을 읽고 묵상 한 줄을 남겨요. 읽은 장마다 만나와 도장이 쌓이고, 읽은 시간으로 확인돼요. 읽을 때와 곳을 정해 두면 그 시각에 알림도 받을 수 있어요.",
   mem: "200구절을 간격 반복으로 외워요. 통과할수록 다음 복습이 1·2·4·7·15·30·60일 뒤로 미뤄져요.",
   study: "공부 타이머를 켜면 공부한 시간만큼 광산을 파서 광석·은괴·자수정을 캐요. 25분마다 집중 확인.",
@@ -7851,7 +7892,9 @@ var GR_GUIDE = [
   ["말씀 확인", "읽은 시간(본문 화면 + 읽기 타이머)이 장마다 최소 시간(글자 수 ÷ 내 읽기 속도 × 1.5)만큼 쌓이면 확인돼요. 너무 빨리 넘긴 장은 기록만 남고, 시간이 쌓이면 저절로 확인돼요."],
   ["다음 목표", "오늘 · 이번 주 · 시즌 목표와 예상 일수를 보여 줘요. 예상 일수는 최근 14일 기록으로 계산하고, 30일이 넘으면 중간 이정표를 함께 보여 줘요."],
   ["퇴사와 빠른 출근", "퇴사 탭 게이지가 +50%를 넘으면 초록, +200%를 넘으면 크게 이득이에요. 퇴사하면 이번 회사 최고층의 40%까지 출근 버스로 바로 올라가요."],
-  ["자리 비운 동안", "앱을 닫아 두어도 12시간까지 전투와 월급이 계산돼요."],
+  ["무기 등급", "일반 · 고급 · 희귀 · 에픽 · 전설 · 신화 · 초월, 등급마다 6개씩 42개예요. 고급부터는 무기마다 재료로 한 번 열고(등급 첫 무기는 관문이라 조금 더), 연 무기는 퇴사해도 열린 채예요. 마지막 무기는 5강 뒤 자수정으로 끝없이 돌파해요."],
+  ["지하 문서고", "30초로 시작해요. 서류함을 한 방에 부수면 1초가 늘어(최대 30초) 계속 내려갈 수 있고, 10m마다 서류함이 단단해져요. 100m마다 월급, 이정표(500·2000·4500·8000m…)마다 은괴, 처음 닿는 1000m마다 도장과 은괴를 받아요."],
+  ["자리 비운 동안", "앱을 닫아 두어도 12시간까지 전투와 월급이 계산돼요. 분노·쾌속 같은 잠깐 효과는 빼고 계산해요."],
   ["이번 주 경제", "정보 탭에서 재화마다 이번 주에 번 것·쓴 것과 용도를 볼 수 있어요. 일주일치보다 많이 고이면 쓸 곳을 알려 줘요."],
   ["옷장", "입은 옷은 부위마다 다른 능력치(착용 효과), 가진 옷은 모두 모든 피해 +(보유 효과). 같은 세트를 2·4·6벌 입으면 세트 효과, 회장님 세트는 가지고만 있어도 쌓여요. 겉모습은 덧입기로 따로 고르고, 잠긴 옷도 눌러서 미리 입어 볼 수 있어요. 강화는 공부로 캔 광석, 말씀의 전신갑주는 말씀으로 받은 만나로 해요."],
 ];
@@ -7861,8 +7904,8 @@ var ECO_USE = {
   manna: "말씀·암송·출근으로 얻어 동료를 들이고 키워요",
   stamp: "말씀 한 장마다·출근·퇴사로 얻어 보물을 강화해요",
   ore: "공부한 시간만큼 캐서 정장과 부적을 사요",
-  silver: "공부 7층마다 · 전설 무기와 전설 정장에 써요",
-  ame: "공부 21층마다 · 전설 무기를 여는 데 써요",
+  silver: "공부 광산 7층마다 · 지하 문서고 이정표 · '공부 25분' 업무 · 무기 해금과 전설 정장에 써요",
+  ame: "공부 광산 21층마다 · 문서고 · '암송 5구절' 업무 · 플랜 하루 분량 · 높은 등급 무기 해금과 마지막 무기 돌파에 써요",
 };
 var ECO_SINK = { manna: ["pet", "동료"], stamp: ["treasure", "보물"], ore: ["suit", "옷장"], silver: ["weapon", "무기"], ame: ["weapon", "무기"] };
 var grUI = { strip: "", ladder: "", t: 0 }, treMemo = { k: "", v: 0 }, tabCols = 0;
@@ -8079,7 +8122,8 @@ function retireGaugeHTML() {
   const g = retireGain();
   if (g <= 0) return `<div class="rg low"><div class="rg-top"><b>퇴사 게이지</b><span>50층부터</span></div><div class="rg-bar"><i style="width:${Math.min(100, (S.maxFloor || 1) / 50 * 100).toFixed(1)}%"></i></div><small>이번 회사 최고 ${S.maxFloor}층 · 50층에 오르면 사표를 낼 수 있어요</small></div>`;
   const r = retireRatio(), pct = Math.round(r * 100), w = Math.min(100, r / 3 * 100), lv = r >= 2 ? "hot" : r >= 0.5 ? "ok" : "low";
-  const msg = r >= 2 ? "지금 퇴사하면 크게 늘어요!" : r >= 0.5 ? "퇴사하기 좋은 때예요" : "조금 더 올라가면 더 많이 받아요";
+  const stuck = S.auto === false && mode === "tower";
+  const msg = r >= 2 ? "지금 퇴사하면 크게 늘어요!" : r >= 0.5 ? "퇴사하기 좋은 때예요" : stuck ? "벽에 막혔다면 퇴사해도 좋아요 · 도장으로 보물을 올려 더 높이" : "조금 더 올라가면 더 많이 받아요";
   const nx = Math.floor(Math.pow((S.maxFloor + 10) / 10, 1.6) * stampMult()), ft = fastTarget();
   return `<div class="rg ${lv}"><div class="rg-top"><b>${msg}</b><span class="rg-pct num">+${pct}%</span></div>
     <div class="rg-bar"><i style="width:${w.toFixed(1)}%"></i><em class="m50"></em><em class="m200"></em></div>
@@ -8845,7 +8889,7 @@ function dexRender() {
    5) 실행 의도: 언제·무엇 다음에·어디서 읽을지, 맥락 일치율(계획한 시각 ±60분). 웹 푸시(수파베이스 kjy-noti 함수, 5분마다):
       아직 안 읽은 날만, 하루 2번까지, 알림 온 날을 세 번 이어서 그냥 넘기면 쉼, 문구 24개를 돌려 씀.
    merge·freshState 에서 부르므로 함수 선언과 var 만 씀 */
-var GAME_V = 41;
+var GAME_V = 42;
 var PATCH_DAYS = { 28: "2026-10-09", 29: "2026-10-10", 30: "2026-10-10", 31: "2026-10-10" };
 var MEAS_KEEP = 150;
 var SRBAI_Q = ["나도 모르게 저절로 하게 된다", "일부러 기억하지 않아도 하게 된다", "깊이 생각하지 않고도 하게 된다", "하고 있다는 걸 알아차리기 전에 이미 시작한다"];
@@ -10781,9 +10825,9 @@ function celebMore() {
 /* ---- 업데이트 안내 한 번 (예전 기록만, 출근 카드 뒤에) ---- */
 function feelArrive() {
   try {
-    if (localStorage.getItem(SAVE_KEY + "-feel41")) return;
-    localStorage.setItem(SAVE_KEY + "-feel41", "1");
-    if (!isFreshSave(S)) celebrateLater({ ic: "bible", title: "말씀 읽기가 한 번에", sub: "'읽기 시작'을 누르면 본문이 바로 열리고 시간이 세져요 · 끝까지 읽으면 저절로 체크<br>말씀 읽는 동안 공부 시간은 잠깐 멈추고, 다 읽으면 다시 켜져요", tone: "gold", ms: 5400, keep: 1 });
+    if (localStorage.getItem(SAVE_KEY + "-feel42")) return;
+    localStorage.setItem(SAVE_KEY + "-feel42", "1");
+    if (!isFreshSave(S)) celebrateLater({ ic: "weapon", title: "무기 7등급 · 밸런스 패치", sub: "일반 → 고급 → 희귀 → 에픽 → 전설 → 신화 → 초월 · 무기 42개<br>무기는 재료로 한 번 열면 퇴사해도 열린 채 · 지하 문서고는 한 방에 부수면 +1초, 100m마다 보상", tone: "rare", ms: 5600, keep: 1 });
   } catch (e) {}
 }
 
@@ -10981,12 +11025,12 @@ function bulkPlan(tab, cfg) {
 }
 const repLabel = (unit, v) => unit === "원" ? `${fmt(v)}원` : `${unit} ${fmtR(v)}`;
 /* 무기 카드 계획: 강화와 다음 무기 사기를 이어서 */
-function weaponStepCost() { const i = S.wi; if (S.wl < 5 || i === LAST_W) return wUp(i, S.wl); const nx = i + 1; if (WEAPONS[nx].leg && !S.legUnlock[nx - LEG_START]) return null; return wBuy(nx); }
+function weaponStepCost() { const i = S.wi; if (S.wl < 5 || i === LAST_W) return (i === LAST_W && S.wl >= 5 && (S.ame || 0) < overAme(S.wl)) ? null : wUp(i, S.wl); const nx = i + 1; if (wLocked(nx)) return null; return wBuy(nx); }
 function weaponStep() { const c = weaponStepCost(); if (c == null || S.gold < c) return 0; S.gold -= c; if (S.wl < 5 || S.wi === LAST_W) { S.wl++; return 1; } S.wi++; S.wl = 1; S.skin = -1; return 2; }
 function wPlan(limit) {
   let i = S.wi, l = S.wl, total = 0, n = 0, newW = 0;
   while (n < limit) {
-    let c; if (l < 5 || i === LAST_W) c = wUp(i, l); else { const nx = i + 1; if (WEAPONS[nx].leg && !S.legUnlock[nx - LEG_START]) break; c = wBuy(nx); }
+    let c; if (l < 5 || i === LAST_W) { if (i === LAST_W && l >= 5) break; c = wUp(i, l); } else { const nx = i + 1; if (wLocked(nx)) break; c = wBuy(nx); }
     if (total + c > S.gold) break;
     total += c; n++; if (l < 5 || i === LAST_W) l++; else { i++; l = 1; newW++; }
   }
@@ -11046,7 +11090,7 @@ function autoUpgradeTick() {
     n++;
   }
   if (!n) return;
-  if (S.wi !== i0) { if (WEAPONS[S.wi].leg) celebrate({ icon: weaponBig(S.wi, S.wl), title: "전설 무기 장착!", sub: `자동 강화 · ${WEAPONS[i0].n} +${l0} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: "rare" }); else toast(`자동 강화 · 새 무기 ${WEAPONS[S.wi].n} +${S.wl}`); if (curTab === "weapon" && wCardEl) rowPop(wCardEl, "NEW!", "#ffd54a"); }
+  if (S.wi !== i0) { if (WEAPONS[S.wi].leg) celebrate({ icon: weaponBig(S.wi, S.wl), title: wEquipTitle(S.wi), sub: `자동 강화 · ${WEAPONS[i0].n} +${l0} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: "rare" }); else toast(`자동 강화 · 새 무기 ${WEAPONS[S.wi].n} +${S.wl}`); if (curTab === "weapon" && wCardEl) rowPop(wCardEl, "NEW!", "#ffd54a"); }
   else if (curTab === "weapon") { const card = wCardEl; if (S.wl !== l0) rowPop(card, `+${S.wl}!`, "#ffd54a"); else if (S.coffee !== c0) rowPop(card, `커피 Lv.${S.coffee}`, "#ffd54a"); }
   updateUI(true); save(); dpsPop(d0);
 }
@@ -11112,11 +11156,11 @@ function renderTools() {
       const c = cv0.getContext("2d"); c.imageSmoothingEnabled = false; c.clearRect(0, 0, sz, sz);
       wpnIconDraw(c, skinIdx(), skinIdx() === i ? S.wl : 5, sz, true);
     }
-    $("wName").className = "wname" + (w.leg ? " leg" : "");
-    $("wName").innerHTML = `${w.n}<span class="plus">+${S.wl}</span>`;
-    $("wStars").innerHTML = [1, 2, 3, 4, 5].map(n => `<i class="${n <= S.wl ? "on" : ""}"></i>`).join("") + (S.wl > 5 ? ` <span class="muted">초월 ${S.wl - 5}</span>` : "");
-    $("wPow").textContent = `${i + 1}번째 무기 · 무기 공격력 ${fmt(wPower(i, S.wl))}`;
-    $("wStory").hidden = !w.leg; $("wStory").textContent = w.story || "";
+    $("wName").className = "wname" + (w.leg ? " leg" : ""); if ($("wName").style) $("wName").style.color = gradeOf(i) ? WGRADES[gradeOf(i)].c : "";
+    $("wName").innerHTML = `${wGradeTag(i)}${w.n}<span class="plus">+${S.wl}</span>`;
+    $("wStars").innerHTML = [1, 2, 3, 4, 5].map(n => `<i class="${n <= S.wl ? "on" : ""}"></i>`).join("") + (S.wl > 5 ? ` <span class="muted">돌파 ${S.wl - 5}</span>` : "");
+    $("wPow").textContent = `${WGRADES[gradeOf(i)].n} ${i % WG_SIZE + 1}/${WG_SIZE} · ${i + 1}번째 무기 · 무기 공격력 ${fmt(wPower(i, S.wl))}`;
+    $("wStory").hidden = !w.story; $("wStory").textContent = w.story || "";
     const wf = wardShown("wfx"), skn = $("wSkin"); if (skn) { skn.hidden = !wf; if (wf) skn.textContent = `무기 이펙트 '${wf.n}' · 무기 모양은 그대로, 둘레에만 효과 (옷장에서 바꿔요)`; }
     const ab = $("wAuto"), ah = S.autoUp ? `<span class="act">자동 강화</span><small><i class="sw"></i>켜짐</small>` : `<span class="act">자동 강화</span><small><i class="sw"></i>꺼짐</small>`;
     if (ab._h !== ah) { ab._h = ah; ab.innerHTML = ah; ab.classList.toggle("on", !!S.autoUp); ab.setAttribute("aria-pressed", S.autoUp ? "true" : "false"); }
@@ -11126,33 +11170,33 @@ function renderTools() {
       const wh = btnInner({ label: `${fmt(wp.total)}원`, sub: `×${wp.n} 강화 · ${wp.newW ? `${WEAPONS[wp.i].n} +${wp.l}까지` : `+${S.wl} → +${wp.l}`}` }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
       $("wNote").textContent = wp.newW ? `새 무기 ${wp.newW}개까지 한 번에 사요.` : "한 번에 여러 단계를 올려요. 버튼을 꾹 누르고 있으면 계속 강화해요.";
     } else if (S.wl < 5 || i === LAST_W) {
-      const c = wUp(i, S.wl);
-      b.className = "buy num"; b.disabled = S.gold < c;
-      const wh = btnInner({ ok: S.gold >= c, label: `${fmt(c)}원`, sub: S.wl < 5 ? `강화 +${S.wl} → +${S.wl + 1} · 공격력 +${Math.round(0.25 / (1 + 0.25 * (S.wl - 1)) * 100)}%` : "초월 강화 · 공격력 +12%" }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
-      $("wNote").textContent = S.wl < 5 ? "5강까지 올리면 다음 무기를 살 수 있어요. 3강부터 반짝이고 5강이면 빛이 나요." : "마지막 무기는 끝없이 초월할 수 있어요.";
+      const c = wUp(i, S.wl), over = S.wl >= 5, oa = over ? overAme(S.wl) : 0, okB = S.gold >= c && (S.ame || 0) >= oa;
+      b.className = "buy num" + (over ? " rare" : ""); b.disabled = !okB;
+      const wh = btnInner({ ok: okB, label: `${fmt(c)}원`, sub: !over ? `강화 +${S.wl} → +${S.wl + 1} · 공격력 +${Math.round(0.25 / (1 + 0.25 * (S.wl - 1)) * 100)}%` : `돌파 +${S.wl - 4} · 공격력 +12% · 자수정 ${oa}` }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
+      $("wNote").textContent = !over ? "5강까지 올리면 다음 무기를 살 수 있어요. 3강부터 반짝이고 5강이면 빛이 나요." : `마지막 무기는 5강 뒤에도 끝없이 돌파해요. 한 단계마다 월급과 자수정 ${oa}개 (지금 ${fmtR(S.ame || 0)}개).`;
     } else {
       const n = i + 1, nw = WEAPONS[n], c = wBuy(n);
-      const locked = nw.leg && !S.legUnlock[n - LEG_START], lk = locked ? legLockInfo(n - LEG_START) : null;
+      const locked = wLocked(n), lk = locked ? wUnlockInfo(n) : null, ng = gradeOf(n);
       b.className = "buy num" + (nw.leg ? " rare" : ""); b.disabled = locked ? !lk.ok : S.gold < c;
-      const wh = locked ? (lk.ok ? btnInner({ label: `${nw.n} 해금하기`, sub: `은괴 ${lk.req.silver} · 자수정 ${lk.req.ame} 사용` }) : `<span class="act">잠김: ${nw.n}</span><small>${lk.short} · 공부 탭에서 캐요</small>`) : btnInner({ ok: S.gold >= c, label: `${fmt(c)}원`, sub: `새 무기 ${nw.n} · 공격력 x${(wPower(n, 1) / wPower(i, 5)).toFixed(1)}` }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
-      $("wNote").textContent = nw.leg ? (locked ? (lk.ok ? "광물이 충분해요. 눌러서 해금하면 바로 월급으로 살 수 있어요." : `전설 무기는 은괴·자수정으로 먼저 해금해요. 지금 은괴 ${S.silver} · 자수정 ${S.ame} · 공부 탭 타이머를 켜 두면 광산에서 모여요.`) : "전설 무기예요. 월급으로 사면 바로 장착해요.") : "새 무기를 사면 모양이 바뀌어요.";
+      const wh = locked ? (lk.ok ? btnInner({ label: `${nw.n} 열기`, sub: `${lk.need} 사용${lk.entry ? ` · ${WGRADES[ng].n} 관문` : ""}` }) : `<span class="act">잠김: ${nw.n}</span><small>${lk.lack} 더 필요</small>`) : btnInner({ ok: S.gold >= c, label: `${fmt(c)}원`, sub: `새 무기 ${nw.n} · 공격력 x${(wPower(n, 1) / wPower(i, 5)).toFixed(1)}` }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
+      $("wNote").textContent = locked ? (lk.ok ? `재료가 충분해요. 눌러서 열면 바로 월급으로 살 수 있어요${lk.entry ? ` · ${WGRADES[ng].n} 등급 관문이에요` : ""}.` : `${WGRADES[ng].n} 무기 ${nw.n}은 재료로 먼저 열어요 (${lk.need}). 지금 ${matHave(lk.req)} · 공부 탭 광산과 지하 문서고에서 모여요.`) : nw.leg ? `${WGRADES[ng].n} 무기예요. 월급으로 사면 바로 장착해요.` : "새 무기를 사면 모양이 바뀌어요.";
     }
   });
   $("wBtn").addEventListener("click", () => {
     const i = S.wi, d0 = stats().dps, N = bulkN(), wp = N === 1 ? null : wPlan(N === 0 ? 500 : N);
     if (wp && wp.n > 1) {
       const startI = S.wi, startL = S.wl; let n = 0; while (n < wp.n && weaponStep()) n++;
-      if (S.wi !== startI) celebrate({ icon: weaponBig(S.wi, S.wl), title: WEAPONS[S.wi].leg ? "전설 무기 장착!" : "새 무기 장착!", sub: `${WEAPONS[startI].n} +${startL} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: WEAPONS[S.wi].leg ? "rare" : "gold" });
+      if (S.wi !== startI) celebrate({ icon: weaponBig(S.wi, S.wl), title: wEquipTitle(S.wi), sub: `${WEAPONS[startI].n} +${startL} → ${WEAPONS[S.wi].n} +${S.wl}`, tone: WEAPONS[S.wi].leg ? "rare" : "gold" });
       else if (S.wl === 5 && startL < 5) celebrate({ icon: weaponBig(S.wi, 5), title: "+5 완성!", sub: `${WEAPONS[S.wi].n} +${startL} → +5`, tone: "gold" });
       else if (!card._popT || Date.now() - card._popT > 110) { card._popT = Date.now(); rowPop(card, `+${S.wl}! (×${n})`, "#ffd54a"); }
       updateUI(true); save(); dpsPop(d0); return;
     }
     if (S.wl < 5 || i === LAST_W) {
-      const c = wUp(i, S.wl); if (S.gold < c) return; S.gold -= c; S.wl++;
+      if (!weaponStep()) { if (i === LAST_W && S.wl >= 5 && (S.ame || 0) < overAme(S.wl)) toast(`돌파에는 자수정 ${overAme(S.wl)}개가 필요해요 · 지금 ${fmtR(S.ame || 0)}개`); return; }
       if (S.wl === 5) celebrate({ icon: weaponBig(i, 5), title: "+5 완성!", sub: `${WEAPONS[i].n} · 빛이 나기 시작해요`, tone: WEAPONS[i].leg ? "rare" : "gold" });
-      else rowPop(card, `+${S.wl}!`, "#ffd54a");
+      else rowPop(card, S.wl > 5 ? `돌파 +${S.wl - 5}!` : `+${S.wl}!`, "#ffd54a");
     }
-    else { const n = i + 1, nw = WEAPONS[n], c = wBuy(n); if (nw.leg && !S.legUnlock[n - LEG_START]) { legUnlockTry(n - LEG_START); updateUI(true); save(); return; } if (S.gold < c) return; S.gold -= c; S.wi = n; S.wl = 1; if (S.skin >= 0) S.skin = -1; celebrate({ icon: weaponBig(n, 1), title: nw.leg ? "전설 무기 장착!" : "새 무기 장착!", sub: `${n + 1}번째 무기 · ${nw.n}`, tone: nw.leg ? "rare" : "gold" }); }
+    else { const n = i + 1, nw = WEAPONS[n], c = wBuy(n); if (wLocked(n)) { weaponUnlockTry(n); updateUI(true); save(); return; } if (S.gold < c) return; S.gold -= c; S.wi = n; S.wl = 1; if (S.skin >= 0) S.skin = -1; celebrate({ icon: weaponBig(n, 1), title: wEquipTitle(n), sub: `${WGRADES[gradeOf(n)].n} · ${n + 1}번째 무기 · ${nw.n}`, tone: nw.leg ? "rare" : "gold" }); }
     updateUI(true); save(); dpsPop(d0);
   });
   $("wAuto").addEventListener("click", () => {
@@ -11176,7 +11220,7 @@ function renderTools() {
     const btn = el("button", "buy num"); if (btn.style) btn.style.animationDelay = (Math.random() * 2.4).toFixed(2) + "s";
     btn.addEventListener("click", () => {
       if (i < S.wi || (i === S.wi && i !== LAST_W && S.wl >= 5 && S.skin >= 0)) { S.skin = (i === S.wi) ? -1 : i; toast(`${w.n} 모양으로 바꿨어요 (성능은 그대로)`); }
-      else if (w.leg && !S.legUnlock[i - LEG_START]) legUnlockTry(i - LEG_START);
+      else if (wLocked(i)) weaponUnlockTry(i);
       else if (i === S.wi) $("wBtn").click();
       else if (i === S.wi + 1) $("wBtn").click();
       updateUI(true); save();
@@ -11188,16 +11232,16 @@ function renderTools() {
     WEAPONS.forEach((w, i) => {
       const r = wrows[i], lv = i < S.wi ? 5 : i === S.wi ? S.wl : 0;
       const nextOk = i === S.wi + 1 && S.wl >= 5 && S.wi !== LAST_W;
-      const lockedLeg = w.leg && !S.legUnlock[i - LEG_START];
+      const lockedLeg = wLocked(i);
       const cost = i === S.wi ? ((S.wl < 5 || i === LAST_W) ? wUp(i, S.wl) : 0) : nextOk ? wBuy(i) : 0;
-      const lkI = lockedLeg ? legLockInfo(i - LEG_START) : null;
+      const lkI = lockedLeg ? wUnlockInfo(i) : null;
       const key = [lv, skinIdx() === i, nextOk, lockedLeg, cost && S.gold >= cost, i <= S.wi + 1, lkI ? lkI.short : ""].join();
       if (key === r.key) return; r.key = key;
       r.ic.innerHTML = ""; r.ic.appendChild(i <= S.wi + 1 && !lockedLeg ? weaponIcon(i, Math.max(1, lv)) : pixIcon("lock", 22)); r.ic.appendChild(r.lvb);
       r.lvb.hidden = lv <= 0; r.lvb.textContent = lv >= 5 && i !== LAST_W ? "MAX" : `+${lv}`; r.lvb.classList.toggle("mx", lv >= 5 && i !== LAST_W);
-      r.nm.textContent = `${i + 1}. ${w.n}`; r.nm.style.color = w.leg ? "var(--rare)" : "";
+      r.nm.textContent = `${i + 1}. ${w.n}`; r.nm.style.color = gradeOf(i) ? WGRADES[gradeOf(i)].c : "";
       r.lv.textContent = i === LAST_W && lv > 5 ? ` 초월 +${lv - 5}` : "";
-      r.desc.textContent = `ATK ${fmt(wPower(i, Math.max(1, lv)))}` + (lockedLeg ? ` · 은괴 ${legReq(i - LEG_START).silver}, 자수정 ${legReq(i - LEG_START).ame}로 해금` : "");
+      r.desc.textContent = `${WGRADES[gradeOf(i)].n} · ATK ${fmt(wPower(i, Math.max(1, lv)))}` + (lockedLeg ? ` · ${lkI.need}로 열기` : "");
       r.row.classList.toggle("locked", lockedLeg ? !lkI.ok : i > S.wi + 1);
       r.row.style.borderColor = i === S.wi ? "var(--gold)" : skinIdx() === i ? "var(--ore)" : "";
       const b = r.btn;
@@ -11207,20 +11251,15 @@ function renderTools() {
         else { b.className = "buy ghost num"; b.disabled = skinIdx() === i; b.innerHTML = skinIdx() === i ? `<span class="act">착용 중</span><small>완성</small>` : `<span class="act">모양 바꾸기</span>`; }
       }
       else if (nextOk && !lockedLeg) { b.className = "buy num" + (w.leg ? " rare" : ""); b.disabled = S.gold < cost; b.innerHTML = btnInner({ ok: S.gold >= cost, label: `${fmt(cost)}원`, sub: "구매" }); }
-      else if (lockedLeg) { b.className = "buy num rare" + (lkI.ok ? "" : " ghost"); b.disabled = false; b.innerHTML = lkI.ok ? btnInner({ label: "해금하기", sub: `은괴 ${lkI.req.silver} · 자수정 ${lkI.req.ame}` }) : `<span class="act">잠김</span><small>${lkI.short}</small>`; }
+      else if (lockedLeg) { b.className = "buy num rare" + (lkI.ok ? "" : " ghost"); b.disabled = !lkI.prev; b.innerHTML = lkI.ok ? btnInner({ label: "열기", sub: lkI.need }) : `<span class="act">잠김</span><small>${lkI.prev ? lkI.lack + " 더" : "앞 무기부터"}</small>`; }
       else { b.className = "buy ghost num"; b.disabled = true; b.innerHTML = `<span class="act">잠김</span>`; }
     });
   });
-  secTitle("weapon", "전설 무기 해금", "공부(광산)에서 캔 은괴·자수정 사용");
-  WEAPONS.forEach((w, i) => {
-    if (!w.leg) return; const k = i - LEG_START, req = legReq(k);
-    addRow("weapon", {
-      icon: weaponIcon(i, 5), name: () => w.n, lv: () => S.legUnlock[k] ? " 해금됨" : "",
-      locked: () => !S.legUnlock[k],
-      desc: () => S.legUnlock[k] ? (S.wi >= i ? "보유 중" : "골드로 살 수 있어요 (앞 무기를 5강하면)") : `은괴 ${req.silver} · 자수정 ${req.ame} 필요`,
-      btn: () => S.legUnlock[k] ? { label: "해금됨", ok: false, cls: "rare" } : { label: `은괴 ${req.silver}`, sub: `자수정 ${req.ame}`, ok: S.silver >= req.silver && S.ame >= req.ame && (k === 0 || S.legUnlock[k - 1]), cls: "rare" },
-      click: () => { if (S.legUnlock[k] || S.silver < req.silver || S.ame < req.ame || (k > 0 && !S.legUnlock[k - 1])) return; S.silver -= req.silver; S.ame -= req.ame; S.legUnlock[k] = true; celebrate({ icon: weaponBig(i, 5), title: "전설 무기 해금!", sub: `${w.n} · 이제 월급으로 살 수 있어요`, tone: "rare" }); },
-    });
+  secTitle("weapon", "무기 등급", "7등급 · 연 무기는 퇴사해도 남아요");
+  const wgl = el("div", "card wgl"); let wglKey = "";
+  addCustom("weapon", wgl, () => {
+    const k = [S.wi, wUnl(), S.ore, S.silver, S.ame].join("|"); if (k === wglKey) return; wglKey = k;
+    wgl.innerHTML = wGradeLadderHTML();
   });
 })();
 
@@ -11355,7 +11394,7 @@ function planOnUndo(b, c) {
   P.done = hexSet(P.done, g, 0); planVer++;
   const st = planStats();
   if (S.day && S.day.plan && st && st.tLeft > 0) {
-    const drw = S.day.plan === 2 ? { manna: 0, stamp: 0 } : planDayRw(); S.day.plan = 0; S.manna = Math.max(0, S.manna - drw.manna); S.stamp = Math.max(0, S.stamp - drw.stamp);
+    const drw = S.day.plan === 2 ? { manna: 0, stamp: 0 } : planDayRw(); S.day.plan = 0; S.manna = Math.max(0, S.manna - drw.manna); S.stamp = Math.max(0, S.stamp - drw.stamp); if (drw.ame) S.ame = Math.max(0, (S.ame || 0) - drw.ame);
     if (P.sPrev) { P.last = P.sPrev[0]; P.streak = P.sPrev[1]; }
   }
 }
@@ -11781,10 +11820,10 @@ function updateReaderState() {
   });
   addRow("study", {
     icon: weaponIcon(1, 5), name: () => "형광펜 곡괭이", lv: () => ` Lv.${S.pick}`,
-    desc: () => `광석 +${S.pick * 10}% → <b>+${(S.pick + 1) * 10}%</b> · 골드로 강화, 퇴사해도 유지`,
-    btn: () => ({ label: fmt(pickCost(S.pick)) + "원", sub: "강화", ok: S.gold >= pickCost(S.pick) }),
-    click: () => { if (S.gold < pickCost(S.pick)) return; S.gold -= pickCost(S.pick); S.pick++; },
-    rep: { cost: k => pickCost(S.pick + k), have: () => S.gold, unit: "원" },
+    desc: () => S.pick >= BAL.pickMax ? `광석 +${S.pick * 10}% (최대) · 퇴사해도 유지` : `광석 +${S.pick * 10}% → <b>+${(S.pick + 1) * 10}%</b> · 골드로 강화, 퇴사해도 유지 · 최대 Lv.${BAL.pickMax}`,
+    btn: () => S.pick >= BAL.pickMax ? { label: "최대", ok: false } : ({ label: fmt(pickCost(S.pick)) + "원", sub: "강화", ok: S.gold >= pickCost(S.pick) }),
+    click: () => { if (S.pick >= BAL.pickMax || S.gold < pickCost(S.pick)) return; S.gold -= pickCost(S.pick); S.pick++; },
+    rep: { cost: k => pickCost(S.pick + k), have: () => S.gold, max: () => Math.max(0, BAL.pickMax - S.pick), unit: "원" },
   });
 })();
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
@@ -11962,9 +12001,9 @@ function mineTick(now) {
     icon: iconCanvas(g => { g.fillStyle = { red: "#ff6b6b", yellow: "#ffd54a", blue: "#6fd3ff" }[c.id]; g.fillRect(8, 6, 24, 24); g.fillStyle = "rgba(0,0,0,.25)"; g.fillRect(8, 26, 24, 4); g.fillStyle = "#1b1f2a"; g.fillRect(12, 12, 16, 2); g.fillRect(12, 17, 12, 2); }),
     name: () => c.n, lv: () => ` ${S.charms[c.id]}개`,
     desc: () => `${c.d} +${Math.round(charmEff(c, S.charms[c.id]) * 100)}% · 200개 넘으면 효율 80%`,
-    btn: () => ({ label: `광석 ${CHARM_PRICE}`, sub: "붙이기", ok: S.ore >= CHARM_PRICE, cls: "ore" }), noDot: true,
-    click: () => { if (S.ore < CHARM_PRICE) return; S.ore -= CHARM_PRICE; S.charms[c.id]++; },
-    rep: { cost: () => CHARM_PRICE, have: () => S.ore, unit: "광석" },
+    btn: () => ({ label: `광석 ${fmtR(charmPrice(c.id))}`, sub: "붙이기", ok: S.ore >= charmPrice(c.id), cls: "ore" }), noDot: true,
+    click: () => { const p = charmPrice(c.id); if (S.ore < p) return; S.ore -= p; S.charms[c.id]++; },
+    rep: { cost: k => Math.ceil(CHARM_PRICE * Math.pow(BAL.charmGrow, (S.charms[c.id] || 0) + k)), have: () => S.ore, unit: "광석" },
   }, cg));
 })();
 
@@ -11982,7 +12021,7 @@ function treIcon(t) {
   });
 }
 (() => {
-  addCustom("treasure", el("div", "card", `<p class="muted">보물은 결재도장으로 올려요. 도장은 퇴사, 말씀 읽기, 100층 보스, 지하 문서고에서 나와요. 50레벨마다 진 → 벼려진 → 초월 → 궁극으로 차수가 오르며 효과는 커지지만 값이 훨씬 비싸져요.</p>`), () => {});
+  addCustom("treasure", el("div", "card", `<p class="muted">보물은 결재도장으로 올려요. 도장은 퇴사, 말씀 읽기, 100층 보스, 지하 문서고에서 나와요. 50레벨마다 진 → 벼려진 → 초월 → 궁극으로 차수가 오르며 효과는 커지지만 값이 훨씬 비싸져요. 궁극(200레벨)을 넘으면 50레벨마다 값이 2배가 돼요.</p>`), () => {});
   TREASURES.forEach(t => addRow("treasure", {
     icon: treIcon(t),
     name: () => treName(t, S.tre[t.id]), lv: () => ` Lv.${S.tre[t.id]}`,
@@ -11991,8 +12030,8 @@ function treIcon(t) {
       if (t.max && lv >= t.max) return `${t.unit} +${t.sec ? treEff(t, lv) + "초" : Math.round(treEff(t, lv) * 100) + "%"} (최대)`;
       return t.sec ? `${t.unit} +${treEff(t, lv)}초 → <b>+${treEff(t, lv + 1)}초</b> (임원·회장 보스)` : `${t.unit} +${Math.round(treEff(t, lv) * 100)}% → <b>+${Math.round(treEff(t, lv + 1) * 100)}%</b>`;
     },
-    btn: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return { label: "최대", ok: false, cls: "stamp" }; const c = treCost(t, lv); return { label: `도장 ${fmtR(c)}`, sub: lv ? "강화" : "얻기", ok: S.stamp >= c, cls: "stamp" }; },
-    click: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return; const c = treCost(t, lv); if (S.stamp < c) return; S.stamp -= c; S.tre[t.id]++; if ((lv + 1) % 50 === 0) celebrate({ ic: "treasure", title: "보물 차수 상승!", sub: `${treName(t, lv + 1)} · 효과가 크게 올라요`, tone: "stamp" }); },
+    btn: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return { label: "최대", ok: false, cls: "stamp" }; const gt = treGateAt(t); if (gt) { const a = treTierAme(gt); return { label: `자수정 ${fmtR(a)}`, sub: `${gt + 1}차수 열기`, ok: (S.ame || 0) >= a, cls: "rare" }; } const c = treCost(t, lv); return { label: `도장 ${fmtR(c)}`, sub: lv ? "강화" : "얻기", ok: S.stamp >= c, cls: "stamp" }; },
+    click: () => { const lv = S.tre[t.id]; if (t.max && lv >= t.max) return; if (treGateAt(t)) { treTierTry(t); return; } const c = treCost(t, lv); if (S.stamp < c) return; S.stamp -= c; S.tre[t.id]++; if ((lv + 1) % 50 === 0) celebrate({ ic: "treasure", title: "보물 차수 상승!", sub: `${treName(t, lv + 1)} · 효과가 크게 올라요`, tone: "stamp" }); },
     rep: { cost: k => treCost(t, S.tre[t.id] + k), have: () => S.stamp, max: () => t.max ? t.max - S.tre[t.id] : Infinity, unit: "도장" },
   }));
 })();
@@ -12472,7 +12511,7 @@ function buildAttCard() {
   secTitle("daily", "지하 문서고", "하루 입장 제한");
   addRow("daily", {
     icon: iconCanvas(g => drawSprite(g, SPR.chest, PAL.chest, 2, 2, 3)), name: () => "지하 문서고", lv: () => ` ${Math.max(0, vaultTickets() - S.day.vaultUsed)}/${vaultTickets()}회`,
-    desc: () => `30초 동안 서류함을 부수며 내려가요. 하나에 40m, 월급과 30% 확률 도장, 1000m마다 도장 2. 오늘 최고 ${S.day.depth}m`,
+    desc: () => `30초로 시작 · 한 방에 부수면 +1초 · 10m마다 단단해져요. 100m마다 월급, 이정표마다 은괴, 처음 닿는 1000m마다 도장·은괴 · 오늘 ${S.day.depth}m · 최고 ${fmtR(vaultBestGet())}m · 다음 이정표 ${fmtR(vaultNextMile(S.day.depth || 0))}m`,
     btn: () => mode === "vault" ? { label: "진행 중", ok: false, cls: "ore" } : { label: "입장", ok: S.day.vaultUsed < vaultTickets(), cls: "ore" },
     click: startVault,
   });
@@ -14035,6 +14074,350 @@ function withoutTempBuffs(fn) {
 var simulateOfflineV40 = simulateOffline;
 simulateOffline = function (sec) { return withoutTempBuffs(() => simulateOfflineV40(sec)); };
 
+/* ===================== v42 체계적 밸런스 =====================
+   사용자(2026-10-11 12:44 · 13:22): "무기 변환이 너무 초반부터 어렵다, 점차 어려워져야지 · 전설 신화 초월까지 · 체계적 밸런스 패치 ·
+     지하 문서고는 한 방에 부수면 시간이 늘어 계속 깊이 · 미터마다 보상 · 꾸준히 5개월(매일 말씀 몇 장 + 공부 30분)이면 중간 콘텐츠 섭렵 ·
+     자수정이나 은괴 수급을 늘려 주든지 · 게임 디자인 연구를 토대로 시뮬레이션 돌려 보고 완료"
+   기준(game-design 스킬): 마일스톤 시간표를 시뮬로 먼저(G-IDLE-14, U-SYS-17·18) · 모든 재화에 지수 싱크(G-IDLE-15, U-SYS-15) ·
+     타이트하게 시작해 점차 느슨하게(D4-21) · 작은 보상을 자주, 병행 활동 2개 이상(G-IDLE-12) · 난이도는 적 쪽 수치로(U-SYS-13) ·
+     톱니형 난이도(U-SYS-12) · 방치 경로가 영구히 막히지 않게(G-IDLE-11) · 프레스티지는 준선형(G-IDLE-06)
+   수치는 모두 BAL 한 곳에. 시뮬레이터(sim_bot.js)가 같은 BAL을 바꿔 가며 시간표를 맞춤. */
+var BAL = {
+  // 몬스터 체력: 층마다 곱하는 배율 [이 층까지, 배율]. 예전 1.15 → 1.10 → 1.08 → 1.07 → 1.05 (높이 갈수록 쉬워졌음)
+  // 350층까지는 예전과 같고(지금 기록 그대로), 그 위는 시뮬레이션으로 맞춘 기울기
+  grow: [[100, 1.15], [200, 1.10], [300, 1.08], [350, 1.07], [600, 1.08], [750, 1.065], [1e9, 1.055]],
+  // 무기 해금 재료 (무기마다 한 번, 퇴사해도 열린 채): 일반 6개는 그냥, 그다음부터 조금씩 오르고 등급 첫 무기(관문)는 조금 더.
+  // 에픽→전설에서 값이 확 뛰지 않게(예전 표는 15 → 400) 무기마다 이어지게 맞춤. 은괴 = 흔한 재료, 자수정 = 귀한 재료
+  wtab: [{}, {}, {}, {}, {}, {},
+    { ore: 120 }, { ore: 60 }, { ore: 70 }, { ore: 80 }, { ore: 90 }, { ore: 100 },                                                     // 고급
+    { ore: 300, silver: 4 }, { ore: 160, silver: 3 }, { ore: 180, silver: 3 }, { ore: 200, silver: 4 }, { ore: 220, silver: 4 }, { ore: 240, silver: 5 },   // 희귀
+    { silver: 12, ame: 2 }, { silver: 10, ame: 2 }, { silver: 12, ame: 3 }, { silver: 15, ame: 3 }, { silver: 18, ame: 4 }, { silver: 22, ame: 5 },      // 에픽
+    { silver: 150, ame: 45 }, { silver: 110, ame: 35 }, { silver: 140, ame: 45 }, { silver: 175, ame: 55 }, { silver: 215, ame: 70 }, { silver: 265, ame: 85 },   // 전설
+    { silver: 700, ame: 260 }, { silver: 450, ame: 165 }, { silver: 480, ame: 175 }, { silver: 510, ame: 185 }, { silver: 545, ame: 200 }, { silver: 580, ame: 215 },   // 신화
+    { silver: 1200, ame: 450 }, { silver: 850, ame: 320 }, { silver: 900, ame: 340 }, { silver: 960, ame: 360 }, { silver: 1020, ame: 385 }, { silver: 1100, ame: 410 }],   // 초월
+  pickMax: 30,                                           // 곡괭이 최대 레벨 (예전엔 끝이 없어 광석 ×12까지)
+  charmGrow: 1.02,                                       // 부적 값: 200 × 1.02^가진 수 (예전: 늘 200 → 광석이 끝없이 피해로)
+  treGrow: 2,                                            // 보물 궁극(200레벨) 넘어 50레벨마다 값 ×2 (예전: 같은 값이 되풀이돼 도장이 도장을 낳음 · ×5는 도장이 갈 곳을 잃음)
+  treAme: [0, 0, 0, 0, 0, 0, 0, 0, 0],                   // 보물 차수 열기 자수정 (0이면 관문 없음) — 시뮬: 자수정이 무기 해금에 몰려 도장이 갈 곳을 잃어 뺌
+  reviewMul: [1, 3, 5, 8, 12],                           // 인사고과표 차수 효과 — 예전 [1,3,10,30,100]은 도장이 도장을 낳아 폭주 (지금 가진 100레벨 아래는 그대로)
+  chairOre: 2000, legEnhK: 1,                            // 회장님 세트 값 · 전설 옷 강화 광석 배수
+  chairSilver: 1,                                        // 회장 보스(100층마다) 처치 은괴
+  overAme: 5,                                            // 마지막 무기 5강 뒤 '돌파' 한 단계마다 자수정 (10단계마다 +5)
+  st25Silver: 2, st60Ame: 1, mem5Ame: 1, planAme: 1,     // 일일 업무 '공부 25분'·'공부 60분'·'암송 5구절'과 플랜 하루 분량에 재료 추가
+  // 지하 문서고: 30초로 시작, 한 방에 부수면 +1초(최대 30초). 서류함 하나 = 10m, n번째 서류함 체력 = (n+1)층 몬스터 × hp
+  // 100m마다 월급, 이정표(500·2000·4500·8000… = 500×k²m)마다 은괴 1 · 광석, 이정표 3개마다 자수정 1, 처음 닿는 1000m마다 도장·은괴, 5000m마다 자수정
+  vault: { t0: 30, cap: 30, one: 1.0, m: 10, hp: 0.5, gold: 0.3, step: 100, mile: 500, mileOre: 30, ameMile: 3, recEvery: 1000, recSt: 5, recSv: 2, recAmeEvery: 5000, recAme: 3, wait: 0.35, waitMin: 0.12, skipEvery: 5, skipMax: 4 },
+};
+
+/* ---------- 몬스터 체력 곡선 ---------- */
+var hpC42 = [0, 100];
+function growAt(f) { const G = BAL.grow; for (let i = 0; i < G.length; i++) if (f <= G[i][0]) return G[i][1]; return G[G.length - 1][1]; }
+hpBase = function (f) { f = Math.max(1, Math.min(30000, Math.floor(f) || 1)); while (hpC42.length <= f) { const n = hpC42.length; hpC42.push(hpC42[n - 1] * growAt(n - 1)); } return hpC42[f]; };
+function hpReset() { hpC42.length = 2; }
+
+/* ---------- 무기 7등급 (6개씩 42개) ---------- */
+var WGRADES = [
+  { n: "일반", c: "#b9c1d6" }, { n: "고급", c: "#7fe3a0" }, { n: "희귀", c: "#6fd3ff" }, { n: "에픽", c: "#c9a6ff" },
+  { n: "전설", c: "#ffb13b" }, { n: "신화", c: "#ff6b6b" }, { n: "초월", c: "#fff09a" },
+];
+var WG_SIZE = 6;
+function gradeOf(i) { return Math.max(0, Math.min(WGRADES.length - 1, Math.floor(i / WG_SIZE))); }
+function gradeFirst(g) { return g * WG_SIZE; }
+WEAPONS.forEach((w, i) => { w.leg = gradeOf(i) >= 3; w.grade = gradeOf(i); });
+function wUnlockCost(i) {                                                   // 무기 i를 여는 데 드는 재료 (한 번만, 퇴사해도 열린 채)
+  return Object.assign({}, (BAL.wtab && BAL.wtab[i]) || {});
+}
+function wUnl() { return Math.max(WG_SIZE - 1, +S.wunl || 0); }
+function wLocked(i) { return i > wUnl() && i < WEAPONS.length; }
+function wUnlockInfo(i) {
+  const req = wUnlockCost(i), keys = Object.keys(req), prev = i <= wUnl() + 1;
+  const ok = prev && keys.every(k => (+S[k] || 0) >= req[k]);
+  const need = keys.map(k => `${ECO_NAME[k] || k} ${fmtR(req[k])}`).join(" · ");
+  const lack = keys.filter(k => (+S[k] || 0) < req[k]).map(k => `${ECO_NAME[k] || k} ${fmtR(req[k] - (+S[k] || 0))}`).join(" · ");
+  return { i, req, ok, prev, need, lack, entry: i % WG_SIZE === 0, short: !prev ? "앞 무기부터" : ok ? `${need}로 열기` : `${lack} 더 필요` };
+}
+function weaponUnlockTry(i, quiet) {
+  if (!wLocked(i)) return true;
+  const lk = wUnlockInfo(i);
+  if (!lk.ok) { if (!quiet) toast(!lk.prev ? "앞 무기부터 차례로 열어요" : `${WEAPONS[i].n}: ${lk.lack} 더 필요해요 · 공부 탭 광산과 지하 문서고에서 모여요`); return false; }
+  Object.keys(lk.req).forEach(k => { S[k] -= lk.req[k]; });
+  S.wunl = i;
+  if (!quiet) {
+    const g = gradeOf(i);
+    sfx(lk.entry ? "bigup" : "upgrade");
+    celebrate(lk.entry
+      ? { icon: weaponBig(i, 1), title: `${WGRADES[g].n} 등급 열림!`, sub: `${WEAPONS[i].n} · 이제 월급으로 살 수 있어요<br><span class="muted">${lk.need} 사용 · 퇴사해도 열린 채로 남아요</span>`, tone: "rare", ms: 3000 }
+      : { icon: weaponBig(i, 1), title: "무기 해금!", sub: `${WGRADES[g].n} · ${WEAPONS[i].n}<br><span class="muted">${lk.need} 사용 · 퇴사해도 열린 채로 남아요</span>`, tone: "gold" });
+  }
+  return true;
+}
+function wGradeTag(i) { const g = WGRADES[gradeOf(i)]; return `<span class="wgr" style="color:${g.c};border-color:${g.c}">${g.n}</span>`; }
+
+/* ---------- 보물: 궁극 넘어서도 값이 오르고, 차수는 자수정으로 엶 ---------- */
+function treTierOf(lv) { return Math.floor(lv / 50); }
+treEff = function (t, lv) {
+  if (t.flat) return t.per * lv;
+  const M = t.id === "review" ? BAL.reviewMul : TIER_MUL; let s = 0;
+  for (let j = 0; j < lv; j++) s += t.per * M[Math.min(M.length - 1, Math.floor(j / 50))];
+  return s;
+};
+function overAme(lv) { return BAL.overAme * (1 + Math.floor(Math.max(0, lv - 5) / 10)); }   // 돌파 +6으로 올릴 때 lv=5
+weaponStep = function () {
+  const c = weaponStepCost(); if (c == null || S.gold < c) return 0;
+  const over = S.wi === LAST_W && S.wl >= 5, a = over ? overAme(S.wl) : 0;
+  if (a && (S.ame || 0) < a) return 0;
+  S.gold -= c; if (a) S.ame -= a;
+  if (S.wl < 5 || S.wi === LAST_W) { S.wl++; return 1; }
+  S.wi++; S.wl = 1; S.skin = -1; return 2;
+};
+function treTierCostMul(tier) { return tier <= 4 ? TIER_COST[tier] : TIER_COST[4] * Math.pow(BAL.treGrow, tier - 4); }
+function treTierAme(tier) { const A = BAL.treAme; return tier < A.length ? A[tier] : A[A.length - 1] * Math.pow(2, tier - A.length + 1); }
+function treTierOpen(id, tier) { if (tier <= 0) return true; const o = (S.treTier && S.treTier[id]) || 0; return o >= tier; }
+function treGateAt(t) { const lv = S.tre[t.id] || 0; if (t.flat || lv === 0 || lv % 50 !== 0) return 0; const tier = treTierOf(lv); return treTierOpen(t.id, tier) || !(treTierAme(tier) > 0) ? 0 : tier; }
+treCost = function (t, lv) {
+  if (t.flat) return Math.ceil(3 * Math.pow(1.25, lv));
+  const tier = treTierOf(lv);
+  if (lv > 0 && lv % 50 === 0 && !treTierOpen(t.id, tier) && treTierAme(tier) > 0) return Infinity;      // 새 차수 첫 레벨은 자수정으로 차수를 연 뒤 (값이 있을 때만)
+  return Math.ceil((2 + 0.6 * Math.pow(lv % 50, 1.7)) * treTierCostMul(tier));
+};
+function treTierTry(t, quiet) {
+  const tier = treGateAt(t); if (!tier) return false;
+  const need = treTierAme(tier);
+  if ((S.ame || 0) < need) { if (!quiet) toast(`자수정 ${fmtR(need - (S.ame || 0))} 더 있으면 ${TIER_NAME[Math.min(4, tier)] || "다음 "}차수를 열 수 있어요`); return false; }
+  S.ame -= need; if (!S.treTier) S.treTier = {}; S.treTier[t.id] = tier;
+  if (!quiet) celebrate({ ic: "treasure", title: "보물 차수 열림!", sub: `${t.n} ${tier + 1}차수 · 자수정 ${need} 사용<br><span class="muted">이제 도장으로 계속 올릴 수 있어요</span>`, tone: "stamp" });
+  return true;
+}
+
+/* ---------- 부적 값: 가진 수만큼 조금씩 오름 ---------- */
+function charmPrice(id) { return Math.ceil(CHARM_PRICE * Math.pow(BAL.charmGrow, (S.charms && S.charms[id]) || 0)); }
+
+/* ---------- 회장님 세트 값 · 전설 옷 강화 ---------- */
+(function () {
+  WITEMS.forEach(it => { if (it.set === "chair" && it.cost) it.cost.ore = BAL.chairOre; });
+  const ec0 = wardEnhCost;
+  wardEnhCost = function (it, e) {
+    const c = ec0(it, e);
+    if (it.g === 4 && c && c.ore) { c.ore = Math.ceil(c.ore * BAL.legEnhK); }
+    return c;
+  };
+})();
+
+/* ---------- 퍼센트 피해(사직서·선인장)는 보스 피해 배율을 다시 곱하지 않음 (예전: 최대 체력 5% × 보스 배율 → 보스를 한 방에) ---------- */
+var pctHit = false;
+
+/* ---------- 지하 문서고: 한 방에 부수면 시간 +1초 · 깊이마다 단단해짐 · 100m마다 보상 ---------- */
+var vaultBest = 0;
+function vaultChestHp(n) { return hpBase(1 + n) * BAL.vault.hp; }            // n번째 서류함 (0부터) = 깊이 n×10m, 층으로 치면 n+1층
+function vaultDepthOf(n) { return n * BAL.vault.m; }
+function vaultStepN(combo) { return 1 + Math.min(BAL.vault.skipMax, Math.floor((combo || 0) / BAL.vault.skipEvery)); }   // 한 방 5연속마다 한 번에 서류함 하나 더 (최대 5칸)
+function vaultWait(combo) { return combo > 0 ? Math.max(BAL.vault.waitMin, BAL.vault.wait - 0.02 * combo) : BAL.vault.wait; }
+function vaultMileK(m) { const k = Math.round(Math.sqrt(m / BAL.vault.mile)); return k >= 1 && BAL.vault.mile * k * k === m ? k : 0; }   // 이정표면 몇 번째인지
+function vaultNextMile(m) { const k = Math.floor(Math.sqrt(m / BAL.vault.mile)) + 1; return BAL.vault.mile * k * k; }
+function vaultStepReward(m) {                                              // 깊이 m에 닿을 때 (100m마다) 받는 것
+  const V = BAL.vault, r = { gold: goldBase(Math.max(1, S.floor)) * V.gold * goldMult() }, k = vaultMileK(m);
+  if (k) { r.silver = 1; r.ore = V.mileOre * k; if (k % V.ameMile === 0) r.ame = 1; }
+  return r;
+}
+function vaultRecReward(m) {                                               // 처음 닿는 깊이 (기록 갱신, 500m마다)
+  const V = BAL.vault, r = { stamp: V.recSt + Math.floor(m / 1000) * 2, silver: V.recSv };
+  if (m % V.recAmeEvery === 0) r.ame = V.recAme;
+  return r;
+}
+function vaultGrant(r, run) {
+  if (r.gold) { S.gold += r.gold; run.gold += r.gold; }
+  ["stamp", "ore", "silver", "ame"].forEach(k => { if (r[k]) { S[k] = (+S[k] || 0) + r[k]; run[k] = (run[k] || 0) + r[k]; } });
+}
+function vaultBestGet() { return Math.max(+(S.vault && S.vault.best) || 0, 0); }
+function vaultReach(m, run, fx) {                                          // 깊이 m에 닿았을 때 (10m마다 부름)
+  const V = BAL.vault; let msg = "";
+  if (m % V.step === 0) { const r = vaultStepReward(m); vaultGrant(r, run); msg = `${m}m` + (r.silver ? " 은괴 +1" : "") + (r.ame ? " 자수정 +1" : "") + (r.ore ? ` 광석 +${r.ore}` : ""); }
+  if (m > vaultBestGet() && m % V.recEvery === 0) {
+    const r = vaultRecReward(m); vaultGrant(r, run); run.rec = m;
+    msg = `${m}m 첫 도달! 도장 +${r.stamp} 은괴 +${r.silver}` + (r.ame ? ` 자수정 +${r.ame}` : "");
+  }
+  if (m > vaultBestGet()) { S.vault = S.vault || {}; S.vault.best = m; }
+  return msg;
+}
+/* 시뮬레이터·미리보기용: 지금 힘으로 한 판 (실제 판과 같은 규칙: 한 방이면 +1초(최대 30초), 서류함마다 대기 0.35초) */
+function vaultSimRun(dry) {
+  rollDay();
+  if (!dry) { if (S.day.vaultUsed >= vaultTickets()) return null; S.day.vaultUsed++; }
+  const V = BAL.vault, st = stats(), hitD = st.atk, dps = st.dps; let t = V.t0, n = 0, one = 0;
+  const run = { n: 0, gold: 0, st: 0, depth: 0 };
+  const keep = dry ? JSON.stringify({ g: S.gold, s: S.stamp, o: S.ore, v: S.silver, a: S.ame, b: S.vault && S.vault.best }) : null;
+  let combo = 0;
+  while (t > 0 && n < 20000) {
+    const hp = vaultChestHp(n);
+    const p1 = hitD >= hp ? 1 : hitD * st.critMul >= hp ? st.crit : 0;      // 한 방에 부술 확률
+    const from = vaultDepthOf(n);
+    if (Math.random() < p1) { combo++; t = Math.min(V.cap, t - vaultWait(combo) + V.one); one++; }
+    else { combo = 0; const need = hp / Math.max(1e-9, dps) + V.wait; if (need > t) break; t -= need; }
+    n += vaultStepN(combo); run.n = n; run.depth = vaultDepthOf(n); run.sec = (run.sec || 0);
+    for (let m = from + V.m; m <= run.depth; m += V.m) vaultReach(m, run);
+  }
+  if (!dry) { S.day.depth = Math.max(S.day.depth || 0, run.depth); }
+  else { const o = JSON.parse(keep); S.gold = o.g; S.stamp = o.s; S.ore = o.o; S.silver = o.v; S.ame = o.a; if (S.vault) S.vault.best = o.b; }
+  run.one = one;
+  return run;
+}
+
+/* ---------- 일일 업무 보상에 재료 ---------- */
+(function () {
+  const d25 = DAILY.find(d => d.id === "st25"), d60 = DAILY.find(d => d.id === "st60");
+  if (d25 && BAL.st25Silver) d25.rw.silver = BAL.st25Silver;
+  if (d60 && BAL.st60Ame) d60.rw.ame = BAL.st60Ame;
+  const m5 = DAILY.find(d => d.id === "mem5"); if (m5 && BAL.mem5Ame) m5.rw.ame = BAL.mem5Ame;
+  const pd0 = planDayRw;
+  planDayRw = function () { const r = pd0(); if (BAL.planAme) r.ame = BAL.planAme; return r; };
+})();
+
+/* ---------- 저장: 등급 관문 · 보물 차수 · 문서고 기록 (예전 저장 옮기기) ---------- */
+(function () {
+  const fs0 = freshState;
+  freshState = function () { const s = fs0(); s.wunl = WG_SIZE - 1; s.treTier = {}; s.vault = Object.assign({ tickets: 3, best: 0 }, s.vault || {}); return s; };
+  const mg0 = merge;
+  merge = function (d) {
+    const s = mg0(d);
+    let u = Math.max(WG_SIZE - 1, Math.floor(+d.wunl || 0), Math.min(WEAPONS.length - 1, Math.floor(+d.wi || 0)));   // 지금 무기까지는 열림
+    (Array.isArray(d.legUnlock) ? d.legUnlock : []).forEach((v, k) => { if (v) u = Math.max(u, LEG_START + k); });          // 예전 전설 해금
+    s.wunl = Math.min(WEAPONS.length - 1, u);
+    const tt = {}; TREASURES.forEach(t => { const lv = (s.tre && s.tre[t.id]) || 0, have = (d.treTier && +d.treTier[t.id]) || 0; tt[t.id] = Math.max(have, lv > 0 ? treTierOf(lv - 1) : 0); });
+    s.treTier = tt;                                                          // 이미 오른 차수는 열린 것으로
+    s.vault = Object.assign({ tickets: 3, best: 0 }, s.vault || {}, { best: Math.max(0, +(d.vault && d.vault.best) || 0) });
+    return s;
+  };
+})();
+
+/* ---------- 화면 도우미: 등급 이름표 · 무기 장착 제목 · 재료 · 등급 사다리 ---------- */
+function wEquipTitle(i) { const g = gradeOf(i); return g >= 3 ? `${WGRADES[g].n} 무기 장착!` : "새 무기 장착!"; }
+function matHave(req) { return Object.keys(req || {}).map(k => `${ECO_NAME[k] || k} ${fmtR(+S[k] || 0)}`).join(" · "); }
+function wGradeLadderHTML() {
+  const u = wUnl(), cur = gradeOf(S.wi);
+  const rows = WGRADES.map((G, g) => {
+    const a = g * WG_SIZE, b = a + WG_SIZE - 1, open = Math.max(0, Math.min(WG_SIZE, u - a + 1));
+    const nx = u + 1 >= a && u + 1 <= b ? u + 1 : -1, lk = nx >= 0 ? wUnlockInfo(nx) : null;
+    const st = open >= WG_SIZE ? `<b class="ok">모두 열림</b>` : open > 0 ? `${open}/${WG_SIZE} 열림` : `잠김`;
+    const nxt = lk ? `<div class="wgl-n">다음 ${WEAPONS[nx].n} · ${lk.need}${lk.entry ? " (등급 관문)" : ""}</div>` : "";
+    return `<div class="wgl-r${g === cur ? " cur" : ""}${open || lk ? "" : " off"}"><span class="wgr" style="color:${G.c};border-color:${G.c}">${G.n}</span><div class="wgl-t">${WEAPONS[a].n} ~ ${WEAPONS[b].n}</div><span class="wgl-s">${st}</span>${nxt}</div>`;
+  }).join("");
+  return `${rows}<p class="muted wgl-f">무기는 재료로 한 번 열면 퇴사해도 열린 채예요. 일반 6개는 그냥, 그다음부터 조금씩 오르고 등급 첫 무기(관문)는 조금 더 들어요.<br>지금 ${matHave({ ore: 1, silver: 1, ame: 1 })} · 은괴는 공부 광산·지하 문서고 이정표·'공부 25분' 업무, 자수정은 광산·문서고·'암송 5구절' 업무·플랜 하루 분량에서 나와요.</p>`;
+}
+
+/* ---------- 찌르기 고도화 (영업 3연타 마무리 '관통 검기' · 터치 찌르기) ----------
+   사용자(13:22): "찌르기할 때 앞으로 에너지 나가는 게 좀 더 타격감 있고 간지 나게 · 지금도 이쁘긴 해"
+   사용자 설정이 흔들림 0 · 번쩍임 0이라 화면 흔들림·하얀 번쩍임 없이 그림만으로 손맛을 냄 (U-FEEL: 예고 → 순간 → 여운):
+   ① 모으기: 찌르기 전 칼끝으로 빛 알갱이가 빨려 들고 작은 구가 부풂 ② 발사: 굵은 창 모양 검기가 60ms 만에 몬스터에 꽂히고 소닉붐 고리 3겹 + 속도선
+   ③ 꽂힘: 날카로운 가시 폭발 · 십자 플레어 · 고리 ④ 관통: 몬스터 뒤로 빛줄기가 뿜어져 나가고 검기가 화면 끝까지 ⑤ 여운: 길을 따라 잔불 · 꼬리부터 사라짐
+   색은 들고 있는 무기 이펙트 색(feelFxPal) — v40 '무기 색 = 스킬 색' 그대로 */
+function salesOn() { const pv = typeof jobPreviewId === "function" ? jobPreviewId() : "", j = (pv && jobById(pv)) || curJob(); return !!(j && j.id === "sales"); }
+var TP_EASE = k => 1 - Math.pow(1 - Math.max(0, Math.min(1, k)), 3);
+(function () {
+  const wf0 = warriorFx;
+  warriorFx = function (x, y, crit) {
+    const mv = fHero.mv;
+    wf0(x, y, crit);                                                 // v40 관통 검기·초승달 검기는 그대로 두고 (사용자: 지금도 예쁨) 그 위에 겹겹이 더함
+    if (mv !== "lunge" && mv !== "jab") return;
+    const pal = feelFxPal(performance.now()).slice(), { w: mw, h: mh } = msz(), big = crit ? 1.25 : 1, L = mv === "lunge";
+    const yy = L ? GROUND - mh * 0.45 : y, xm = MON_X - mw * 0.12, xe = MON_X + mw * 0.45;
+    jvAdd("tburst", { x: xm, y: yy, pal, big, L, crit, dur: L ? 460 : 260, noTint: true });                  // ③ 꽂힘
+    jSparks(xm, yy, pal[2], L ? 16 : 6, L ? 17 : 10); jSparks(xm, yy, pal[1], L ? 10 : 4, 12);
+    if (!L) return;
+    jvAdd("tboom", { x: xm - 10, y: yy, pal, big, dur: 420, noTint: true });                                   // ② 소닉붐 고리 + 속도선
+    jvAdd("kwave", { x: x + 6, y: yy, vx: 640, vy: 0, r: 70 * big, ang: 0, th: 9 * big, span: 1.45, dur: 300, pal, t: -45 });   // 두 겹째 초승달 (조금 늦게, 더 크고 가늘게)
+    const ex = jvAdd("texit", { x: xe, y: yy, pal, big, L, dur: 420, noTint: true, t: -35 });                    // ④ 관통: 몬스터 뒤로 뿜어짐
+    for (let i = 0; i < 7; i++) jobParts.push({ kind: "ember", x: xm + 10 + i * 26 + Math.random() * 10, y: yy + (Math.random() - .5) * 14, vx: 1.2 + Math.random() * 1.6, vy: -0.6 - Math.random() * 1.2, g: -0.02, life: 1, dur: 520 + Math.random() * 300, c: i % 2 ? pal[1] : pal[2], s: 3 + Math.random() * 2, noTint: true });   // ⑤ 잔불
+    feelFreeze(crit ? 5 : 3, true, 3);
+  };
+  JFX_DRAW.tboom = function (f) {                                   // 칼끝 앞에서 퍼지며 나아가는 세로 고리 3겹 + 앞질러 가는 속도선
+    const t = f.t, P = f.pal, b = f.big || 1;
+    ctx.save(); ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < 3; i++) {
+      const k = (t - i * 45) / 320; if (k <= 0 || k >= 1) continue;
+      const cx = f.x + 34 + (50 + i * 44) * TP_EASE(k) + i * 16, rx = (4 + 8 * k) * b, ry = (12 + 30 * k) * b * (1 - i * 0.15);
+      ctx.globalAlpha = (1 - k) * 0.62; ctx.strokeStyle = i === 0 ? P[2] : P[1]; ctx.lineWidth = (2.6 - i * 0.6) * b * (1 - k * 0.4) + 0.5;
+      ctx.beginPath(); ctx.ellipse(cx, f.y, rx, ry, 0, 0, Math.PI * 2); ctx.stroke();
+    }
+    const k2 = t / f.dur;
+    for (let i = 0; i < 9; i++) {
+      const s = ((f.seed * 13 + i * 37) % 100) / 100, off = (i % 2 ? -1 : 1) * (14 + s * 34 * b), len = 50 + s * 90;
+      const px = f.x - 30 + 360 * Math.min(1, TP_EASE(k2 * (1.2 + s * 0.6)));
+      ctx.globalAlpha = 0.8 * (1 - k2) * (1 - s * 0.3); ctx.strokeStyle = s > 0.5 ? P[2] : P[1]; ctx.lineWidth = s > 0.7 ? 2.4 : 1.4;
+      ctx.beginPath(); ctx.moveTo(px - len, f.y + off); ctx.lineTo(px, f.y + off); ctx.stroke();
+    }
+    ctx.restore();
+  };
+  JFX_DRAW.tburst = function (f) {                                   // 꽂히는 순간: 가시 폭발 · 십자 플레어 · 고리
+    const k = f.t / f.dur, P = f.pal, b = f.big || 1, L = f.L, a = Math.max(0, 1 - k), e = TP_EASE(Math.min(1, k * 2.2));
+    ctx.save(); ctx.globalCompositeOperation = "lighter";
+    const n = L ? 14 : 7, R = (L ? 58 : 30) * b;
+    for (let i = 0; i < n; i++) {                                    // 가시: 앞쪽(오른쪽)으로 더 길게
+      const an = (i / n) * Math.PI * 2 + f.seed, fw = 0.65 + 0.35 * Math.cos(an), len = R * (0.45 + 0.55 * ((i * 7 + f.seed) % 5) / 4) * fw * e, w = (L ? 4 : 2.6) * b * a;
+      const ex = f.x + Math.cos(an) * len, ey = f.y + Math.sin(an) * len * 0.8;
+      ctx.globalAlpha = a * 0.95; ctx.fillStyle = i % 3 ? P[1] : P[2];
+      ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(f.x - Math.sin(an) * w, f.y + Math.cos(an) * w); ctx.lineTo(f.x + Math.sin(an) * w, f.y - Math.cos(an) * w); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = a * 0.8; ctx.strokeStyle = P[2]; ctx.lineWidth = (L ? 3 : 2) * b * a + 0.5;   // 고리
+    ctx.beginPath(); ctx.ellipse(f.x, f.y, R * (0.25 + 0.9 * e), R * (0.25 + 0.9 * e) * 0.75, 0, 0, Math.PI * 2); ctx.stroke();
+    if (L) { ctx.globalAlpha = a * 0.6; ctx.strokeStyle = P[1]; ctx.lineWidth = 2 * b * a; ctx.beginPath(); ctx.ellipse(f.x, f.y, R * (0.15 + 1.35 * e), R * (0.15 + 1.35 * e) * 0.6, 0, 0, Math.PI * 2); ctx.stroke(); }
+    const fl = (L ? 130 : 60) * b * (0.4 + 0.6 * e), fh = (L ? 3.4 : 2) * b * a + 0.5;   // 십자 플레어 (가로로 길게: 꿰뚫는 방향) — 흰빛은 가는 심만
+    ctx.globalAlpha = a * 0.85; ctx.fillStyle = P[2]; ctx.fillRect(f.x - fl * 0.3, f.y - fh / 2, fl, fh); ctx.fillRect(f.x - fh / 2, f.y - fl * 0.25, fh, fl * 0.5);
+    ctx.globalAlpha = a; ctx.fillStyle = "#ffffff"; ctx.fillRect(f.x - fl * 0.18, f.y - fh * 0.2, fl * 0.6, fh * 0.4);
+    ctx.restore();
+    jvStar(f.x, f.y, (L ? 16 : 9) * b * (k < 0.12 ? k / 0.12 : 1 - (k - 0.12) * 0.9), P[2], a, 1.2, f.seed * 0.1);
+  };
+  JFX_DRAW.texit = function (f) {                                    // 관통: 몬스터 뒤로 뿜어져 나가는 빛줄기
+    const k = f.t / f.dur, P = f.pal, b = f.big || 1, a = Math.max(0, 1 - k), e = TP_EASE(Math.min(1, k * 1.8));
+    ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.lineCap = "round";
+    const n = f.L ? 11 : 5;
+    for (let i = 0; i < n; i++) {
+      const an = (i - (n - 1) / 2) * (f.L ? 0.12 : 0.16) + Math.sin(f.seed + i) * 0.03, len = (f.L ? 170 : 60) * b * (0.6 + 0.4 * ((i * 5 + f.seed) % 4) / 3) * e;
+      const sx = f.x + Math.cos(an) * len * 0.25, sy = f.y + Math.sin(an) * len * 0.25, ex = f.x + Math.cos(an) * len, ey = f.y + Math.sin(an) * len;
+      ctx.globalAlpha = a * (i === (n - 1) / 2 ? 1 : 0.75); ctx.strokeStyle = i % 2 ? P[1] : P[2]; ctx.lineWidth = (i === (n - 1) / 2 ? 5 : 2.2) * b * a + 0.4;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+    }
+    ctx.restore();
+    if (f.L) jvHalo(f.x + 6, f.y, 10 + 46 * e, (10 + 46 * e) * 1.15, P[1], a * 0.8, 0);
+  };
+  if (typeof TINT_SKIP === "object") { TINT_SKIP.tburst = 1; TINT_SKIP.texit = 1; TINT_SKIP.tboom = 1; }
+  // ① 모으기: 찌르기 전 칼끝으로 빛이 빨려 듦 (영업 마무리 찌르기만)
+  const kf0 = feelKitFx;
+  feelKitFx = function (gx, gy, pose, t) {
+    kf0(gx, gy, pose, t);
+    const h = fHero; if (h.mv !== "lunge" || !h.fd || !salesOn()) return;
+    const fd = h.fd, fr = feelFrame(), S0 = fd.startup; if (fr >= S0 + 1) return;
+    const k = Math.max(0, Math.min(1, fr / Math.max(1, S0))), P = feelFxPal(t), tx = gx + Math.sin(pose.wa) * FEEL_BLADE, ty = gy - Math.cos(pose.wa) * FEEL_BLADE;
+    ctx.save(); ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < 9; i++) {                                    // 빨려 드는 빛 알갱이
+      const an = i * 0.7 + t / 260, d = (1 - ((k + i / 9) % 1)) * 46;
+      ctx.globalAlpha = 0.25 + 0.6 * k; ctx.fillStyle = i % 2 ? P[1] : P[2];
+      ctx.fillRect(tx + Math.cos(an) * d - 1.5, ty + Math.sin(an) * d * 0.8 - 1.5, 3, 3);
+    }
+    const r = 3 + 9 * k;
+    const g = ctx.createRadialGradient(tx, ty, 0, tx, ty, r * 2.2); g.addColorStop(0, hexA(P[2], 0.9 * k)); g.addColorStop(0.45, hexA(P[1], 0.6 * k)); g.addColorStop(1, hexA(P[1], 0));
+    ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(tx, ty, r * 2.2, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  };
+})();
+
+/* ---------- v42 새 무기 그림 12개 (신화 6 · 초월 6) — 설계 원본 scratchpad/wpn42.txt, 미리보기 wpn42_sheet.png ---------- */
+(function () {
+  const NEW = [{"s": "dragonpen", "m": ["......d......", ".....dcd.....", ".....ccc.....", "....ccdcc....", "....ccdcc....", "...cccdccc...", "....ckdkc....", ".....ckc.....", "..e..aca..e..", ".ee.aaaaa.ee.", "..eaabkbaae..", "...aaaaaaa...", "....bacab....", ".....aca.....", "....eaca.....", ".....acae....", "....eaca.....", ".....aca.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ccc.....", "......c......"], "p": {"a": "#c0392b", "b": "#7a1a10", "c": "#ffd54a", "d": "#fff2b0", "e": "#ff7a1a", "g": "#3a1a0e", "h": "#5a2a14", "k": "#2a0c08"}, "vfx": ["#8a1a0c", "#ff5a2a", "#ffe08a"], "glow": {"chars": "de", "col": "#ff7a1a"}}, {"s": "thunderstapler", "m": ["..f.......f..", ".fe...e..fe..", "..efe.ef.e...", "aaaaaaaaaaaa.", "acccccccccaab", "aaaaaaaaaaaab", "bbbbbbbbbbbb.", ".dddeddeddd..", "..ddddddddd..", ".....ded.....", ".....gkg.....", ".....ghg.....", ".....gkg.....", ".....ghg.....", ".....gkg.....", ".....ghg.....", ".....gkg.....", ".....ghg.....", ".....gkg.....", ".....ghg.....", ".....gkg.....", ".....ghg.....", ".....gkg.....", ".....ghg.....", "....ddddd....", ".....ded....."], "p": {"a": "#2b3a8a", "b": "#141c4a", "c": "#7fe9ff", "d": "#c9ced8", "e": "#ffffff", "f": "#7fe9ff", "g": "#1b1f2a", "h": "#3b4566", "k": "#ffd54a"}, "vfx": ["#1b2a8a", "#7fe9ff", "#ffffff"], "glow": {"chars": "ef", "col": "#7fe9ff"}}, {"s": "glacieraxe", "m": [".....e.......", "....efe......", ".....d.......", "..bbbdcccb...", ".bcccdccccb..", "bcfccdcfcccb.", "bccccdcccccb.", "bcfccdcfcccb.", ".bcccdccccb..", "..bbbdcccb...", ".....d.......", ".....a.......", "....ddd......", ".....a.......", ".....a.......", ".....a.......", ".....a.......", ".....d.......", "....ghg......", "....hgh......", "....ghg......", "....hgh......", "....ghg......", "....hgh......", "....ddd......", ".....e......."], "p": {"a": "#4a8ab8", "b": "#1d4a7a", "c": "#bff0ff", "d": "#e6f9ff", "e": "#ffffff", "f": "#8ff0ff", "g": "#2a3a5a", "h": "#3b5578"}, "vfx": ["#1d6fa0", "#8ff0ff", "#ffffff"], "glow": {"chars": "ef", "col": "#8ff0ff"}}, {"s": "phoenixseal", "m": [".f.........f.", "fef.......fef", ".eef.....fee.", "..eeaaaaaee..", "...eacccae...", "...aacccaa...", "...aaaaaaa...", "...dddddddd..", "....ddfdd....", ".....bcb.....", ".....ghg.....", ".....hgh.....", ".....ccc.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ccc.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", "....ccccc....", ".....cdc....."], "p": {"a": "#ff6b3b", "b": "#7a1f0c", "c": "#ffe08a", "d": "#ff3b1a", "e": "#ff9b3d", "f": "#fff3c4", "g": "#3b1a0a", "h": "#5a2a14"}, "vfx": ["#a8200c", "#ff7a1a", "#ffe58a"], "glow": {"chars": "def", "col": "#ff7a3b"}}, {"s": "worldtree", "m": ["....ccc......", "..cccbccc....", ".ccbccccbcc..", "..cccecccc...", ".ccbcdcbccc..", "..ccccccbc...", "...ccbccc....", "....bab......", ".....a.......", ".....ab......", "....ba.......", ".....a.......", ".....ab......", "....ba.......", ".....a.......", ".....a.......", ".....d.......", "....ghg......", "....hgh......", "....ghg......", "....hgh......", "....ghg......", "....hgh......", "....ghg......", "....ddd......", ".....c......."], "p": {"a": "#8a5a2e", "b": "#5a3a1e", "c": "#3fa04a", "d": "#ffe08a", "e": "#c8ff6a", "g": "#3a2414", "h": "#5a3a22"}, "vfx": ["#1f7a2a", "#7fe36a", "#f2ffd8"], "glow": {"chars": "cde", "col": "#b8ff6a"}}, {"s": "abysskey", "m": ["......c......", ".....cac.....", ".....cac.....", ".....caad....", ".....cac.....", ".....caadd...", ".....cac.....", ".....caad....", ".....cac.....", ".....cac.....", ".....caadd...", ".....cac.....", ".....cac.....", "...eeeeeee...", "..ee.....ee..", "..e..kek..e..", "..ee.....ee..", "...eeeeeee...", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....eee.....", "......e......"], "p": {"a": "#1a1030", "b": "#0a0614", "c": "#9b5cff", "d": "#5cf0ff", "e": "#6a4ab8", "g": "#2a1a4a", "h": "#4a3a7a", "k": "#5cf0ff"}, "vfx": ["#3a1a6a", "#9b5cff", "#e6d8ff"], "glow": {"chars": "cdk", "col": "#9b5cff"}}, {"s": "sunglaive", "m": ["..e...e...e..", "...e..e..e...", "....ddddd....", ".e.dcccccd.e.", "..edcfffcde..", "eedccfffccdee", "..edcfffcde..", ".e.dcccccd.e.", "....ddddd....", "...e..a..e...", "..e...a...e..", "......a......", ".....bab.....", "......a......", "......a......", ".....bab.....", "......a......", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", "....ddddd....", ".....ded....."], "p": {"a": "#ffd54a", "b": "#c9a43a", "c": "#ffe27a", "d": "#ffb13b", "e": "#fff2b0", "f": "#ffffff", "g": "#8a5a1a", "h": "#b8781a"}, "vfx": ["#b8781a", "#ffd54a", "#ffffff"], "glow": {"chars": "cdef", "col": "#ffe27a"}}, {"s": "timecard", "m": ["......e......", ".....cec.....", "....caaac....", "....caaab....", "....cafab....", "...cafffab...", "...cafkfab...", "...caffkab...", "...cafffab...", "....cafab....", "....caaab....", "....caaab....", "....caaab....", "....caaab....", "...ddddddd...", "..ddeddedd...", "....ddddd....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....ddd.....", ".....ded....."], "p": {"a": "#e6f9ff", "b": "#6fa8d6", "c": "#ffffff", "d": "#8fb8d6", "e": "#8ff0ff", "f": "#bff0ff", "g": "#3b4566", "h": "#5b6684", "k": "#1d3f73"}, "vfx": ["#1d56b0", "#8ff0ff", "#ffffff"], "glow": {"chars": "ef", "col": "#8ff0ff"}}, {"s": "usbsword", "m": ["......e......", ".....fef.....", ".....fdf.....", "....fdedf....", "....fdddf....", "....fddef....", "....fdddf....", "....feddf....", "....fdddf....", "....fdedf....", "....fdddf....", "....fddef....", "....fdddf....", ".....fdf.....", "..aaaaaaaaa..", "..abcbabcba..", "..aaaaaaaaa..", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....aaa.....", "......f......"], "p": {"a": "#c9ced8", "b": "#5b6274", "c": "#ffd54a", "d": "#2a1a5a", "e": "#ffffff", "f": "#b18cff", "g": "#2a1a5a", "h": "#4a3a7a"}, "vfx": ["#4a2a8a", "#b18cff", "#ffffff"], "glow": {"chars": "ef", "col": "#b18cff"}}, {"s": "blackhole", "m": ["..ccccccc....", ".cdddddddcf..", "cdd.....ffkf.", "cd......fkkf.", "c........ff..", ".........a...", ".........a...", "........bab..", ".........a...", ".........a...", ".........a...", "........bab..", ".........a...", ".........a...", ".........a...", ".........a...", ".........a...", "........ghg..", "........hgh..", "........ghg..", "........hgh..", "........ghg..", "........hgh..", "........ghg..", "........ddd..", ".........f..."], "p": {"a": "#2a1a4a", "b": "#120a2a", "c": "#d8c8ff", "d": "#5a3a9a", "f": "#ff6bd6", "k": "#000000", "g": "#1a1030", "h": "#3a2a6a"}, "vfx": ["#3a1a6a", "#b18cff", "#ffffff"], "glow": {"chars": "cf", "col": "#ff6bd6"}}, {"s": "genesiskb", "m": ["......e......", ".....aea.....", "....aacaa....", "...aamanaa...", "..aaaaaaaaa..", "..acaoamaca..", "..aaaaaaaaa..", "..anacaoana..", "..aaaaaaaaa..", "..aoamanaoa..", "..aaaaaaaaa..", "..acaoamaca..", "..aaaaaaaaa..", "..anacaoana..", "..aaaaaaaaa..", ".kkkkkkkkkkk.", ".kekkkkkkkek.", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", "....kkkkk....", ".....kek....."], "p": {"a": "#f4f6fb", "b": "#c9ced8", "c": "#ff6bd6", "m": "#6fd3ff", "n": "#ffd54a", "o": "#7fe3a0", "e": "#ffffff", "k": "#ffd54a", "g": "#8a5a1a", "h": "#c9a43a"}, "vfx": null, "glow": {"chars": "e", "col": "#ffffff"}}, {"s": "masterkey", "m": ["....efffe....", "...ef.f.fe...", "...f.ddd.f...", "...e.dcd.e...", "...ef.d.fe...", "....efffe....", "......a......", ".....aca.....", ".....aca.....", ".....acadd...", ".....aca.....", ".....acaddd..", ".....aca.....", ".....acadd...", ".....aca.....", "...bbbbbbb...", "..bkbbcbbkb..", "...bbbbbbb...", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", ".....ghg.....", ".....hgh.....", "....bbcbb....", ".....bcb....."], "p": {"a": "#ffffff", "b": "#ffd54a", "c": "#fff09a", "d": "#ff6bd6", "e": "#6fd3ff", "f": "#fff2a8", "g": "#8a5a1a", "h": "#c9a43a", "k": "#ffffff"}, "vfx": ["#b88a1a", "#fff09a", "#ffffff"], "glow": {"chars": "cdef", "col": "#fff09a"}}];
+  NEW.forEach(D => {
+    const g = D.m[WPN36_GRIP]; let a = -1, b = -1;
+    for (let x = 0; x < g.length; x++) if (g[x] !== ".") { if (a < 0) a = x; b = x; }
+    D.cx = (a + b) / 2;
+    const cells = []; D.m.forEach((r, y) => { if (y > WPN36_GRIP - 6) return; for (let x = 0; x < r.length; x++) if (r[x] !== ".") cells.push([x, y]); });
+    D.sp = [0.12, 0.55, 0.33, 0.8].map(f => cells[Math.floor(f * (cells.length - 1))] || [D.cx, 4]);
+    if (D.glow) {
+      let n = 0, sx = 0, sy = 0, x0 = 99, x1 = -1, y0 = 99, y1 = -1;
+      D.m.forEach((r, y) => { for (let x = 0; x < r.length; x++) if (D.glow.chars.indexOf(r[x]) >= 0) { n++; sx += x; sy += y; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } });
+      if (n) D.gl = { x: sx / n, y: sy / n, r: Math.max(x1 - x0, y1 - y0) / 2 + 4, c: D.glow.col };
+    }
+    if (WPN36.length < WEAPONS.length) WPN36.push(D);
+  });
+})();
+
 /* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */
 function drawJobUi(t) {
   if (jobGlitch > 0 && !reduceMotion) {
@@ -14256,7 +14639,7 @@ buildSetFoot();
 (() => {
   const card = el("div", "card");
   card.innerHTML = `<div class="sec-title" style="margin:0">퇴사 (환생)</div><div id="rGauge"></div><p class="muted" id="rBody"></p>
-    <p class="muted">초기화: 골드, 층, 무기, 커피<br>유지: 만나, 도장, 광석, 광물, 동료, 옷장, 부적, 보물, 곡괭이, 전설무기 해금, 말씀·공부 기록, 달란트 항아리·두루마리<br>빠른 출근: ${QC_MIN}층 넘게 올랐다면 다음 회사는 최고층의 ${Math.round(QC_FRAC * 100)}%까지 출근 버스로 바로 올라가요</p>
+    <p class="muted">초기화: 골드, 층, 무기, 커피<br>유지: 만나, 도장, 광석, 광물, 동료, 옷장, 부적, 보물, 곡괭이, 무기 해금(등급), 문서고 기록, 말씀·공부 기록, 달란트 항아리·두루마리<br>빠른 출근: ${QC_MIN}층 넘게 올랐다면 다음 회사는 최고층의 ${Math.round(QC_FRAC * 100)}%까지 출근 버스로 바로 올라가요</p>
     <div class="row-btns" id="rRow"><button class="btn" id="rBtn">사표 제출</button><button class="btn manna" id="rPromo">영전 퇴사 (만나 300)</button></div>
     <div class="row-btns" id="rConfirm" hidden><span class="muted" id="rAsk" style="align-self:center"></span><button class="btn" id="rNo">취소</button><button class="btn warn" id="rYes">진짜 퇴사</button></div>
     <p class="muted">영전 퇴사는 도장을 1.5배로 받고, 다음 퇴사 때까지 월급과 피해가 4배가 돼요.</p>

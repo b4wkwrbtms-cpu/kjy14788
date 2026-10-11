@@ -22,6 +22,7 @@ async function run(b, name, o) {
   for (let i = 0; i < 20; i++) await p.clock.runFor(50);
   if (o.dummy) { for (let i = 0; i < 60 && !(await p.evaluate(() => window.__ev('feelLive()'))); i++) await p.clock.runFor(50); await p.evaluate(() => window.__ev('mon.hp = mon.max = 1e300; S.pets.idol = 0; 0')); }
   if (o.wi != null) await p.evaluate(wi => window.__ev(`S.wi = ${wi}; S.wl = 5; S.skin = -1; 0`), o.wi);
+  if (o.job) await p.evaluate(([j, js]) => window.__ev(`S.rank = 6; S.jobs = ${JSON.stringify(js)}; S.job = ${JSON.stringify(j)}; jskKey = null; renderJobSkills(); if (typeof feelStand !== 'undefined') feelStand.on = false; 0`), [o.job, o.jobs]);
   const info = await p.evaluate(() => window.__ev('JSON.stringify({ aps: +stats().aps.toFixed(2), interval: Math.round(stats().interval), floor: S.floor, mon: mon && mon.name })'));
   // 게임 루프 멈추고 직접 한 틱씩
   await p.evaluate(() => { window.requestAnimationFrame = () => 0; });
@@ -44,6 +45,9 @@ async function run(b, name, o) {
   const jobs = { slow: { n: 90, fresh: true, dummy: true }, fast: { n: 60, dummy: true }, tap: { n: 60, tapEvery: 8, dummy: true }, rm: { n: 40, rm: true, dummy: true },
     w0: { n: 40, dummy: true, wi: 0 }, w12: { n: 40, dummy: true, wi: 12 }, w29: { n: 40, dummy: true, wi: 29 } };
   (ONLY || '').split(',').forEach(k => { const m = /^f(\d+)$/.exec(k); if (m) jobs[k] = { n: 40, fresh: true, dummy: true, wi: +m[1] }; });
+  (ONLY || '').split(',').forEach(k => { const m = /^j([a-z]+)((?:\+[a-z]+)*)$/.exec(k); if (m) { const subs = m[2] ? m[2].split('+').filter(Boolean) : []; jobs[k] = { n: NF || 72, fresh: true, dummy: true, wi: 2, job: m[1], jobs: [m[1]].concat(subs) }; } });
+  (ONLY || '').split(',').forEach(k => { const m = /^p([a-z]+)((?:\+[a-z]+)*)$/.exec(k); if (m) { const subs = m[2] ? m[2].split('+').filter(Boolean) : []; jobs[k] = { n: NF || 72, dummy: true, job: m[1], jobs: [m[1]].concat(subs) }; } });   // 사용자 기록(펫 있음) + 직무
+  (ONLY || '').split(',').forEach(k => { const m = /^rm([a-z]+)$/.exec(k); if (m) jobs[k] = { n: NF || 60, rm: true, fresh: true, dummy: true, wi: 2, job: m[1], jobs: [m[1]] }; });   // 움직임 줄이기 + 직무
   for (const k in jobs) if (!ONLY || ONLY.split(',').includes(k)) await run(b, k, jobs[k]);
   await b.close();
 })();

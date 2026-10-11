@@ -36,12 +36,58 @@ var FEEL_BIGCRIT = 36;            // f. 큰 치명 연출(X 베기·집중선·�
      공속이 느려 다음 타격이 멀면 keep 뒤 ret 동안 제자리로. 캔슬 창(cancel)은 그대로라 터치 버퍼(9f)는 v35와 같이 받음.
    터치 찌르기: 피해는 입력 프레임(P-FEEL-10), 칼끝은 1f 뒤 닿음(내려치기 1f). dir = 맞는 방향(불꽃·넉백·카메라 킥). */
 var FEEL_MOVES = {
-  rise:  { startup: 6, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.75, -0.65] },
-  chop:  { startup: 7, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.55, 0.85] },
-  lunge: { startup: 9, strike: 3, active: 3, hold: 7, keep: 18, ret: 9, tier: "finisher", dir: [1, 0] },
-  jab:   { startup: 1, strike: 1, active: 2, hold: 3, keep: 12, ret: 7, tier: "tap",      dir: [1, 0] },
+  // 전사 (영업 · 직무 없음): 몸으로 휘두르기 (v36)
+  rise:  { startup: 6, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.75, -0.65], kit: "melee", smear: 1 },
+  chop:  { startup: 7, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.55, 0.85],  kit: "melee", smear: 1 },
+  lunge: { startup: 9, strike: 3, active: 3, hold: 7, keep: 18, ret: 9, tier: "finisher", dir: [1, 0],        kit: "melee", smear: 1 },
+  jab:   { startup: 1, strike: 1, active: 2, hold: 3, keep: 12, ret: 7, tier: "tap",      dir: [1, 0],        kit: "melee", smear: 1, tap: 1 },
+  // v37 거너 (기획): 겨눔 3f → 발사 1f(총구 섬광) → 반동 → 다시 겨눔(D)을 다음 발까지. 마무리 3연발 (G-SHT-02 사격 한 발 레이어)
+  g_shot:  { startup: 4, strike: 1, smin: 1, active: 1, hold: 5, keep: 30, ret: 8, tier: "hit",      dir: [1, 0], kit: "gun", shot: 1 },
+  g_shot2: { startup: 4, strike: 1, smin: 1, active: 1, hold: 5, keep: 30, ret: 8, tier: "hit",      dir: [1, 0], kit: "gun", shot: 1 },
+  g_burst: { startup: 6, strike: 1, smin: 1, active: 3, hold: 6, keep: 30, ret: 8, tier: "finisher", dir: [1, 0], kit: "gun", shot: 3 },
+  g_tap:   { startup: 1, strike: 1, active: 1, hold: 3, keep: 12, ret: 7, tier: "tap",      dir: [1, 0], kit: "gun", shot: 1, tap: 1 },
+  // v37 마법사 (개발): 무기를 지팡이처럼 들어 끝에 코드 마법진 → 앞으로 뻗어 탄. 마무리는 번개 부르기
+  m_cast:  { startup: 7, strike: 2, active: 2, hold: 6, keep: 24, ret: 8, tier: "hit",      dir: [1, 0],      kit: "magic", circle: 1 },
+  m_cast2: { startup: 7, strike: 2, active: 2, hold: 6, keep: 24, ret: 8, tier: "hit",      dir: [1, 0],      kit: "magic", circle: 1 },
+  m_storm: { startup: 9, strike: 2, active: 3, hold: 7, keep: 18, ret: 9, tier: "finisher", dir: [0.3, 0.95], kit: "magic", circle: 2 },
+  m_tap:   { startup: 1, strike: 1, active: 2, hold: 3, keep: 12, ret: 7, tier: "tap",      dir: [1, 0],      kit: "magic", tap: 1 },
+  // v37 소환사 (인사·총무): 무기는 등에, 앞무릎 들고 와인드업 → 숙이며 도장 투척. 마무리는 손 들어 결재판 소환
+  s_toss:  { startup: 6, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.8, 0.6], kit: "summon", stamp: 1 },
+  s_toss2: { startup: 6, strike: 2, active: 2, hold: 6, keep: 18, ret: 8, tier: "hit",      dir: [0.8, 0.6], kit: "summon", stamp: 1 },
+  s_call:  { startup: 8, strike: 2, active: 3, hold: 7, keep: 18, ret: 9, tier: "finisher", dir: [0, 1],     kit: "summon" },
+  s_tap:   { startup: 1, strike: 1, active: 2, hold: 3, keep: 12, ret: 7, tier: "tap",      dir: [0.8, 0.6], kit: "summon", stamp: 1, tap: 1 },
+  // v37 저격수 (감사): 무릎 꿇고 조준선(예고) → 한 방 · 큰 반동 → 다시 조준. 마무리는 더 길게 겨눠 관통 · 다음 발까지 무릎 꿇은 채 버팀(keep 44)
+  n_aim:    { startup: 9,  strike: 1, smin: 1, active: 1, hold: 7, keep: 44, ret: 10, tier: "finisher", dir: [1, 0], kit: "snipe", shot: 1, sight: 1 },
+  n_aim2:   { startup: 9,  strike: 1, smin: 1, active: 1, hold: 7, keep: 44, ret: 10, tier: "finisher", dir: [1, 0], kit: "snipe", shot: 1, sight: 1 },
+  n_pierce: { startup: 11, strike: 1, smin: 1, active: 2, hold: 8, keep: 44, ret: 10, tier: "finisher", dir: [1, 0], kit: "snipe", shot: 1, sight: 2 },
+  n_tap:    { startup: 1,  strike: 1, active: 1, hold: 4, keep: 12, ret: 7, tier: "tap",      dir: [1, 0], kit: "snipe", shot: 1, tap: 1 },
 };
-var FEEL_CHAIN = ["rise", "chop", "lunge"];        // 자동 3연타: 올려베기 → 내려베기 → 돌진 찌르기(마무리)
+var FEEL_CHAIN = ["rise", "chop", "lunge"];        // 전사 3연타 (예전 이름, 이제는 FEEL_KITS가 정함)
+/* v37 직무별 대표 동작: 대표 직무(S.job)가 몸 동작 한 벌을 정하고, 나머지 가진 직무는 겸직 속성으로 얹음(part_job37) */
+/* stand: 서는 자리 [곽준영 x, 몬스터 x] 옮김(px). 검사(전사)만 몬스터에 붙고 원거리 직무는 떨어져서 쏨 (사용자: "검사만 몬스터랑 붙어있어야 한다") */
+var FEEL_KITS = {
+  melee:  { n: "전사",   chain: ["rise", "chop", "lunge"],        tap: "jab",   grip: "hand",  range: false, stand: [0, 0] },
+  gun:    { n: "거너",   chain: ["g_shot", "g_shot2", "g_burst"], tap: "g_tap", grip: "gun",   range: true,  stand: [-56, 34] },
+  magic:  { n: "마법사", chain: ["m_cast", "m_cast2", "m_storm"], tap: "m_tap", grip: "staff", range: true,  stand: [-62, 36] },
+  summon: { n: "소환사", chain: ["s_toss", "s_toss2", "s_call"],  tap: "s_tap", grip: "back",  range: true,  stand: [-50, 34] },
+  snipe:  { n: "저격수", chain: ["n_aim", "n_aim2", "n_pierce"],  tap: "n_tap", grip: "gun",   range: true,  stand: [-66, 40] },
+};
+var FEEL_KIT_OF = { sales: "melee", plan: "gun", dev: "magic", hr: "summon", audit: "snipe" };
+function feelKitId() { const j = typeof curJob === "function" && typeof S !== "undefined" && S ? curJob() : null; return (j && FEEL_KIT_OF[j.id]) || "melee"; }
+function feelKit() { return FEEL_KITS[feelKitId()]; }
+/* v37 서는 자리: 대표 직무가 바뀌면 곽준영은 뒤로·몬스터는 앞으로 미끄러지듯(≈0.3초) 옮김. HERO_X·MON_X(let)를 매 프레임 여기서 정함 */
+var feelStand = { h: 0, m: 0, on: false };
+function feelStandStep(dt) {
+  const st = feelKit().stand || [0, 0];
+  if (!feelStand.on || reduceMotion) { feelStand.h = st[0]; feelStand.m = st[1]; feelStand.on = true; }
+  else {
+    const k = 1 - Math.exp(-Math.max(0, dt) / 90);
+    feelStand.h += (st[0] - feelStand.h) * k; feelStand.m += (st[1] - feelStand.m) * k;
+    if (Math.abs(st[0] - feelStand.h) < 0.25) feelStand.h = st[0];
+    if (Math.abs(st[1] - feelStand.m) < 0.25) feelStand.m = st[1];
+  }
+  HERO_X = HERO_X0 + feelStand.h; MON_X = MON_X0 + feelStand.m;
+}
 /* 공속 단계: 공격 간격(ms)이 짧으면 같은 기술을 짧게 — 정수로 반올림, 최소 프레임 보장 (튜닝). 터치는 늘 같은 길이 */
 var FEEL_SPEED = [[400, 1], [250, 0.85], [0, 0.7]];
 var FEEL_FD = (function () {
@@ -49,9 +95,9 @@ var FEEL_FD = (function () {
   for (const id in FEEL_MOVES) {
     const M = FEEL_MOVES[id];
     out[id] = FEEL_SPEED.map(([, k]) => {
-      if (id === "jab") k = 1;
+      if (M.tap) k = 1;
       const r = (v, lo) => Math.max(lo, Math.round(v * k));
-      const strike = id === "jab" ? M.strike : r(M.strike, 2), wind = id === "jab" ? 0 : r(M.startup - M.strike, 2);
+      const strike = M.tap ? M.strike : r(M.strike, M.smin || 2), wind = M.tap ? 0 : r(M.startup - M.strike, 2);
       const fd = { startup: wind + strike, strike, active: r(M.active, 1), hold: r(M.hold, 2), keep: r(M.keep, 0), ret: r(M.ret, 3) };
       fd.cancel = fd.startup + fd.active + fd.hold; fd.keepEnd = fd.cancel + fd.keep; fd.total = fd.keepEnd + fd.ret;
       return fd;
@@ -104,6 +150,16 @@ var FEEL_KEYS = (function () {
   const LOW = { bx: 1, hip: 0, lean: 5, tq: 2, hx: 2, hy: 1, fF: 4, fB: -3, kF: 1, kB: 0, hl: 1 };
   // 예비 자세: 몸을 뒤로 젖히지 않고(예전엔 젖히며 칼이 몸 뒤로 숨음) 꼿꼿이 서서 무기를 머리 위로 높이 — 무기가 늘 몸 앞에 보이게
   const UP = { bx: 0, hip: 0, lean: 1, tq: 0, hx: 0, hy: 0, fF: 2, fB: -2, kF: 0, kB: 0, hl: 0 };
+  // v37 직무별 기본 자세 조각
+  const AIM = { bx: 0, hip: 0, lean: 1, tq: 0, hx: 1, hy: 0, fF: 3, fB: -3, kF: 1, kB: 0, hl: 0, sh: 1.57, fa: 1.57, wa: 1.57 };   // 거너 겨눔: 팔·무기가 어깨 높이로 수평
+  const AIM2 = Object.assign({}, AIM, { sh: 1.66, fa: 1.66, wa: 1.66 });
+  const KICK = { bx: -1, lean: -1, hx: -1, sh: 1.32, fa: 1.18, wa: 1.25 };                                                        // 반동: 몸이 뒤로, 총구가 위로
+  const STAFF = { bx: -1, hip: 0, lean: -1, tq: 0, hx: -1, hy: 0, fF: 2, fB: -2, sh: 0.6, fa: 0.2, wa: 0.1, dx: -2 };             // 마법사 모으기: 무기를 지팡이처럼 위로
+  const CAST = { bx: 1, hip: 0, lean: 3, tq: 1, hx: 1, hy: 0, fF: 4, fB: -3, kF: 1, hl: 1, sh: 1.45, fa: 1.5, wa: 1.4, dx: 6 };   // 시전: 숙이며 앞으로 뻗음
+  const WIND = { bx: -1, hip: 0, lean: -2, tq: 0, hx: -1, hy: 0, fF: 2, fB: -1, kF: 2, sh: -1.2, fa: -1.9, dx: -4 };             // 소환사 와인드업: 팔을 뒤로, 앞무릎 들기
+  const THROW = { bx: 1, hip: 0, lean: 4, tq: 1, hx: 2, hy: 1, fF: 4, fB: -3, kF: 1, hl: 1, sh: 1.6, fa: 1.75, dx: 8 };          // 던지기: 크게 숙이며 놓음
+  const KNEEL = { bx: 0, hip: 2, lean: 2, tq: 1, hx: 1, hy: 1, fF: 3, fB: -4, kF: 0, kB: 1, hl: 2, sh: 1.57, fa: 1.57, wa: 1.57, dx: -4 };   // 저격수: 한쪽 무릎 꿇고 조준
+  const BIGKICK = { bx: -2, lean: 0, hx: 0, sh: 1.25, fa: 1.1, wa: 1.18 };
   return {
     rise:  { A: P({ sh: 2.4, fa: 2.6, wa: 2.0, dx: -3, bx: 1, hip: 1, lean: 3, tq: 2, hx: 1, hy: 1, fF: 3, fB: -3, kF: 1 }),     // 낮게 웅크려 칼끝을 앞 바닥에
              B: P(Object.assign({}, LOW, { sh: 1.0, fa: 0.5, wa: 0.9, dx: 14, lean: 4, tq: 1, hy: 0 })),                         // 숙인 채 앞에서 위로 올려벰
@@ -117,6 +173,31 @@ var FEEL_KEYS = (function () {
     jab:   { A: P({ sh: 3.6, fa: 1.6, wa: 1.5, dx: -2, lean: 1, fF: 1, fB: -1 }),
              B: P(Object.assign({}, LOW, { sh: 1.55, fa: 1.55, wa: 1.55, dx: 18, lean: 4, tq: 1 })),
              C: P(Object.assign({}, LOW, { sh: 1.6, fa: 1.6, wa: 1.6, dx: 20, lean: 4, tq: 1 })) },
+    // ---- v37 거너 (기획): 팔을 어깨 높이로 곧게 뻗어 무기를 총처럼 겨눔 → 쏘면 반동으로 몸·총구가 튐 → 다시 겨눔(D) ----
+    g_shot:  { A: P(Object.assign({}, AIM, { dx: 0 })), B: P(Object.assign({}, AIM, { dx: 1 })), C: P(Object.assign({}, AIM, KICK, { dx: -5 })), D: P(Object.assign({}, AIM, { dx: 0 })) },
+    g_shot2: { A: P(Object.assign({}, AIM2, { dx: 0 })), B: P(Object.assign({}, AIM2, { dx: 1 })), C: P(Object.assign({}, AIM2, KICK, { sh: 1.4, fa: 1.3, wa: 1.38, dx: -5 })), D: P(Object.assign({}, AIM2, { dx: 0 })) },
+    g_burst: { A: P(Object.assign({}, AIM, { hip: 1, lean: 2, tq: 1, dx: -2 })), B: P(Object.assign({}, AIM, { hip: 1, lean: 2, tq: 1, dx: -1 })),
+               C: P(Object.assign({}, AIM, KICK, { hip: 1, tq: 1, sh: 1.2, fa: 1.05, wa: 1.12, dx: -10 })), D: P(Object.assign({}, AIM, { hip: 1, lean: 2, tq: 1, dx: -3 })) },
+    g_tap:   { A: P(AIM), B: P(AIM), C: P(Object.assign({}, AIM, KICK, { lean: 0, hx: 0, sh: 1.42, fa: 1.32, wa: 1.38, dx: -3 })), D: P(AIM) },
+    // ---- v37 마법사 (개발): 지팡이처럼 들어 올려 끝에 코드 마법진 → 숙이며 앞으로 뻗어 탄 · 마무리는 머리 위로 번개 부르기 ----
+    m_cast:  { A: P(STAFF), B: P(CAST), C: P(Object.assign({}, CAST, { wa: 1.48, dx: 7 })) },
+    m_cast2: { A: P(Object.assign({}, STAFF, { sh: 0.3, fa: -0.1, wa: -0.15 })), B: P(Object.assign({}, CAST, { sh: 1.3, fa: 1.35, wa: 1.3 })), C: P(Object.assign({}, CAST, { sh: 1.32, fa: 1.4, wa: 1.36, dx: 7 })) },
+    m_storm: { A: P({ bx: 0, lean: 0, fF: 2, fB: -2, sh: 0.1, fa: 0.0, wa: 0.0, lift: -3, dx: -2 }),
+               B: P({ bx: 0, lean: -2, hx: -1, fF: 3, fB: -3, hl: 1, sh: 0.05, fa: -0.05, wa: -0.05, lift: -5, dx: -2 }),
+               C: P({ bx: 0, lean: -1, hx: -1, fF: 3, fB: -3, hl: 1, sh: 0.08, fa: -0.02, wa: 0.0, lift: -2, dx: -2 }) },
+    m_tap:   { A: P(CAST), B: P(CAST), C: P(Object.assign({}, CAST, { wa: 1.46 })) },
+    // ---- v37 소환사 (인사·총무): 무기는 등에 메고, 앞무릎 들며 팔을 뒤로 → 크게 숙이며 도장 투척 · 마무리는 손 들어 결재판 ----
+    s_toss:  { A: P(WIND), B: P(THROW), C: P(Object.assign({}, THROW, { sh: 1.95, fa: 2.15, dx: 9 })) },
+    s_toss2: { A: P(Object.assign({}, WIND, { sh: 3.8, fa: 3.2, lean: -1 })), B: P(Object.assign({}, THROW, { sh: 1.35, fa: 1.25 })), C: P(Object.assign({}, THROW, { sh: 1.6, fa: 1.7, dx: 9 })) },
+    s_call:  { A: P({ bx: 0, lean: 0, fF: 2, fB: -2, sh: 0.0, fa: -0.2, lift: -2 }), B: P({ bx: 0, lean: -1, hx: -1, fF: 3, fB: -2, hl: 1, sh: -0.1, fa: -0.3, lift: -4 }),
+               C: P({ bx: 0, lean: -1, hx: -1, fF: 3, fB: -2, hl: 1, sh: -0.05, fa: -0.25, lift: -2 }) },
+    s_tap:   { A: P(Object.assign({}, THROW, { sh: 0.9, fa: 0.5, dx: 4 })), B: P(THROW), C: P(Object.assign({}, THROW, { sh: 1.8, fa: 2.0 })) },
+    // ---- v37 저격수 (감사): 무릎 꿇고 조준 → 한 방에 크게 밀림 → 다시 조준(D) · 마무리는 더 숙여 길게 겨눔 ----
+    n_aim:    { A: P(KNEEL), B: P(KNEEL), C: P(Object.assign({}, KNEEL, BIGKICK, { dx: -11 })), D: P(KNEEL) },
+    n_aim2:   { A: P(Object.assign({}, KNEEL, { sh: 1.62, fa: 1.62, wa: 1.62 })), B: P(Object.assign({}, KNEEL, { sh: 1.62, fa: 1.62, wa: 1.62 })),
+                C: P(Object.assign({}, KNEEL, BIGKICK, { dx: -11 })), D: P(Object.assign({}, KNEEL, { sh: 1.62, fa: 1.62, wa: 1.62 })) },
+    n_pierce: { A: P(Object.assign({}, KNEEL, { lean: 3, hx: 2 })), B: P(Object.assign({}, KNEEL, { lean: 3, hx: 2 })), C: P(Object.assign({}, KNEEL, BIGKICK, { dx: -15, wa: 1.1 })), D: P(KNEEL) },
+    n_tap:    { A: P(AIM), B: P(AIM), C: P(Object.assign({}, AIM, KICK, { dx: -4 })), D: P(AIM) },
   };
 })();
 
@@ -135,19 +216,19 @@ FeelMachine.prototype.update = function () { this.swap(this.cur.update(this.o));
 var FH_IDLE = {
   id: "idle",
   enter(h) { h.mv = null; h.fd = null; },
-  handle(h, b) { return b === "TAP" ? feelBegin(h, "jab") : null; },
+  handle(h, b) { return b === "TAP" ? feelBegin(h, feelKit().tap) : null; },
   update(h) { return feelAutoNext(h); },
 };
 var FH_WIND = {                                   // 예비동작 + 내려치기 (판정 전)
   id: "windup",
-  handle(h, b) { return b === "TAP" ? feelBegin(h, "jab") : null; },        // 터치가 우선 — 판정 전이라 바로 취소
+  handle(h, b) { return b === "TAP" ? feelBegin(h, feelKit().tap) : null; },   // 터치가 우선 — 판정 전이라 바로 취소
   update(h) {
     const W = h.fd.startup - h.fd.strike;
     if (h.auto && h.f === W && !feelStrikeReady(h)) {                       // 예비동작 끝에서 칼을 든 채 기다림 (포즈 홀드)
       if (++h.held > FEEL_HOLD_MAX) return FH_IDLE;
       return null;
     }
-    if (h.f === W && h.auto) { sfx("swing"); feelStepDust(h.mv); }          // 휘두르는 소리는 내려치기 시작에 · 뒷발이 땅을 밀어내는 먼지
+    if (h.f === W && h.auto && FEEL_MOVES[h.mv].smear) { sfx("swing"); feelStepDust(h.mv); }   // 휘두르는 소리는 내려치기 시작에 · 뒷발이 땅을 밀어내는 먼지 (원거리는 쏠 때 소리)
     h.f++;
     return h.f >= h.fd.startup ? FH_ACT : null;
   },
@@ -160,11 +241,11 @@ var FH_ACT = {                                    // 판정 구간: 들어올 �
 };
 var FH_REC = {                                    // 포즈 홀드 → 제자리. 캔슬 창부터 다음 기술
   id: "recover",
-  handle(h, b) { if (b !== "TAP") return null; if (h.f >= h.fd.cancel) return feelBegin(h, "jab"); h.buf = FEEL_BUF; return null; },
+  handle(h, b) { if (b !== "TAP") return null; if (h.f >= h.fd.cancel) return feelBegin(h, feelKit().tap); h.buf = FEEL_BUF; return null; },
   update(h) {
     h.f++;
     if (h.f >= h.fd.cancel) {
-      if (h.buf > 0) { h.buf = 0; return feelBegin(h, "jab"); }           // 버퍼 소비 (P-FEEL-03)
+      if (h.buf > 0) { h.buf = 0; return feelBegin(h, feelKit().tap); }   // 버퍼 소비 (P-FEEL-03)
       const nx = feelAutoNext(h); if (nx) return nx;
     }
     return h.f >= h.fd.total ? FH_IDLE : null;
@@ -175,9 +256,9 @@ var fHeroM = new FeelMachine(fHero, FH_IDLE);
 /* 기술 시작: 지금 자세에서 이어서 */
 function feelBegin(h, mv) {
   h.p0 = feelPoseRaw();
-  const K = FEEL_KEYS[mv], T = K && (mv === "jab" ? K.B : K.A);
+  const K = FEEL_KEYS[mv], T = K && (FEEL_MOVES[mv].tap ? K.B : K.A);
   if (T) ["sh", "fa", "wa"].forEach(k => { const d = h.p0[k] - T[k]; h.p0[k] -= Math.round(d / (2 * Math.PI)) * 2 * Math.PI; });   // 각도는 가까운 쪽으로 (한 바퀴 돌지 않게)
-  h.mv = mv; h.fd = feelFD(mv, feelSt || stats()); h.f = 0; h.held = 0; h.auto = mv !== "jab";
+  h.mv = mv; h.fd = feelFD(mv, feelSt || stats()); h.f = 0; h.held = 0; h.auto = !FEEL_MOVES[mv].tap;
   if (h.auto) h.chain++;
   anim = { a: 0.5, dur: 200, pending: false, type: mv };                    // 예전 코드 호환
   return h.fd.startup > 0 ? FH_WIND : FH_ACT;
@@ -192,7 +273,7 @@ function feelDueIn(st) {
 }
 /* 자동 기술은 판정 프레임이 다음 타격 시각에 오도록 미리 시작 */
 function feelAutoNext(h) {
-  const st = feelSt || stats(), mv = FEEL_CHAIN[h.chain % FEEL_CHAIN.length], fd = feelFD(mv, st);
+  const st = feelSt || stats(), ch = feelKit().chain, mv = ch[h.chain % ch.length], fd = feelFD(mv, st);
   if ((h.pend > 0 && feelLive()) || feelDueIn(st) <= fd.startup * FEEL_DT) return feelBegin(h, mv);
   return null;
 }
@@ -214,6 +295,8 @@ function feelContact(h) {
   let n = h.pend; h.pend = 0;
   if (n <= 0) { n = 1; atkTimer -= st.interval; }                          // 내려치는 1~3f만큼 미리 — 그만큼 다음 타격이 늦게 옴(초당 타격 수 그대로)
   feelStrikes(st, n, h.mv);
+  feelRelease(h);
+  if (typeof jobSubProc === "function" && feelKit().chain[2] === h.mv) jobSubProc(st);   // v37 3연타 마무리: 겸직 속성 발동
 }
 function feelStrikes(st, n, mv) {
   feelB = { mv, n: 0, dmg: 0, crit: false, kill: false, boss: false, clone: 0, max: mon ? mon.max : 1, x: null, y: null };
@@ -232,13 +315,15 @@ function feelTap(ix, iy) {
   fHeroM.handle("TAP");
   sfx("swing");
   const n = fHero.pend; fHero.pend = 0;
-  feelB = { mv: "jab", n: 0, dmg: 0, crit: false, kill: false, boss: false, clone: 0, max: mon ? mon.max : 1, x: null, y: null };
+  feelB = { mv: feelKit().tap, n: 0, dmg: 0, crit: false, kill: false, boss: false, clone: 0, max: mon ? mon.max : 1, x: null, y: null };
   let k = 0;
   for (; k < n && feelLive(); k++) heroStrike(st);
   feelCarry(n - k);
   if (feelLive()) hit(st.tap * (crit ? st.critMul : 1), crit, "tap", ix, iy);
   const b = feelB; feelB = null;
   if (b.n || b.clone) feelImpact(b);
+  if (fHero.mv && FEEL_MOVES[fHero.mv].tap) feelRelease(fHero);
+  if (typeof jobTapFx === "function") jobTapFx(ix, iy);                       // v37 원거리 직무 터치: 총구·지팡이에서 탄이 날아가 보이게
 }
 /* hit() 안 (mon.hp를 깎은 뒤): 곽준영 타격은 여기서 처리하고 true. 동료 타격은 예전 길로 */
 function feelHit(amount, crit, src, px, py) {
@@ -339,6 +424,7 @@ function feelImpact(b) {
   if (b.crit && !big) { const fl = floats[floats.length - 1]; if (fl) { fl.look = "critlite"; } }
   const f = floats[floats.length - 1]; if (f && b.n > 1) f.mult = b.n;
   if (b.clone > 0) addFloat(ix - 26, iy - mh * 0.25 - 30, fmt(b.clone), "#c9a6ff", 17, false, "pet");
+  if (typeof jobAttrFx === "function") jobAttrFx(ix, iy);                    // v37 겸직 속성 색 불꽃
   feelCapFloats();
 }
 /* 처치 (kill() 안): 예전 전역 멈춤 95/170 ms·흔들림 10/18 대신 */
@@ -361,12 +447,15 @@ function feelTip(P) {
   return [gx + Math.sin(P.wa) * FEEL_BLADE, gy - Math.cos(P.wa) * FEEL_BLADE];
 }
 function feelHitPoint(mv) {
+  const M = FEEL_MOVES[mv];
+  if (M && M.kit && M.kit !== "melee" && mon) { const B = feelBox(); return [B.x0 + (B.x1 - B.x0) * 0.32, B.y0 + (B.y1 - B.y0) * 0.5]; }   // 원거리: 몸 가운데
   const K = FEEL_KEYS[mv] || FEEL_KEYS.jab, B = feelBox(), [tx, ty] = feelTip(K.B);
   return [Math.max(B.x0 + 8, Math.min((B.x0 + B.x1) / 2, tx)), Math.max(B.y0 + 10, Math.min(B.y1 - 10, ty))];
 }
 /* 칼끝이 몬스터에 닿나 (걸어 들어오는 중이면 기다림) */
 function feelInReach(mv) {
   if (!mon) return false;
+  if (FEEL_MOVES[mv] && FEEL_MOVES[mv].kit !== "melee") return true;          // 원거리 직무는 걸어 들어오는 중에도 쏨
   const K = FEEL_KEYS[mv] || FEEL_KEYS.jab, [tx] = feelTip(K.B), B = feelBox();
   return tx >= B.x0 - 10 || B.x0 <= MON_X + monOX() - monSize().w / 2 + 12;
 }
@@ -429,9 +518,11 @@ function feelPoseAt(mv, fd, p0, fr) {
   const K = FEEL_KEYS[mv], W = fd.startup - fd.strike, S = fd.startup, A = S + fd.active, E = fd.keepEnd != null ? fd.keepEnd : fd.cancel;
   if (fr < W) return feelLerp(p0, K.A, feelEaseOut(fr / W));                                  // 예비동작: 빠르게 들고 멈추듯 (안티시페이션)
   if (fr < S) return feelLerp(W > 0 ? K.A : p0, K.B, feelEaseIn((fr - W) / fd.strike));        // 내려치기: 점점 빠르게
-  if (fr < A) return feelLerp(K.B, K.C, feelEaseOut((fr - S) / fd.active));                     // 맞는 구간: 끝까지 밀어붙임
-  if (fr < E) return Object.assign({}, K.C);                                                    // 포즈 홀드 (캔슬 뒤 keep까지 — 다음 기술이 오면 여기서 바로 이어짐)
-  if (fr < fd.total) return feelLerp(K.C, feelIdle(), feelEaseIO((fr - E) / fd.ret));           // 다음 타격이 멀면 제자리로
+  if (fr < A) return feelLerp(K.B, K.C, feelEaseOut((fr - S) / fd.active));                     // 맞는 구간: 끝까지 밀어붙임 (총은 반동)
+  const H = K.D || K.C;                                                                         // D: 반동 뒤 다시 겨누는 자세 (거너·저격수)
+  if (fr < fd.cancel) return K.D ? feelLerp(K.C, K.D, feelEaseIO((fr - A) / Math.max(1, fd.hold))) : Object.assign({}, K.C);
+  if (fr < E) return Object.assign({}, H);                                                      // 포즈 홀드 (캔슬 뒤 keep까지 — 다음 기술이 오면 여기서 바로 이어짐)
+  if (fr < fd.total) return feelLerp(H, feelIdle(), feelEaseIO((fr - E) / fd.ret));             // 다음 타격이 멀면 제자리로
   return feelIdle();
 }
 function feelFrame() { const h = fHero; return h.f + (h.frz > 0 || fHeroM.cur === FH_WIND && h.held > 0 ? 0 : Math.min(0.999, feelClock.alpha)); }
@@ -558,24 +649,103 @@ function rigArmPal(look, R) {
   return { A: /^#[0-9a-f]{6}$/i.test(sl) ? shade(sl, 0.16) : sl, X: p[R.cuff] || sl, S: p[R.skin] || "#f2c9a0" };   // 앞팔은 몸통과 같은 색이면 묻혀서 한 단계 밝게
 }
 
-/* ---------- 곽준영 그리기: 반사·그림자 → (등 뒤 무기) → 몸 → 궤적·무기 → 앞팔. 휘두르는 동안(포즈 홀드 포함) 무기·팔은 몬스터보다 앞에 ---------- */
+/* ---------- 곽준영 그리기: 반사·그림자 → (등 뒤 무기) → 몸 → 궤적·무기 → 앞팔. 휘두르는 동안(포즈 홀드 포함) 무기·팔은 몬스터보다 앞에 ----------
+   v37 쥐는 법(대표 직무 동작): hand 칼처럼 · gun 총처럼 어깨 높이 · staff 지팡이처럼 · back 등에 메고 손으로 도장 투척 */
+var heroTip = { x: 0, y: 0, on: false };   // 지금 그린 무기 끝 (총구) — 기획 레이저 포인터가 반동을 따라가게
 function drawHeroRig(t, look, pose, hx, hy, hs) {
   const q = rigQ(pose), R = rigBody(look, q), x0 = hx - R.P * hs, y0 = hy - R.top * hs;
+  const h = fHero, M = h.mv ? FEEL_MOVES[h.mv] : null, kitId = M ? M.kit : feelKitId(), slung = FEEL_KITS[kitId] && FEEL_KITS[kitId].grip === "back";
   reflect(() => drawSprite(ctx, R.map, look.pal, x0, y0, hs, { pretty: true }));
   const sl = Math.min(1.7, 3 + q.fB), sr = Math.max(18.9, 16 + q.fF);                    // 그림자: 벌린 발 사이를 덮음 (서 있으면 v35와 같은 폭)
   ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(hx + sl * hs, GROUND - 3, (sr - sl) * hs, 6);
   const arm = rigArm(R, pose), apal = rigArmPal(look, R), WS = 5;
-  const gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs, back = !fHero.mv && Math.sin(pose.wa) < -0.25;   // 휘두르는 동안 무기는 늘 몸 앞 (몸 뒤로 숨지 않게)
+  const gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs, back = !h.mv && !slung && Math.sin(pose.wa) < -0.25;   // 휘두르는 동안 무기는 늘 몸 앞 (몸 뒤로 숨지 않게)
   fHero.sh.x = x0 + arm.sx * hs; fHero.sh.y = y0 + arm.sy * hs; heroHand.x = gx; heroHand.y = gy;
-  if (back) drawHeldWeapon(ctx, gx, gy, pose.wa, WS, t, false, 1.8);
+  heroTip.x = gx + Math.sin(pose.wa) * FEEL_BLADE * 0.96; heroTip.y = gy - Math.cos(pose.wa) * FEEL_BLADE * 0.96; heroTip.on = !slung;
+  if (slung) {                                                                                // 소환사: 무기는 등에 비스듬히 멤
+    const ax = x0 + (R.P + 6.5 + q.bx + q.lean * 0.45) * hs, ay = y0 + (R.top + 17 + q.hip + q.tq) * hs;
+    drawHeldWeapon(ctx, ax, ay, -0.42 - q.lean * 0.05, WS * 0.78, t, true, 1);
+  } else if (back) drawHeldWeapon(ctx, gx, gy, pose.wa, WS, t, false, 1.8);
   drawSprite(ctx, R.map, look.pal, x0, y0, hs, { pretty: true });
   const front = () => {
     feelSmear(look, hx - pose.dx, hy - pose.lift, hs, t);
-    if (!back) drawHeldWeapon(ctx, gx, gy, pose.wa, WS, t, false, 1.8);
+    if (!back && !slung) drawHeldWeapon(ctx, gx, gy, pose.wa, WS, t, false, 1.8);
+    if (slung && M && M.stamp && feelFrame() < h.fd.startup) feelStampInHand(gx, gy);        // 던지기 전엔 손에 도장
     drawSprite(ctx, arm.map, apal, x0 + arm.bx * hs, y0 + arm.by * hs, hs, { pretty: true });
+    feelKitFx(gx, gy, pose, t);
   };
-  const h = fHero, fr = feelFrame();
+  const fr = feelFrame();
   if (h.mv && h.fd && fr >= h.fd.startup - h.fd.strike - 1 && fr <= h.fd.total) fHero.front = front; else front();
+}
+/* ---------- v37 원거리 직무: 탄·빔이 나가는 자리 (맞는 순간 B 자세의 총구·지팡이 끝·손, 월드 좌표) ---------- */
+function feelMuzzle(mv) {
+  mv = mv || fHero.mv; const K = mv && FEEL_KEYS[mv], M = mv && FEEL_MOVES[mv];
+  if (!K || !M || M.kit === "melee") return { x: heroHand.x + 8, y: heroHand.y - 6 };
+  const look = heroLook(), P = K.B, R = rigBody(look, rigQ(P)), arm = rigArm(R, P), hs = 3.5;
+  const x0 = HERO_X + P.dx - R.P * hs, y0 = GROUND - 24 * hs + P.lift - R.top * hs, gx = x0 + arm.hx * hs, gy = y0 + arm.hy * hs;
+  if (M.kit === "summon") return { x: gx, y: gy - 4 };
+  return { x: gx + Math.sin(P.wa) * FEEL_BLADE * 0.96, y: gy - Math.cos(P.wa) * FEEL_BLADE * 0.96 };
+}
+/* 쏘는 순간(판정 첫 틱): 반동 카메라 킥 + 종이 탄피 (G-SHT-02: 섬광·킥·반동·탄피) */
+function feelRelease(h) {
+  const M = h && h.mv && FEEL_MOVES[h.mv]; if (!M || !M.shot || reduceMotion) return;
+  feelKick([-1, -0.15], M.kit === "snipe" ? 5 : 2.5);
+  if (typeof jobParts !== "undefined") for (let i = 0; i < (M.shot > 1 ? 3 : 1); i++)
+    jobParts.push({ kind: "paper", x: heroHand.x - 6, y: heroHand.y - 4, vx: -1.2 - Math.random() * 1.6, vy: -3 - Math.random() * 2.2, g: 0.32, life: 1, dur: 650 + Math.random() * 200, c: "#f4f1e6", s: 4 });
+}
+/* 그림 이펙트 (렌더만, 게임 상태는 안 바꿈): 총구 섬광 · 저격 조준선(예고) · 코드 마법진 · 결재판 */
+function feelKitFx(gx, gy, pose, t) {
+  const h = fHero, M = h.mv && FEEL_MOVES[h.mv]; if (!M || M.kit === "melee" || reduceMotion || !h.fd) return;
+  const fd = h.fd, fr = feelFrame(), W = fd.startup - fd.strike, S = fd.startup, A = S + fd.active;
+  const pal = feelFxPal(t), tx = gx + Math.sin(pose.wa) * FEEL_BLADE, ty = gy - Math.cos(pose.wa) * FEEL_BLADE;
+  ctx.save();
+  if (M.shot) {
+    const n = M.shot, gap = n > 1 ? fd.active / n : 1;
+    for (let i = 0; i < n; i++) { const k = (fr - (S + i * gap)) / 2.2; if (k >= 0 && k < 1) feelFlash(tx, ty, pose.wa, (M.kit === "snipe" ? 2.3 : 1.5) * (1 - 0.4 * k), pal, 1 - k); }
+  }
+  if (M.sight && fr < S && fr > W * 0.25 && mon) {
+    const [ax, ay] = feelHitPoint(h.mv), k = Math.min(1, (fr - W * 0.25) / Math.max(1, S - W * 0.25));
+    ctx.globalAlpha = 0.25 + 0.6 * k; ctx.strokeStyle = pal[1]; ctx.lineWidth = M.sight > 1 ? 2.4 : 1.5;
+    ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(ax, ay); ctx.stroke();
+    const r = 8 + 12 * (1 - k); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(ax, ay, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ax - r - 4, ay); ctx.lineTo(ax - r + 4, ay); ctx.moveTo(ax + r - 4, ay); ctx.lineTo(ax + r + 4, ay); ctx.moveTo(ax, ay - r - 4); ctx.lineTo(ax, ay - r + 4); ctx.stroke();
+    ctx.globalAlpha = 1; ctx.fillStyle = pal[2]; ctx.fillRect(ax - 1.5, ay - 1.5, 3, 3);
+    if (M.sight > 1 && Math.floor(fr) % 4 < 2) { ctx.fillStyle = "#ffffff"; ctx.fillRect(gx - 2, gy - 9, 4, 4); }   // 돋보기 조준경 반짝
+  }
+  if (M.circle && fr < A + 2) {
+    const k = Math.min(1, fr / Math.max(1, W)), fade = fr < S ? 1 : Math.max(0, 1 - (fr - S) / (fd.active + 2));
+    feelRing(tx, ty, (M.circle > 1 ? 20 : 12) * (0.4 + 0.6 * k) * (fr < S ? 1 : 1 + (fr - S) * 0.25), t / 180, pal, 0.9 * fade, 1);
+    if (M.circle > 1 && mon) feelRing(MON_X - 12, GROUND - 2, 34 * k, -t / 240, pal, 0.65 * fade, 0.26);   // 번개가 떨어질 자리 (예고)
+  }
+  if (h.mv === "s_call" && fr < A + 4) {
+    const k = Math.min(1, fr / Math.max(1, S)), fade = fr < A ? 1 : Math.max(0, 1 - (fr - A) / 4);
+    feelRing(gx, gy - 20, 14 * k + 5, t / 200, ["#2f8a4a", "#7fe3a0", "#eaffd8"], 0.95 * fade, 1);
+  }
+  ctx.restore();
+}
+function feelFlash(x, y, ang, s, pal, a) {
+  ctx.globalAlpha = Math.max(0, Math.min(1, a)); ctx.save(); ctx.translate(x, y); ctx.rotate(ang - Math.PI / 2);
+  ctx.fillStyle = pal[1];
+  ctx.beginPath(); ctx.moveTo(0, -5 * s); ctx.lineTo(22 * s, 0); ctx.lineTo(0, 5 * s); ctx.closePath(); ctx.fill();   // 앞으로 뻗는 불꽃
+  [[-0.9, 9], [0.9, 9], [-2.2, 6], [2.2, 6]].forEach(([an, L]) => { ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(an) * L * s, Math.sin(an) * L * s); ctx.lineWidth = 2.5 * s; ctx.strokeStyle = pal[1]; ctx.stroke(); });
+  ctx.fillStyle = pal[2]; ctx.beginPath(); ctx.arc(0, 0, 5.5 * s, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(0, 0, 3 * s, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+function feelRing(x, y, R, rot, pal, a, flat) {
+  if (!(R > 1) || a <= 0.02) return;
+  ctx.globalAlpha = a; ctx.save(); ctx.translate(x, y); ctx.scale(1, flat || 1);
+  ctx.strokeStyle = pal[1]; ctx.lineWidth = flat && flat < 1 ? 3 : 2.4; ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = 1.4; ctx.strokeStyle = pal[2]; ctx.beginPath(); ctx.arc(0, 0, R * 0.62, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = pal[2];
+  for (let i = 0; i < 6; i++) { const an = rot + i * Math.PI / 3; ctx.fillRect(Math.cos(an) * R - 2, Math.sin(an) * R - 2, 4, 4); }
+  ctx.restore();
+}
+function feelStampInHand(x, y) {
+  ctx.save(); ctx.translate(x, y - 4); ctx.rotate(-0.25);
+  ctx.fillStyle = "#8a5a3a"; ctx.fillRect(-3, -12, 6, 9); ctx.fillStyle = "#c98a5a"; ctx.fillRect(-5, -15, 10, 4);
+  ctx.fillStyle = "#e0403d"; ctx.fillRect(-7, -3, 14, 6); ctx.fillStyle = "#a8202a"; ctx.fillRect(-7, 2, 14, 2);
+  ctx.restore();
 }
 function feelFront() { const f = fHero.front; fHero.front = null; if (f) f(); }
 /* 칼 위치: [칼 30% 지점 x, y, 칼끝 x, y] */
@@ -589,7 +759,7 @@ function feelBlade(look, hx0, hy0, hs, p) {
    히트스톱 동안은 기술 프레임이 멈추므로 궤적도 멈춤(프리즈 프레임). 찌르기·돌진은 짧은 직선만. 색은 무기 이펙트 색(feelFxPal) */
 var FEEL_SMEAR_LIFE = 12;
 function feelSmear(look, hx0, hy0, hs, t) {
-  const h = fHero; if (reduceMotion || !h.mv || !h.fd) return;
+  const h = fHero; if (reduceMotion || !h.mv || !h.fd || !FEEL_MOVES[h.mv].smear) return;
   const fd = h.fd, W = fd.startup - fd.strike, A = fd.startup + fd.active, fr = feelFrame(), thrust = h.mv === "jab" || h.mv === "lunge";
   const life = thrust ? 3 : FEEL_SMEAR_LIFE;
   if (fr <= W || fr > A + life) return;

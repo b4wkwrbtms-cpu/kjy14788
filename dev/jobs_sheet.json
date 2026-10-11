@@ -1,0 +1,14 @@
+{
+ "title": "직무별 기본 공격 자세 (시제품 · 무기는 모두 30cm 자로 통일해 자세만 비교)",
+ "wpn": 2,
+ "rows": [
+  {"job": "영업 · 전사", "col": [255,213,74], "sub": ["근접 베기 (지금 v36)", "예비 → 낮게 내려침 → 버팀"],
+   "cells": [ {"pose":"war_up","label":"① 예비: 무기를 머리 위로"}, {"pose":"war_hit","label":"② 내려쳐 버팀 (금빛 초승달)","fx":[{"k":"crescent","col":[255,213,74]}]}, {"pose":"war_fin","label":"③ 마무리: 돌진 찌르기"} ]},
+  {"job": "기획 · 거너", "col": [255,122,154], "sub": ["무기를 총처럼 겨눠 사격", "반동 · 총구 섬광 · 종이 탄피"],
+   "cells": [ {"pose":"gun_aim","label":"① 조준: 팔을 어깨 높이로 곧게"}, {"pose":"gun_fire","label":"② 발사: 반동으로 몸·총구가 튐","fx":[{"k":"muzzle"},{"k":"casing"}]}, {"pose":"gun_snipe","label":"③ 마무리: 한쪽 무릎 꿇고 저격 빔","fx":[{"k":"beam","col":[255,90,120]}]} ]},
+  {"job": "개발 · 마법사", "col": [111,211,255], "sub": ["무기를 지팡이처럼 들어 시전", "코드 마법진 → 코드 탄 · 번개"],
+   "cells": [ {"pose":"mag_charge","label":"① 모으기: 끝에 코드 마법진","fx":[{"k":"circle"},{"k":"ground","ox":2}]}, {"pose":"mag_cast","label":"② 시전: 앞으로 뻗어 탄 발사","fx":[{"k":"circle","r":3.5},{"k":"bolt","glyph":"</>","ahead":10}]}, {"pose":"mag_fin","label":"③ 마무리: 번개 부르기","fx":[{"k":"circle","r":6},{"k":"ground","ox":2}]} ]},
+  {"job": "인사·총무 · 소환사", "col": [127,227,160], "sub": ["무기는 등에, 손으로 도장 투척", "던지기 · 결재판 소환"],
+   "cells": [ {"pose":"thr_wind","label":"① 와인드업: 팔을 뒤로, 앞무릎 들기","nowpn":true,"fx":[{"k":"stamp","ox":-3,"oy":-4}]}, {"pose":"thr_rel","label":"② 던지기: 몸을 숙이며 놓음","nowpn":true,"fx":[{"k":"stamp","ox":14,"oy":-4}]}, {"pose":"sum_fin","label":"③ 마무리: 손 들어 결재판 소환","nowpn":true,"fx":[{"k":"circle","atHand":true,"ox":0,"oy":-5,"r":5,"col":[127,227,160]},{"k":"ground","ox":6,"col":[127,227,160]}]} ]}
+ ]
+}

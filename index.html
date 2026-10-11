@@ -882,6 +882,9 @@ body.modal { overflow: hidden; }
 .cr-dl span { display: inline-block; min-width: 0; margin-right: 6px; padding: 0 6px; border-radius: 5px; background: rgba(255,255,255,.08); font: 12.5px var(--display); color: var(--fg); }
 .cr-lock { margin: 0; color: var(--muted); font-size: 12px; }
 .cr-use { width: 100%; margin-top: 2px; }
+.cr-pv { width: 100%; min-height: 48px; margin-top: 8px; display: flex; flex-direction: column; align-items: center; gap: 2px; border-color: var(--jc, var(--edge)); }
+.cr-pv b { font-size: 15px; color: var(--jc, var(--fg)); }
+.cr-pv small { font-family: var(--body); font-size: 12px; color: var(--muted, #aab); }
 
 .jp { position: fixed; inset: 0; z-index: 58; display: grid; place-items: center; padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(12px + env(safe-area-inset-bottom, 0px)); background: radial-gradient(circle at 50% 38%, rgba(12,16,30,.66), rgba(5,8,16,.92)); touch-action: none; overscroll-behavior: contain; }
 .jp[hidden] { display: none; }
@@ -3653,7 +3656,7 @@ function hit(amount, crit, src, px, py) {
   const { w: mw, h: mh } = monSize();
   const cx = MON_X - mw * 0.25, cy = GROUND - mh * 0.55;
   mon.red = 1; mon.flash = heavy ? 1 : 0.6;
-  if (!reduceMotion) {
+  if (feelBodyK() > 0) {
     mon.kb = Math.min(1.8, mon.kb + (heavy ? (crit ? 1.5 : 1) : 0.4));
     mon.squash = Math.max(mon.squash, heavy ? (crit ? 1.25 : 1) : 0.45);
     mon.tilt = Math.max(mon.tilt, heavy ? (crit ? 1 : 0.7) : 0.3);
@@ -7765,7 +7768,7 @@ function renderNoteHist() {
 }
 
 /* ---------- 정보 탭: 화면 설정 ---------- */
-function fxSet() { if (!S.fx || typeof S.fx !== "object") S.fx = { shake: 1, flash: 1 }; return S.fx; }
+function fxSet() { if (!S.fx || typeof S.fx !== "object") S.fx = { shake: 1, flash: 1 }; if (S.fx.body == null) S.fx.body = 1; return S.fx; }
 function shakeK() { if (reduceMotion) return 0; const v = +fxSet().shake; return v >= 0 && v <= 1 ? v : 1; }
 function flashK() { const v = +fxSet().flash; return v >= 0 && v <= 1 ? v : 1; }
 function buildFxCard() {
@@ -8842,7 +8845,7 @@ function dexRender() {
    5) 실행 의도: 언제·무엇 다음에·어디서 읽을지, 맥락 일치율(계획한 시각 ±60분). 웹 푸시(수파베이스 kjy-noti 함수, 5분마다):
       아직 안 읽은 날만, 하루 2번까지, 알림 온 날을 세 번 이어서 그냥 넘기면 쉼, 문구 24개를 돌려 씀.
    merge·freshState 에서 부르므로 함수 선언과 var 만 씀 */
-var GAME_V = 37;
+var GAME_V = 38;
 var PATCH_DAYS = { 28: "2026-10-09", 29: "2026-10-10", 30: "2026-10-10", 31: "2026-10-10" };
 var MEAS_KEEP = 150;
 var SRBAI_Q = ["나도 모르게 저절로 하게 된다", "일부러 기억하지 않아도 하게 된다", "깊이 생각하지 않고도 하게 된다", "하고 있다는 걸 알아차리기 전에 이미 시작한다"];
@@ -9714,17 +9717,17 @@ function buildScrCard() {
   const card = el("div", "card stg fxset scr");
   const seg = (id, lbl) => `<div class="fx-row"><span>${lbl}</span><div class="seg" role="group" aria-label="${lbl}">${[[1, "기본"], [0.5, "약하게"], [0, "끄기"]].map(([v, n]) => `<button type="button" data-fx="${id}" data-v="${v}" aria-pressed="false">${n}</button>`).join("")}</div></div>`;
   card.innerHTML = `<div class="pay-h"><span class="pay-ic" id="stScrIc"></span><div><b>화면</b><small>흔들림 · 번쩍임 · 글자 크기</small></div></div>`
-    + seg("shake", "화면 흔들림") + seg("flash", "번쩍임") + uiSegRow()
+    + seg("shake", "화면 흔들림") + seg("flash", "번쩍임") + seg("body", "곽준영 몸 동작") + uiSegRow()
     + `<div class="fx-row"><span>말씀 글자</span><div class="stg-fs"><button type="button" class="btn" data-act="fs-" aria-label="말씀 글자 작게">가−</button><b class="num" id="stFs"></b><button type="button" class="btn" data-act="fs+" aria-label="말씀 글자 크게">가+</button></div></div>
     <p class="stg-pv" id="stFsPv">태초에 하나님이 천지를 창조하시니라</p>
     <p class="muted" id="stFxNote"></p>`;
   const fxBtns = []; card.querySelectorAll("button").forEach(b => { if (b.dataset && b.dataset.fx) fxBtns.push(b); });
   addCustom("set", card, () => {
-    const f = fxSet(), fs = rdFs(), k = [f.shake, f.flash, fs, uiZoom()].join("|"); if (menuUI.k.scr === k) return; menuUI.k.scr = k;
+    const f = fxSet(), fs = rdFs(), k = [f.shake, f.flash, f.body, fs, uiZoom()].join("|"); if (menuUI.k.scr === k) return; menuUI.k.scr = k;
     fxBtns.forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.v === (b.dataset.fx === "ui" ? uiZoom() : +f[b.dataset.fx]))));
     const n = $("stFs"); if (n) n.textContent = fs;
     const pv = $("stFsPv"); if (pv && pv.style) pv.style.fontSize = fs + "px";
-    const note = $("stFxNote"); if (note) note.textContent = (reduceMotion ? "휴대폰의 '동작 줄이기'가 켜져 있어 흔들림은 꺼져 있어요. " : "휴대폰의 '동작 줄이기'를 켜면 흔들림이 저절로 꺼져요. ") + "번쩍임은 1초에 3번까지, 화면 가운데 일부에만 나오고 빨간 화면 전체 번쩍임은 쓰지 않아요.";
+    const note = $("stFxNote"); if (note) note.textContent = (reduceMotion ? "휴대폰의 '동작 줄이기'가 켜져 있어 흔들림은 꺼져 있어요. " : "휴대폰의 '동작 줄이기'를 켜면 흔들림이 저절로 꺼져요. ") + "곽준영 몸 동작은 그 설정과 따로 여기서 정해요(끄기 = 팔·무기만). 번쩍임은 1초에 3번까지, 화면 가운데 일부에만 나오고 빨간 화면 전체 번쩍임은 쓰지 않아요.";
   });
   stIcon("stScrIc", "screen");
   card.addEventListener("click", e => {
@@ -9978,7 +9981,8 @@ var FEEL_KITS = {
   snipe:  { n: "저격수", chain: ["n_aim", "n_aim2", "n_pierce"],  tap: "n_tap", grip: "gun",   range: true,  stand: [-66, 40] },
 };
 var FEEL_KIT_OF = { sales: "melee", plan: "gun", dev: "magic", hr: "summon", audit: "snipe" };
-function feelKitId() { const j = typeof curJob === "function" && typeof S !== "undefined" && S ? curJob() : null; return (j && FEEL_KIT_OF[j.id]) || "melee"; }
+function feelMainKitId() { const j = typeof curJob === "function" && typeof S !== "undefined" && S ? curJob() : null; return (j && FEEL_KIT_OF[j.id]) || "melee"; }
+function feelKitId() { const pv = typeof jobPreviewId === "function" ? jobPreviewId() : ""; return (pv && FEEL_KIT_OF[pv]) || feelMainKitId(); }   // v38: '동작 미리 보기' 동안은 그 직무 동작
 function feelKit() { return FEEL_KITS[feelKitId()]; }
 /* v37 서는 자리: 대표 직무가 바뀌면 곽준영은 뒤로·몬스터는 앞으로 미끄러지듯(≈0.3초) 옮김. HERO_X·MON_X(let)를 매 프레임 여기서 정함 */
 var feelStand = { h: 0, m: 0, on: false };
@@ -10189,7 +10193,7 @@ function feelStrikeReady(h) {
 }
 /* 내려치는 순간 뒷발을 뒤로 빼며 땅을 밀어냄 → 뒷발 자리에 작은 먼지 (v36) */
 function feelStepDust(mv) {
-  if (reduceMotion) return;
+  if (feelBodyK() <= 0) return;
   const B = (FEEL_KEYS[mv] || FEEL_KEYS.chop).B;
   addDust(HERO_X + B.dx + (RIG_LEG.B.c + 0.5 + B.fB) * 3.5, GROUND - 3, mv === "lunge" ? 3 : 2, -1, false);
 }
@@ -10260,7 +10264,7 @@ function feelTick(st) {
   if (h.frz > 0) h.frz--;                                                  // 히트스톱 중엔 프레임·판정·버퍼 시간이 멈춤 (CP-13 advanceMove)
   else { if (h.buf > 0) h.buf--; fHeroM.update(); }
   if (V.frz > 0) V.frz--;
-  else if (!reduceMotion) { if (V.kbF > 0) { V.kbx += 3; V.kbF--; } else if (V.kbx > 0) V.kbx = Math.max(0, V.kbx - 1.5); }   // 넉백 3 px/f (P-FEEL-17), 돌아오기 1.5 px/f (튜닝)
+  else if (feelBodyK() > 0) { if (V.kbF > 0) { V.kbx += 3; V.kbF--; } else if (V.kbx > 0) V.kbx = Math.max(0, V.kbx - 1.5); }   // 넉백 3 px/f (P-FEEL-17), 돌아오기 1.5 px/f (튜닝)
 }
 function feelVictim() { if (feelV.m !== mon) { feelV.m = mon; feelV.frz = 0; feelV.kbF = 0; feelV.kbx = 0; feelV.whiteUntil = -1; feelV.whiteNew = false; } return feelV; }
 function feelMonFrozen() { return !!(mon && feelV.m === mon && feelV.frz > 0); }
@@ -10299,13 +10303,13 @@ function feelImpact(b) {
   if (flashK() > 0 && now - V.lastWhite >= FEEL_FLASH_GAP) { V.whiteUntil = now + 1; V.whiteNew = true; V.lastWhite = now; }
   mon.red = Math.max(mon.red, 0.7);
   const dir = M ? M.dir : [1, 0];
-  if (!reduceMotion) {
+  if (feelBodyK() > 0) {                                                     // v38: 맞고 밀리기·찌그러짐은 몸 동작 설정을 따름 (휴대폰 동작 줄이기와 따로)
     V.kbF = Math.max(V.kbF, R.kb);
     mon.squash = Math.max(mon.squash, b.mv === "chop" ? (big ? 1.2 : 0.85) : b.mv === "lunge" ? 0.75 : 0.5);
     mon.tilt = Math.max(mon.tilt, b.mv === "rise" ? (big ? 1 : 0.7) : 0.3);
   }
   const [ix, iy] = b.x != null ? [b.x, b.y] : feelHitPoint(b.mv);
-  if (!reduceMotion) {
+  {                                                                         // 불꽃·먼지는 늘 (화면이 흔들리는 게 아니라서)
     const FP = feelFxPal(performance.now());                                // v36: 불꽃도 무기 이펙트 색
     for (let i = 0; i < R.sparks; i++) { const sp = 3 + Math.random() * (big ? 10 : 7); sparks.push({ x: ix, y: iy, vx: dir[0] * sp + (Math.random() - .5) * 3, vy: dir[1] * sp + (Math.random() - .5) * 3 - 1, life: 1, c: i % 3 ? FP[2] : i % 2 ? FP[1] : "#ffffff", line: true }); }
     if (melee) addBurst(ix, iy, big);
@@ -10319,7 +10323,7 @@ function feelImpact(b) {
     if (mon.kind >= 1 && d >= 8) triggerImpactFrame(ix, iy);                // 만화식 임팩트 프레임은 보스급에 큰 한 방일 때만
     cam.kick = Math.max(cam.kick, 0.6);
     if (fancy && performance.now() - critFxT > 420) { critFxT = performance.now(); critLines = 1; }
-    if (!reduceMotion) { const col = monColor(); for (let i = 0; i < 5; i++) debris.push({ x: ix + (Math.random() - .5) * 20, y: iy, vx: dir[0] * (2 + Math.random() * 5), vy: -3 - Math.random() * 5, life: 1, c: col, s: 4 + Math.random() * 4 }); }
+    { const col = monColor(); for (let i = 0; i < 5; i++) debris.push({ x: ix + (Math.random() - .5) * 20, y: iy, vx: dir[0] * (2 + Math.random() * 5), vy: -3 - Math.random() * 5, life: 1, c: col, s: 4 + Math.random() * 4 }); }
     const stl = slashStyle(); if (fancy && (stl === "holy" || stl === "gold")) addSkyStrike(MON_X, true);
     sfx("crit");
   }
@@ -10339,7 +10343,7 @@ function feelKill(boss) {
   feelTrauma(K.trauma, boss ? 1 : FEEL_SHAKE.killCap); feelKick([1, -0.2], K.kick);
   feelMark(MON_X - 6, boss ? 76 : 46, "kill");
   if (boss) triggerImpactFrame(MON_X - 10, GROUND - monSize().h * 0.5);
-  if (!reduceMotion) { const { w: mw, h: mh } = monSize(), col = monColor(); for (let i = 0; i < (boss ? 10 : 6); i++) debris.push({ x: MON_X + (Math.random() - .5) * mw * 0.5, y: GROUND - mh * (0.3 + Math.random() * 0.5), vx: 2 + Math.random() * 6, vy: -4 - Math.random() * 6, life: 1, c: col, s: 4 + Math.random() * 5 }); }
+  { const { w: mw, h: mh } = monSize(), col = monColor(); for (let i = 0; i < (boss ? 10 : 6); i++) debris.push({ x: MON_X + (Math.random() - .5) * mw * 0.5, y: GROUND - mh * (0.3 + Math.random() * 0.5), vx: 2 + Math.random() * 6, vy: -4 - Math.random() * 6, life: 1, c: col, s: 4 + Math.random() * 5 }); }
 }
 /* 맞는 자리 = 맞는 순간 칼끝 (이펙트 = 판정, AP-FEEL-11), 몬스터 몸 안으로 맞춤 */
 function feelBox() {
@@ -10413,9 +10417,12 @@ function feelEaseOut(k) { return 1 - Math.pow(1 - k, 3); }
 function feelEaseIn(k) { return k * k; }
 function feelEaseIO(k) { return 0.5 - 0.5 * Math.cos(Math.PI * k); }
 function feelLerp(P, Q, k) { const o = {}; for (const key in FEEL_IDLE) o[key] = P[key] + (Q[key] - P[key]) * k; return o; }
+/* v38 곽준영 몸 동작 크기: 설정 › 화면 '곽준영 몸 동작' (1 기본 · 0.5 약하게 · 0 끄기 = 팔·무기만).
+   휴대폰 '동작 줄이기'는 화면 흔들림·카메라만 줄이고 몸 동작은 안 건드림 (사용자 아이폰에서 몸이 안 움직이던 원인) */
+function feelBodyK() { const f = typeof fxSet === "function" && typeof S !== "undefined" && S ? fxSet() : null, v = f ? +f.body : 1; return f && f.body != null && v >= 0 && v <= 1 ? v : 1; }
 function feelIdle() {
   const o = Object.assign({}, FEEL_IDLE);
-  if (!reduceMotion) { const now = performance.now(); o.hip = Math.floor(now / 620) % 2; o.wa = FEEL_IDLE.wa + Math.sin(now / 700) * 0.05; }   // 숨쉬기: 골반 1칸(무릎은 곧게)
+  if (feelBodyK() > 0) { const now = performance.now(); o.hip = Math.floor(now / 620) % 2; o.wa = FEEL_IDLE.wa + Math.sin(now / 700) * 0.05; }   // 숨쉬기: 골반 1칸(무릎은 곧게)
   return o;
 }
 /* 프레임 fr(소수 = 틱 사이 보간, CP-01 alpha)의 자세 */
@@ -10434,8 +10441,9 @@ function feelFrame() { const h = fHero; return h.f + (h.frz > 0 || fHeroM.cur ==
 function feelPoseRaw() { const h = fHero; return h.mv && h.fd ? feelPoseAt(h.mv, h.fd, h.p0 || FEEL_IDLE, feelFrame()) : feelIdle(); }
 function feelPoseNow() {
   const P = feelPoseRaw();
-  if (reduceMotion) { P.dx = 0; P.lift = 0; RIG_BODY_KEYS.forEach(k => { P[k] = 0; }); }       // 움직임 줄이기: 팔·무기만 움직임
-  else P.dx += feelShakeOff(fHero.frz, fHero.frzMax, fHero.vs);                               // 공격자는 완전히 멈추지 않음 (P-FEEL-15 ⑦)
+  const bk = feelBodyK();
+  if (bk < 1) { P.dx *= bk; P.lift *= bk; RIG_BODY_KEYS.forEach(k => { P[k] *= bk; }); }      // 설정 '곽준영 몸 동작': 약하게 = 반만 · 끄기 = 팔·무기만
+  P.dx += feelShakeOff(fHero.frz, fHero.frzMax, fHero.vs);                                     // 공격자는 완전히 멈추지 않음 (P-FEEL-15 ⑦, 동작 줄이기면 0)
   P.ang = P.wa;
   return P;
 }
@@ -10593,20 +10601,20 @@ function feelMuzzle(mv) {
 }
 /* 쏘는 순간(판정 첫 틱): 반동 카메라 킥 + 종이 탄피 (G-SHT-02: 섬광·킥·반동·탄피) */
 function feelRelease(h) {
-  const M = h && h.mv && FEEL_MOVES[h.mv]; if (!M || !M.shot || reduceMotion) return;
+  const M = h && h.mv && FEEL_MOVES[h.mv]; if (!M || !M.shot) return;
   feelKick([-1, -0.15], M.kit === "snipe" ? 5 : 2.5);
   if (typeof jobParts !== "undefined") for (let i = 0; i < (M.shot > 1 ? 3 : 1); i++)
     jobParts.push({ kind: "paper", x: heroHand.x - 6, y: heroHand.y - 4, vx: -1.2 - Math.random() * 1.6, vy: -3 - Math.random() * 2.2, g: 0.32, life: 1, dur: 650 + Math.random() * 200, c: "#f4f1e6", s: 4 });
 }
 /* 그림 이펙트 (렌더만, 게임 상태는 안 바꿈): 총구 섬광 · 저격 조준선(예고) · 코드 마법진 · 결재판 */
 function feelKitFx(gx, gy, pose, t) {
-  const h = fHero, M = h.mv && FEEL_MOVES[h.mv]; if (!M || M.kit === "melee" || reduceMotion || !h.fd) return;
+  const fk = typeof flashK === "function" ? flashK() : 1, h = fHero, M = h.mv && FEEL_MOVES[h.mv]; if (!M || M.kit === "melee" || !h.fd) return;
   const fd = h.fd, fr = feelFrame(), W = fd.startup - fd.strike, S = fd.startup, A = S + fd.active;
   const pal = feelFxPal(t), tx = gx + Math.sin(pose.wa) * FEEL_BLADE, ty = gy - Math.cos(pose.wa) * FEEL_BLADE;
   ctx.save();
   if (M.shot) {
     const n = M.shot, gap = n > 1 ? fd.active / n : 1;
-    for (let i = 0; i < n; i++) { const k = (fr - (S + i * gap)) / 2.2; if (k >= 0 && k < 1) feelFlash(tx, ty, pose.wa, (M.kit === "snipe" ? 2.3 : 1.5) * (1 - 0.4 * k), pal, 1 - k); }
+    for (let i = 0; i < n; i++) { const k = (fr - (S + i * gap)) / 2.2; if (k >= 0 && k < 1 && fk > 0) feelFlash(tx, ty, pose.wa, (M.kit === "snipe" ? 2.3 : 1.5) * (1 - 0.4 * k) * (0.6 + 0.4 * fk), pal, (1 - k) * fk); }
   }
   if (M.sight && fr < S && fr > W * 0.25 && mon) {
     const [ax, ay] = feelHitPoint(h.mv), k = Math.min(1, (fr - W * 0.25) / Math.max(1, S - W * 0.25));
@@ -10664,7 +10672,7 @@ function feelBlade(look, hx0, hy0, hs, p) {
    히트스톱 동안은 기술 프레임이 멈추므로 궤적도 멈춤(프리즈 프레임). 찌르기·돌진은 짧은 직선만. 색은 무기 이펙트 색(feelFxPal) */
 var FEEL_SMEAR_LIFE = 12;
 function feelSmear(look, hx0, hy0, hs, t) {
-  const h = fHero; if (reduceMotion || !h.mv || !h.fd || !FEEL_MOVES[h.mv].smear) return;
+  const h = fHero; if (feelBodyK() <= 0 || !h.mv || !h.fd || !FEEL_MOVES[h.mv].smear) return;
   const fd = h.fd, W = fd.startup - fd.strike, A = fd.startup + fd.active, fr = feelFrame(), thrust = h.mv === "jab" || h.mv === "lunge";
   const life = thrust ? 3 : FEEL_SMEAR_LIFE;
   if (fr <= W || fr > A + life) return;
@@ -10773,9 +10781,9 @@ function celebMore() {
 /* ---- 업데이트 안내 한 번 (예전 기록만, 출근 카드 뒤에) ---- */
 function feelArrive() {
   try {
-    if (localStorage.getItem(SAVE_KEY + "-feel37")) return;
-    localStorage.setItem(SAVE_KEY + "-feel37", "1");
-    if (!isFreshSave(S)) celebrateLater({ ic: "weapon", title: "직무마다 싸우는 법이 달라요", sub: "영업 전사는 붙어서 베고, 거너·마법사·소환사·저격수(새 직무)는 떨어져서 쏴요<br>대표 직무는 인사 기록에서 고르고, 다른 직무는 <b>겸직 속성</b> +20%씩", tone: "gold", ms: 4800, keep: 1 });
+    if (localStorage.getItem(SAVE_KEY + "-feel38")) return;
+    localStorage.setItem(SAVE_KEY + "-feel38", "1");
+    if (!isFreshSave(S)) celebrateLater({ ic: "weapon", title: "곽준영이 몸 전체로 싸워요", sub: "휴대폰 '동작 줄이기'가 켜져 있으면 몸 동작까지 꺼졌었어요 · 이제 그 설정은 화면 흔들림만 줄여요<br>정보 › 인사 기록에서 직무를 눌러 <b>동작 미리 보기</b>로 다섯 직무 동작을 볼 수 있어요", tone: "gold", ms: 5200, keep: 1 });
   } catch (e) {}
 }
 
@@ -12878,6 +12886,7 @@ function buildCareerCard() {
       jobCut = { t: 0, dur: 1100, name: `${j.team}으로 이동`, team: heroTitle(), col: j.col }; sfx("buff");
       toast(`대표 직무: ${j.team} · ${FEEL_KITS[FEEL_KIT_OF[j.id]].n} 동작 · 나머지는 겸직 속성`); renderJobSkills(); updateUI(true); save();
     } else if (act === "pick") openJobPick();
+    else if (act === "preview") jobPreviewStart(id);
   });
 }
 function renderCareer() {
@@ -12933,7 +12942,7 @@ function renderCareer() {
     <p class="cr-dl"><span>대표 동작</span>${FEEL_KITS[FEEL_KIT_OF[focus.id]].n} · ${focus.atk}</p>
     <p class="cr-dl"><span>겸직 속성</span>${JOB_ATTR[focus.id].d}${fOwn && !fOn ? " · 지금 적용 중" : ""}</p>
     ${focus.sk.map(k => `<p class="cr-dl"><span>${JSK[k].n}</span>${JSK[k].d} · ${JSK[k].cd}초마다</p>`).join("")}
-    ${!fOwn && !pend ? `<p class="cr-lock">${nxr > 0 ? `${iga(rankName(nxr))} 되면 직무를 하나 더 고를 수 있어요` : "직무 칸이 다 찼어요"}</p>` : ""}${btn}`;
+    ${!fOwn && !pend ? `<p class="cr-lock">${nxr > 0 ? `${iga(rankName(nxr))} 되면 직무를 하나 더 고를 수 있어요` : "직무 칸이 다 찼어요"}</p>` : ""}${btn}${FEEL_KIT_OF[focus.id] !== feelMainKitId() ? `<button type="button" class="btn cr-pv" data-act="preview" data-job="${focus.id}"><b>${FEEL_KITS[FEEL_KIT_OF[focus.id]].n} 동작 미리 보기</b><small>15초 동안 전투 화면에서</small></button>` : ""}`;
 }
 
 /* ---------- 전투 화면: 직무 스킬 버튼 ---------- */
@@ -13144,7 +13153,7 @@ function jSparks(x, y, col, n, spd) { if (reduceMotion) n = Math.ceil(n / 2); sp
 function jGold(x, y, n) { for (let i = 0; i < n; i++) jobParts.push({ kind: "coin", x: x + (Math.random() - .5) * 20, y, vx: (Math.random() - .25) * 7, vy: -3 - Math.random() * 6, g: 0.42, life: 1, dur: 950, vr: 0.3 + Math.random() * 0.3, rot: Math.random() * 6, bounce: 1 }); jSparks(x, y, "#ffd54a", Math.ceil(n * 0.8)); }
 function monHitPoint(fy) { const { h: mh } = msz(); return [MON_X - 14 + (Math.random() - .5) * 18, GROUND - mh * (fy == null ? 0.3 + Math.random() * 0.45 : fy)]; }
 function jobStrike(st, crit) {
-  const j = curJob(); if (!j || !mon || mon.dying) return false;
+  const pv = typeof jobPreviewId === "function" ? jobPreviewId() : "", j = (pv && jobById(pv)) || curJob(); if (!j || !mon || mon.dying) return false;
   jobHitN++;
   const dmg = st.atk * (crit ? st.critMul : 1);
   if (j.id === "sales") {   // 금빛 초승달 베기 · 치명타면 반짝이와 동전
@@ -13156,7 +13165,7 @@ function jobStrike(st, crit) {
   if (j.id === "dev") {   // 코드 혜성
     const [tx, ty] = monHitPoint();
     const sky = fHero.mv === "m_storm", o = sky ? { x: tx + 22, y: GROUND - 300 } : feelMuzzle();   // 마법사 마무리: 지팡이를 들면 하늘에서 번개
-    if (sky && !reduceMotion) jvAdd("chain", { dur: 260, segs: [jBoltPts(o.x, o.y, tx, ty, 9, 26), jBoltPts(o.x - 30, o.y + 40, tx - 6, ty + 8, 7, 20)] });
+    if (sky) jvAdd("chain", { dur: 260, segs: [jBoltPts(o.x, o.y, tx, ty, 9, 26), jBoltPts(o.x - 30, o.y + 40, tx - 6, ty + 8, 7, 20)] });
     jobProj.push({ kind: "code", x0: o.x, y0: o.y, tx, ty, t: 0, dur: sky ? 70 : 110, dmg, crit, chain: jobHitN % 4 === 0, atk: st.atk, g: CODE_GLYPHS[jobHitN % CODE_GLYPHS.length], m: mon, seed: Math.random() * 100 });
     sfx("pew"); return true;
   }
@@ -13678,7 +13687,6 @@ function jobSubs() { const js = (typeof S !== "undefined" && S && S.jobs) || [];
 function jobSubMul() { return 1 + JOB_SUB_BONUS * jobSubs().length; }
 /* 매 타격: 겸직 직무 색 불꽃 (피해는 careerAtk 배율에 이미 들어 있음) */
 function jobAttrFx(x, y) {
-  if (reduceMotion) return;
   jobSubs().forEach((id, i) => {
     const c = JOB_ATTR[id].col;
     for (let k = 0; k < 2; k++) sparks.push({ x, y, vx: 2 + Math.random() * 6, vy: -3 + (i - 1.5) * 1.6 + Math.random() * 2, life: 0.85, c, line: true });
@@ -13693,7 +13701,7 @@ function jobSubProc(st) {
     if (!mon || mon.dying) return;
     const A = JOB_ATTR[id], px = x + [0, 14, -12, 22][i % 4], py = y + [0, -16, 12, -4][i % 4];
     let d = st.atk * JOB_SUB_PROC, crit = false;
-    if (!reduceMotion) jvAdd("sphere", { x: px, y: py, R: 24, col: A.col, dur: 320 });
+    jvAdd("sphere", { x: px, y: py, R: 24, col: A.col, dur: 320 });
     if (id === "sales") { jGold(px, py - 10, 4); jvAdd("star", { x: px + 14, y: py - 26, r: 8, col: "#ffd54a", dur: 420 }); }
     else if (id === "dev") { const segs = []; let qx = o.x, qy = o.y; for (let k = 0; k < 3; k++) { const nx = px + (Math.random() - .5) * 46, ny = py + (Math.random() - .5) * 56; segs.push(jBoltPts(qx, qy, nx, ny, 6, 16)); qx = nx; qy = ny; } jvAdd("chain", { dur: 260, segs }); jvAdd("crackle", { x: px, y: py, r: 26, col: "#bfefff", dur: 220 }); }
     else if (id === "plan") { jvAdd("pointer", { dur: 200, x0: o.x, y0: o.y, x1: px, y1: py - 6, snipe: mon.kind >= 1 }); if (mon.kind >= 1) d *= 2; }
@@ -13709,7 +13717,7 @@ function jobSubProc(st) {
 }
 /* 원거리 직무로 터치했을 때: 총구·지팡이에서 탄이 날아가 보이게 (피해는 feelTap이 이미 넣음) */
 function jobTapFx(ix, iy) {
-  const j = curJob(); if (!j || reduceMotion) return;
+  const pv = typeof jobPreviewId === "function" ? jobPreviewId() : "", j = (pv && jobById(pv)) || curJob(); if (!j) return;
   const kit = FEEL_KIT_OF[j.id]; if (!kit || kit === "melee") return;
   const o = feelMuzzle(fHero.mv && FEEL_MOVES[fHero.mv].tap ? fHero.mv : FEEL_KITS[kit].tap);
   if (kit === "gun") jvAdd("pointer", { dur: 110, x0: o.x, y0: o.y, x1: ix, y1: iy, snipe: false });
@@ -13763,6 +13771,38 @@ JFX_DRAW.seal = function (f) {
   const k = f.t / f.dur, s = k < 0.18 ? 2.2 - 6.6 * k : 1, a = k < 0.75 ? 1 : (1 - k) / 0.25;
   jSeal(f.x, f.y, 30 * s, -0.2, Math.max(0, a), "징");
 };
+
+/* ===================== v38 직무 동작 미리 보기 · 몸 동작 설정 =====================
+   사용자(2026-10-11 09:09, 아이폰 화면 녹화): "이상하다, 모션도 그렇고 수정이 안 된 것 같다"
+   → 녹화에서 곽준영 몸이 전혀 숙이지 않고 팔·무기만 움직임 + 배경이 한 번도 안 흔들림 = 휴대폰 '동작 줄이기'가 켜져 있어
+     게임이 몸 동작(v36)을 꺼 두고 있었음. 이제 '동작 줄이기'는 화면 흔들림·카메라만 줄이고, 몸 동작은 설정 › 화면 '곽준영 몸 동작'으로 따로 정함.
+   → 대리(직무 칸 1개) · 영업이면 v37 직무 동작을 볼 길이 없음 → 인사 기록에서 어느 직무든 '동작 미리 보기 15초'. */
+
+/* ---------- 동작 미리 보기: 15초 동안 그 직무 동작·기본 공격으로 싸움 (능력치·스킬·겸직은 그대로) ---------- */
+var jobPreview = { id: "", until: 0 }, JOB_PREVIEW_MS = 15000;
+function jobPreviewId() { return jobPreview.id && performance.now() < jobPreview.until ? jobPreview.id : ""; }
+function jobPreviewStart(id) {
+  const j = jobById(id); if (!j) return;
+  jobPreview = { id, until: performance.now() + JOB_PREVIEW_MS };
+  jobCut = { t: 0, dur: 1100, name: `${j.team} 미리 보기`, team: `${FEEL_KITS[FEEL_KIT_OF[id]].n} 동작 · 15초`, col: j.col };
+  sfx("buff"); toast(`${j.team} · ${FEEL_KITS[FEEL_KIT_OF[id]].n} 동작을 15초 동안 보여 줘요 · 위 전투 화면을 보세요`);
+  if (typeof crKey !== "undefined") crKey = "";
+}
+/* 머리 위 이름표: '기획 거너 미리 보기 12' */
+function drawJobPreviewTag(t, hx, hy) {
+  const id = jobPreviewId(); if (!id) return;
+  const j = jobById(id), left = Math.ceil((jobPreview.until - performance.now()) / 1000), txt = `${FEEL_KITS[FEEL_KIT_OF[id]].n} 미리 보기 ${left}`;
+  ctx.save(); ctx.font = '11px "Do Hyeon", sans-serif'; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  const w = (ctx.measureText ? ctx.measureText(txt).width : txt.length * 8) + 12, x = hx + 31, y = hy - 10;
+  ctx.globalAlpha = 0.92; ctx.fillStyle = "rgba(10,14,26,.86)"; ctx.fillRect(x - w / 2, y - 8, w, 16);
+  ctx.fillStyle = j.col; ctx.fillRect(x - w / 2, y - 8, w, 1.5); ctx.fillRect(x - w / 2, y + 6.5, w, 1.5);
+  ctx.fillText(txt, x, y + 0.5);
+  ctx.restore();
+}
+(function () {
+  const base = drawJobAura;
+  drawJobAura = function (t, hx, hy) { base(t, hx, hy); drawJobPreviewTag(t, hx, hy); };
+})();
 
 /* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */
 function drawJobUi(t) {

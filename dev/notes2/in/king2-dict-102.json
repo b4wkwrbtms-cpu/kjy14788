@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-102",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "느후스다",
+ "brief": "예루살렘 출신 엘라단의 딸이며 여호야긴의 어머니다. 아들과 함께 바빌론 왕에게 나아가는 왕실의 일원이다.",
+ "terms": [
+  [
+   "נְחֻשְׁתָּא",
+   "네후쉬타",
+   "놋·구리와 연결되는 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "예루살렘 출신 엘라단의 딸이며 여호야긴의 어머니다. 아들과 함께 바빌론 왕에게 나아가는 왕실의 일원이다. 금속과 연결되는 이름이 성격이 차갑거나 강하다는 뜻은 아니므로, 어원과 인물 평가를 구분한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.24.8",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H5179",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

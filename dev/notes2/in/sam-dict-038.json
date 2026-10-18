@@ -1,0 +1,47 @@
+{
+ "id": "sam-dict-038",
+ "k": "hebrew",
+ "badge": "원어 해석",
+ "loc": "",
+ "title": "언약",
+ "brief": "사무엘하 23:5의 영원한 언약은 다윗 집안에 하신 하나님의 약속이다. 스펄전은 이 절을 가족의 실패 속에서도 하나님의 약속을 붙드는 위로로 설교했다.",
+ "terms": [
+  [
+   "בְּרִית",
+   "베리트",
+   "관계를 묶는 약속"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "사무엘하 23:5의 영원한 언약은 다윗 집안에 하신 하나님의 약속이다. 스펄전은 이 절을 가족의 실패 속에서도 하나님의 약속을 붙드는 위로로 설교했다. 다만 그는 ‘내 집안이 그렇지 못해도’라는 양보문 번역을 사용했다. 여기의 질문형 번역과 문장 구조는 다르므로, 그 설교를 유일한 원어 해석이라고 부르지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.23.5",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H1285",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "스펄전 · David’s Sublime Consolation (1867)",
+   "https://www.spurgeon.org/sermons/davids-sublime-consolation"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

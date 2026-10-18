@@ -1,0 +1,47 @@
+{
+ "id": "king-dict-038",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "사르밧",
+ "brief": "본문은 시돈에 속한 곳이라고 설명한다. 오늘날 레바논 해안의 사라판드와 연결되는 옛 사렙타로 이해된다.",
+ "terms": [
+  [
+   "צָרְפַת",
+   "차르파트",
+   "금속을 제련하다와 연결된 지명"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "본문은 시돈에 속한 곳이라고 설명한다. 오늘날 레바논 해안의 사라판드와 연결되는 옛 사렙타로 이해된다. 엘리야는 이스라엘 밖에서 가난한 과부의 집에 머문다. ‘제련’이라는 어원만으로 하나님이 이 여인을 시험하려고 그곳에 보냈다고 단정하기보다, 경계 밖에서도 생명을 돌보시는 장면을 먼저 읽자."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.17.9",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6886",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "발굴자 James B. Pritchard · Sarepta 발굴 보고",
+   "https://www.penn.museum/sites/expedition/the-phoenicians-in-their-homeland/"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

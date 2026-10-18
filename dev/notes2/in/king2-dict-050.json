@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-050",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "느고",
+ "brief": "요시야가 맞서 나갔다가 죽은 이집트 왕이다. 이후 유다의 여호아하스를 폐위하고 여호야김을 세운다.",
+ "terms": [
+  [
+   "פַּרְעֹה נְכֹה",
+   "네코",
+   "이집트 왕명·외래어"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "요시야가 맞서 나갔다가 죽은 이집트 왕이다. 이후 유다의 여호아하스를 폐위하고 여호야김을 세운다. 파라오는 개인 이름이 아니라 이집트 왕을 부르는 호칭이며 느고가 이 왕을 구별하는 이름이다. 유다가 제국 사이에서 주권을 잃는 흐름을 보여 준다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.23.29",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6549",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "SIL 번역자 주 · 아시리아 원조의 문맥",
+   "https://tips.translation.bible/tip_term/sil-translators-notes-on-2-kings-2329/"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

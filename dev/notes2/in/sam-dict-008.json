@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-008",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "나발",
+ "brief": "여기서 어리석음은 지능이 낮다는 뜻이 아니다. 도움받은 관계와 책임을 무시하고 거칠게 행동하는 태도다.",
+ "terms": [
+  [
+   "נָבָל",
+   "나발",
+   "어리석은 자"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "여기서 어리석음은 지능이 낮다는 뜻이 아니다. 도움받은 관계와 책임을 무시하고 거칠게 행동하는 태도다. 아비가일은 25:25에서 그의 이름과 행동을 직접 연결한다. 이름의 뜻을 실제 인물 평가에 사용하는 것이 본문에 명시된 사례다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Sam.25.25",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H5037",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

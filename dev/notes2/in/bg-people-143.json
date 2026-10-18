@@ -1,0 +1,56 @@
+{
+ "id": "bg-people-143",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "인물의 이름 · 창 25:4",
+ "title": "에바",
+ "brief": "창세기의 이 에바는 곡식을 재는 단위가 아니라 미디안의 아들이에요. 원어도 무게·부피 단위 에바와 첫 자음이 다릅니다.",
+ "terms": [
+  [
+   "עֵיפָה",
+   "에파",
+   "어원 불확실; 미디안의 아들 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "창세기의 이 에바는 곡식을 재는 단위가 아니라 미디안의 아들이에요. 원어도 무게·부피 단위 에바와 첫 자음이 다릅니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "족보의 사람 이름을 클릭했는데 22L라는 설명이 나오지 않도록 구분했어요. 본문에서는 그두라와 아브라함의 자손이 주변 민족으로 이어지는 계보의 한 사람입니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "창 25:4 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0125.htm"
+  ],
+  [
+   "원어 사전 · H5891",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L35268"
+  ],
+  [
+   "미국성서공회 · 고대 도량형",
+   "https://www.americanbible.org/engage/bible-resources/articles/weights-and-measures-in-ancient-israel/"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "인물의 이름 · 창 25:4"
+}

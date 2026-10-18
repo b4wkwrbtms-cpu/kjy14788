@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-008",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "예후",
+ "brief": "님시의 손자이며 여호사밧의 아들인 군 지휘관이다. 이 여호사밧은 남유다의 유명한 왕과 다른 사람이다.",
+ "terms": [
+  [
+   "יֵהוּא",
+   "예후",
+   "그분은 여호와라는 풀이"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "님시의 손자이며 여호사밧의 아들인 군 지휘관이다. 이 여호사밧은 남유다의 유명한 왕과 다른 사람이다. 예후는 아합 왕조와 바알 숭배를 무너뜨리지만 북왕국의 금송아지 체제는 버리지 않는다. 열왕기는 그의 개혁과 남은 죄를 함께 기록한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.9.2",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3058",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

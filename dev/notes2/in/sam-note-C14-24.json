@@ -1,0 +1,47 @@
+{
+ "id": "sam-note-C14-24",
+ "k": "hebrew",
+ "badge": "원어 해석",
+ "loc": "",
+ "title": "열왕기상 14:24 · 남성 제의 종사자",
+ "brief": "거룩하게 구별된 사람이라는 어근을 지녔지만, 여기서는 비판받는 이교 제의에 속한 남성을 가리킵니다. 전통적으로 성소의 남성 성매매 종사자로 번역해 왔으나, 정확한 역할과 성행위 여부에는 학술적 논의가 있습니다.",
+ "terms": [
+  [
+   "קָדֵשׁ",
+   "카데쉬",
+   "남성 제의 종사자"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "거룩하게 구별된 사람이라는 어근을 지녔지만, 여기서는 비판받는 이교 제의에 속한 남성을 가리킵니다. 전통적으로 성소의 남성 성매매 종사자로 번역해 왔으나, 정확한 역할과 성행위 여부에는 학술적 논의가 있습니다. 현대의 성적 지향을 나타내는 ‘동성애자’로 바꾸지 않았으며, 확인되지 않은 의식의 세부를 보태지 않았습니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "OSHB · 원문과 낭독형",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "NET 번역자 주 · 전통적 번역과 고대 번역 비교",
+   "https://classic.net.bible.org/verse.php?book=1Ki&chapter=14&theme=false&verse=24"
+  ],
+  [
+   "Stephanie L. Budin · 성소 성매매 해석을 비판한 연구, 출판사 소개",
+   "https://www.cambridge.org/core/books/myth-of-sacred-prostitution-in-antiquity/61198555C0E969D82AC0B8900F7D99E7"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

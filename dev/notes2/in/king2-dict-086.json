@@ -1,0 +1,51 @@
+{
+ "id": "king2-dict-086",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "들박",
+ "brief": "엘리사의 공동체가 국에 넣었다가 먹지 못한 야생 열매다. 유력한 후보로 콜로신스라는 야생 박과 식물(Citrullus colocynthis)을 들지만 확정된 식별은 아니다.",
+ "terms": [
+  [
+   "פַּקֻּעָה",
+   "파쿠오트",
+   "들에서 나는 박 모양의 열매"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "엘리사의 공동체가 국에 넣었다가 먹지 못한 야생 열매다. 유력한 후보로 콜로신스라는 야생 박과 식물(Citrullus colocynthis)을 들지만 확정된 식별은 아니다. 우리가 먹는 호박이나 수박처럼 보일 수 있어도 같은 식용 열매로 생각해서는 안 된다. 본문은 몰라서 넣은 열매가 생명을 위협했다는 상황을 전한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.4.39",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6498",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "UBS 번역자 해설 · 야생 열매와 옷자락",
+   "https://tips.translation.bible/story/translation-commentary-on-2-kings-439/"
+  ],
+  [
+   "Kew · Citrullus colocynthis 식물 분류·분포 (성경 식물 식별 자체의 증거는 아님)",
+   "https://powo.science.kew.org/taxon/291930-1"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

@@ -1,0 +1,56 @@
+{
+ "id": "bg-things-021",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "생활·문화·단위 · 출 12:22;레 14장;민 19장",
+ "title": "우슬초",
+ "brief": "성경의 우슬초는 오늘 ‘히솝’이라는 이름으로 파는 식물과 반드시 같지 않아요. 시리아오레가노(Origanum syriacum) 같은 향기 나는 작은 식물로 보는 견해가 유력합니다.",
+ "terms": [
+  [
+   "אֵזוֹב",
+   "에조브",
+   "정결 예식에 쓴 작은 가지 식물"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "성경의 우슬초는 오늘 ‘히솝’이라는 이름으로 파는 식물과 반드시 같지 않아요. 시리아오레가노(Origanum syriacum) 같은 향기 나는 작은 식물로 보는 견해가 유력합니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "출애굽기에서는 묶은 가지로 피를 적셔 문에 바르고, 정결 예식에서는 물을 뿌릴 때 사용해요. 먼저 작은 가지 다발을 붓처럼 쓰는 모습을 떠올리면, 이름을 몰라도 행동이 이해됩니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "출 12:22;레 14장;민 19장 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0212.htm"
+  ],
+  [
+   "원어 사전 · H231",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L1374"
+  ],
+  [
+   "뮌스터대 성서박물관 · 성경의 우슬초 추정",
+   "https://www.uni-muenster.de/Bibelmuseum/en/ausstellungen/bibelpflanzenpfad/pflanzen/Oregano.html"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "출 12:22"
+}

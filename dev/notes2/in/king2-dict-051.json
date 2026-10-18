@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-051",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "예레미야",
+ "brief": "23:31과 24:18에서는 립나 출신 하무달의 아버지로 언급된다. 곧 여호아하스와 시드기야의 외할아버지다.",
+ "terms": [
+  [
+   "יִרְמְיָה",
+   "이르메야후",
+   "여호와께서 높이신다는 전통적 풀이"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "23:31과 24:18에서는 립나 출신 하무달의 아버지로 언급된다. 곧 여호아하스와 시드기야의 외할아버지다. 아나돗 출신 힐기야의 아들인 예언자 예레미야와 같은 인물로 단정할 근거가 없다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.23.31",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3414",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

@@ -1,0 +1,47 @@
+{
+ "id": "king-dict-059",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "기름나무",
+ "brief": "성전의 그룹과 문설주 등에 쓰인 목재 이름이다. 올리브나무로 옮기는 전통이 있지만 정확한 수종을 두고 다른 견해도 있다.",
+ "terms": [
+  [
+   "עֵץ / שֶׁמֶן",
+   "에츠 셰멘",
+   "글자대로 기름의 나무"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "성전의 그룹과 문설주 등에 쓰인 목재 이름이다. 올리브나무로 옮기는 전통이 있지만 정확한 수종을 두고 다른 견해도 있다. 그러므로 식용 올리브유를 짜는 나무가 확실하다고 단정하지 않았다. 본문에서는 기름을 붓는 의식이 아니라 조각하고 문을 만드는 재료를 말한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.6.23",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6086",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H8081",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

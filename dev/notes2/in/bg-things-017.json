@@ -1,0 +1,56 @@
+{
+ "id": "bg-things-017",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "생활·문화·단위 · 레 14:10–32",
+ "title": "록",
+ "brief": "기름을 재는 작은 부피 단위예요. 한 힌의 12분의 1로 계산하면 대략 300mL 정도, 작은 음료병 하나쯤의 부피입니다.",
+ "terms": [
+  [
+   "לֹג",
+   "로그",
+   "힌의 12분의 1; 대략 0.3L"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "기름을 재는 작은 부피 단위예요. 한 힌의 12분의 1로 계산하면 대략 300mL 정도, 작은 음료병 하나쯤의 부피입니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "정결 예식에서 한 록의 기름을 가져와 일부를 손바닥에 덜어 사용해요. 현대 추정값은 자료마다 조금 달라 정확한 계량컵 눈금으로 고정하지 않습니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "레 14:10–32 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0314.htm"
+  ],
+  [
+   "원어 사전 · H3849",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L23035"
+  ],
+  [
+   "미국성서공회 · 고대 도량형",
+   "https://www.americanbible.org/engage/bible-resources/articles/weights-and-measures-in-ancient-israel/"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "레 14:10–32"
+}

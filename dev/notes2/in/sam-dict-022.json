@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-022",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "리스바",
+ "brief": "사울의 후궁이며 두 아들의 어머니다. 삼하 21장에서 처형된 이들의 시신을 새와 짐승에게서 지킨다.",
+ "terms": [
+  [
+   "רִצְפָּה",
+   "리츠파",
+   "뜨거운 돌·숯불과 관련된 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "사울의 후궁이며 두 아들의 어머니다. 삼하 21장에서 처형된 이들의 시신을 새와 짐승에게서 지킨다. 그녀의 행동이 다윗에게 전해지고 정식 매장으로 이어진다. 죽은 이들을 단지 정치적 문제 해결의 숫자로 보지 않게 만드는 장면이다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.21.10",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H7532",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

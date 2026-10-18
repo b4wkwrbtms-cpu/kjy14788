@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-078",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "기드론",
+ "brief": "예루살렘 동쪽과 올리브산 사이를 지나는 골짜기다. 요시야는 성전에서 끌어낸 우상 기물을 이곳으로 가져가 처리한다.",
+ "terms": [
+  [
+   "קִדְרוֹן",
+   "키드론",
+   "어둡다와 연결되는 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "예루살렘 동쪽과 올리브산 사이를 지나는 골짜기다. 요시야는 성전에서 끌어낸 우상 기물을 이곳으로 가져가 처리한다. 도시 밖으로 끌어내는 이동은 성전 안에 자리 잡았던 숭배 대상을 제거한다는 행동을 눈에 보이게 한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.23.4",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6939",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

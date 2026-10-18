@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-101",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "여디다",
+ "brief": "보스갓 출신 아다야의 딸이며 요시야의 어머니다. 사랑받는다는 뜻의 이름이지만 그녀의 양육 방식까지 본문이 상세히 알려 주지는 않는다.",
+ "terms": [
+  [
+   "יְדִידָה",
+   "예디다",
+   "사랑받는 여인"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "보스갓 출신 아다야의 딸이며 요시야의 어머니다. 사랑받는다는 뜻의 이름이지만 그녀의 양육 방식까지 본문이 상세히 알려 주지는 않는다. 어머니 이름의 기록은 어린 왕이 어떤 왕실 관계에서 등장하는지 알려 준다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.22.1",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3040",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

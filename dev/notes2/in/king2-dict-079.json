@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-079",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "도벳",
+ "brief": "힌놈 골짜기에 있던 제의 장소로 아이를 불 가운데 넘기는 행위와 연결된다. 요시야는 다시 그 용도로 쓰지 못하도록 그곳을 더럽힌다.",
+ "terms": [
+  [
+   "תֹּפֶת",
+   "토페트",
+   "정확한 이름 뜻은 불확실"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "힌놈 골짜기에 있던 제의 장소로 아이를 불 가운데 넘기는 행위와 연결된다. 요시야는 다시 그 용도로 쓰지 못하도록 그곳을 더럽힌다. ‘북을 두드려 비명을 덮었다’는 유명한 설명을 이름의 확정된 어원처럼 붙이지 않았다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.23.10",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H8612",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

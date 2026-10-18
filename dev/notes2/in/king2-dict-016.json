@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-016",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "여호아하스",
+ "brief": "13장에는 예후의 아들인 북이스라엘 왕이 나온다. 23장에는 요시야의 아들인 남유다 왕이 같은 이름으로 등장하여 석 달 만에 이집트에 잡혀간다.",
+ "terms": [
+  [
+   "יְהוֹאָחָז / יוֹאָחָז",
+   "예호아하즈·요아하즈",
+   "여호와께서 붙드셨다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "13장에는 예후의 아들인 북이스라엘 왕이 나온다. 23장에는 요시야의 아들인 남유다 왕이 같은 이름으로 등장하여 석 달 만에 이집트에 잡혀간다. 두 왕은 한 세대의 인물이 아니며 정치 상황도 다르다. ‘어느 왕의 아들인가’를 함께 읽으면 혼란이 줄어든다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.13.1",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3059",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3099",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

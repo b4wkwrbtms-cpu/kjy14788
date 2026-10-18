@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-026",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "아비아달",
+ "brief": "사울이 놉의 제사장들을 죽였을 때 살아남아 다윗에게 온 제사장이다. 이후 사독과 함께 다윗을 돕는다.",
+ "terms": [
+  [
+   "אֶבְיָתָר",
+   "에브야타르",
+   "아버지는 풍성함으로 풀이하는 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "사울이 놉의 제사장들을 죽였을 때 살아남아 다윗에게 온 제사장이다. 이후 사독과 함께 다윗을 돕는다. 삼하 17장의 전령 요나단은 그의 아들이다. 제사장들의 이름과 아들들의 이름을 구별하면 피난길의 소식 전달이 이해된다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Sam.22.20",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H54",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

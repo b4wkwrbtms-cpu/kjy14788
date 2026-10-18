@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-104",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "스바냐",
+ "brief": "25장의 스바냐는 예루살렘의 부제사장이다. 예언서 스바냐의 저자와 다른 사람이다.",
+ "terms": [
+  [
+   "צְפַנְיָה",
+   "체판야",
+   "여호와께서 숨기셨다·지키셨다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "25장의 스바냐는 예루살렘의 부제사장이다. 예언서 스바냐의 저자와 다른 사람이다. 대제사장 스라야와 함께 붙잡혀 립라에서 죽으며, 같은 이름의 뜻이 같아도 시대와 직무는 구별해야 한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.25.18",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6846",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

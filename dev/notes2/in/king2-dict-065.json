@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-065",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "립나",
+ "brief": "유다의 성읍으로 에돔과 함께 반란을 일으킨 곳, 아시리아가 공격한 곳으로 나온다. 북쪽 하맛 땅의 립라와 이름이 비슷하지만 다른 장소다.",
+ "terms": [
+  [
+   "לִבְנָה",
+   "리브나",
+   "희다와 연결되는 지명"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "유다의 성읍으로 에돔과 함께 반란을 일으킨 곳, 아시리아가 공격한 곳으로 나온다. 북쪽 하맛 땅의 립라와 이름이 비슷하지만 다른 장소다. 글자 하나의 차이로 멀리 떨어진 지역이 바뀌므로 두 지명을 구별해 읽자."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.8.22",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3841",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

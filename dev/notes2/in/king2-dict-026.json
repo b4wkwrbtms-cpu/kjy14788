@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-026",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "브가히야",
+ "brief": "므나헴의 아들로 북이스라엘 왕위를 잇는다. 부하 베가의 반란으로 죽으며 아버지가 외세의 도움으로 확보한 왕권도 안정되지 못한다.",
+ "terms": [
+  [
+   "פְּקַחְיָה",
+   "페카흐야",
+   "여호와께서 눈을 여셨다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "므나헴의 아들로 북이스라엘 왕위를 잇는다. 부하 베가의 반란으로 죽으며 아버지가 외세의 도움으로 확보한 왕권도 안정되지 못한다. 베가와 이름이 비슷하지만 서로 다른 사람이다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.15.22",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6494",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

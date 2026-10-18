@@ -1,0 +1,43 @@
+{
+ "id": "king-dict-018",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "시므리",
+ "brief": "병거 부대의 절반을 맡던 지휘관으로 엘라를 죽이고 왕이 된다. 그러나 통치는 이레 만에 끝난다.",
+ "terms": [
+  [
+   "זִמְרִי",
+   "짐리",
+   "노래와 연결하는 전통적 풀이"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "병거 부대의 절반을 맡던 지휘관으로 엘라를 죽이고 왕이 된다. 그러나 통치는 이레 만에 끝난다. 음악과 관련된 이름이라는 풀이가 그의 행동을 설명해 주지는 않는다. 민수기 25장의 시므리와 다른 사람이며, 비슷한 이름의 시므이와도 구별하자."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.16.9",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H2174",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

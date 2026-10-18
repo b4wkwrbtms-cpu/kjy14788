@@ -1,0 +1,47 @@
+{
+ "id": "sam-dict-033",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "그술",
+ "brief": "갈릴리 호수 동북쪽과 관련되는 아람계 왕국이다. 압살롬의 외가가 있는 곳이며, 암논을 죽인 뒤 그는 그곳으로 피한다.",
+ "terms": [
+  [
+   "גְּשׁוּר",
+   "게슈르",
+   "다리와 연결하는 전통적 어원 추정"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "갈릴리 호수 동북쪽과 관련되는 아람계 왕국이다. 압살롬의 외가가 있는 곳이며, 암논을 죽인 뒤 그는 그곳으로 피한다. 지리만 알면 도피처처럼 보이지만, 가족 관계를 알면 왜 이곳으로 갔는지 더 잘 이해된다. 지명의 정확한 어원은 확정하지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.13.37",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H1650",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "그술 발굴팀 · Rediscovered! The Land of Geshur, 공개 도입부와 주",
+   "https://library.biblicalarchaeology.org/article/rediscovered-the-land-of-geshur/"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

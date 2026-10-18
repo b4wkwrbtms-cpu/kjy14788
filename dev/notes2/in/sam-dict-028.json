@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-028",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "아히멜렉",
+ "brief": "놉의 제사장으로, 도망 중인 다윗에게 빵과 칼을 제공한다. 사울은 이를 반역으로 몰아 제사장들을 죽인다.",
+ "terms": [
+  [
+   "אֲחִימֶלֶךְ",
+   "아히멜레크",
+   "내 형제는 왕"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "놉의 제사장으로, 도망 중인 다윗에게 빵과 칼을 제공한다. 사울은 이를 반역으로 몰아 제사장들을 죽인다. 삼상 26:6의 헷 사람 아히멜렉은 다른 사람이다. 같은 이름과 뜻이 곧 같은 인물임을 뜻하지는 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Sam.21.2",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H288",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

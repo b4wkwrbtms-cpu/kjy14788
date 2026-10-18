@@ -1,0 +1,56 @@
+{
+ "id": "bg-things-005",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "생활·문화·단위 · 출 38:26",
+ "title": "베가",
+ "brief": "베가는 세겔의 절반이에요. 출애굽기 38:26이 ‘한 베가, 곧 반 세겔’이라고 직접 설명합니다.",
+ "terms": [
+  [
+   "בֶּקַע",
+   "베카",
+   "반 세겔; 약 5.7g으로 비교"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "베가는 세겔의 절반이에요. 출애굽기 38:26이 ‘한 베가, 곧 반 세겔’이라고 직접 설명합니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "1세겔을 11.4g으로 잡으면 약 5.7g이에요. 성막에 바친 은의 총량을 셀 때 사람 수와 반 세겔을 곱하는 이유를 이해할 수 있습니다. 베가는 사람 이름이나 별자리 이름과 관계없는 무게 단위입니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "출 38:26 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0238.htm"
+  ],
+  [
+   "원어 사전 · H1235",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L7381"
+  ],
+  [
+   "미국성서공회 · 고대 도량형",
+   "https://www.americanbible.org/engage/bible-resources/articles/weights-and-measures-in-ancient-israel/"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "출 38:26"
+}

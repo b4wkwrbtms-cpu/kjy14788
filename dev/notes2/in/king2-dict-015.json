@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-015",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "시비야",
+ "brief": "브엘세바 출신이며 유다 왕 요아스의 어머니다. 가젤은 이 지역에서 알려진 날렵한 동물이다.",
+ "terms": [
+  [
+   "צִבְיָּה",
+   "치브야",
+   "암가젤"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "브엘세바 출신이며 유다 왕 요아스의 어머니다. 가젤은 이 지역에서 알려진 날렵한 동물이다. 동물 이름을 사람 이름으로 쓰는 작명은 낯설지만, 이것만으로 그 사람의 외모나 성격을 알 수는 없다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.12.2",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6645",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

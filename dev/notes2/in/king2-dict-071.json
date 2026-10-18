@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-071",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "가드헤벨",
+ "brief": "예언자 요나의 출신지로 북쪽 갈릴리 지역에 놓인다. 이름에는 포도를 눌러 즙을 짜는 농업 시설과 구덩이를 뜻하는 말이 들어 있다.",
+ "terms": [
+  [
+   "גַּת־הַחֵפֶר",
+   "가트 하헤페르",
+   "구덩이의 포도즙 틀"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "예언자 요나의 출신지로 북쪽 갈릴리 지역에 놓인다. 이름에는 포도를 눌러 즙을 짜는 농업 시설과 구덩이를 뜻하는 말이 들어 있다. 블레셋의 큰 도시 가드와 이름 일부가 같아도 같은 곳은 아니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.14.25",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H1662",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

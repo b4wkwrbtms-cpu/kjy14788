@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-060",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "수넴",
+ "brief": "이스르엘 평야 가까이에 있던 마을로, 엘리사를 식사와 방으로 대접한 여인이 살던 곳이다. 오늘의 솔렘 마을 일대와 연결해 식별한다.",
+ "terms": [
+  [
+   "שׁוּנֵם",
+   "슈넴",
+   "정확한 지명 어원은 불확실"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "이스르엘 평야 가까이에 있던 마을로, 엘리사를 식사와 방으로 대접한 여인이 살던 곳이다. 오늘의 솔렘 마을 일대와 연결해 식별한다. 한적한 집의 환대와 아이의 탄생·죽음·회복이 큰 왕국 이야기 사이에 자리한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.4.8",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H7766",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "이스라엘 고고학청 · Sulam, Tel Shunem 발굴 보고 (2010)",
+   "https://hadashot.iaa.org.il/Report_Detail_Eng.aspx?id=1471"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

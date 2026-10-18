@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-038",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "아모스",
+ "brief": "여기서는 이사야의 아버지 아모츠를 가리킨다. 예언서 아모스의 저자는 히브리어로 아모스(עָמוֹס)이며 철자가 다른 이름이다.",
+ "terms": [
+  [
+   "אָמוֹץ",
+   "아모츠",
+   "강함과 연결되는 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "여기서는 이사야의 아버지 아모츠를 가리킨다. 예언서 아모스의 저자는 히브리어로 아모스(עָמוֹס)이며 철자가 다른 이름이다. 한국어로 비슷하게 적혀도 같은 사람이라고 생각하면 안 된다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.19.2",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H531",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

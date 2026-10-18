@@ -1,0 +1,47 @@
+{
+ "id": "king-dict-042",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "두로",
+ "brief": "지중해 해안의 페니키아 도시로 오늘날 레바논의 티레와 이어진다. 산에서 목재를 베는 기술과 바다로 운반하는 능력을 가진 히람의 왕국이다.",
+ "terms": [
+  [
+   "צֹר",
+   "초르",
+   "바위"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "지중해 해안의 페니키아 도시로 오늘날 레바논의 티레와 이어진다. 산에서 목재를 베는 기술과 바다로 운반하는 능력을 가진 히람의 왕국이다. 성전 건축은 이스라엘만의 노동이 아니라 이웃 나라와의 물자·기술 교류 속에서 이루어진다. ‘바위’라는 지명 뜻에 성전의 신학적 기초 같은 뜻을 자동으로 넣지는 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.5.15",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6865",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "Penn Museum · 페니키아 해안 도시와 교역",
+   "https://www.penn.museum/sites/expedition/the-phoenicians-in-their-homeland/"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

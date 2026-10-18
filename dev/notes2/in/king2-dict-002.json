@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-002",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "여호람",
+ "brief": "여호람과 요람은 긴 형태와 짧은 형태로 쓰이는 같은 이름이다. 아합의 아들인 북이스라엘 왕은 엘리사·나아만·예후 이야기의 시대에 통치한다.",
+ "terms": [
+  [
+   "יְהוֹרָם / יוֹרָם",
+   "예호람·요람",
+   "여호와께서 높이셨다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "여호람과 요람은 긴 형태와 짧은 형태로 쓰이는 같은 이름이다. 아합의 아들인 북이스라엘 왕은 엘리사·나아만·예후 이야기의 시대에 통치한다. 여호사밧의 아들인 남유다 왕은 아달랴와 결혼한 사람이다. 특히 8장은 두 왕이 함께 언급되므로 ‘이스라엘 왕·유다 왕’이라는 표지를 따라 읽어야 한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.1.17",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3088",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3141",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

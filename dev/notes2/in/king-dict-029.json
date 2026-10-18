@@ -1,0 +1,47 @@
+{
+ "id": "king-dict-029",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "시삭",
+ "brief": "르호보암 시대에 예루살렘을 공격한 이집트 왕이다. 외국 왕명이므로 히브리어 비슷한 소리만으로 뜻을 쪼개면 안 된다.",
+ "terms": [
+  [
+   "שִׁישַׁק",
+   "쉬샤크",
+   "히브리어로 기록된 이집트 왕명"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "르호보암 시대에 예루살렘을 공격한 이집트 왕이다. 외국 왕명이므로 히브리어 비슷한 소리만으로 뜻을 쪼개면 안 된다. 일반적으로 이집트의 쇼셍크 1세와 연결하지만, 본문은 그의 히브리어 표기 시삭을 사용한다. 금방패가 놋방패로 바뀌는 장면은 왕실의 화려함이 오래가지 못함을 보여 준다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.14.25",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H7895",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "Kevin A. Wilson · 시삭·쇼셍크 1세의 원정 연구",
+   "https://bibleinterp.arizona.edu/articles/Wilson-Campaign_of_Shoshenq_I_1"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-082",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "미스바",
+ "brief": "성경에 여러 미스바가 나오지만 마지막 장에서는 베냐민 지역의 행정 거점을 가리킨다. 예루살렘이 무너진 뒤 그달랴가 남은 사람들을 모으는 곳이다.",
+ "terms": [
+  [
+   "מִצְפָּה / מִצְפֶּה",
+   "미츠파",
+   "망대·살펴보는 곳"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "성경에 여러 미스바가 나오지만 마지막 장에서는 베냐민 지역의 행정 거점을 가리킨다. 예루살렘이 무너진 뒤 그달랴가 남은 사람들을 모으는 곳이다. 사사기나 사무엘서의 같은 지명과 비교할 때도 각 사건의 지역을 확인해야 한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.25.23",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H4709",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H4708",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

@@ -1,0 +1,56 @@
+{
+ "id": "bg-things-010",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "생활·문화·단위 · 출 28:16;39:9",
+ "title": "한 뼘",
+ "brief": "엄지와 새끼손가락을 벌렸을 때 끝에서 끝까지의 길이에 해당해요. 대략 반 규빗, 약 22cm로 가늠합니다.",
+ "terms": [
+  [
+   "זֶרֶת",
+   "제레트",
+   "손을 벌린 폭; 약 22cm로 가늠"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "엄지와 새끼손가락을 벌렸을 때 끝에서 끝까지의 길이에 해당해요. 대략 반 규빗, 약 22cm로 가늠합니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "제사장의 가슴받이가 한 뼘 네모라는 설명은 가슴에 착용할 만한 작은 사각형을 말해요. 실제 사람의 손 크기를 매번 쓴 정확한 수치라기보다 당시의 표준 길이 단위로 이해하면 됩니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "출 28:16;39:9 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0228.htm"
+  ],
+  [
+   "원어 사전 · H2239",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L13385"
+  ],
+  [
+   "미국성서공회 · 고대 도량형",
+   "https://www.americanbible.org/engage/bible-resources/articles/weights-and-measures-in-ancient-israel/"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "출 28:16"
+}

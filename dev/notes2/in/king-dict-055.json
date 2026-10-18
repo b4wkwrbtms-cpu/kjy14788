@@ -1,0 +1,47 @@
+{
+ "id": "king-dict-055",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "백향목",
+ "brief": "레바논시더(Cedrus libani)로 이해하는 것이 일반적이며, 한국의 측백나무와 같은 종이라는 뜻은 아니다. 성전에서는 긴 들보·널판·기둥을 만드는 고급 목재로 쓰인다.",
+ "terms": [
+  [
+   "אֶרֶז",
+   "에레즈",
+   "대개 레바논시더로 이해하는 큰 나무"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "레바논시더(Cedrus libani)로 이해하는 것이 일반적이며, 한국의 측백나무와 같은 종이라는 뜻은 아니다. 성전에서는 긴 들보·널판·기둥을 만드는 고급 목재로 쓰인다. 산에서 베어 바다에 띄워 운반하는 5장의 설명을 함께 보면 나무 이름 뒤에 벌목·운송·노동의 규모가 보인다. 모든 구절에서 반드시 같은 현대 종을 가리킨다고 단정하지는 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.5.20",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H730",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "Kew 식물원 · Cedrus libani",
+   "https://powo.science.kew.org/taxon/676705-1"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

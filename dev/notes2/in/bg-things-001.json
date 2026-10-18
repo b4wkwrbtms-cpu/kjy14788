@@ -1,0 +1,69 @@
+{
+ "id": "bg-things-001",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "생활·문화·단위 · 수 24:26",
+ "title": "테레빈나무",
+ "brief": "테레빈은 지중해 지역에 자라는 피스타키아속 나무를 가리켜요. 오늘 분류로는 피스타키아 테레빈투스(Pistacia terebinthus)가 대표적이고, 팔레스타인 테레빈으로 부르던 나무도 Kew에서는 그 동의명으로 다룹니다.",
+ "terms": [
+  [
+   "אַלָּה",
+   "알라",
+   "큰 나무; 테레빈 또는 참나무로 옮김"
+  ],
+  [
+   "אֵלָה",
+   "엘라",
+   "큰 나무; 테레빈 또는 참나무로 옮김"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "테레빈은 지중해 지역에 자라는 피스타키아속 나무를 가리켜요. 오늘 분류로는 피스타키아 테레빈투스(Pistacia terebinthus)가 대표적이고, 팔레스타인 테레빈으로 부르던 나무도 Kew에서는 그 동의명으로 다룹니다. 먹는 피스타치오와 가까운 속이지만 같은 재배종은 아니에요."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "다만 여호수아 24:26의 히브리어는 ‘알라’이고, BDB는 이곳을 참나무로 풀이합니다. 번역들에 테레빈·상수리나무 등이 갈리는 까닭에 특정 수종을 확정할 수 없어요. 여기서는 성소 곁의 눈에 띄는 큰 나무 아래 언약의 증거 돌을 세운 장면을 떠올리면 됩니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "수 24:26 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0624.htm"
+  ],
+  [
+   "원어 사전 · H427",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L2547"
+  ],
+  [
+   "원어 사전 · H424",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L2528"
+  ],
+  [
+   "BDB 전자본 · 알라 항목",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/BrownDriverBriggs.xml"
+  ],
+  [
+   "큐 왕립식물원 · Pistacia terebinthus",
+   "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:70274-1"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "창세기 12:6"
+}

@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-024",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "바르실래",
+ "brief": "바르젤은 ‘철’이다. 이름 때문에 마음이 냉혹했다는 뜻은 아니다.",
+ "terms": [
+  [
+   "בַּרְזִלַּי",
+   "바르질라이",
+   "철과 관련된 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "바르젤은 ‘철’이다. 이름 때문에 마음이 냉혹했다는 뜻은 아니다. 길르앗의 바르실래는 도망 중인 다윗 일행에게 먹을 것을 공급한다. 여든 살인 그는 왕궁의 보상을 사양하고 김함을 부탁한다. 삼하 21장의 아드리엘의 아버지 바르실래와는 구별해야 한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.19.33",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H1271",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

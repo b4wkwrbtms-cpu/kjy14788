@@ -1,0 +1,47 @@
+{
+ "id": "king-dict-054",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "므나",
+ "brief": "여기서는 신약 비유의 돈을 그대로 대입하지 않고 구약의 무게 단위로 읽는다. 50세겔 기준으로 설명하기도 하며, 에스겔 45:12에는 합계 60세겔이 제시되어 표준을 하나로 고정하기 어렵다.",
+ "terms": [
+  [
+   "מָנֶה",
+   "마네",
+   "금속을 재는 무게 단위"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "여기서는 신약 비유의 돈을 그대로 대입하지 않고 구약의 무게 단위로 읽는다. 50세겔 기준으로 설명하기도 하며, 에스겔 45:12에는 합계 60세겔이 제시되어 표준을 하나로 고정하기 어렵다. 1세겔을 약 11.4g으로 잡으면 한 므나는 약 0.57–0.68kg, 금 세 므나는 약 1.7–2.1kg으로 가늠할 수 있다. 오늘의 금값과 당시의 구매력은 별개의 문제다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.10.17",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H4488",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "에스겔 45:12 · 므나와 세겔",
+   "https://classic.net.bible.org/verse.php?book=Eze&chapter=45&verse=12"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

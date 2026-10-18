@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-025",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "므나헴",
+ "brief": "살룸을 죽이고 북이스라엘 왕이 된다. 이름은 위로와 연결되지만 15장은 도시를 파괴하는 잔혹함과 외국 왕에게 바칠 은을 걷는 통치를 기록한다.",
+ "terms": [
+  [
+   "מְנַחֵם",
+   "메나헴",
+   "위로하는 이"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "살룸을 죽이고 북이스라엘 왕이 된다. 이름은 위로와 연결되지만 15장은 도시를 파괴하는 잔혹함과 외국 왕에게 바칠 은을 걷는 통치를 기록한다. 좋은 뜻의 이름과 실제 행동이 크게 어긋날 수 있음을 보여 주는 사례다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.15.14",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H4505",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

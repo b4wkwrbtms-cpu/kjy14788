@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-023",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "아라우나",
+ "brief": "예루살렘의 타작마당 주인이다. 히브리어처럼 글자를 나누어 그럴듯한 신앙적 뜻을 붙이지 않는다.",
+ "terms": [
+  [
+   "אֲרַוְנָה",
+   "아라브나",
+   "어원이 확실하지 않은 여부스 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "예루살렘의 타작마당 주인이다. 히브리어처럼 글자를 나누어 그럴듯한 신앙적 뜻을 붙이지 않는다. 역대상에는 오르난이라는 이름으로 나온다. 다윗이 값을 치르고 이 땅을 사서 제단을 쌓는 장면이 사무엘하의 마지막을 이룬다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.24.24",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H728",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

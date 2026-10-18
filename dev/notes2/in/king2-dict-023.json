@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-023",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "스가랴",
+ "brief": "15장의 스가랴는 여로보암 2세의 아들이자 예후 왕조의 마지막 왕이다. 여섯 달 만에 살룸에게 죽임을 당한다.",
+ "terms": [
+  [
+   "זְכַרְיָה",
+   "제카르야",
+   "여호와께서 기억하셨다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "15장의 스가랴는 여로보암 2세의 아들이자 예후 왕조의 마지막 왕이다. 여섯 달 만에 살룸에게 죽임을 당한다. 예언서 스가랴의 저자와 같은 사람이 아니다. 예후의 자손이 네 대까지 왕위에 오른다는 말이 여기서 회고된다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.15.8",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H2148",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

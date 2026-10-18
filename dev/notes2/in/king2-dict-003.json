@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-003",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "메사",
+ "brief": "양 떼를 기르며 이스라엘에 많은 양털을 바치던 모압 왕이다. 아합이 죽자 복종을 거부하여 3장의 전쟁이 시작된다.",
+ "terms": [
+  [
+   "מֵישַׁע",
+   "메샤",
+   "구원·해방과 연결되는 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "양 떼를 기르며 이스라엘에 많은 양털을 바치던 모압 왕이다. 아합이 죽자 복종을 거부하여 3장의 전쟁이 시작된다. 모압 왕 메사가 세운 비문도 그의 관점에서 이스라엘과의 전쟁을 말한다. 두 기록은 각자의 왕권과 신앙 관점을 담으므로 비문이 성경의 모든 세부를 그대로 확인한다고 말하지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.3.4",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H4338",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "루브르박물관 · 메사 비석 소장품 기록",
+   "https://collections.louvre.fr/en/ark:/53355/cl010120339"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

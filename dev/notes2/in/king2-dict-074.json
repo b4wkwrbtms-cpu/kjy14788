@@ -1,0 +1,55 @@
+{
+ "id": "king2-dict-074",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "할라",
+ "brief": "한 도시의 다른 이름들이 아니라 강제 이주의 목적지들이다. 하볼·고산은 오늘의 시리아 북동부 하부르 강 유역과 연결되며, 메대는 더 동쪽인 이란 지역이다.",
+ "terms": [
+  [
+   "חֲלַח / חָבוֹר / גּוֹזָן / מָדַי",
+   "할라흐·하보르·고잔·마다이",
+   "북이스라엘 포로들이 옮겨진 여러 지역"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "한 도시의 다른 이름들이 아니라 강제 이주의 목적지들이다. 하볼·고산은 오늘의 시리아 북동부 하부르 강 유역과 연결되며, 메대는 더 동쪽인 이란 지역이다. 할라의 정확한 위치에는 논의가 있다. 여러 지역에 흩어 살게 되었다는 사실이 망국의 규모를 보여 준다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.17.6",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H2477",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H2249",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H1470",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H4074",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

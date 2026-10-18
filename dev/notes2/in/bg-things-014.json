@@ -1,0 +1,56 @@
+{
+ "id": "bg-things-014",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "생활·문화·단위 · 레 27:16;민 11:32",
+ "title": "호멜",
+ "brief": "호멜은 큰 부피 단위로, 약 220L 정도로 가늠해요. 약 2.2L인 오멜보다 백 배 큽니다.",
+ "terms": [
+  [
+   "חֹמֶר",
+   "호메르",
+   "에바 10개; 약 220L"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "호멜은 큰 부피 단위로, 약 220L 정도로 가늠해요. 약 2.2L인 오멜보다 백 배 큽니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "레위기에서는 밭의 면적을 자로 재기보다 보리 씨를 얼마나 뿌릴 수 있는지로 설명해요. 민수기의 열 호멜은 엄청나게 많은 양을 모았다는 감각을 줍니다. 실제 kg이나 밭의 평수는 이 수치만으로 고정할 수 없어요."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "레 27:16;민 11:32 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0327.htm"
+  ],
+  [
+   "원어 사전 · H2563",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L15330"
+  ],
+  [
+   "미국성서공회 · 고대 도량형",
+   "https://www.americanbible.org/engage/bible-resources/articles/weights-and-measures-in-ancient-israel/"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "레 27:16"
+}

@@ -1,0 +1,43 @@
+{
+ "id": "sam-note-C22-39",
+ "k": "hebrew",
+ "badge": "원어 해석",
+ "loc": "",
+ "title": "열왕기상 22:39 · 상아의 집·상아 궁전",
+ "brief": "집 전체를 상아로 쌓았다는 뜻으로 볼 필요는 없다. 상아 장식으로 유명한 궁전을 가리키는 표현이다.",
+ "terms": [
+  [
+   "בֵית הַשֵּׁן",
+   "베트 하셴",
+   "상아의 집·상아 궁전"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "집 전체를 상아로 쌓았다는 뜻으로 볼 필요는 없다. 상아 장식으로 유명한 궁전을 가리키는 표현이다. 고대 사마리아에서 발견된 상아 조각들은 그러한 왕실 장식 문화를 보여 주지만, 모든 조각을 아합 개인의 소유였다고 단정할 수는 없다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "OSHB · 원문과 낭독형",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "베른대학교 · 사마리아 상아 조각 연구",
+   "https://www.iaw.unibe.ch/research/ancient_near_eastern_archaeology/the_ivory_carvings_from_samaria/index_eng.html"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

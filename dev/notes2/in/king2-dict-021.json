@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-021",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "요나",
+ "brief": "가드헤벨 출신이며 아밋대의 아들인 예언자다. 요나서 첫머리와 같은 이름·부친 이름이 나온다.",
+ "terms": [
+  [
+   "יוֹנָה",
+   "요나",
+   "비둘기"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "가드헤벨 출신이며 아밋대의 아들인 예언자다. 요나서 첫머리와 같은 이름·부친 이름이 나온다. 이곳에서는 북이스라엘의 영토 회복을 예고한 인물로 등장한다. 비둘기라는 이름만으로 그의 성격을 온순하다고 단정하지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.14.25",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3124",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

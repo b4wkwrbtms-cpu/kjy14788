@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-077",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "니느웨",
+ "brief": "오늘의 이라크 모술 맞은편 티그리스 강 동쪽에 있던 아시리아의 중심 도시다. 산헤립이 유다에서 돌아간 곳으로 기록된다.",
+ "terms": [
+  [
+   "נִינְוֵה",
+   "니네베",
+   "아시리아의 도시 이름·외래어"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "오늘의 이라크 모술 맞은편 티그리스 강 동쪽에 있던 아시리아의 중심 도시다. 산헤립이 유다에서 돌아간 곳으로 기록된다. 요나서에서도 나오는 이름이지만 두 책의 사건을 같은 시점으로 합치지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.19.36",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H5210",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "대영박물관 · Assyria: Nineveh 전시 소개",
+   "https://www.britishmuseum.org/collection/galleries/assyria-nineveh"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

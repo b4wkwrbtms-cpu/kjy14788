@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-017",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "암논",
+ "brief": "다윗의 아들이며 다말에게 성폭력을 가한 인물이다. 이름의 어근은 신실함과 연결되지만 그의 행동은 그 뜻을 보증하지 않는다.",
+ "terms": [
+  [
+   "אַמְנוֹן",
+   "암논",
+   "신실함·확고함과 연결된 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "다윗의 아들이며 다말에게 성폭력을 가한 인물이다. 이름의 어근은 신실함과 연결되지만 그의 행동은 그 뜻을 보증하지 않는다. 다말이 거절하는 말과 암논이 힘으로 제압하는 행동을 흐리지 말고 읽어야 한다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.13.14",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H550",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

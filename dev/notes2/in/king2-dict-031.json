@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-031",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "아하스",
+ "brief": "요담의 아들이며 유다 왕이다. 아시리아 왕에게 자신을 ‘당신의 종이며 아들’이라 부르며 도움을 청한다.",
+ "terms": [
+  [
+   "אָחָז",
+   "아하즈",
+   "붙잡다·소유하다와 연결"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "요담의 아들이며 유다 왕이다. 아시리아 왕에게 자신을 ‘당신의 종이며 아들’이라 부르며 도움을 청한다. 이후 다마스쿠스에서 본 제단을 예루살렘 성전에 들인다. 이름의 뜻을 교훈으로 억지로 엮기보다 정치적 의존이 예배를 바꾸는 과정을 따라가자."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.15.38",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H271",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

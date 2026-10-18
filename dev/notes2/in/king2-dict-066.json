@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-066",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "벧에겟",
+ "brief": "예후가 유다 왕 아하시야의 친척들을 만나는 길목의 장소다. 양털 깎는 이들의 집이라는 설명이 함께 있어 가축을 모아 묶고 일하던 시설을 떠올릴 수 있다.",
+ "terms": [
+  [
+   "בֵּית עֵקֶד",
+   "베트 에케드",
+   "묶는 집·묶는 장소"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "예후가 유다 왕 아하시야의 친척들을 만나는 길목의 장소다. 양털 깎는 이들의 집이라는 설명이 함께 있어 가축을 모아 묶고 일하던 시설을 떠올릴 수 있다. 정확한 현대 위치는 확정되지 않았다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.10.12",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H1044",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

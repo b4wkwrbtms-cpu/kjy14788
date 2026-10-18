@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-103",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "스라야",
+ "brief": "25:18에서 포로로 잡힌 예루살렘의 대제사장이다. 부제사장 스바냐 등과 함께 립라로 끌려가 처형된다.",
+ "terms": [
+  [
+   "שְׂרָיָה",
+   "세라야",
+   "여호와께서 다스리신다는 전통적 풀이"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "25:18에서 포로로 잡힌 예루살렘의 대제사장이다. 부제사장 스바냐 등과 함께 립라로 끌려가 처형된다. 성전이 건물만 무너진 것이 아니라 예배를 맡던 지도자들까지 잃었다는 사실을 보여 준다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.25.18",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H8304",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

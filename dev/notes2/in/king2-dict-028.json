@@ -1,0 +1,51 @@
+{
+ "id": "king2-dict-028",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "불",
+ "brief": "불은 일반적으로 디글랏빌레셀 3세와 같은 아시리아 왕을 가리키는 이름으로 이해된다. 므나헴은 그에게 돈을 바치고, 아하스는 그에게 군사 원조를 요청한다.",
+ "terms": [
+  [
+   "פּוּל / תִּגְלַת פִּלְאֶסֶר",
+   "풀·티글라트 필레세르",
+   "아시리아 왕명·히브리어 어원으로 풀이하지 않음"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "불은 일반적으로 디글랏빌레셀 3세와 같은 아시리아 왕을 가리키는 이름으로 이해된다. 므나헴은 그에게 돈을 바치고, 아하스는 그에게 군사 원조를 요청한다. 북왕국과 남왕국의 이야기에 모두 나타나며 제국의 지배가 깊어지는 연결 고리다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.15.19",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6322",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H8407",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "UBS 번역자 해설 · 불과 디글랏빌레셀",
+   "https://tips.translation.bible/story/translation-commentary-on-2-kings-1519/"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

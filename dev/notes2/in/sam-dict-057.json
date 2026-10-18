@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-057",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "브나야",
+ "brief": "여호야다의 아들 브나야는 다윗의 용사이자 경호대 책임자다. 눈 오는 날 구덩이의 사자를 죽인 일로도 소개된다.",
+ "terms": [
+  [
+   "בְּנָיָה",
+   "베나야",
+   "여호와께서 세우셨다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "여호야다의 아들 브나야는 다윗의 용사이자 경호대 책임자다. 눈 오는 날 구덩이의 사자를 죽인 일로도 소개된다. 이름은 ‘세우다·짓다’라는 동사와 여호와의 이름을 담는다. 삼하 23:30의 비라돈 사람 브나야는 같은 이름의 다른 용사다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.23.20",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H1141",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

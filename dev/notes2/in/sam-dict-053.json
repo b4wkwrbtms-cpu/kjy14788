@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-053",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "시바",
+ "brief": "사울 집안의 종이며 므비보셋의 재산을 관리한다. 압살롬의 반란 때 다윗에게 식량을 가져오면서 므비보셋을 고발한다.",
+ "terms": [
+  [
+   "צִיבָא",
+   "치바",
+   "자리·주둔과 연결하는 전통적 풀이"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "사울 집안의 종이며 므비보셋의 재산을 관리한다. 압살롬의 반란 때 다윗에게 식량을 가져오면서 므비보셋을 고발한다. 이후 므비보셋은 그 고발이 거짓이라고 반박한다. 서술자의 확인과 등장인물의 주장을 구별해서 읽자."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.16.3",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6717",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

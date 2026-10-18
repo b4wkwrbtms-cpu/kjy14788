@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-088",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "오십부장",
+ "brief": "오늘의 특정 군 계급과 정확히 같지는 않지만, 한 부대를 이끄는 책임자로 이해하면 쉽다. 1장에서는 왕이 엘리야를 데려오려고 오십 명과 그 지휘관을 세 차례 보낸다.",
+ "terms": [
+  [
+   "שַׂר / חֲמִשִּׁים",
+   "사르 하미쉼",
+   "오십 명을 맡은 지휘관"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "오늘의 특정 군 계급과 정확히 같지는 않지만, 한 부대를 이끄는 책임자로 이해하면 쉽다. 1장에서는 왕이 엘리야를 데려오려고 오십 명과 그 지휘관을 세 차례 보낸다. 세 번째 지휘관의 간청은 자기 생명뿐 아니라 부하들의 생명을 함께 살피는 말이다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.1.9",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H8269",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H2572",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

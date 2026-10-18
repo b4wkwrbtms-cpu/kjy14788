@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-100",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "헵시바",
+ "brief": "므낫세의 어머니 이름이다. 기쁨을 뜻하는 말과 ‘그녀 안에’라는 표현이 결합한다.",
+ "terms": [
+  [
+   "חֶפְצִי בָּהּ",
+   "헤프치 바흐",
+   "나의 기쁨이 그녀에게 있다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "므낫세의 어머니 이름이다. 기쁨을 뜻하는 말과 ‘그녀 안에’라는 표현이 결합한다. 아들의 통치에 대한 엄중한 평가와 어머니 이름의 좋은 뜻은 별개의 정보다. 이름만으로 그녀의 정치적 책임이나 성품을 추측하지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.21.1",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H2657",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

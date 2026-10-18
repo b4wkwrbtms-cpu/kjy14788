@@ -1,0 +1,55 @@
+{
+ "id": "king2-dict-064",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "아바나",
+ "brief": "나아만이 요단보다 낫다고 말한 강들이다. 아바나는 대체로 오늘의 바라다, 바르발은 알아와즈 강과 연결해 보지만 식별에는 정도의 차이가 있다.",
+ "terms": [
+  [
+   "אֲבָנָה / פַּרְפַּר",
+   "아바나·파르파르",
+   "다마스쿠스 주변 두 강의 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "나아만이 요단보다 낫다고 말한 강들이다. 아바나는 대체로 오늘의 바라다, 바르발은 알아와즈 강과 연결해 보지만 식별에는 정도의 차이가 있다. 관개가 가능한 고향의 강과 요단을 비교하는 자부심이 그의 말에 담긴다. 본문은 어느 강이 수질 검사에서 더 좋다는 정보를 주려는 것이 아니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.5.12",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H71",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6554",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "UBS 번역자 해설 · 아바나·아마나의 표기",
+   "https://tips.translation.bible/story/translation-commentary-on-2-kings-512/"
+  ],
+  [
+   "Zondervan 성경백과 · Pharpar의 위치 식별과 한계",
+   "https://www.biblegateway.com/resources/encyclopedia-of-the-bible/Pharpar"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

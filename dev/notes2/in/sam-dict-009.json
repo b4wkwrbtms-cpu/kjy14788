@@ -1,0 +1,43 @@
+{
+ "id": "sam-dict-009",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "아브넬",
+ "brief": "사울 집안의 군대 지휘관이다. 사울이 죽은 뒤 이스보셋을 세우며 북쪽 지파의 권력을 이끈다.",
+ "terms": [
+  [
+   "אַבְנֵר",
+   "아브네르",
+   "아버지는 등불·빛"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "사울 집안의 군대 지휘관이다. 사울이 죽은 뒤 이스보셋을 세우며 북쪽 지파의 권력을 이끈다. 다윗 쪽으로 돌아서려는 협상과 요압에게 죽는 사건이 이어진다. 빛이라는 이름만으로 그의 정치적 선택을 긍정한다고 읽을 수는 없다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Sam.3.27",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Sam.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H74",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

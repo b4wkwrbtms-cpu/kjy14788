@@ -1,0 +1,56 @@
+{
+ "id": "bg-things-013",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "생활·문화·단위 · 출 16:16–36",
+ "title": "오멜",
+ "brief": "만나를 거둘 때 한 사람이 모을 분량으로 나와요. 출애굽기 16:36은 한 오멜이 에바의 10분의 1이라고 설명합니다.",
+ "terms": [
+  [
+   "עֹמֶר",
+   "오메르",
+   "에바의 10분의 1; 약 2.2L"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "쉽게 말하면",
+     "p": [
+      "만나를 거둘 때 한 사람이 모을 분량으로 나와요. 출애굽기 16:36은 한 오멜이 에바의 10분의 1이라고 설명합니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    },
+    {
+     "h": "이 장면에서 알아둘 점",
+     "p": [
+      "2L 우유나 물 용기보다 조금 큰 부피로 떠올릴 수 있어요. 매일의 먹을 것을 필요에 맞게 받는 장면이 핵심입니다. 이름이 비슷한 호멜은 훨씬 큰 다른 단위예요."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "출 16:16–36 · 첫 장의 히브리어/JPS1917",
+   "https://mechon-mamre.org/p/pt/pt0216.htm"
+  ],
+  [
+   "원어 사전 · H6016",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml#L36015"
+  ],
+  [
+   "미국성서공회 · 고대 도량형",
+   "https://www.americanbible.org/engage/bible-resources/articles/weights-and-measures-in-ancient-israel/"
+  ]
+ ],
+ "srcnote": "원어는 사전 표제어 또는 설명에 맞는 본문 형태입니다. 한글은 읽기를 돕는 근사 발음이에요. 이름의 옛 어원 추정은 확실한 뜻과 구별하여 설명했습니다.",
+ "_target_ref": "출 16:16–36"
+}

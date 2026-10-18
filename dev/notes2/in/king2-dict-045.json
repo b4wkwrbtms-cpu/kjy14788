@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-045",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "사반",
+ "brief": "왕의 서기관으로 성전 수리와 발견된 책의 보고를 맡는다. 이름은 바위틈에 사는 작은 동물과 같다.",
+ "terms": [
+  [
+   "שָׁפָן",
+   "샤판",
+   "바위너구리"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "왕의 서기관으로 성전 수리와 발견된 책의 보고를 맡는다. 이름은 바위틈에 사는 작은 동물과 같다. 동물 이름이 들어 있다고 낮은 신분이라는 뜻은 아니다. 그가 책을 왕 앞에서 읽으면서 개혁의 방향이 바뀐다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.22.3",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H8227",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

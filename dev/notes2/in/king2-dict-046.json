@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-046",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "아히감",
+ "brief": "사반의 아들로 훌다에게 보낸 대표단에 포함된다. 마지막 장의 그달랴가 바로 이 아히감의 아들이다.",
+ "terms": [
+  [
+   "אֲחִיקָם",
+   "아히캄",
+   "나의 형제가 일어났다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "사반의 아들로 훌다에게 보낸 대표단에 포함된다. 마지막 장의 그달랴가 바로 이 아히감의 아들이다. 몇 장 사이에 왕과 나라가 바뀌어도 가족 관계를 따라가면 남은 공동체를 이끈 사람들의 연결이 보인다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.22.12",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H296",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-030",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "르신",
+ "brief": "다마스쿠스를 중심으로 다스린 아람 왕이다. 베가와 함께 유다를 압박하지만, 아하스가 부른 아시리아 왕에게 패하여 죽는다.",
+ "terms": [
+  [
+   "רְצִין",
+   "레친",
+   "기쁨·호의와 연결하는 전통적 풀이·불확실"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "다마스쿠스를 중심으로 다스린 아람 왕이다. 베가와 함께 유다를 압박하지만, 아하스가 부른 아시리아 왕에게 패하여 죽는다. 왕들의 동맹이 서로를 보호하기도 하고 더 큰 제국의 개입을 불러오기도 하는 흐름을 보여 준다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.15.37",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H7526",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

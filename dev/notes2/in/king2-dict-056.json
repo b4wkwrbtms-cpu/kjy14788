@@ -1,0 +1,43 @@
+{
+ "id": "king2-dict-056",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "느부사라단",
+ "brief": "예루살렘의 성전과 왕궁을 불태우고 주민과 기물을 옮기는 바빌론 고위 지휘관이다. ‘시위대장’으로 불리는 직책을 맡는다.",
+ "terms": [
+  [
+   "נְבוּזַרְאֲדָן",
+   "네부자르아단",
+   "바빌론 관리의 이름·외래어"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "예루살렘의 성전과 왕궁을 불태우고 주민과 기물을 옮기는 바빌론 고위 지휘관이다. ‘시위대장’으로 불리는 직책을 맡는다. 왕 느부갓네살과 이름 첫부분이 비슷하지만 명령을 집행하는 다른 사람이다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.25.8",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H5018",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-087",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "갑",
+ "brief": "한 갑은 보통 약 1.2리터 정도로 가늠하지만 고대 용량 복원에는 차이가 있다. 6:25의 사분의 일 갑은 이 기준으로 약 0.3리터, 작은 컵이나 그릇 하나 분량이다.",
+ "terms": [
+  [
+   "קַב",
+   "카브",
+   "곡물 등 마른 물질의 부피 단위"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "한 갑은 보통 약 1.2리터 정도로 가늠하지만 고대 용량 복원에는 차이가 있다. 6:25의 사분의 일 갑은 이 기준으로 약 0.3리터, 작은 컵이나 그릇 하나 분량이다. 그 적은 양을 은 다섯 세겔에 샀다는 점이 기근의 심각함을 보여 준다. 무게 단위 세겔과 혼동하지 말자."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.6.25",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6894",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "UBS 번역자 해설 · 기근의 가격과 용량",
+   "https://tips.translation.bible/story/translation-commentary-on-2-kings-625/"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

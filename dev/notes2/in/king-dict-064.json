@@ -1,0 +1,43 @@
+{
+ "id": "king-dict-064",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "그룹",
+ "brief": "영어 cherub의 바탕이 되는 말이다. 아기 천사 그림과 달리 성전 본문에서는 큰 날개를 펼친 존재로 묘사된다.",
+ "terms": [
+  [
+   "כְּרוּב",
+   "케루브",
+   "성소를 수호하는 날개 달린 존재"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "영어 cherub의 바탕이 되는 말이다. 아기 천사 그림과 달리 성전 본문에서는 큰 날개를 펼친 존재로 묘사된다. 6장에서는 두 그룹의 날개가 벽과 서로의 날개에 닿도록 배치된다. 얼굴과 몸의 모든 세부가 기록된 것은 아니므로 현대 그림 하나를 원형이라고 단정하지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.6.23",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3742",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

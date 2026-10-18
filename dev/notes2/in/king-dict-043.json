@@ -1,0 +1,47 @@
+{
+ "id": "king-dict-043",
+ "k": "place",
+ "badge": "지역·지명",
+ "loc": "",
+ "title": "시돈",
+ "brief": "두로와 함께 페니키아 해안 문화를 대표하는 도시이며 오늘날 레바논의 사이다와 이어진다. 열왕기에는 목재를 다루는 시돈 사람들과 시돈 왕의 딸 이세벨이 나온다.",
+ "terms": [
+  [
+   "צִידוֹן",
+   "치돈",
+   "고기잡이와 연결하는 전통적 풀이"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "두로와 함께 페니키아 해안 문화를 대표하는 도시이며 오늘날 레바논의 사이다와 이어진다. 열왕기에는 목재를 다루는 시돈 사람들과 시돈 왕의 딸 이세벨이 나온다. 사르밧도 시돈에 속한 지역으로 설명된다. 같은 지역 출신이라고 모든 인물이 같은 신앙과 행동을 보이는 것은 아니다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.17.9",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H6721",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "Penn Museum · 페니키아 해안 도시와 교역",
+   "https://www.penn.museum/sites/expedition/the-phoenicians-in-their-homeland/"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

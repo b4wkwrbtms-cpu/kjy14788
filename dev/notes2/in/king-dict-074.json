@@ -1,0 +1,43 @@
+{
+ "id": "king-dict-074",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "나아마",
+ "brief": "암몬 사람이며 르호보암의 어머니이다. 열왕기상 14장은 그의 이름과 출신을 두 번 기록한다.",
+ "terms": [
+  [
+   "נַעֲמָה",
+   "나아마",
+   "즐거움·상냥함과 연결된 이름"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "암몬 사람이며 르호보암의 어머니이다. 열왕기상 14장은 그의 이름과 출신을 두 번 기록한다. 이름의 뜻이나 외국 출신이라는 사실만으로 그녀의 모든 행동을 추측해서는 안 된다. 본문이 직접 기록한 것은 왕의 어머니라는 관계와 출신이다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.14.21",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H5279",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

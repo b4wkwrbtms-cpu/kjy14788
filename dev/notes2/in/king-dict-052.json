@@ -1,0 +1,51 @@
+{
+ "id": "king-dict-052",
+ "k": "culture",
+ "badge": "생활·단위",
+ "loc": "",
+ "title": "고르",
+ "brief": "저울로 재는 무게가 아니라 담긴 양을 재는 부피이다. 에스겔 45:11·14의 관계를 따라 1고르를 10에바 또는 10밧으로 보고, 밧을 약 22L로 잡으면 약 220L가 된다.",
+ "terms": [
+  [
+   "כֹּר",
+   "코르",
+   "곡식·액체를 재는 큰 부피 단위"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "저울로 재는 무게가 아니라 담긴 양을 재는 부피이다. 에스겔 45:11·14의 관계를 따라 1고르를 10에바 또는 10밧으로 보고, 밧을 약 22L로 잡으면 약 220L가 된다. 왕상 4:22의 고운 가루 30고르는 약 6,600L로 가늠할 수 있다. 이는 솔로몬 혼자 먹는 양이 아니라 왕실을 유지하는 규모를 보여 주며, 가루의 무게를 곧 6,600kg으로 바꾸면 안 된다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 1Kgs.5.2",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/1Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3734",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "NET 번역자 주 · 왕상 4:22의 고르",
+   "https://classic.net.bible.org/verse.php?book=1Ki&chapter=4&verse=22"
+  ],
+  [
+   "에스겔 45:14 · 밧과 고르의 관계",
+   "https://classic.net.bible.org/verse.php?book=Eze&chapter=45&verse=14"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

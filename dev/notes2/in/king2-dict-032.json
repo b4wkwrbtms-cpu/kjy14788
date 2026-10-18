@@ -1,0 +1,47 @@
+{
+ "id": "king2-dict-032",
+ "k": "person",
+ "badge": "인물 이름",
+ "loc": "",
+ "title": "히스기야",
+ "brief": "아하스의 아들로 산당과 놋뱀을 없애는 개혁을 시행한 유다 왕이다. 아시리아의 위협 편지를 성전에 펴 놓고 기도하지만, 뒤에는 바빌론 사절에게 보물을 모두 보여 준다.",
+ "terms": [
+  [
+   "חִזְקִיָּה / יְחִזְקִיָּה",
+   "히즈키야후",
+   "여호와께서 강하게 하셨다"
+  ]
+ ],
+ "blocks": [
+  {
+   "s": "뜻과 배경 — 조금 더 읽기",
+   "items": [
+    {
+     "h": "",
+     "p": [
+      "아하스의 아들로 산당과 놋뱀을 없애는 개혁을 시행한 유다 왕이다. 아시리아의 위협 편지를 성전에 펴 놓고 기도하지만, 뒤에는 바빌론 사절에게 보물을 모두 보여 준다. 한 인물 안의 신뢰와 판단의 한계를 함께 기록하므로 완벽한 영웅으로 단순화하지 않는다."
+     ],
+     "src": [],
+     "terms": [],
+     "form": ""
+    }
+   ]
+  }
+ ],
+ "src": [
+  [
+   "히브리어 본문 · 2Kgs.16.20",
+   "https://github.com/openscriptures/morphhb/blob/master/wlc/2Kgs.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H2396",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ],
+  [
+   "히브리어 이름·단어 사전 H3169",
+   "https://github.com/openscriptures/HebrewLexicon/blob/master/HebrewStrong.xml"
+  ]
+ ],
+ "srcnote": "한글은 읽기를 돕는 근사 발음입니다. 이름의 전통적 어원 풀이와 본문이 직접 설명하는 뜻을 구분했습니다.",
+ "_target_ref": ""
+}

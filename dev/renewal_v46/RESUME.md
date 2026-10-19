@@ -4,7 +4,11 @@
 - 본문: 우리 v45 20대 말투 유지 + 그쪽 '원어·의미' 교정만 골라 반영 (이름 표기 교정은 되돌리고 메모로 — 개역한글 인명·지명 유지).
 - 기능: 다 넣되 앱에 맞게(책별 나눠 받기, 끄고 켜기).
 
-## 상태: 10-19 다시 빌드(46b) — 본문 66권 전부 + 새 해설 카드 610장 + 신약 사본 메모. **배포 전 (사용자 확인 대기)**
+## 상태: **10-19 14시 main에 반영·배포함 (46c)** — 본문 66권 전부 + 새 해설 카드 730장(6차까지) + 신약 사본 메모. main 커밋 4c64b7b, 이전 main(v44)은 브랜치 backup-v44-main.
+- 46c: 46b에서 nt(해설 카드)만 610→730장으로 갱신, X_VER 46b→46c (mz·x·he·lin은 46b와 바이트 단위로 같음을 확인). ex/tone_out.json(안내·접기 글 해요체 438곳)이 저장소에 빠져 있어 46b 결과물에서 복원해 넣음.
+- 다른 세션에서 다시 빌드할 때: /home/claude/renewal ← dev/renewal_v46 심링크, /home/claude/bw/bout ← dev/bout, /home/claude/bw/verify ← dev/verify, /home/claude/b4wkwrbtms-cpu/kjy14788 ← main 체크아웃(+dev → wip의 dev), payload.json은 gz 풀기, part_v46.js는 R0 바로 아래에 둠. Playwright 브라우저는 /opt/pw-browsers/chromium-1194/chrome-linux/chrome (node playwright, executablePath).
+
+## (이전) 상태: 10-19 다시 빌드(46b) — 본문 66권 전부 + 새 해설 카드 610장 + 신약 사본 메모.
 - 10-19: mkapp.py가 /home/claude/bw/bout(원어 대조 끝난 본문)를 씀. 그쪽 교정은 바꾸기 전 본문이 그대로일 때만 덮음. 새 카드(notes2/out)는 본문 해설·더 깊이 읽기 두 칸으로 바꿔 넣음. 신약 x 파일은 vn(사본 차이)만, 어느 권이 있는지는 bible/xbooks.json → build가 XB에 박아 넣음.
 - 원어 교정 24묶음 전부 끝: 5,330절 검토 → 교정 147(이름 20개는 되돌림) · 원어 메모 1,398절.
 - 해설 카드 1,067개 해요체 통일·반복 정리 끝.
@@ -19,5 +23,6 @@
 - 개역한글 보기에서는 이름표·밑줄 없음(20대 말투 줄 기준으로 붙였기 때문).
 
 ## 다음
-1. 사용자 확인 → main에 index.html·sw.js·bible/{mz,x,nt,he,lin.json} 반영 → Netlify(kwakjunyoung-kiugi) 배포.
-2. v45 남은 671장 이어 쓰기, 작가 연구(조사만) 이어서, 연구 결과로 bguide 보완.
+1. [끝 10-19] main 반영·배포.
+2. 해설 7차 n121~n177 이어서 → 끝나면 mkapp(nt만 바뀜) → X_VER 46d → main 반영.
+3. v45 남은 671장 이어 쓰기, 작가 연구(조사만) 이어서, 연구 결과로 bguide 보완.

@@ -4,6 +4,8 @@
 - 본문: 우리 v45 20대 말투 유지 + 그쪽 '원어·의미' 교정만 골라 반영 (이름 표기 교정은 되돌리고 메모로 — 개역한글 인명·지명 유지).
 - 기능: 다 넣되 앱에 맞게(책별 나눠 받기, 끄고 켜기).
 
+## 10-19 13시 50분 (46d, wip에만 · main 미반영): 해설 카드 837장(6차 + 7차 일부)으로 nt 갱신, X_VER 46d. main 반영은 사용자 확인 뒤.
+
 ## 상태: **10-19 14시 main에 반영·배포함 (46c)** — 본문 66권 전부 + 새 해설 카드 730장(6차까지) + 신약 사본 메모. main 커밋 4c64b7b(+b3b041e), 실제 앱 주소는 GitHub Pages https://b4wkwrbtms-cpu.github.io/kjy14788/ (main 푸시 = 자동 배포; Netlify 사이트는 10-08 이후 안 씀), 이전 main(v44)은 브랜치 backup-v44-main.
 - 46c: 46b에서 nt(해설 카드)만 610→730장으로 갱신, X_VER 46b→46c (mz·x·he·lin은 46b와 바이트 단위로 같음을 확인). ex/tone_out.json(안내·접기 글 해요체 438곳)이 저장소에 빠져 있어 46b 결과물에서 복원해 넣음.
 - 다른 세션에서 다시 빌드할 때: /home/claude/renewal ← dev/renewal_v46 심링크, /home/claude/bw/bout ← dev/bout, /home/claude/bw/verify ← dev/verify, /home/claude/b4wkwrbtms-cpu/kjy14788 ← main 체크아웃(+ 그 안에 dev → wip의 dev 링크; **main에 커밋되지 않게 빌드 뒤 지울 것** — 10-19에 한 번 딸려 들어가 b3b041e로 지움), payload.json은 gz 풀기, part_v46.js는 R0 바로 아래에 둠. Playwright 브라우저는 /opt/pw-browsers/chromium-1194/chrome-linux/chrome (node playwright, executablePath).

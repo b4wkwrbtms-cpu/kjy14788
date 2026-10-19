@@ -15255,7 +15255,7 @@ if (S && S.mem && S.mem.vset !== 44 && !Object.keys(S.mem.v || {}).length && !(+
    ② 계보(구약만 — 사용자 22:31 '신약은 제외, 어차피 완성된 지점'): bible/lin.json = { k: 개역한글, m: 20대 말투 } 각각 { 권: { "장:절": "이름,이름" } } — 규칙(lineage.py)으로 뽑은 '그 사람'이 나오는 절만. 두 번역 다 표시.
    ③ 읽기 창 위에 [20대 말투 | 개역한글] 바꾸기 (S.rdv, 기본 20대 말투). 아직 안 된 장은 개역한글로 보여 줌.
    ④ 서비스워커가 bible/을 한 번 받으면 계속 쓰므로 주소에 MZ_VER를 붙여 새 판을 받게 함. */
-var MZ_VER = "46a";
+var MZ_VER = "46b";
 var bibleMz = new Map(), bibleLin = null, bibleLinP = null;
 function rdVer() { return S.rdv === "krv" ? "krv" : "mz"; }
 async function loadMz(b) {
@@ -15370,13 +15370,14 @@ renderReader = function () {
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46a";
+var X_VER = "46b";
+const XB = new Set([39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 56, 57, 61, 64, 65]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
 function rdOpt() { const o = S.rdo || {}; return { sp: o.sp !== false, ln: o.ln !== false, col: !!o.col, flow: !!o.flow, wide: !!o.wide, nonum: !!o.nonum }; }
 function setOpt(k, v) { S.rdo = S.rdo || {}; S.rdo[k] = v; save(); }
 function xFetch(dir, b, map) {
-  if (b > 11) return Promise.resolve(null);
+  if (b > 11 && !(dir === "x" && XB.has(b))) return Promise.resolve(null);
   if (map.has(b)) return Promise.resolve(map.get(b));
   return fetch(`bible/${dir}/${String(b + 1).padStart(2, "0")}.json?v=${X_VER}`).then(r => r.ok ? r.json() : null).catch(() => null).then(d => { if (d) map.set(b, d); return d; });
 }
@@ -15465,7 +15466,7 @@ function rdChapterHtml(b, c, mz, krvVerses, lin) {
       if (!op[fi]) { if (n === folds[fi][0]) html += foldCard(folds[fi], fi, fi > 0 && folds[fi - 1][3] === folds[fi][3]); continue; }
       if (n === folds[fi][0]) html += `<button type="button" class="rd-fold-close" data-r="fold-close" data-i="${fi}">▲ ${escapeHtml(folds[fi][3])} · 다시 접기</button>`;
     }
-    const hasM = !!(x && x.vn && x.vn[n]), canTap = b <= 11;
+    const hasM = !!(x && x.vn && x.vn[n]), canTap = b <= 11 || hasM;
     const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}"${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
     if (mz) {
       const labs = {}; if (o.sp && x && x.sp && x.sp[n]) x.sp[n].forEach(l => { if (!labs[l[0]]) labs[l[0]] = l; });
@@ -15540,7 +15541,7 @@ function rdSheet(html, label) {
 }
 function rdSheetClose() { const sh = $("rdSheet"); if (sh) sh.hidden = true; }
 const heTerm = tm => `<span class="tm"><bdi dir="rtl" lang="he">${escapeHtml(tm[0] || "")}</bdi><small><b>${escapeHtml(tm[1] || "")}</b>${escapeHtml(tm[2] || "")}</small></span>`;
-const srcList = s => (s || []).map(([t, u]) => `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(t || u)}</a></li>`).join("");
+const srcList = s => (s || []).map(([t, u]) => u ? `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(t || u)}</a></li>` : `<li>${escapeHtml(t)}</li>`).join("");
 function noteHtml(n, from) {
   const k = NK[n.k] || ["해설", ""];
   let h = `<div class="nt-head"><span class="nt-badge ${k[1]}">${escapeHtml(n.b || k[0])}</span><small>${escapeHtml(from || n.l || "")}</small></div><h3>${escapeHtml(n.t)}</h3>`;
@@ -15564,10 +15565,11 @@ function openVerse(n) {
   const b = rd.b, c = rd.c, ref = `${BOOKS[b][0]} ${c + 1}:${n}`;
   const show = () => {
     const x = xChap(b, c), he = bibleHe.get(b), heV = he && he[c] && he[c][n - 1];
-    let h = `<div class="nt-head"><span class="nt-badge k-hebrew">원어로 보기</span><small>${escapeHtml(ref)}</small></div>`;
+    const ot = b <= 11;
+    let h = `<div class="nt-head"><span class="nt-badge k-hebrew">${ot ? "원어로 보기" : "본문 메모"}</span><small>${escapeHtml(ref)}</small></div>`;
     if (heV) h += `<p class="he-verse" dir="rtl" lang="he">${escapeHtml(heV)}</p><p class="nt-cap">히브리어 본문: 레닌그라드 사본(WLC). 오른쪽에서 왼쪽으로 읽어요.</p>`;
     const ms = x && x.vn && x.vn[n] || [];
-    if (ms.length) h += `<h4>원어 메모</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd || m.m ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : ""}<p>${escapeHtml(m.t)}</p></div>`).join("");
+    if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${escapeHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
     else h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
     const ln = x && x.ln && x.ln[n] || [];
     if (ln.length) { const nt = bibleNt.get(b); h += `<h4>이 절의 해설</h4><div class="nt-chips">${ln.map(l => `<button type="button" class="nt-chip ${NK[l[2]] ? NK[l[2]][1] : ""}" data-nt="${escapeHtml(l[0])}">${escapeHtml(nt && nt[l[0]] ? nt[l[0]].t : l[1])}</button>`).join("")}</div>`; }

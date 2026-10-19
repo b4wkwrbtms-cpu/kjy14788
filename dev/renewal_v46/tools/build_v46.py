@@ -1,3 +1,4 @@
+import json
 """배포된 v44 index.html 에 v45(20대 말투·계보) → v46(장 안내·대화 이름표·해설·원어 메모·이야기 흐름) 입히기
 python3 build_v46.py  →  app/index.html, app/sw.js 갱신"""
 import sys, re
@@ -105,8 +106,11 @@ V46_CSS = '''/* v46 읽기 창 */
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)
 mk = '/* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */'
 assert s.count(mk) == 1
-p45 = open(f'{DEV}/part_v45.js', encoding='utf-8').read().replace('var MZ_VER = "45a";', 'var MZ_VER = "46a";')
+p45 = open(f'{DEV}/part_v45.js', encoding='utf-8').read().replace('var MZ_VER = "45a";', 'var MZ_VER = "46b";')
 p46 = open(f'{R0}/part_v46.js', encoding='utf-8').read()
+XBN = [x - 1 for x in json.load(open(f'{APP}/bible/xbooks.json')) if x > 12]
+assert p46.count('/*XB*/[]') == 1
+p46 = p46.replace('/*XB*/[]', json.dumps(XBN))
 s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'origin/main:sw.js'], capture_output=True, text=True, check=True).stdout

@@ -9,7 +9,7 @@ R0 = '/home/claude/renewal'
 REPO = '/home/claude/b4wkwrbtms-cpu/kjy14788'
 APP = f'{R0}/app'
 KRV = f'{REPO}/bible/krv'
-BOUT = f'{REPO}/dev/bout'
+BOUT = '/home/claude/bw/bout'   # 10-18 원어 대조까지 끝난 66권 본문
 B46 = f'{R0}/bout46'
 P = json.load(open(f'{R0}/payload.json'))
 RM = json.load(open(f'{R0}/reading-model-v17.json'))
@@ -48,19 +48,21 @@ for f in sorted(glob.glob(f'{R0}/corr/out/*.jsonl')):
                 he = re.findall(r'[֐-׿][֐-׿ְ-ׇ־]*', why)
                 memos[key].append({'he': he[0] if he else '', 'rd': '', 'm': '이름 표기', 't': '본문 이름은 개역한글 표기를 따랐어요. 원어 표기는 이렇게 달라요: ' + re.sub(r'\s+', ' ', why).rstrip('.') + '.'})
                 continue
-            fixes[key] = o['fix']
+            fixes[key] = (a['mz'], o['fix'])
 print('fixes', len(fixes), 'reverted names', len(reverted), 'memo verses', len(memos))
 
 # ---------- 2) 교정 반영한 bout 사본 ----------
 if os.path.exists(B46): shutil.rmtree(B46)
 shutil.copytree(BOUT, B46)
 applied = 0
-for (b, c, v), t in fixes.items():
+skipped = []
+for (b, c, v), (base, t) in fixes.items():
     p = f'{B46}/{b:02d}/{c:03d}.json'
     j = json.load(open(p)); assert v - 1 < len(j['v'])
+    if j['v'][v - 1] != base: skipped.append((b, c, v)); continue   # 그 뒤 본문이 바뀐 절은 건드리지 않음
     j['v'][v - 1] = t; applied += 1
     json.dump(j, open(p, 'w'), ensure_ascii=False)
-print('applied', applied)
+print('applied', applied, 'skipped(changed since)', skipped)
 
 # ---------- 3) 앱 폴더 + mz + lin ----------
 os.makedirs(f'{APP}/bible/mz', exist_ok=True)
@@ -247,11 +249,38 @@ def build_note(nid):
     if bl: out['bl'] = bl
     if n['src']: out['src'] = n['src']
     return out
-allnotes = 0
+N2 = {}
+for f in sorted(glob.glob(f'{R0}/notes2/out/*.json')):
+    o = json.load(open(f)); N2[o['id']] = o
+def build_note2(nid):
+    o = N2[nid]; old = NR.get(nid, {})
+    out = {'k': o.get('k') or old.get('k'), 'b': old.get('badge', ''), 'l': o.get('ref') or old.get('loc', ''), 't': o['title'], 's': o.get('core', '')}
+    tm = [list(x)[:3] for x in o.get('expr') or [] if x and x[0]]
+    if tm: out['tm'] = tm
+    bl = []
+    if o.get('body'): bl.append({'s': '본문 해설', 'it': [{'p': [p for p in o['body'] if p.strip()]}]})
+    its = [{'h': d.get('h', ''), 'p': [p for p in d.get('p') or [] if p.strip()]} for d in o.get('deep') or [] if d.get('p')]
+    if its: bl.append({'s': '더 깊이 읽기', 'it': its})
+    if bl: out['bl'] = bl
+    src = [[x.get('t', ''), x.get('u', '')] for x in o.get('src') or [] if x.get('t') or x.get('u')]
+    if src: out['src'] = src
+    return out
+allnotes = 0; newnotes = 0
 for book, b, let, pkey in BOOKS:
-    d = {nid: build_note(nid) for nid in sorted(used_notes[b]) if nid in NR}
+    d = {nid: (build_note2(nid) if nid in N2 else build_note(nid)) for nid in sorted(used_notes[b]) if nid in NR}
+    newnotes += sum(1 for nid in d if nid in N2)
     allnotes += len(d)
     json.dump(d, open(f'{APP}/bible/nt/{b:02d}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
-print(dict(stats), 'notes per-book total', allnotes)
+print(dict(stats), 'notes per-book total', allnotes, 'new cards', newnotes, 'new cards not linked', sorted(set(N2) - set().union(*used_notes.values()))[:20])
+# ---------- 9) 신약 사본 차이 메모 (원어 대조 10-18, 확인된 것만) ----------
+VN = collections.defaultdict(lambda: collections.defaultdict(dict)); nvar = nchk = 0
+for o in json.load(open('/home/claude/bw/verify/notes.json')):
+    if o.get('t') != 'var' or o['b'] < 40: continue
+    if '확인 필요' in o['note']: nchk += 1; continue
+    VN[o['b']][str(o['c'])].setdefault(str(o['v']), []).append({'he': '', 'rd': '', 'm': '사본 차이', 't': o['note']}); nvar += 1
+for b, d in VN.items():
+    json.dump({c: {'vn': dict(v)} for c, v in d.items()}, open(f'{APP}/bible/x/{b:02d}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+print('NT var memos', nvar, 'books', sorted(VN), 'held (확인 필요)', nchk)
+json.dump(sorted(set(range(1, 13)) | set(VN)), open(f'{APP}/bible/xbooks.json', 'w'))
 for p in sorted(glob.glob(f'{APP}/bible/*/*.json'))[:0]: pass
 os.system(f'du -sh {APP}/bible/mz {APP}/bible/x {APP}/bible/nt {APP}/bible/he; ls -la {APP}/bible/lin.json')

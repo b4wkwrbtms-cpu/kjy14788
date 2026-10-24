@@ -284,3 +284,59 @@ print('NT var memos', nvar, 'books', sorted(VN), 'held (확인 필요)', nchk)
 json.dump(sorted(set(range(1, 13)) | set(VN)), open(f'{APP}/bible/xbooks.json', 'w'))
 for p in sorted(glob.glob(f'{APP}/bible/*/*.json'))[:0]: pass
 os.system(f'du -sh {APP}/bible/mz {APP}/bible/x {APP}/bible/nt {APP}/bible/he; ls -la {APP}/bible/lin.json')
+
+# ---------- 10) 13~66권 인물·지명 연결 (10-24): 1~12권에서 쓴 카드를 같은 사람·같은 곳에만 연결 ----------
+import linkrules
+LT = collections.defaultdict(set); LK = {}
+for b in range(1, 13):
+    for c, cx in json.load(open(f'{APP}/bible/x/{b:02d}.json')).items():
+        for v, ls in (cx.get('ln') or {}).items():
+            for nid, term, kind in ls:
+                if kind in ('person', 'place'): LT[term].add(nid); LK[nid] = kind
+PART2 = ["이라고", "이라", "이었", "이고", "이며", "이요", "이니", "이에", "이지", "이시", "이신", "이셨", "이야", "이랑", "이네", "이여", "이다", "에게", "에서", "한테", "처럼", "보다", "부터", "까지", "으로", "하고", "조차", "마저",
+         "이", "가", "은", "는", "을", "를", "의", "에", "과", "와", "도", "만", "님", "로", "였", "뿐", "씨", "네", "왕", "성", "들"]
+def findterm2(text, term):
+    i = text.find(term)
+    while i >= 0:
+        j = i + len(term); before = text[i - 1] if i > 0 else ''; rest = text[j:j + 3]
+        if not isHan(before) and (not isHan(text[j:j + 1]) or any(rest.startswith(p) for p in PART2)): return i
+        i = text.find(term, j)
+    return -1
+def allowed(scope, ex, b, c):
+    if ex and (b, c) in ex: return False
+    if scope is None: return True
+    return b in scope or (b, c) in scope
+RULE = {}
+for term, ids in LT.items():
+    if term in linkrules.DROP: continue
+    if term in linkrules.R:
+        RULE[term] = [(r[0], r[1], r[2] if len(r) > 2 else None) for r in linkrules.R[term]]
+    elif len(ids) == 1:
+        RULE[term] = [(next(iter(ids)), None, None)]
+lnk = collections.Counter(); used13 = collections.defaultdict(set); review = []
+XB = set(json.load(open(f'{APP}/bible/xbooks.json')))
+for b in range(13, 67):
+    xp = f'{APP}/bible/x/{b:02d}.json'
+    X = json.load(open(xp)) if os.path.exists(xp) else {}
+    nchap = len(json.load(open(f'{KRV}/{b:02d}.json')))
+    for c in range(1, nchap + 1):
+        ch = MZ[b][c - 1]
+        if not ch: continue
+        seen = set(); ln = {}
+        for n, text in enumerate(ch['v'], 1):
+            flat = text.replace('\n', ' ')
+            for term in sorted(RULE, key=len, reverse=True):
+                for nid, scope, ex in RULE[term]:
+                    if nid in seen or not allowed(scope, ex, b, c): continue
+                    if findterm2(flat, term) >= 0:
+                        ln.setdefault(str(n), []).append([nid, term, LK.get(nid, 'person')]); seen.add(nid); used13[b].add(nid); lnk[term] += 1
+        if ln:
+            X.setdefault(str(c), {})['ln'] = ln
+    if X:
+        json.dump(X, open(xp, 'w'), ensure_ascii=False, separators=(',', ':')); XB.add(b)
+    if used13[b]:
+        d = {nid: (build_note2(nid) if nid in N2 else build_note(nid)) for nid in sorted(used13[b]) if nid in NR}
+        json.dump(d, open(f'{APP}/bible/nt/{b:02d}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+json.dump(sorted(XB), open(f'{APP}/bible/xbooks.json', 'w'))
+print('13~66 links', sum(lnk.values()), 'terms', len(lnk), 'books', len(used13), 'cards', len(set().union(*used13.values())))
+json.dump(dict(lnk.most_common()), open(f'{R0}/notes2/links_13_66.json', 'w'), ensure_ascii=False, indent=0)

@@ -15373,14 +15373,14 @@ renderReader = function () {
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46g";
-const XB = new Set([39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50, 56, 57, 61, 64, 65]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
+var X_VER = "46h";
+const XB = new Set([12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 53, 54, 56, 57, 58, 59, 60, 61, 64, 65]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
 function rdOpt() { const o = S.rdo || {}; return { sp: o.sp !== false, ln: o.ln !== false, col: !!o.col, flow: !!o.flow, wide: !!o.wide, nonum: !!o.nonum }; }
 function setOpt(k, v) { S.rdo = S.rdo || {}; S.rdo[k] = v; save(); }
 function xFetch(dir, b, map) {
-  if (b > 11 && !(dir === "x" && XB.has(b))) return Promise.resolve(null);
+  if (b > 11 && !((dir === "x" || dir === "nt") && XB.has(b))) return Promise.resolve(null);
   if (map.has(b)) return Promise.resolve(map.get(b));
   return fetch(`bible/${dir}/${String(b + 1).padStart(2, "0")}.json?v=${X_VER}`).then(r => r.ok ? r.json() : null).catch(() => null).then(d => { if (d) map.set(b, d); return d; });
 }

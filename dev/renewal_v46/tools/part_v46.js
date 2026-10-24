@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46k";
+var X_VER = "46l";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -177,7 +177,9 @@ function rdSheet(html, label) {
   $("rdShBody").innerHTML = html; $("rdShBody").scrollTop = 0; sh.hidden = false; sh.dataset.label = label || "";
   sh.querySelector(".rd-sh-back").innerHTML = `← 읽던 본문으로${label ? `<small>${escapeHtml(label)}</small>` : ""}`;
 }
-function rdSheetClose() { const sh = $("rdSheet"); if (sh) sh.hidden = true; }
+function rdSheetClose() { const sh = $("rdSheet"); if (sh) sh.hidden = true; if (rd) rd.shStack = []; }
+function shPush() { const sh = $("rdSheet"), bd = $("rdShBody"); if (!rd || !sh || sh.hidden || !bd) return; (rd.shStack = rd.shStack || []).push({ html: bd.innerHTML, y: bd.scrollTop, label: sh.dataset.label || "" }); }
+const BACK_BTN = `<button type="button" class="btn ghost rd-sh-prev" data-r="sh-prev">← 돌아가기</button>`;
 const heTerm = tm => `<span class="tm"><bdi dir="rtl" lang="he">${escapeHtml(tm[0] || "")}</bdi><small><b>${escapeHtml(tm[1] || "")}</b>${escapeHtml(tm[2] || "")}</small></span>`;
 const srcList = s => (s || []).map(([t, u]) => u ? `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(t || u)}</a></li>` : `<li>${escapeHtml(t)}</li>`).join("");
 /* 해설 속 성경 주소 → 관련 구절 보기 (10-24, 스킬 원칙: 본문 → 해설 → 관련 구절 → 읽던 자리)
@@ -187,8 +189,18 @@ const REF_AB = ["창","출","레","민","신","수","삿","룻","삼상","삼하
   "마","막","눅","요","행","롬","고전","고후","갈","엡","빌","골","살전","살후","딤전","딤후","딛","몬","히","약","벧전","벧후","요일","요이","요삼","유","계"];
 const REF_MAP = (() => { const m = {}; BOOKS.forEach((x, i) => { m[x[0]] = i; }); REF_AB.forEach((a, i) => { m[a] = i; }); m["애가"] = 24; m["시"] = 18; return m; })();
 const REF_RE = new RegExp(`(^|[^가-힣A-Za-z0-9])(${Object.keys(REF_MAP).sort((a, b) => b.length - a.length).join("|")})\\s?(\\d{1,3}):(\\d{1,3})(?:\\s?[-–~]\\s?(\\d{1,3})(?!:))?`, "g");
+const REF_KO = new RegExp(`(^|[^가-힣A-Za-z0-9])(${BOOKS.map(x => x[0]).concat(["애가"]).sort((a, b) => b.length - a.length).join("|")})\\s?(\\d{1,3})\\s?(?:장|편)(?:\\s?(\\d{1,3})(?:\\s?[-–~]\\s?(\\d{1,3}))?\\s?절(?:\\s?(?:부터|에서|~|-|–)\\s?(\\d{1,3})\\s?절)?)?(?![0-9])`, "g");
+function refKo(s) {
+  return s.replace(REF_KO, (all, pre, bk, c, v, v2a, v2b) => {
+    const v2 = v2a || v2b;
+    const b = REF_MAP[bk], cn = +c; if (b == null || !cn || cn > BOOKS[b][1]) return all;
+    const vn = v ? +v : 1, ve = v ? (v2 ? +v2 : vn) : 999;
+    if (v && (ve < vn || ve - vn > 60)) return all;
+    return `${pre}<button type="button" class="vref" data-go="${b}|${cn}|${vn}|${ve}">${all.slice(pre.length)}</button>`;
+  });
+}
 function refHtml(t) {
-  return escapeHtml(t).replace(REF_RE, (all, pre, bk, c, v, v2) => {
+  return refKo(escapeHtml(t)).replace(REF_RE, (all, pre, bk, c, v, v2) => {
     const b = REF_MAP[bk], cn = +c, vn = +v, ve = v2 ? +v2 : vn;
     if (b == null || !cn || cn > BOOKS[b][1] || !vn || ve < vn || ve - vn > 40) return all;
     return `${pre}<button type="button" class="vref" data-go="${b}|${cn}|${vn}|${ve}">${all.slice(pre.length)}</button>`;
@@ -196,19 +208,22 @@ function refHtml(t) {
 }
 function openRef(go) {
   const sh = $("rdSheet"), bd = $("rdShBody"); if (!sh || !bd) return;
-  const [b, c, v1, v2] = go.split("|").map(Number), ref = `${BOOKS[b][0]} ${c}:${v1}${v2 > v1 ? "–" + v2 : ""}`;
-  rd.shPrev = { html: bd.innerHTML, y: bd.scrollTop, label: sh.dataset.label || "" };
+  const [b, c, v1, v2] = go.split("|").map(Number), ref = v2 >= 999 ? `${BOOKS[b][0]} ${c}장` : `${BOOKS[b][0]} ${c}:${v1}${v2 > v1 ? "–" + v2 : ""}`;
+  shPush();
   const show = ch => {
     const vs = ch && ch[c - 1] && ch[c - 1].v;
-    let h = `<button type="button" class="btn ghost rd-sh-prev" data-r="sh-prev">← 해설로</button><div class="nt-head"><span class="nt-badge">관련 구절</span><small>${escapeHtml(ref)}</small></div>`;
+    let h = BACK_BTN + `<div class="nt-head"><span class="nt-badge">관련 구절</span><small>${escapeHtml(ref)}</small></div>`;
     if (vs && v1 <= vs.length) {
       for (let n = v1; n <= Math.min(v2, vs.length); n++) h += `<p class="rf-v"><sup>${n}</sup> ${mzLines(vs[n - 1]).map(escapeHtml).join("<br>")}</p>`;
       h += `<p class="nt-cap">우리 앱 20대 말투 본문이에요. 읽던 자리는 그대로 있어요.</p>`;
+      const sv = (bibleSmv || {})[`${b + 1}:${c}`], seen = new Set(), ms = [];
+      if (sv) { for (let n = v1; n <= Math.min(v2, vs.length); n++) (sv.v && sv.v[n] || []).forEach(m => { const k = m.join("#"); if (!seen.has(k)) { seen.add(k); ms.push(m); } }); (sv.ch || []).forEach(m => { const k = m.join("#"); if (!seen.has(k)) { seen.add(k); ms.push(m); } }); }
+      if (ms.length) h += `<h4>설교에서 이 말씀</h4>` + ms.map(m => smMentionHtml(m, true)).join("");
     } else h += `<p class="muted">이 주소의 본문을 찾지 못했어요. 주소가 맞는지 편집자 확인이 필요해요.</p>`;
     rdSheet(h, sh.dataset.label || "");
   };
   rdSheet(`<p class="muted">관련 구절을 불러오는 중…</p>`, sh.dataset.label || "");
-  Promise.resolve(loadMz(b)).then(show, () => show(null));
+  Promise.all([loadMz(b), loadSm()]).then(([ch]) => show(ch), () => show(null));
 }
 /* 설교 카드 (10-25): 사용자가 준 설교 원고집을 요약한 카드. 그 설교가 다룬 장에 '이 본문으로 한 설교'로 보이고, 해설 카드에서도 이어 볼 수 있음. 원고 전문은 싣지 않음. */
 var bibleSm = null, bibleSmv = {};
@@ -227,24 +242,58 @@ function smOf(b, c, v) { return (bibleSm || []).filter(s => (s.spans || []).some
 function smChips(list) { return list.map(s => `<button type="button" class="nt-chip k-sm" data-sm="${escapeHtml(s.sid)}">${escapeHtml(s.title)} · ${escapeHtml(s.preacher)} 목사</button>`).join(""); }
 function smHtml(s) {
   let h = `<div class="nt-head"><span class="nt-badge k-sm">설교</span><small>${escapeHtml(s.preacher)} 목사 · ${escapeHtml(s.place || "")}</small></div><h3>${escapeHtml(s.title)}</h3>`;
-  h += `<p class="nt-cap">${(s.refs || []).map(refHtml).join(" · ")}${s.series ? ` · ${escapeHtml(s.series)}` : ""}</p>`;
+  h += `<p class="nt-cap">${(s.refs || []).map(refHtml).join(" · ")}${s.series ? ` · ${escapeHtml(s.series)}` : ""}</p>` + smtBtn(s.sid);
   if (s.core) h += `<p class="nt-brief">${refHtml(s.core)}</p>`;
   if (s.summary && s.summary.length) h += `<details class="nt-bl" open><summary>설교 흐름</summary>${s.summary.map(p => `<p>${refHtml(p)}</p>`).join("")}</details>`;
   if (s.outline && s.outline.length) h += `<details class="nt-bl"><summary>설교의 뼈대</summary><ol class="sm-ol">${s.outline.map(t => `<li>${escapeHtml(t)}</li>`).join("")}</ol></details>`;
   if (s.reading && s.reading.length) h += `<details class="nt-bl" open><summary>본문을 이렇게 읽었어요</summary>${s.reading.map(r => `<div class="vm"><p class="nt-form">${refHtml(r.ref || "")}</p><p>${refHtml(r.point || "")}</p>${r.quote ? `<p class="sm-q">“${escapeHtml(r.quote)}”</p>` : ""}</div>`).join("")}</details>`;
   if (s.apply && s.apply.length) h += `<details class="nt-bl"><summary>설교가 건네는 적용</summary>${s.apply.map(p => `<p>${refHtml(p)}</p>`).join("")}</details>`;
   if (s.m && s.m.length) h += `<details class="nt-bl"><summary>이 설교가 언급한 말씀 ${s.m.length}곳</summary>${s.m.map((_, i) => smMentionHtml([s.sid, i], false)).join("")}</details>`;
-  h += `<p class="nt-cap">설교 원고집을 요약한 카드예요. 원고 전문은 싣지 않았어요.${s.pages ? ` 원고집 ${escapeHtml(String(s.pages))}쪽.` : ""}</p>`;
+  h += smtBtn(s.sid) + `<p class="nt-cap">설교 원고집을 요약한 카드예요. 전문은 위 '설교 전문 읽기'로 볼 수 있어요.${s.pages ? ` 원고집 ${escapeHtml(String(s.pages))}쪽.` : ""}</p>`;
   return h;
 }
 function openSm(sid) {
   const sh = $("rdSheet"), open = sh && !sh.hidden, bd = $("rdShBody");
   const go = () => {
     const s = (bibleSm || []).find(x => x.sid === sid); if (!s) return;
-    if (open && bd) rd.shPrev = { html: bd.innerHTML, y: bd.scrollTop, label: sh.dataset.label || "" };
-    rdSheet((open ? `<button type="button" class="btn ghost rd-sh-prev" data-r="sh-prev">← 해설로</button>` : "") + smHtml(s), rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : "");
+    if (open && bd) shPush();
+    rdSheet((open ? BACK_BTN : "") + smHtml(s), rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : "");
   };
   loadSm().then(go);
+}
+function smtBtn(sid) { return `<button type="button" class="btn manna sm-full" data-smt="${escapeHtml(sid)}">설교 전문 읽기</button>`; }
+const smtCache = new Map();
+function loadSmt(id) { if (smtCache.has(id)) return Promise.resolve(smtCache.get(id)); return fetch(`bible/smt/${id}.json?v=${X_VER}`).then(r => r.ok ? r.json() : null).catch(() => null).then(d => { if (d) smtCache.set(id, d); return d; }); }
+function smtHtml(s, d) {
+  let h = `<div class="nt-head"><span class="nt-badge k-sm">설교 전문</span><small>${escapeHtml(s.preacher)} 목사 · ${escapeHtml(s.place || "")}</small></div><h3>${escapeHtml(s.title)}</h3>`;
+  const chips = ix => (ix || []).map(i => { const m = s.m && s.m[i], sp = m && m.spans && m.spans[0]; return sp ? `<button type="button" class="vref sm-mc" data-go="${sp[0] - 1}|${sp[1]}|${sp[2]}|${sp[3]}">↳ ${escapeHtml(m.ref)}</button>` : ""; }).join("");
+  (d.paras || []).forEach(p => {
+    const t = refHtml(p.t);
+    if (p.k === "title") return;
+    if (p.k === "label") h += `<p class="nt-cap">${t}</p>`;
+    else if (p.k === "ref") h += `<p class="nt-form">${t}</p>`;
+    else if (p.k === "h") h += `<h4>${t}</h4>`;
+    else if (p.k === "q") h += `<blockquote class="sm-qb">${t}</blockquote>`;
+    else if (p.k === "pre") h += `<pre class="sm-pre">${escapeHtml(p.t)}</pre>`;
+    else h += `<p class="sm-p">${t}</p>`;
+    if (p.m && p.m.length) h += `<div class="sm-ml">${chips(p.m)}</div>`;
+  });
+  if (d.rest && d.rest.length) h += `<details class="nt-bl" open><summary>이 설교가 함께 가리킨 말씀</summary>${d.rest.map(i => smMentionHtml([s.sid, i], false)).join("")}</details>`;
+  h += `<p class="nt-cap">${escapeHtml(d.book || "")} — 원고 그대로 싣되, 흐름을 점검해 뽑는 과정의 오류와 뜻이 분명한 음성 인식 오타만 바로잡았어요. 두 목사님의 허락을 받아 공개해요.</p>`;
+  if (d.notes) h += `<button type="button" class="btn ghost" data-smn="${escapeHtml(d.notes)}">원고집 편집 주·교정 확인사항 보기</button>`;
+  return h;
+}
+function openSmt(sid) {
+  const label = rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : "";
+  Promise.all([loadSm(), loadSmt(sid)]).then(([, d]) => {
+    const s = smById(sid);
+    if (!s || !d) { rdSheet(`<p class="muted">설교 전문을 불러오지 못했어요. 인터넷에 연결된 상태로 다시 열어 주세요.</p>`, label); return; }
+    shPush(); rdSheet(BACK_BTN + smtHtml(s, d), label);
+  });
+}
+function openSmn(id) {
+  const label = rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : "";
+  loadSmt(id).then(d => { if (!d) return; shPush(); rdSheet(BACK_BTN + `<div class="nt-head"><span class="nt-badge k-sm">원고집</span><small>${escapeHtml(d.book || "")}</small></div><h3>편집 주·교정 확인사항</h3>` + d.paras.map(p => p.k === "pre" ? `<pre class="sm-pre">${escapeHtml(p.t)}</pre>` : `<p>${refHtml(p.t)}</p>`).join(""), label); });
 }
 function ntVerse(b, c, id) { const x = xChap(b, c); if (!x || !x.ln) return null; for (const v in x.ln) if (x.ln[v].some(l => l[0] === id)) return +v; return null; }
 function noteHtml(n, from) {
@@ -322,9 +371,11 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       if (d.vn) { openVerse(+d.vn); e.stopPropagation(); return true; }
       if (d.go) { openRef(d.go); e.stopPropagation(); return true; }
       if (d.sm) { openSm(d.sm); e.stopPropagation(); return true; }
+      if (d.smt) { openSmt(d.smt); e.stopPropagation(); return true; }
+      if (d.smn) { openSmn(d.smn); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
-      if (a === "sh-prev") { const p = rd.shPrev; if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; rd.shPrev = null; } e.stopPropagation(); return true; }
+      if (a === "sh-prev") { const st = rd.shStack || [], p = st.pop(); if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; } e.stopPropagation(); return true; }
       if (a === "ops") { rd.ops = !rd.ops; renderReader(); return true; }
       if (a === "op") { const k = d.k, o = rdOpt(); setOpt(k, !o[k]); renderReader(); return true; }
       if (a === "fold-open") { foldState()[+d.i] = true; renderReader(); return true; }

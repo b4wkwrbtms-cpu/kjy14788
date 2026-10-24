@@ -401,3 +401,33 @@ for s_ in SM:
 json.dump({k: {'v': dict(d['v']), 'ch': d['ch']} for k, d in IDX.items()}, open(f'{APP}/bible/smv.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 json.dump(SM, open(f'{APP}/bible/sm.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 print('sermon cards', len(SM), 'mentions', sum(len(x.get('m') or []) for x in SM), 'verse links', nv, 'chapter links', nc, 'chapters', len(IDX), 'bad', bad[:10])
+
+# ---------- 13) 설교 전문(10-25, 두 목사님 공개 허락 — 사용자 확인) : 흐름 점검·보완한 수정본 full/*.json ----------
+nz = lambda t: re.sub(r'\s', '', t or '')
+os.makedirs(f'{APP}/bible/smt', exist_ok=True)
+BN = json.load(open(f'{R0}/book_names.json'))
+pl_tot = pl_ok = 0
+for f in sorted(glob.glob('/home/claude/sermons/full/*.json')):
+    if '.log.' in f: continue
+    d = json.load(open(f))
+    if f.endswith('-notes.json'):
+        json.dump({'book': d.get('book', ''), 'paras': [{'k': p['k'], 't': p['t']} for p in d['paras']]}, open(f'{APP}/bible/smt/{os.path.basename(f)}', 'w'), ensure_ascii=False, separators=(',', ':')); continue
+    sid = d['sid']; refs = json.load(open(f'/home/claude/sermons/refs/{sid}.json'))
+    paras = [{'k': p['k'], 't': p['t']} for p in d['paras']]
+    P = [nz(p['t']) for p in paras]; rest = []
+    for i, r in enumerate(refs):
+        if r.get('type') == '본문': continue          # 따로 풀지 않은 본문 절은 절 번호(금색)와 본문 줄 링크로 이어짐
+        pl_tot += 1; q = nz(r.get('quote')); hit = None
+        if q and len(q) >= 6:
+            hit = next((k for k, t in enumerate(P) if q[:40] in t), None)
+        if hit is None:
+            for B, C, V1, V2 in r.get('spans') or []:
+                bn = BN[B - 1]; pats = [f'{bn}{C}장{V1}절', f'{bn}{C}편{V1}절', f'{bn}{C}:{V1}', f'{bn}{C}장', f'{bn}{C}편'] + ([f'{V1}절'] if r.get('type') == '본문 절' else [])
+                hit = next((k for k, t in enumerate(P) if any(p_ in t for p_ in pats)), None)
+                if hit is not None: break
+        if hit is None: rest.append(i)
+        else: paras[hit].setdefault('m', []).append(i); pl_ok += 1
+    pre = sid.rsplit('-', 1)[0]
+    json.dump({'sid': sid, 'book': d.get('book', ''), 'notes': f'{pre}-notes' if os.path.exists(f'/home/claude/sermons/full/{pre}-notes.json') else '', 'paras': paras, 'rest': rest},
+              open(f'{APP}/bible/smt/{sid}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+print('sermon full texts placed', pl_ok, '/', pl_tot, '(나머지는 전문 끝 목록)')

@@ -111,6 +111,11 @@ V46_CSS = '''/* v46 읽기 창 */
 .sm-q { font-size: 14px; color: var(--muted); border-left: 2px solid #f0c674; padding-left: 10px; }
 .rd-body sup.sm { color: #f0c674; font-weight: 700; } .rd-body sup.sm::after { content: '•'; color: #f0c674; margin-left: 1px; }
 .sm-dot { color: #f0c674; font-size: 11px; } .sm-m .nt-chip { margin-bottom: 4px; }
+.sm-full { width: 100%; margin: 6px 0 10px; }
+.sm-p { margin: 0 0 12px; line-height: 1.85; }
+.sm-qb { margin: 8px 0 14px; padding: 8px 12px; border-left: 3px solid #f0c674; background: var(--panel); border-radius: 8px; font-size: 15px; line-height: 1.75; }
+.sm-ml { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: -6px 0 12px; font-size: 13px; }
+.sm-pre { white-space: pre; overflow-x: auto; font-size: 11.5px; line-height: 1.5; background: var(--panel); padding: 8px; border-radius: 8px; }
 .rf-v { font-size: 16.5px; line-height: 1.8; } .rf-v sup { color: var(--muted); font-size: .7em; margin-right: 2px; }
 '''
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)
@@ -125,5 +130,5 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v47";'))
+open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v48";'))
 print('built', len(s))

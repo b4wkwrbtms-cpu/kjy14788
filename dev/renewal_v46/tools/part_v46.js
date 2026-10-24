@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46e";
+var X_VER = "46f";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -172,21 +172,51 @@ function rdSheet(html, label) {
     sh.innerHTML = `<div class="rd-sh-bg" data-r="sh-x"></div><div class="rd-sh-card" role="dialog" aria-modal="true"><div class="rd-sh-body" id="rdShBody"></div><button type="button" class="btn rd-sh-back" data-r="sh-x">← 읽던 본문으로</button></div>`;
     $("reader").appendChild(sh);
   }
-  $("rdShBody").innerHTML = html; $("rdShBody").scrollTop = 0; sh.hidden = false;
+  $("rdShBody").innerHTML = html; $("rdShBody").scrollTop = 0; sh.hidden = false; sh.dataset.label = label || "";
   sh.querySelector(".rd-sh-back").innerHTML = `← 읽던 본문으로${label ? `<small>${escapeHtml(label)}</small>` : ""}`;
 }
 function rdSheetClose() { const sh = $("rdSheet"); if (sh) sh.hidden = true; }
 const heTerm = tm => `<span class="tm"><bdi dir="rtl" lang="he">${escapeHtml(tm[0] || "")}</bdi><small><b>${escapeHtml(tm[1] || "")}</b>${escapeHtml(tm[2] || "")}</small></span>`;
 const srcList = s => (s || []).map(([t, u]) => u ? `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(t || u)}</a></li>` : `<li>${escapeHtml(t)}</li>`).join("");
+/* 해설 속 성경 주소 → 관련 구절 보기 (10-24, 스킬 원칙: 본문 → 해설 → 관련 구절 → 읽던 자리)
+   - 책 이름(전체·약칭) + 장:절(-절)만 링크. 책 이름 없는 '1:20'·시간 표시는 링크로 만들지 않음. 장 수가 그 책 범위를 넘으면 링크 안 함.
+   - 관련 구절은 같은 아래 창 안에서 보여 주고(읽던 본문은 그대로), '← 해설로'로 되돌아가고, 아래 버튼은 언제나 '← 읽던 본문으로'. */
+const REF_AB = ["창","출","레","민","신","수","삿","룻","삼상","삼하","왕상","왕하","대상","대하","스","느","에","욥","시","잠","전","아","사","렘","애","겔","단","호","욜","암","옵","욘","미","나","합","습","학","슥","말",
+  "마","막","눅","요","행","롬","고전","고후","갈","엡","빌","골","살전","살후","딤전","딤후","딛","몬","히","약","벧전","벧후","요일","요이","요삼","유","계"];
+const REF_MAP = (() => { const m = {}; BOOKS.forEach((x, i) => { m[x[0]] = i; }); REF_AB.forEach((a, i) => { m[a] = i; }); m["애가"] = 24; m["시"] = 18; return m; })();
+const REF_RE = new RegExp(`(^|[^가-힣A-Za-z0-9])(${Object.keys(REF_MAP).sort((a, b) => b.length - a.length).join("|")})\\s?(\\d{1,3}):(\\d{1,3})(?:\\s?[-–~]\\s?(\\d{1,3})(?!:))?`, "g");
+function refHtml(t) {
+  return escapeHtml(t).replace(REF_RE, (all, pre, bk, c, v, v2) => {
+    const b = REF_MAP[bk], cn = +c, vn = +v, ve = v2 ? +v2 : vn;
+    if (b == null || !cn || cn > BOOKS[b][1] || !vn || ve < vn || ve - vn > 40) return all;
+    return `${pre}<button type="button" class="vref" data-go="${b}|${cn}|${vn}|${ve}">${all.slice(pre.length)}</button>`;
+  });
+}
+function openRef(go) {
+  const sh = $("rdSheet"), bd = $("rdShBody"); if (!sh || !bd) return;
+  const [b, c, v1, v2] = go.split("|").map(Number), ref = `${BOOKS[b][0]} ${c}:${v1}${v2 > v1 ? "–" + v2 : ""}`;
+  rd.shPrev = { html: bd.innerHTML, y: bd.scrollTop, label: sh.dataset.label || "" };
+  const show = ch => {
+    const vs = ch && ch[c - 1] && ch[c - 1].v;
+    let h = `<button type="button" class="btn ghost rd-sh-prev" data-r="sh-prev">← 해설로</button><div class="nt-head"><span class="nt-badge">관련 구절</span><small>${escapeHtml(ref)}</small></div>`;
+    if (vs && v1 <= vs.length) {
+      for (let n = v1; n <= Math.min(v2, vs.length); n++) h += `<p class="rf-v"><sup>${n}</sup> ${mzLines(vs[n - 1]).map(escapeHtml).join("<br>")}</p>`;
+      h += `<p class="nt-cap">우리 앱 20대 말투 본문이에요. 읽던 자리는 그대로 있어요.</p>`;
+    } else h += `<p class="muted">이 주소의 본문을 찾지 못했어요. 주소가 맞는지 편집자 확인이 필요해요.</p>`;
+    rdSheet(h, sh.dataset.label || "");
+  };
+  rdSheet(`<p class="muted">관련 구절을 불러오는 중…</p>`, sh.dataset.label || "");
+  Promise.resolve(loadMz(b)).then(show, () => show(null));
+}
 function noteHtml(n, from) {
   const k = NK[n.k] || ["해설", ""];
   let h = `<div class="nt-head"><span class="nt-badge ${k[1]}">${escapeHtml(n.b || k[0])}</span><small>${escapeHtml(from || n.l || "")}</small></div><h3>${escapeHtml(n.t)}</h3>`;
-  if (n.s) h += `<p class="nt-brief">${escapeHtml(n.s)}</p>`;
+  if (n.s) h += `<p class="nt-brief">${refHtml(n.s)}</p>`;
   if (n.tm && n.tm.length) h += `<div class="tms">${n.tm.map(heTerm).join("")}</div>`;
   (n.bl || []).forEach((bl, i) => {
     h += `<details class="nt-bl"${i === 0 ? " open" : ""}><summary>${escapeHtml(bl.s || "더 읽기")}</summary>` + bl.it.map(it =>
       (it.h ? `<h4>${escapeHtml(it.h)}</h4>` : "") + (it.tm ? `<div class="tms">${it.tm.map(heTerm).join("")}</div>` : "") + (it.f ? `<p class="nt-form">${escapeHtml(it.f)}</p>` : "") +
-      (it.p || []).map(p => `<p>${escapeHtml(p)}</p>`).join("") + (it.src && it.src.length ? `<p class="nt-src">${it.src.map(([t, u]) => `<a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(t || "자료")}</a>`).join(" · ")}</p>` : "")).join("") + `</details>`;
+      (it.p || []).map(p => `<p>${refHtml(p)}</p>`).join("") + (it.src && it.src.length ? `<p class="nt-src">${it.src.map(([t, u]) => `<a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(t || "자료")}</a>`).join(" · ")}</p>` : "")).join("") + `</details>`;
   });
   if (n.src && n.src.length) h += `<details class="nt-bl"><summary>본문과 확인 자료</summary><ul class="nt-srcs">${srcList(n.src)}</ul><p class="nt-cap">원어는 사전 표제어나 본문 형태예요. 한글은 읽기를 돕는 근사 발음이에요.</p></details>`;
   return h;
@@ -205,7 +235,7 @@ function openVerse(n) {
     let h = `<div class="nt-head"><span class="nt-badge k-hebrew">${ot ? "원어로 보기" : "본문 메모"}</span><small>${escapeHtml(ref)}</small></div>`;
     if (heV) h += `<p class="he-verse" dir="rtl" lang="he">${escapeHtml(heV)}</p><p class="nt-cap">히브리어 본문: 레닌그라드 사본(WLC). 오른쪽에서 왼쪽으로 읽어요.</p>`;
     const ms = x && x.vn && x.vn[n] || [];
-    if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${escapeHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
+    if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${refHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
     else h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
     const ln = x && x.ln && x.ln[n] || [];
     if (ln.length) { const nt = bibleNt.get(b); h += `<h4>이 절의 해설</h4><div class="nt-chips">${ln.map(l => `<button type="button" class="nt-chip ${NK[l[2]] ? NK[l[2]][1] : ""}" data-nt="${escapeHtml(l[0])}">${escapeHtml(nt && nt[l[0]] ? nt[l[0]].t : l[1])}</button>`).join("")}</div>`; }
@@ -248,8 +278,10 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       const d = t.dataset || {};
       if (d.nt) { openNote(d.nt, rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : ""); e.stopPropagation(); return true; }
       if (d.vn) { openVerse(+d.vn); e.stopPropagation(); return true; }
+      if (d.go) { openRef(d.go); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
+      if (a === "sh-prev") { const p = rd.shPrev; if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; rd.shPrev = null; } e.stopPropagation(); return true; }
       if (a === "ops") { rd.ops = !rd.ops; renderReader(); return true; }
       if (a === "op") { const k = d.k, o = rdOpt(); setOpt(k, !o[k]); renderReader(); return true; }
       if (a === "fold-open") { foldState()[+d.i] = true; renderReader(); return true; }

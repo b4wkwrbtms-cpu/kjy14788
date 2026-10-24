@@ -102,6 +102,9 @@ V46_CSS = '''/* v46 읽기 창 */
 .nt-srcs { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.6; }
 .he-verse { font-family: "SBL Hebrew", "Ezra SIL", "Noto Serif Hebrew", "Times New Roman", serif; font-size: 24px; line-height: 1.9; margin: 10px 0 4px; color: var(--fg); }
 .vm { border-top: 1px dashed var(--line); padding-top: 8px; margin-top: 8px; }
+.vref { font: inherit; color: var(--ore); background: none; border: 0; padding: 0; margin: 0; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; white-space: nowrap; }
+.rd-sh-prev { margin: 0 0 10px; font-size: 13.5px; padding: 6px 12px; }
+.rf-v { font-size: 16.5px; line-height: 1.8; } .rf-v sup { color: var(--muted); font-size: .7em; margin-right: 2px; }
 '''
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)
 mk = '/* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */'

@@ -340,3 +340,38 @@ for b in range(13, 67):
 json.dump(sorted(XB), open(f'{APP}/bible/xbooks.json', 'w'))
 print('13~66 links', sum(lnk.values()), 'terms', len(lnk), 'books', len(used13), 'cards', len(set().union(*used13.values())))
 json.dump(dict(lnk.most_common()), open(f'{R0}/notes2/links_13_66.json', 'w'), ensure_ascii=False, indent=0)
+
+# ---------- 11) 13~66권 새 해설 카드(notes3/out): 선정한 낱말에 밑줄 + also 자리에도 ----------
+N3 = {}
+for f in sorted(glob.glob(f'{R0}/notes3/out/*.json')):
+    o = json.load(open(f)); N3[o['id']] = o; N2[o['id']] = o
+BK = {nm: i + 1 for i, nm in enumerate(json.load(open(f'{R0}/book_names.json')))}
+def parse_ref(r):
+    m = re.match(r'^\s*(.+?)\s+(\d+):(\d+)', r or '')
+    return (BK.get(m.group(1)), int(m.group(2)), int(m.group(3))) if m and BK.get(m.group(1)) else None
+add3 = collections.defaultdict(lambda: collections.defaultdict(lambda: collections.defaultdict(list)))
+n3 = 0
+for nid, o in N3.items():
+    spots = [(o['b'], o['c'], o['v'])] + [p for p in (parse_ref(r) for r in o.get('also') or []) if p]
+    for b, c, v in spots:
+        ch = MZ.get(b) and MZ[b][c - 1]
+        if not ch or v > len(ch['v']): continue
+        if findterm2(ch['v'][v - 1].replace('\n', ' '), o['term']) < 0: continue
+        add3[b][c][str(v)].append([nid, o['term'], o.get('k') or 'hebrew']); n3 += 1
+XB = set(json.load(open(f'{APP}/bible/xbooks.json')))
+for b, chs in add3.items():
+    xp = f'{APP}/bible/x/{b:02d}.json'; X = json.load(open(xp)) if os.path.exists(xp) else {}
+    for c, vs in chs.items():
+        ln = X.setdefault(str(c), {}).setdefault('ln', {})
+        for v, ls in vs.items():
+            cur = ln.setdefault(v, [])
+            for l in ls:
+                if not any(x[0] == l[0] for x in cur): cur.append(l)
+    json.dump(X, open(xp, 'w'), ensure_ascii=False, separators=(',', ':')); XB.add(b)
+    np_ = f'{APP}/bible/nt/{b:02d}.json'; d = json.load(open(np_)) if os.path.exists(np_) else {}
+    for c, vs in chs.items():
+        for v, ls in vs.items():
+            for l in ls: d[l[0]] = build_note2(l[0])
+    json.dump(d, open(np_, 'w'), ensure_ascii=False, separators=(',', ':'))
+json.dump(sorted(XB), open(f'{APP}/bible/xbooks.json', 'w'))
+print('13~66 new cards', len(N3), 'underlines', n3)

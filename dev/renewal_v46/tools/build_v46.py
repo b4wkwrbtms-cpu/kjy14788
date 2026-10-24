@@ -5,7 +5,7 @@ import sys, re
 R0 = '/home/claude/renewal'; DEV = '/home/claude/b4wkwrbtms-cpu/kjy14788/dev'
 APP = f'{R0}/app'
 import subprocess
-s = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'origin/main:index.html'], capture_output=True, text=True, check=True).stdout
+s = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:index.html'], capture_output=True, text=True, check=True).stdout
 def rep(old, new, cnt=1):
     global s
     n = s.count(old)
@@ -113,7 +113,7 @@ assert p46.count('/*XB*/[]') == 1
 p46 = p46.replace('/*XB*/[]', json.dumps(XBN))
 s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
-sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'origin/main:sw.js'], capture_output=True, text=True, check=True).stdout
+sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
 open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v46";'))
 print('built', len(s))

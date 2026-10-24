@@ -394,6 +394,13 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
 .vm { border-top: 1px dashed var(--line); padding-top: 8px; margin-top: 8px; }
 .vref { font: inherit; color: var(--ore); background: none; border: 0; padding: 0; margin: 0; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; white-space: nowrap; }
 .rd-sh-prev { margin: 0 0 10px; font-size: 13.5px; padding: 6px 12px; }
+.rd-sm { border: 1px solid var(--line); border-left: 3px solid #f0c674; border-radius: 12px; padding: 10px 12px; margin: 0 0 14px; }
+.rd-sm small { display: block; color: var(--muted); font-size: 12.5px; margin-bottom: 6px; }
+.nt-chip.k-sm::before { color: #f0c674; } .nt-badge.k-sm { border-color: #f0c674; color: #f5d48f; }
+.sm-ol { margin: 0 0 8px; padding-left: 20px; } .sm-ol li { margin: 2px 0; }
+.sm-q { font-size: 14px; color: var(--muted); border-left: 2px solid #f0c674; padding-left: 10px; }
+.rd-body sup.sm { color: #f0c674; font-weight: 700; } .rd-body sup.sm::after { content: '•'; color: #f0c674; margin-left: 1px; }
+.sm-dot { color: #f0c674; font-size: 11px; } .sm-m .nt-chip { margin-bottom: 4px; }
 .rf-v { font-size: 16.5px; line-height: 1.8; } .rf-v sup { color: var(--muted); font-size: .7em; margin-right: 2px; }
 
 .rd-vers a { font-size: 13px; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--line); color: var(--fg); text-decoration: none; background: var(--panel-2); }
@@ -15373,7 +15380,7 @@ renderReader = function () {
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46i";
+var X_VER = "46k";
 const XB = new Set([12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 53, 54, 56, 57, 58, 59, 60, 61, 64, 65]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -15469,8 +15476,8 @@ function rdChapterHtml(b, c, mz, krvVerses, lin) {
       if (!op[fi]) { if (n === folds[fi][0]) html += foldCard(folds[fi], fi, fi > 0 && folds[fi - 1][3] === folds[fi][3]); continue; }
       if (n === folds[fi][0]) html += `<button type="button" class="rd-fold-close" data-r="fold-close" data-i="${fi}">▲ ${escapeHtml(folds[fi][3])} · 다시 접기</button>`;
     }
-    const hasM = !!(x && x.vn && x.vn[n]), canTap = b <= 11 || hasM;
-    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}"${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
+    const sv = smvOf(b, c), hasS = !!(sv && sv.v && sv.v[n]), hasM = !!(x && x.vn && x.vn[n]), canTap = b <= 11 || hasM || hasS;
+    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasS ? " sm" : ""}"${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
     if (mz) {
       const labs = {}; if (o.sp && x && x.sp && x.sp[n]) x.sp[n].forEach(l => { if (!labs[l[0]]) labs[l[0]] = l; });
       const links = o.ln && x && x.ln ? x.ln[n] : null;
@@ -15517,6 +15524,8 @@ renderReader = function () {
   else if (rd.err || !rd.verses.length) html += `<p class="muted">본문을 불러오지 못했어요. 인터넷에 연결된 상태로 한 번 열면 그다음부터는 없어도 읽을 수 있어요. 아래 링크로도 읽을 수 있어요.</p>`;
   else {
     if (x && (x.t || x.g)) html += `<div class="rd-cx"><small>이 장은</small>${x.t ? `<b>${escapeHtml(x.t)}</b>` : ""}${(x.g || []).map(g => `<p>${escapeHtml(g)}</p>`).join("")}</div>`;
+    { const sms = smOf(b, c), sv = smvOf(b, c), chm = sv && sv.ch || [], nv = sv && sv.v ? Object.keys(sv.v).length : 0;
+      if (sms.length || chm.length || nv) html += `<div class="rd-sm">${sms.length ? `<small>이 본문으로 한 설교</small><div class="nt-chips">${smChips(sms)}</div>` : ""}${chm.length ? `<details class="nt-bl"><summary>이 장을 함께 다룬 설교 ${chm.length}곳</summary>${chm.map(m => smMentionHtml(m, true)).join("")}</details>` : ""}${nv ? `<p class="rd-note"><b class="sm-dot">●</b> 금색 절 번호 = 설교에서 다룬 말씀 (${nv}절) · 눌러 보세요</p>` : ""}</div>`; }
     if (want === "mz" && !mz) html += `<p class="rd-note">이 장은 20대 말투로 다듬는 중이에요 · 지금은 개역한글로 보여 드려요</p>`;
     if (anyLin) html += `<p class="rd-note lin-key"><u class="lin">빨간 밑줄</u> = 아담부터 예수님까지 이어지는 족보 이름</p>`;
     html += rdChapterHtml(b, c, showMz ? mz : null, rd.verses, lin);
@@ -15575,6 +15584,43 @@ function openRef(go) {
   rdSheet(`<p class="muted">관련 구절을 불러오는 중…</p>`, sh.dataset.label || "");
   Promise.resolve(loadMz(b)).then(show, () => show(null));
 }
+/* 설교 카드 (10-25): 사용자가 준 설교 원고집을 요약한 카드. 그 설교가 다룬 장에 '이 본문으로 한 설교'로 보이고, 해설 카드에서도 이어 볼 수 있음. 원고 전문은 싣지 않음. */
+var bibleSm = null, bibleSmv = {};
+function loadSm() {
+  if (bibleSm) return Promise.resolve(bibleSm);
+  const j = u => fetch(`${u}?v=${X_VER}`).then(r => r.ok ? r.json() : null).catch(() => null);
+  return Promise.all([j("bible/sm.json"), j("bible/smv.json")]).then(([a, v]) => { bibleSmv = v || {}; return (bibleSm = a || []); });
+}
+function smById(sid) { return (bibleSm || []).find(x => x.sid === sid); }
+function smvOf(b, c) { return bibleSmv[`${b + 1}:${c + 1}`] || null; }
+function smMentionHtml([sid, i], showTitle) {
+  const s = smById(sid), m = s && s.m && s.m[i]; if (!m) return "";
+  return `<div class="vm sm-m">${showTitle ? `<button type="button" class="nt-chip k-sm" data-sm="${escapeHtml(sid)}">${escapeHtml(s.title)} · ${escapeHtml(s.preacher)} 목사</button>` : ""}<p class="nt-form">${refHtml(m.ref || "")}${m.sure === false ? ` <small class="muted">· 설교에 주소 없이 나온 말씀이라, 연결은 편집자가 정했어요</small>` : ""}</p><p>${refHtml(m.how || "")}</p>${m.quote ? `<p class="sm-q">“${escapeHtml(m.quote)}”</p>` : ""}</div>`;
+}
+function smOf(b, c, v) { return (bibleSm || []).filter(s => (s.spans || []).some(([B, C, V1, V2]) => B === b + 1 && C === c + 1 && (v == null || (v >= V1 && v <= V2)))); }
+function smChips(list) { return list.map(s => `<button type="button" class="nt-chip k-sm" data-sm="${escapeHtml(s.sid)}">${escapeHtml(s.title)} · ${escapeHtml(s.preacher)} 목사</button>`).join(""); }
+function smHtml(s) {
+  let h = `<div class="nt-head"><span class="nt-badge k-sm">설교</span><small>${escapeHtml(s.preacher)} 목사 · ${escapeHtml(s.place || "")}</small></div><h3>${escapeHtml(s.title)}</h3>`;
+  h += `<p class="nt-cap">${(s.refs || []).map(refHtml).join(" · ")}${s.series ? ` · ${escapeHtml(s.series)}` : ""}</p>`;
+  if (s.core) h += `<p class="nt-brief">${refHtml(s.core)}</p>`;
+  if (s.summary && s.summary.length) h += `<details class="nt-bl" open><summary>설교 흐름</summary>${s.summary.map(p => `<p>${refHtml(p)}</p>`).join("")}</details>`;
+  if (s.outline && s.outline.length) h += `<details class="nt-bl"><summary>설교의 뼈대</summary><ol class="sm-ol">${s.outline.map(t => `<li>${escapeHtml(t)}</li>`).join("")}</ol></details>`;
+  if (s.reading && s.reading.length) h += `<details class="nt-bl" open><summary>본문을 이렇게 읽었어요</summary>${s.reading.map(r => `<div class="vm"><p class="nt-form">${refHtml(r.ref || "")}</p><p>${refHtml(r.point || "")}</p>${r.quote ? `<p class="sm-q">“${escapeHtml(r.quote)}”</p>` : ""}</div>`).join("")}</details>`;
+  if (s.apply && s.apply.length) h += `<details class="nt-bl"><summary>설교가 건네는 적용</summary>${s.apply.map(p => `<p>${refHtml(p)}</p>`).join("")}</details>`;
+  if (s.m && s.m.length) h += `<details class="nt-bl"><summary>이 설교가 언급한 말씀 ${s.m.length}곳</summary>${s.m.map((_, i) => smMentionHtml([s.sid, i], false)).join("")}</details>`;
+  h += `<p class="nt-cap">설교 원고집을 요약한 카드예요. 원고 전문은 싣지 않았어요.${s.pages ? ` 원고집 ${escapeHtml(String(s.pages))}쪽.` : ""}</p>`;
+  return h;
+}
+function openSm(sid) {
+  const sh = $("rdSheet"), open = sh && !sh.hidden, bd = $("rdShBody");
+  const go = () => {
+    const s = (bibleSm || []).find(x => x.sid === sid); if (!s) return;
+    if (open && bd) rd.shPrev = { html: bd.innerHTML, y: bd.scrollTop, label: sh.dataset.label || "" };
+    rdSheet((open ? `<button type="button" class="btn ghost rd-sh-prev" data-r="sh-prev">← 해설로</button>` : "") + smHtml(s), rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : "");
+  };
+  loadSm().then(go);
+}
+function ntVerse(b, c, id) { const x = xChap(b, c); if (!x || !x.ln) return null; for (const v in x.ln) if (x.ln[v].some(l => l[0] === id)) return +v; return null; }
 function noteHtml(n, from) {
   const k = NK[n.k] || ["해설", ""];
   let h = `<div class="nt-head"><span class="nt-badge ${k[1]}">${escapeHtml(n.b || k[0])}</span><small>${escapeHtml(from || n.l || "")}</small></div><h3>${escapeHtml(n.t)}</h3>`;
@@ -15585,12 +15631,13 @@ function noteHtml(n, from) {
       (it.h ? `<h4>${escapeHtml(it.h)}</h4>` : "") + (it.tm ? `<div class="tms">${it.tm.map(heTerm).join("")}</div>` : "") + (it.f ? `<p class="nt-form">${escapeHtml(it.f)}</p>` : "") +
       (it.p || []).map(p => `<p>${refHtml(p)}</p>`).join("") + (it.src && it.src.length ? `<p class="nt-src">${it.src.map(([t, u]) => `<a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(t || "자료")}</a>`).join(" · ")}</p>` : "")).join("") + `</details>`;
   });
+  if (rd && n.id) { const v = ntVerse(rd.b, rd.c, n.id), sms = v ? smOf(rd.b, rd.c, v) : []; if (sms.length) h += `<details class="nt-bl" open><summary>이 본문을 다룬 설교</summary><div class="nt-chips">${smChips(sms)}</div></details>`; }
   if (n.src && n.src.length) h += `<details class="nt-bl"><summary>본문과 확인 자료</summary><ul class="nt-srcs">${srcList(n.src)}</ul><p class="nt-cap">원어는 사전 표제어나 본문 형태예요. 한글은 읽기를 돕는 근사 발음이에요.</p></details>`;
   return h;
 }
 function openNote(id, from) {
   if (!rd) return;
-  const b = rd.b, show = () => { const n = ntOf(b, id); if (n) rdSheet(noteHtml(n, from), from); else rdSheet(`<p class="muted">해설을 불러오지 못했어요. 인터넷에 연결된 상태로 한 번 열면 그다음부터는 없어도 볼 수 있어요.</p>`, from); };
+  const b = rd.b, show = () => { const n = ntOf(b, id); if (n) rdSheet(noteHtml(Object.assign({ id }, n), from), from); else rdSheet(`<p class="muted">해설을 불러오지 못했어요. 인터넷에 연결된 상태로 한 번 열면 그다음부터는 없어도 볼 수 있어요.</p>`, from); };
   if (bibleNt.has(b)) show(); else { rdSheet(`<p class="muted">해설을 불러오는 중…</p>`, from); loadNt(b).then(show); }
 }
 function openVerse(n) {
@@ -15603,9 +15650,11 @@ function openVerse(n) {
     if (heV) h += `<p class="he-verse" dir="rtl" lang="he">${escapeHtml(heV)}</p><p class="nt-cap">히브리어 본문: 레닌그라드 사본(WLC). 오른쪽에서 왼쪽으로 읽어요.</p>`;
     const ms = x && x.vn && x.vn[n] || [];
     if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${refHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
-    else h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
+    else if (ot) h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
     const ln = x && x.ln && x.ln[n] || [];
     if (ln.length) { const nt = bibleNt.get(b); h += `<h4>이 절의 해설</h4><div class="nt-chips">${ln.map(l => `<button type="button" class="nt-chip ${NK[l[2]] ? NK[l[2]][1] : ""}" data-nt="${escapeHtml(l[0])}">${escapeHtml(nt && nt[l[0]] ? nt[l[0]].t : l[1])}</button>`).join("")}</div>`; }
+    const svv = (smvOf(b, c) || {}).v, sml = svv && svv[n] || [];
+    if (sml.length) h += `<h4>설교에서 이 말씀</h4>` + sml.map(m => smMentionHtml(m, true)).join("");
     rdSheet(h, ref);
   };
   if (bibleHe.has(b) && bibleNt.has(b)) show(); else { rdSheet(`<p class="muted">원어를 불러오는 중…</p>`, ref); Promise.all([loadHe(b), loadNt(b)]).then(show); }
@@ -15617,7 +15666,7 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
   openReader = function (b, c, plan) {
     const r = or0(b, c, plan);
     if (rd) rd.opened = {};
-    Promise.all([loadMz(b), loadLin(), loadX(b), loadNt(b)]).then(() => {
+    Promise.all([loadMz(b), loadLin(), loadX(b), loadNt(b), loadSm()]).then(() => {
       if (!rd || rd.b !== b || rd.c !== c) return;
       renderReader();
       const y = S.rdy && S.rdy.b === b && S.rdy.c === c ? S.rdy.y : 0, bd = $("rdBody");
@@ -15646,6 +15695,7 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       if (d.nt) { openNote(d.nt, rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : ""); e.stopPropagation(); return true; }
       if (d.vn) { openVerse(+d.vn); e.stopPropagation(); return true; }
       if (d.go) { openRef(d.go); e.stopPropagation(); return true; }
+      if (d.sm) { openSm(d.sm); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
       if (a === "sh-prev") { const p = rd.shPrev; if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; rd.shPrev = null; } e.stopPropagation(); return true; }

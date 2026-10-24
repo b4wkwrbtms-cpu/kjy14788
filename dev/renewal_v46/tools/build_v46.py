@@ -104,6 +104,13 @@ V46_CSS = '''/* v46 읽기 창 */
 .vm { border-top: 1px dashed var(--line); padding-top: 8px; margin-top: 8px; }
 .vref { font: inherit; color: var(--ore); background: none; border: 0; padding: 0; margin: 0; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; white-space: nowrap; }
 .rd-sh-prev { margin: 0 0 10px; font-size: 13.5px; padding: 6px 12px; }
+.rd-sm { border: 1px solid var(--line); border-left: 3px solid #f0c674; border-radius: 12px; padding: 10px 12px; margin: 0 0 14px; }
+.rd-sm small { display: block; color: var(--muted); font-size: 12.5px; margin-bottom: 6px; }
+.nt-chip.k-sm::before { color: #f0c674; } .nt-badge.k-sm { border-color: #f0c674; color: #f5d48f; }
+.sm-ol { margin: 0 0 8px; padding-left: 20px; } .sm-ol li { margin: 2px 0; }
+.sm-q { font-size: 14px; color: var(--muted); border-left: 2px solid #f0c674; padding-left: 10px; }
+.rd-body sup.sm { color: #f0c674; font-weight: 700; } .rd-body sup.sm::after { content: '•'; color: #f0c674; margin-left: 1px; }
+.sm-dot { color: #f0c674; font-size: 11px; } .sm-m .nt-chip { margin-bottom: 4px; }
 .rf-v { font-size: 16.5px; line-height: 1.8; } .rf-v sup { color: var(--muted); font-size: .7em; margin-right: 2px; }
 '''
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)

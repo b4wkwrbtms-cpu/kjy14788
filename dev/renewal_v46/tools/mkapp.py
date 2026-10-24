@@ -375,3 +375,29 @@ for b, chs in add3.items():
     json.dump(d, open(np_, 'w'), ensure_ascii=False, separators=(',', ':'))
 json.dump(sorted(XB), open(f'{APP}/bible/xbooks.json', 'w'))
 print('13~66 new cards', len(N3), 'underlines', n3)
+
+# ---------- 12) 설교 카드(10-25, 사용자 설교 원고집 → 요약 카드, 원고 전문은 싣지 않음) ----------
+SM = []
+for f in sorted(glob.glob('/home/claude/sermons/out/*.json')):
+    if f.endswith('-notes.json'): continue
+    o = json.load(open(f))
+    SM.append({k: o[k] for k in ('sid', 'preacher', 'place', 'series', 'no', 'title', 'refs', 'spans', 'core', 'outline', 'summary', 'reading', 'apply', 'pages') if k in o})
+    rp = f'/home/claude/sermons/refs/{o["sid"]}.json'
+    SM[-1]['m'] = [{k: r.get(k) for k in ('ref', 'spans', 'type', 'sure', 'how', 'quote')} for r in (json.load(open(rp)) if os.path.exists(rp) else [])]
+json.dump(SM, open(f'{APP}/bible/sm.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+# 절·장 색인: 12절 이하 범위는 절마다, 그보다 길면 장 단위
+IDX = collections.defaultdict(lambda: {'v': collections.defaultdict(list), 'ch': []}); nv = nc = 0; bad = []
+for s_ in SM:
+    for i, r in enumerate(s_.get('m') or []):
+        for sp in r.get('spans') or []:
+            try: B, C, V1, V2 = sp
+            except Exception: bad.append((s_['sid'], r.get('ref'))); continue
+            if not (MZ.get(B) and 0 < C <= len(MZ[B]) and MZ[B][C - 1]): bad.append((s_['sid'], r.get('ref'))); continue
+            nvs = len(MZ[B][C - 1]['v']); V2 = min(V2, nvs)
+            key = f'{B}:{C}'
+            if V2 - V1 + 1 > 12: IDX[key]['ch'].append([s_['sid'], i]); nc += 1
+            else:
+                for v in range(V1, V2 + 1): IDX[key]['v'][str(v)].append([s_['sid'], i]); nv += 1
+json.dump({k: {'v': dict(d['v']), 'ch': d['ch']} for k, d in IDX.items()}, open(f'{APP}/bible/smv.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+json.dump(SM, open(f'{APP}/bible/sm.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+print('sermon cards', len(SM), 'mentions', sum(len(x.get('m') or []) for x in SM), 'verse links', nv, 'chapter links', nc, 'chapters', len(IDX), 'bad', bad[:10])

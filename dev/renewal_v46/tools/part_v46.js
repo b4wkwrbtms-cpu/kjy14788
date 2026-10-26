@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47e";
+var X_VER = "47f";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -385,7 +385,9 @@ function smReadStart(s) {
 function smReadStop(quiet) {
   if (!smRead) return;
   const St = S.study; if (St.running) studyPause();
-  const m = Math.floor(St.sessionMs / 60000); St.sessionMs = 0;
+  const m = Math.floor(St.sessionMs / 60000);
+  try { if (S.bible && S.bible.timer && smRead.t0) S.bible.timer = Math.min(Date.now(), S.bible.timer + (Date.now() - smRead.t0)); } catch (e) {}   // 설교 읽은 시간은 말씀 읽기 시간에서 뺌(한 시간이 양쪽에 쌓이지 않게)
+  St.sessionMs = 0;
   if (!quiet && m > 0) toast(`설교 ${m}분 읽었어요 · 오늘 갱도 ${St.depth}층`);
   smRead = null; save();
 }

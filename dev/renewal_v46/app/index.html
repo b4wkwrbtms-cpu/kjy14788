@@ -8,11 +8,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="곽준영키우기">
 <meta name="theme-color" content="#0e1321">
-<meta name="description" content="말씀 읽고 공부하며 오르는 본사 타워 · 성경 읽기·암송·공부로 자라는 방치형 게임">
+<meta name="description" content="말씀 읽고 설교 읽으며 오르는 본사 타워 · 성경 읽기·암송·설교로 자라는 방치형 게임">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="곽준영 키우기">
 <meta property="og:title" content="곽준영 키우기">
-<meta property="og:description" content="말씀 읽고 공부하며 오르는 본사 타워 · 같이 해요!">
+<meta property="og:description" content="말씀 읽고 설교 읽으며 오르는 본사 타워 · 같이 해요!">
 <meta property="og:image" content="https://b4wkwrbtms-cpu.github.io/kjy14788/icon-512.png">
 <meta property="og:url" content="https://b4wkwrbtms-cpu.github.io/kjy14788/">
 <meta name="twitter:card" content="summary">
@@ -1780,7 +1780,7 @@ body.modal { overflow: hidden; }
 <div class="wrap">
   <header>
     <div class="title-row">
-      <h1><small>말씀 읽고 공부하며 오르는 본사 타워</small>곽준영 키우기</h1>
+      <h1><small>말씀 읽고 설교 읽으며 오르는 본사 타워</small>곽준영 키우기</h1>
       <div class="hd-right"><span id="sndSlot"></span><div class="floor-big num" aria-label="지금 층"><i class="fl-up" aria-hidden="true">▲</i><span id="floorChip">1</span><small>층</small></div></div>
     </div>
     <div class="chips">
@@ -2157,7 +2157,7 @@ const PETS = [
   { id: "idol", n: "사내 아이돌", floor: 100, price: 300, k: 6, desc: lv => `10번 공격마다 응원 ${(3 + 0.5 * lv).toFixed(1)}초 (공속 2배, 피해 3배, 치명 100% 중 하나)` },
   { id: "squirrel", n: "도장 다람쥐", floor: 150, price: 450, k: 7, desc: lv => `보스 처치 때 ${(2 + 0.5 * lv).toFixed(1)}% 확률로 결재도장` },
   { id: "cactus", n: "화분 선인장", floor: 200, price: 650, k: 8, desc: lv => `2초마다 적 현재 체력의 ${(1 + 0.1 * lv).toFixed(1)}% 감소 (보스는 1/5)` },
-  { id: "robot", n: "로봇청소기", floor: 300, price: 900, k: 9, desc: lv => `공부로 캐는 광석 +${5 * lv}%` },
+  { id: "robot", n: "로봇청소기", floor: 300, price: 900, k: 9, desc: lv => `설교를 읽어 캐는 광석 +${5 * lv}%` },
   { id: "legend", n: "전설의 신입", floor: 500, price: 1500, k: 12, desc: lv => `모든 피해 x${(2 + 0.2 * lv).toFixed(1)}` },
 ];
 const petUp = (p, lv) => (lv + p.k) * 15;
@@ -2222,8 +2222,8 @@ const DAILY = [
   { id: "read1", n: "말씀 1장 읽기", stat: "chap", goal: 1, rw: { haste: 1 } },
   { id: "read3", n: "말씀 3장 읽기", stat: "chap", goal: 3, rw: { manna: 30 } },
   { id: "med", n: "묵상 한 줄 남기기", stat: "med", goal: 1, rw: { stamp: 2 } },
-  { id: "st25", n: "공부 25분", stat: "study", goal: 25, rw: { gold2: 1 } },
-  { id: "st60", n: "공부 60분", stat: "study", goal: 60, rw: { ore: 100 } },
+  { id: "st25", n: "설교 읽기 25분", stat: "study", goal: 25, rw: { gold2: 1 } },
+  { id: "st60", n: "설교 읽기 60분", stat: "study", goal: 60, rw: { ore: 100 } },
   { id: "boss", n: "보스 20마리 처치", stat: "boss", goal: 20, rw: { rage: 1 } },
   { id: "vault", n: "지하 문서고 1000m", stat: "depth", goal: 1000, rw: { stamp: 3 } },
   { id: "mem5", n: "암송 5구절 통과", stat: "mem", goal: 5, rw: { manna: 30, gold2: 1 } },
@@ -2231,9 +2231,9 @@ const DAILY = [
 const ACH = [
   { id: "floor", n: "최고 층 도달", unit: "층", tiers: [25, 50, 100, 150, 200, 300, 500, 700, 1000], rw: i => ({ stamp: 5 * (i + 1) }) },
   { id: "chap", n: "말씀 누적", unit: "장", tiers: [10, 50, 150, 300, 600, 1189, 2378], rw: i => ({ manna: 50 * (i + 1) }) },
-  { id: "study", n: "공부 누적", unit: "시간", tiers: [1, 5, 10, 30, 100, 300, 1000], rw: i => ({ ore: 300 * (i + 1), silver: 5 * (i + 1) }) },
+  { id: "study", n: "설교 읽기 누적", unit: "시간", tiers: [1, 5, 10, 30, 100, 300, 1000], rw: i => ({ ore: 300 * (i + 1), silver: 5 * (i + 1) }) },
   { id: "rstreak", n: "말씀 연속", unit: "일", tiers: [3, 7, 14, 30, 100, 365], rw: i => ({ stamp: 5 * (i + 1), haste: 1, gold2: 1, rage: 1 }) },
-  { id: "sstreak", n: "공부 연속", unit: "일", tiers: [3, 7, 14, 30, 100, 365], rw: i => ({ ore: 200 * (i + 1), ame: 2 * (i + 1) }) },
+  { id: "sstreak", n: "설교 읽기 연속", unit: "일", tiers: [3, 7, 14, 30, 100, 365], rw: i => ({ ore: 200 * (i + 1), ame: 2 * (i + 1) }) },
   { id: "memm", n: "암송 완료 구절", unit: "구절", tiers: [5, 20, 40, 60, 80, 100], rw: i => ({ stamp: 10 * (i + 1), manna: 50 * (i + 1) }) },
   { id: "memr", n: "암송 바퀴 완주", unit: "바퀴", tiers: [1, 2, 3, 5, 10], rw: i => ({ stamp: 20 * (i + 1), ame: 3 * (i + 1) }) },
   { id: "retire", n: "퇴사 횟수", unit: "회", tiers: [1, 3, 5, 10, 20, 50], rw: i => ({ stamp: 10 * (i + 1) }) },
@@ -2490,12 +2490,12 @@ ZONES.forEach(z => z.mons.forEach(([shape, pal]) => {
 }));
 const monNorm = s => 12 / SPR[s][0].length;   // 예전 12칸 기준 크기 유지
 
-/* 주인공 캐릭터: 말씀·공부·층·퇴사 기록으로 해금 */
+/* 주인공 캐릭터: 말씀·설교·층·퇴사 기록으로 해금 */
 /* 머리 모양은 위 HAIR에 모두 있음 */
 const CHARS = [
   { id: "choi", n: "곽준영", hair: "neat", pal: {}, req: null },
   { id: "lee", n: "이주임", hair: "long", pal: { h: "#5a3a2a", s: "#f7d3b5", g: "#f7d3b5", w: "#ffe6ef", t: "#ff6b8a", p: "#3b4566", b: "#5a2a3a" }, req: { k: "chap", v: 30, d: "말씀 누적 30장" } },
-  { id: "park", n: "박인턴", hair: "cap", pal: { h: "#3b7bd6", s: "#f2c9a0", g: "#f2c9a0", w: "#fff7c2", t: "#ffd54a", p: "#4a5578", b: "#eef1f7" }, req: { k: "study", v: 5, d: "공부 누적 5시간" } },
+  { id: "park", n: "박인턴", hair: "cap", pal: { h: "#3b7bd6", s: "#f2c9a0", g: "#f2c9a0", w: "#fff7c2", t: "#ffd54a", p: "#4a5578", b: "#eef1f7" }, req: { k: "study", v: 5, d: "설교 읽기 누적 5시간" } },
   { id: "kim", n: "김과장", hair: "side", pal: { h: "#3a3a3a", s: "#e8b993", g: "#141418", w: "#cfe3ff", t: "#1d3f73", p: "#2a2e38", b: "#141418" }, req: { k: "floor", v: 100, d: "최고 100층" } },
   { id: "pastor", n: "정전도사", hair: "neat", pal: { h: "#2a2a35", s: "#f2c9a0", g: "#f2c9a0", w: "#1b1b1b", t: "#ffffff", p: "#1b1b1b", b: "#141418" }, req: { k: "rstreak", v: 14, d: "말씀 14일 연속" } },
   { id: "han", n: "한팀장", hair: "bun", pal: { h: "#1c1c22", s: "#f7d3b5", g: "#f7d3b5", w: "#2a2e38", t: "#ffd54a", p: "#2a2e38", b: "#141418" }, req: { k: "retire", v: 3, d: "퇴사 3회" } },
@@ -3892,7 +3892,7 @@ function say(text, sec = 4) { bubble = { text, t: sec }; bubbleCd = 14 + Math.ra
 function idleLine() {
   if (typeof memQueue === "function" && memQueue().length && Math.random() < 0.3) return `오늘 암송 ${memQueue().length}구절 남았어. 통과하면 월급 보너스!`;
   if (S.bible.today.length === 0 && Math.random() < 0.3) return "오늘 말씀 한 장 어때? 만나도 주잖아.";
-  if (S.study.today < 25 && !S.study.running && Math.random() < 0.3) return "공부 25분이면 갱도 절반은 캔대!";
+  if (S.study.today < 25 && !S.study.running && Math.random() < 0.3) return "설교 읽기 25분이면 갱도 절반은 캔대!";
   if (S.study.running && Math.random() < 0.5) return "광산에서 형광펜 곡괭이 휘두르는 중!";
   return LINES[Math.floor(Math.random() * LINES.length)];
 }
@@ -6022,7 +6022,7 @@ function addStudy(ms) {
   St.today += ms / 60000; St.total += ms / 60000; S.day.study = St.today; if (S.week) S.week.study += ms / 60000;
   if (St.subject) { const e = St.log.find(l => l.s === St.subject); if (e) e.m += ms / 60000; else St.log.push({ s: St.subject, m: ms / 60000 }); }
   habitRecAdd("study", ms / 60000);
-  if (St.today >= HB_MIN.study && habitTouch("study")) toast(`공부 연속 ${St.streak}일째!`);
+  if (St.today >= HB_MIN.study && habitTouch("study")) toast(`설교 읽기 연속 ${St.streak}일째!`);
   if (Math.floor(before / 25) < Math.floor(St.today / 25)) { scrollEarn(Math.floor(St.today / 25) - Math.floor(before / 25)); graceGift("study"); }
   const nd = depthAt(St.today);
   let ore = 0, sv = 0, am = 0;
@@ -6401,8 +6401,8 @@ var WENH_MAX = 10;
 var WCOND = {
   floor: ["최고층", v => `${v}층`],
   chap: ["말씀 누적", v => `${v}장`],
-  study: ["공부 누적", v => `${+(v / 60).toFixed(1)}시간`],
-  sstreak: ["공부 연속 최고", v => `${v}일`],
+  study: ["설교 읽기 누적", v => `${+(v / 60).toFixed(1)}시간`],
+  sstreak: ["설교 읽기 연속 최고", v => `${v}일`],
   rstreak: ["말씀 연속 최고", v => `${v}일`],
   astreak: ["출근 연속 최고", v => `${v}일`],
   mem: ["암송 완료", v => `${v}구절`],
@@ -6427,7 +6427,7 @@ var WHAIR = {
 /* ---------- 세트 ---------- */
 /* own: 가지고만 있어도 세트 효과 (회장님 세트 = 예전 전설 정장 효과 그대로, 전설 오라까지 7벌) */
 var WSETS = [
-  { id: "rookie", n: "신입사원 세트", g: 1, d: "첫 출근 날의 마음가짐 · 공부로 캔 광석으로 사요", col: "#7fe3a0",
+  { id: "rookie", n: "신입사원 세트", g: 1, d: "첫 출근 날의 마음가짐 · 설교를 읽어 캔 광석으로 사요", col: "#7fe3a0",
     bonus: { 2: { dmg: 50 }, 4: { gold: 100 }, 6: { xdmg: 1.5 } } },
   { id: "elite", n: "엘리트 정장 세트", g: 2, d: "다림질 칼주름, 일 잘하는 사람 · 광석으로 사요", col: "#6fd3ff",
     bonus: { 2: { critd: 100 }, 4: { boss: 100 }, 6: { xdmg: 2 } } },
@@ -6445,9 +6445,9 @@ var WSETS = [
     bonus: { 2: { crit: 8 }, 4: { critd: 250 }, 6: { xdmg: 2.5 } } },
   { id: "cat", n: "고양이 코트", g: 3, d: "말씀을 읽을수록 하나씩 열려요", col: "#ff9b3d",
     bonus: { 2: { gold: 150 }, 4: { aps: 12 }, 6: { xdmg: 2.5 } } },
-  { id: "cyber", n: "사이버 후드", g: 3, d: "공부한 시간만큼 하나씩 열려요", col: "#6fd3ff",
+  { id: "cyber", n: "사이버 후드", g: 3, d: "설교를 읽은 시간만큼 하나씩 열려요", col: "#6fd3ff",
     bonus: { 2: { wpn: 100 }, 4: { aps: 15 }, 6: { xdmg: 2.5 } } },
-  { id: "ice", n: "서리 기사", g: 3, d: "공부를 며칠 이어 하면 열려요", col: "#bff0ff",
+  { id: "ice", n: "서리 기사", g: 3, d: "설교 읽기를 며칠 이어 하면 열려요", col: "#bff0ff",
     bonus: { 2: { boss: 120 }, 4: { btime: 4 }, 6: { xdmg: 2.5 } } },
   { id: "mage", n: "별빛 마법사", g: 3, d: "암송할수록 하나씩 열려요", col: "#c9a6ff",
     bonus: { 2: { dmg: 150 }, 4: { mem: 30 }, 6: { xdmg: 2.5 } } },
@@ -6563,7 +6563,7 @@ var WITEMS = [
   { id: "ct_prop", set: "cat", slot: "prop", n: "줄무늬 꼬리", cond: ["chap", 120],
     look: { b: { 12: ".V................", 13: ".n................", 14: "nN................", 15: "n.................", 16: "N.................", 17: "n.................", 18: ".N................", 19: "..nn.............." }, c: { n: "#ff9b3d", N: "#c9701c", V: "#fff4e0" } } },
 
-  /* 사이버 후드 (공부 누적) */
+  /* 사이버 후드 (설교 읽기 누적) */
   { id: "cy_head", set: "cyber", slot: "head", n: "안테나 바이저 후드", cond: ["study", 180],
     look: { pal: { g: "#6fd3ff", k: "#e6fbff" }, f: { "-2": ".....Q............", "-1": ".....Q............", 0: ".....qqqqqqq......", 1: "....qqqqqqqqqq....", 2: "...qqqqqqqqqqqq...", 3: "...qqqQQQQQQQQq...", 4: "...qqqQ...........", 5: "...qqqQ...........", 6: "...qqq............", 7: "...qqq............", 8: "....qq............", 9: "....qq............", 10: ".....q............" },
       c: { q: "#2f3550", Q: "#6fd3ff" } } },
@@ -6575,7 +6575,7 @@ var WITEMS = [
   { id: "cy_prop", set: "cyber", slot: "prop", n: "홀로 드론", cond: ["study", 1800],
     look: { b: { 0: "z.z...............", 1: "qqq...............", 2: ".Q................", 3: ".o................" }, c: { z: "#c9d2e6", q: "#2f3550", Q: "#6fd3ff", o: "#2b8fb8" } } },
 
-  /* 서리 기사 (공부 연속) */
+  /* 서리 기사 (설교 읽기 연속) */
   { id: "ic_head", set: "ice", slot: "head", n: "얼음 왕관", cond: ["sstreak", 2],
     look: { f: { "-2": ".......R...R......", "-1": ".......R.R.R......", 0: "......RRRRRRR....." }, c: { R: "#bff0ff" } } },
   { id: "ic_top", set: "ice", slot: "top", n: "서리 갑옷", cond: ["sstreak", 4],
@@ -6680,9 +6680,9 @@ var WITEMS = [
   { id: "t_plan", slot: "title", n: "플랜 완주자", g: 2, cond: ["planfin", 1], perk: { manna: 20, dmg: 30 }, d: "읽기 플랜을 끝까지 마쳤습니다" },
   { id: "t_word", slot: "title", n: "말씀의 사람", g: 3, cond: ["chap", 500], perk: { manna: 30, dmg: 80 }, d: "말씀 500장을 읽었습니다" },
   { id: "t_round", slot: "title", n: "성경 통독자", g: 4, cond: ["round", 1], perk: { dmg: 200, manna: 30 }, d: "성경 66권 1189장을 모두 읽었습니다" },
-  { id: "t_study1", slot: "title", n: "공부 새내기", g: 1, cond: ["study", 300], perk: { ore: 10 }, d: "공부 5시간을 채웠습니다" },
-  { id: "t_study2", slot: "title", n: "집중의 달인", g: 2, cond: ["sstreak", 14], perk: { ore: 20, aps: 5 }, d: "14일 동안 하루도 빠짐없이 공부했습니다" },
-  { id: "t_study3", slot: "title", n: "에스라의 학자", g: 3, cond: ["study", 6000], perk: { ore: 30, dmg: 80 }, d: "여호와의 율법을 연구하여 준행하며 … 가르치기로 결심하였었더라 (스 7:10) · 공부 100시간" },
+  { id: "t_study1", slot: "title", n: "설교 새내기", g: 1, cond: ["study", 300], perk: { ore: 10 }, d: "설교 읽기 5시간을 채웠습니다" },
+  { id: "t_study2", slot: "title", n: "집중의 달인", g: 2, cond: ["sstreak", 14], perk: { ore: 20, aps: 5 }, d: "14일 동안 하루도 빠짐없이 설교를 읽었습니다" },
+  { id: "t_study3", slot: "title", n: "에스라의 학자", g: 3, cond: ["study", 6000], perk: { ore: 30, dmg: 80 }, d: "여호와의 율법을 연구하여 준행하며 … 가르치기로 결심하였었더라 (스 7:10) · 설교 읽기 100시간" },
   { id: "t_mem1", slot: "title", n: "암송 꿈나무", g: 1, cond: ["memp", 10], perk: { mem: 20 }, d: "암송 시험을 10번 통과했습니다" },
   { id: "t_mem2", slot: "title", n: "말씀을 마음에 둔 사람", g: 3, cond: ["mem", 100], perk: { mem: 30, critd: 150 }, d: "주의 말씀을 내 마음에 두었나이다 (시 119:11) · 암송 완료 100구절" },
   { id: "t_att", slot: "title", n: "개근상", g: 2, cond: ["astreak", 14], perk: { gold: 80 }, d: "14일 동안 하루도 빠짐없이 출근했습니다" },
@@ -6725,7 +6725,7 @@ var WOLD_SLOT = { hair: "head", shirt: "top", tie: "tie", arm: "arm", shoes: "sh
 /* ===================== 옷장 (v30) =====================
    2층 구조: 입은 옷 = 착용 효과(부위마다 다른 능력치 + 입었을 때 효과), 가진 옷 = 보유 효과(모든 피해 +) + 고유 효과.
    겉모습은 덧입기로 따로 (능력치는 그대로). 세트는 같은 세트 2·4·6벌, 회장님 세트는 가지고만 있어도(소장 효과).
-   열쇠는 말씀·공부·암송 기록과 층·퇴사 기록, 사는 옷은 공부로 캔 광석. 강화: 고급~전설은 광석, 신화는 만나.
+   열쇠는 말씀·설교·암송 기록과 층·퇴사 기록, 사는 옷은 설교를 읽어 캔 광석. 강화: 고급~전설은 광석, 신화는 만나.
    이미 가진 옷은 자동으로 도감에 들어가고, 모은 수마다 영구 효과 + 선물. 무기 이펙트·오라는 모양을 덮지 않음. */
 var WIT = {}, WSETX = {}, WSLOTX = {};
 (function wardIndex() {
@@ -6963,7 +6963,7 @@ function wardAutoBest(prefer) {
 }
 function wardBuy(id) {
   const it = WIT[id], W = wardState(); if (!it || !it.cost || W.own[id] != null) return false;
-  const need = it.cost.ore || 0; if ((S.ore || 0) < need) { toast(`광석이 ${fmtR(need - (S.ore || 0))} 모자라요 · 공부 탭 타이머로 광산을 파요`); return false; }
+  const need = it.cost.ore || 0; if ((S.ore || 0) < need) { toast(`광석이 ${fmtR(need - (S.ore || 0))} 모자라요 · 설교 탭에서 원고를 읽어 광산을 파요`); return false; }
   S.ore -= need; W.own[id] = 0; W.ops++; if (W.seen && W.seen.indexOf(id) < 0) W.seen.push(id);
   const cur = W.eq[it.slot] && WIT[W.eq[it.slot]];
   if (!cur || it.g > cur.g) W.eq[it.slot] = id;
@@ -7636,7 +7636,7 @@ function weekKey() { const d = new Date(); d.setDate(d.getDate() - (d.getDay() +
 function rollWeek() { if (!S) return; const k = weekKey(); if (!S.week || S.week.key !== k) S.week = { key: k, chap: 0, study: 0, mem: 0, claimed: {} }; }
 const WEEKLY = [
   { id: "bdays", get n() { return `말씀 ${wGoal()}일 읽기`; }, get goal() { return wGoal(); }, val: () => weekBibleN(), f: v => `${Math.floor(v)}일`, rw: { stamp: 10, haste: 2 } },
-  { id: "study", get n() { return `공부 ${wkHours()}시간`; }, get goal() { return wkScale(300); }, val: () => S.week.study, f: v => `${(v / 60).toFixed(1)}시간`, get fg() { return `${wkHours()}시간`; }, rw: { ore: 600, silver: 3 } },
+  { id: "study", get n() { return `설교 ${wkHours()}시간`; }, get goal() { return wkScale(300); }, val: () => S.week.study, f: v => `${(v / 60).toFixed(1)}시간`, get fg() { return `${wkHours()}시간`; }, rw: { ore: 600, silver: 3 } },
   { id: "mem", get n() { return `암송 ${wkScale(40)}구절 통과`; }, get goal() { return wkScale(40); }, val: () => S.week.mem, f: v => `${Math.floor(v)}구절`, rw: { manna: 150, ame: 2 } },
 ];
 const WEEK_ALL = { stamp: 20, gold2: 2, rage: 2 };
@@ -7668,10 +7668,10 @@ function buildWeekly() {
 }
 
 /* ===================== 습관 지키기 (v28 · 고도화 1단계) =====================
-   1) 연속 지키기: 하루 최소 행동(말씀 1장 · 공부 10분 · 암송 5구절)이면 그날 연속이 이어짐.
+   1) 연속 지키기: 하루 최소 행동(말씀 1장 · 설교 읽기 10분 · 암송 5구절)이면 그날 연속이 이어짐.
       다 쉬어 간 날은 보호권(월요일마다 1개, 최대 2개)이 자동으로 그날을 지킴.
-      보호권이 없으면 이틀 안에 말씀 2장 · 공부 50분 · 암송 10구절로 다시 이음(48시간 회복).
-      안식 모드(최대 14일) 동안은 연속·주간 목표가 그대로. 주일엔 공부 연속이 쉬어 감.
+      보호권이 없으면 이틀 안에 말씀 2장 · 설교 읽기 50분 · 암송 10구절로 다시 이음(48시간 회복).
+      안식 모드(최대 14일) 동안은 연속·주간 목표가 그대로. 주일엔 설교 읽기 연속이 쉬어 감.
    2) 이번 주 말씀 n일(북극성): 기본 4일, 3~7일에서 고름. 안식한 날만큼 목표가 줄어듦.
    3) 말씀 확인: 오늘 읽은 시간(읽기 타이머 + 본문 화면) ≥ 확인한 장들의 최소 시간 합.
       장마다 최소 시간 = 글자 수 ÷ (내 읽기 속도 × 1.5), 처음엔 분당 1,000자로 가정.
@@ -7679,7 +7679,7 @@ function buildWeekly() {
    4) 예고 없는 선물(하루 2번까지), 묵상 노트, 화면 설정(흔들림·번쩍임), 번쩍임 안전 규칙.
    rollDay·merge·load 에서 부르므로 함수 선언과 var 만 씀 */
 var HB_KINDS = ["bible", "study", "mem"];
-var HB_NAME = { bible: "말씀", study: "공부", mem: "암송" };
+var HB_NAME = { bible: "말씀", study: "설교", mem: "암송" };
 var HB_UNIT = { bible: "장", study: "분", mem: "구절" };
 var HB_BIT = { bible: 1, study: 2, mem: 4 };
 var HB_MIN = { bible: 1, study: 10, mem: 5 };
@@ -7692,7 +7692,7 @@ var HB_GIFTS = {
   mem: [{ manna: 30 }, { stamp: 3 }, { ame: 1 }, { gold2: 1 }],
   med: [{ stamp: 3 }, { manna: 40 }, { ame: 1 }],
 };
-var HB_GIFT_WHY = { bible: "말씀을 읽다가 받은 선물이에요", study: "공부하다가 받은 선물이에요", mem: "암송하다가 받은 선물이에요", med: "묵상을 남기다가 받은 선물이에요" };
+var HB_GIFT_WHY = { bible: "말씀을 읽다가 받은 선물이에요", study: "설교를 읽다가 받은 선물이에요", mem: "암송하다가 받은 선물이에요", med: "묵상을 남기다가 받은 선물이에요" };
 var HB_WHY = ["시험", "수련회·여행", "아픔", "그냥 쉼"];
 var RD_CPM0 = 1000;
 var hkUI = { open: false, days: 3, why: "" };
@@ -8034,11 +8034,11 @@ function buildHabitCard() {
     <div class="hk-sh" id="hkSh"></div>
     <div class="hk-rest" id="hkRest"></div>
     <details class="hk-how"><summary>어떻게 지켜지나요?</summary><ul>
-      <li>말씀 1장 · 공부 10분 · 암송 5구절(볼 구절이 적으면 다 보기)만 해도 그날 연속이 이어져요. 더 하는 건 하루 목표예요.</li>
-      <li>말씀·공부·암송을 모두 쉬어 간 날은 보호권이 그날을 지켜 줘요. 보호권은 월요일마다 1개씩, 2개까지 모여요.</li>
-      <li>보호권이 없을 땐 이틀 안에 말씀 2장 · 공부 50분 · 암송 10구절이면 연속이 그대로 이어져요.</li>
+      <li>말씀 1장 · 설교 읽기 10분 · 암송 5구절(볼 구절이 적으면 다 보기)만 해도 그날 연속이 이어져요. 더 하는 건 하루 목표예요.</li>
+      <li>말씀·설교·암송을 모두 쉬어 간 날은 보호권이 그날을 지켜 줘요. 보호권은 월요일마다 1개씩, 2개까지 모여요.</li>
+      <li>보호권이 없을 땐 이틀 안에 말씀 2장 · 설교 읽기 50분 · 암송 10구절이면 연속이 그대로 이어져요.</li>
       <li>시험·수련회·아플 때는 안식 모드를 켜 두면 그동안 연속과 주간 목표가 그대로예요.</li>
-      <li>주일에는 공부 연속이 쉬어 가요. 말씀은 읽은 시간으로 확인돼요(너무 빨리 넘긴 장은 기록만 남고, 읽은 시간이 쌓이면 확인돼요).</li>
+      <li>주일에는 설교 읽기 연속이 쉬어 가요. 말씀은 읽은 시간으로 확인돼요(너무 빨리 넘긴 장은 기록만 남고, 읽은 시간이 쌓이면 확인돼요).</li>
     </ul></details>`;
   addCustom("daily", card, () => renderHabitCard());
   card.addEventListener("click", e => {
@@ -8049,7 +8049,7 @@ function buildHabitCard() {
     if (ds.why != null && ds.why !== "") { hkUI.why = hkUI.why === ds.why ? "" : ds.why; sfx("tick"); renderHabitCard(true); return; }
     if (b.id === "hkGo") { restStart(hkUI.days, hkUI.why); hkUI.open = false; sfx("pass"); updateUI(true); save(); renderHabitCard(true); return; }
     if (b.id === "hkEnd") { restEnd(false); updateUI(true); save(); renderHabitCard(true); return; }
-    if (b.id === "hkSun") { const H = habitState(); H.sunRest = !H.sunRest; sfx("tick"); toast(H.sunRest ? "주일엔 공부 연속이 쉬어 가요" : "주일에도 공부 연속을 세요"); save(); renderHabitCard(true); return; }
+    if (b.id === "hkSun") { const H = habitState(); H.sunRest = !H.sunRest; sfx("tick"); toast(H.sunRest ? "주일엔 설교 읽기 연속이 쉬어 가요" : "주일에도 설교 읽기 연속을 세요"); save(); renderHabitCard(true); return; }
   });
 }
 function hkRowHTML(k) {
@@ -8072,7 +8072,7 @@ function renderHabitCard(force) {
     HB_KINDS.map(k => { const X = hbObj(k); return hbStreakNow(k) + ":" + (X.best || 0) + ":" + (X.rec ? X.rec.d + X.rec.got : ""); }).join(","), S.bible.total, Math.floor(S.study.total || 0), restDays60()].join("|");
   if (!force && rows._k === key) return; rows._k = key;
   const pend = S.bible.today.filter(e => !e.pf).length;
-  const today = `<span class="lbl">오늘</span><span>말씀 <b>${D.chap || 0}</b>장${pend ? ` (+${pend} 기록)` : ""}</span><span>공부 <b>${Math.floor(S.study.today || 0)}</b>분</span><span>암송 <b>${D.mem || 0}</b>구절</span><span>묵상 <b>${D.med ? "✓" : "-"}</b></span>`;
+  const today = `<span class="lbl">오늘</span><span>말씀 <b>${D.chap || 0}</b>장${pend ? ` (+${pend} 기록)` : ""}</span><span>설교 <b>${Math.floor(S.study.today || 0)}</b>분</span><span>암송 <b>${D.mem || 0}</b>구절</span><span>묵상 <b>${D.med ? "✓" : "-"}</b></span>`;
   $("hkToday").innerHTML = (D.claimed && D.claimed.all) ? `<div class="hk-done"><i class="moon"></i><div><b>오늘은 여기까지</b><small>오늘 할 일을 다 했어요. 남은 시간은 곽준영이 알아서 일해요 · 내일 또 만나요</small></div></div>`
     : rest ? `<div class="hk-done"><i class="moon"></i><div><b>안식 중이에요</b><small>오늘은 마음 편히 쉬어요. 연속과 주간 목표는 그대로 지켜져요</small></div></div>` : today;
   rows.innerHTML = HB_KINDS.map(hkRowHTML).join("");
@@ -8086,7 +8086,7 @@ function renderHabitCard(force) {
     rh = `<div class="hk-note rest">${ri("moon")}안식 중 · ${mdText(H.rest.to)}까지 (${left}일)${H.rest.why ? ` · ${escapeHtml(H.rest.why)}` : ""}<br>쉬는 동안 연속과 주간 목표가 그대로예요.</div>
       <div class="hk-restbar"><button type="button" class="btn" id="hkEnd">오늘부터 다시 시작</button></div>`;
   } else {
-    rh = `<div class="hk-restbar"><button type="button" class="btn" id="hkOpen">${ri("moon")} 안식 모드${hkUI.open ? " 닫기" : ""}</button><button type="button" class="btn" id="hkSun" aria-pressed="${H.sunRest}">주일 공부 쉼 · ${H.sunRest ? "켬" : "끔"}</button></div>`;
+    rh = `<div class="hk-restbar"><button type="button" class="btn" id="hkOpen">${ri("moon")} 안식 모드${hkUI.open ? " 닫기" : ""}</button><button type="button" class="btn" id="hkSun" aria-pressed="${H.sunRest}">주일 설교 쉼 · ${H.sunRest ? "켬" : "끔"}</button></div>`;
     if (hkUI.open) rh += `<div class="hk-pick"><span>얼마나 쉴까요? (오늘부터)</span><div class="hk-chips">${[1, 3, 7, 14].map(n => `<button type="button" data-days="${n}" aria-pressed="${hkUI.days === n}">${n}일</button>`).join("")}</div>
       <span>이유 (골라도 되고 안 골라도 돼요)</span><div class="hk-chips">${HB_WHY.map(w => `<button type="button" data-why="${w}" aria-pressed="${hkUI.why === w}">${w}</button>`).join("")}</div>
       <button type="button" class="buy manna" id="hkGo"><span class="act">안식 모드 시작 · ${hkUI.days}일</span><small>${mdText(addDays(t, hkUI.days - 1))}까지 · 최근 60일 안식 ${restDays60()}일</small></button></div>`;
@@ -8166,7 +8166,7 @@ function hbDrawFlash() {
    2) 퇴사 권장 게이지: 지금 받을 도장 ÷ (가진 도장 + 보물에 쓴 도장). +50% 초록, +200% 강조.
       빠른 출근: 퇴사하면 이번 회사 최고층의 40%까지 출근 버스로 바로 (보스 월급을 받으며 막히면 무기·커피를 싼 것부터 강화).
    3) 자리 비운 동안 12시간까지 정산(OFF_CAP), 정산서에 표시.
-   4) 탭 차례로 열기: 공부 3층 · 암송 5층(말씀 1장이면 바로) · 동료 10층 · 정장 15층 · 보물 25층 · 퇴사 40층.
+   4) 탭 차례로 열기: 설교 3층 · 암송 5층(말씀 1장이면 바로) · 동료 10층 · 정장 15층 · 보물 25층 · 퇴사 40층.
       열릴 때 한 줄 안내, 정보 탭 '안내 다시 보기'에서 모든 안내를 다시 봄.
    5) 이번 주 경제: 재화마다 번 것 · 쓴 것 · 지금 · 용도, 7일치 넘게 고이면 쓸 곳, 다음 강화까지 필요한 실제 활동량.
    rollDay·merge·load 에서 부르므로 함수 선언과 var 만 씀 */
@@ -8175,17 +8175,17 @@ var TAB_UNLOCK = {
   study: { f: 3, any: st => (st.bible && st.bible.total > 0) || (st.study && st.study.total > 0), d: "3층에 열려요 · 말씀 1장을 읽어도 열려요" },
   mem: { f: 5, any: st => (st.bible && st.bible.total > 0) || (st.mem && st.mem.total > 0), d: "5층에 열려요 · 말씀 1장을 읽어도 열려요" },
   pet: { f: 10, d: "10층에 열려요" },
-  suit: { f: 15, any: st => (st.ore || 0) >= 150 || !!(st.ward && st.ward.own && Object.keys(st.ward.own).length), d: "15층에 열려요 · 말씀 5장을 읽거나 공부로 광석 150을 캐도 열려요" },
+  suit: { f: 15, any: st => (st.ore || 0) >= 150 || !!(st.ward && st.ward.own && Object.keys(st.ward.own).length), d: "15층에 열려요 · 말씀 5장을 읽거나 설교를 읽어 광석 150을 캐도 열려요" },
   treasure: { f: 25, any: st => (st.stamp || 0) >= 10, d: "25층에 열려요 · 결재도장 10개를 모아도 열려요" },
   retire: { f: 40, any: st => (st.retires || 0) > 0, d: "40층에 열려요" },
 };
 var TAB_INTRO = {
-  weapon: "보스를 잡아 받은 월급으로 무기와 커피를 강화해요. 무기는 일반부터 초월까지 7등급 66개(에픽부터 12개씩), 고급부터는 공부·말씀으로 모은 재료로 한 번 열어 두면 퇴사해도 열린 채예요.",
+  weapon: "보스를 잡아 받은 월급으로 무기와 커피를 강화해요. 무기는 일반부터 초월까지 7등급 66개(에픽부터 12개씩), 고급부터는 설교·말씀으로 모은 재료로 한 번 열어 두면 퇴사해도 열린 채예요.",
   bible: "개역한글 본문을 읽고 묵상 한 줄을 남겨요. 읽은 장마다 만나와 도장이 쌓이고, 읽은 시간으로 확인돼요. 읽을 때와 곳을 정해 두면 그 시각에 알림도 받을 수 있어요.",
   mem: "필수 300구절 중 201~300, 100구절을 하루 5구절씩 외워요(20일 한 바퀴). 통과할수록 다음 복습이 1·3·7·14·30·60일 뒤로 미뤄지고, 2바퀴부터는 하루 한 묶음씩 다시 점검해서 100구절이 모두 계속 돌아요.",
-  study: "공부 타이머를 켜면 공부한 시간만큼 광산을 파서 광석·은괴·자수정을 캐요. 25분마다 집중 확인.",
+  study: "설교 원고를 열어 읽으면 그 시간만큼 광산을 파서 광석·은괴·자수정을 캐요. 끝까지 읽으면 광석 보너스.",
   pet: "만나로 동료를 들이면 같이 싸우고 월급을 늘려 줘요.",
-  suit: "말씀·공부·암송 기록으로 옷을 모으고 입어요. 입은 옷은 부위 효과, 가진 옷은 모두 보유 효과. 세트·무기 이펙트·오라·칭호까지 모두 능력치가 있고 퇴사해도 남아요.",
+  suit: "말씀·설교·암송 기록으로 옷을 모으고 입어요. 입은 옷은 부위 효과, 가진 옷은 모두 보유 효과. 세트·무기 이펙트·오라·칭호까지 모두 능력치가 있고 퇴사해도 남아요.",
   treasure: "결재도장으로 보물을 강화하면 퇴사해도 남는 힘이 돼요.",
   daily: "다음 목표, 출근부, 연속 지키기, 절기 순례, 일일 업무, 주간 목표, 업적이 모여 있어요. 첫걸음 꾸러미와 묵상 2배도 여기서 받아요.",
   info: "인사 기록과 내 기록, 말씀 상태판(지표·월간 점검·보상 끄기 주간), 이번 주 경제, 도감, 안내 다시 보기가 있어요.",
@@ -8193,26 +8193,26 @@ var TAB_INTRO = {
   set: "소리(배경 음악·효과음 크기), 화면(흔들림·번쩍임·말씀 글자 크기), 말씀 알림, 친구 초대 링크·QR, 아이디 로그인, 기록 백업이 있어요. 브라우저에서 열었다면 앱으로 설치하는 방법도 여기 있어요.",
 };
 var GR_GUIDE = [
-  ["연속 지키기", "말씀 1장 · 공부 10분 · 암송 5구절이면 그날 연속이 이어져요. 다 쉬어 간 날은 보호권(월요일마다 1개, 최대 2개)이 지켜 주고, 보호권이 없으면 이틀 안에 말씀 2장 · 공부 50분 · 암송 10구절로 다시 이어져요."],
+  ["연속 지키기", "말씀 1장 · 설교 읽기 10분 · 암송 5구절이면 그날 연속이 이어져요. 다 쉬어 간 날은 보호권(월요일마다 1개, 최대 2개)이 지켜 주고, 보호권이 없으면 이틀 안에 말씀 2장 · 설교 읽기 50분 · 암송 10구절로 다시 이어져요."],
   ["안식 모드", "시험·수련회·아플 때 업무 탭에서 켜요. 최대 14일, 그동안 연속과 주간 목표가 그대로예요."],
   ["말씀 확인", "읽은 시간(본문 화면 + 읽기 타이머)이 장마다 최소 시간(글자 수 ÷ 내 읽기 속도 × 1.5)만큼 쌓이면 확인돼요. 너무 빨리 넘긴 장은 기록만 남고, 시간이 쌓이면 저절로 확인돼요."],
   ["다음 목표", "오늘 · 이번 주 · 시즌 목표와 예상 일수를 보여 줘요. 예상 일수는 최근 14일 기록으로 계산하고, 30일이 넘으면 중간 이정표를 함께 보여 줘요."],
   ["퇴사와 빠른 출근", "퇴사 탭 게이지가 +50%를 넘으면 초록, +200%를 넘으면 크게 이득이에요. 퇴사하면 이번 회사 최고층의 40%까지 출근 버스로 바로 올라가요."],
   ["무기 등급", "일반 · 고급 · 희귀는 6개씩, 에픽 · 전설 · 신화 · 초월은 12개씩 모두 66개예요. 고급부터는 무기마다 재료로 한 번 열고(등급 첫 무기는 관문이라 조금 더), 연 무기는 퇴사해도 열린 채라 모양도 골라 써요. 에픽부터는 무기마다 이펙트 색이 다르고, 등급이 오를수록 무기 둘레·타격 이펙트가 한 겹씩 늘어요. 마지막 무기는 5강 뒤 자수정으로 끝없이 돌파해요."],
-  ["옷장 등급", "옷장도 무기와 같은 7등급이에요. 사는 옷은 고급·희귀는 광석, 전설·초월 총수 세트는 은괴·자수정으로 사고, 말씀 세트(신화 전신갑주·다윗, 초월 이기는 자)는 말씀·암송·공부·출근 기록이 열쇠, 강화는 만나예요. 캐릭터 이름 색도 등급이에요."],
+  ["옷장 등급", "옷장도 무기와 같은 7등급이에요. 사는 옷은 고급·희귀는 광석, 전설·초월 총수 세트는 은괴·자수정으로 사고, 말씀 세트(신화 전신갑주·다윗, 초월 이기는 자)는 말씀·암송·설교·출근 기록이 열쇠, 강화는 만나예요. 캐릭터 이름 색도 등급이에요."],
   ["지하 문서고", "30초로 시작해요. 서류함을 한 방에 부수면 1초가 늘어(최대 30초) 계속 내려갈 수 있고, 10m마다 서류함이 단단해져요. 100m마다 월급, 이정표(500·2000·4500·8000m…)마다 은괴, 처음 닿는 1000m마다 도장과 은괴를 받아요."],
   ["자리 비운 동안", "앱을 닫아 두어도 12시간까지 전투와 월급이 계산돼요. 분노·쾌속 같은 잠깐 효과는 빼고 계산해요."],
   ["이번 주 경제", "정보 탭에서 재화마다 이번 주에 번 것·쓴 것과 용도를 볼 수 있어요. 일주일치보다 많이 고이면 쓸 곳을 알려 줘요."],
-  ["옷장", "입은 옷은 부위마다 다른 능력치(착용 효과), 가진 옷은 모두 모든 피해 +(보유 효과). 같은 세트를 2·4·6벌 입으면 세트 효과, 회장님 세트는 가지고만 있어도 쌓여요. 겉모습은 덧입기로 따로 고르고, 잠긴 옷도 눌러서 미리 입어 볼 수 있어요. 강화는 공부로 캔 광석, 말씀의 전신갑주는 말씀으로 받은 만나로 해요."],
+  ["옷장", "입은 옷은 부위마다 다른 능력치(착용 효과), 가진 옷은 모두 모든 피해 +(보유 효과). 같은 세트를 2·4·6벌 입으면 세트 효과, 회장님 세트는 가지고만 있어도 쌓여요. 겉모습은 덧입기로 따로 고르고, 잠긴 옷도 눌러서 미리 입어 볼 수 있어요. 강화는 설교를 읽어 캔 광석, 말씀의 전신갑주는 말씀으로 받은 만나로 해요."],
 ];
 var ECO_KEYS = ["manna", "stamp", "ore", "silver", "ame"];
 var ECO_NAME = { manna: "만나", stamp: "도장", ore: "광석", silver: "은괴", ame: "자수정" };
 var ECO_USE = {
   manna: "말씀·암송·출근으로 얻어 동료를 들이고 키워요",
   stamp: "말씀 한 장마다·출근·퇴사로 얻어 보물을 강화해요",
-  ore: "공부한 시간만큼 캐서 정장과 부적을 사요",
-  silver: "공부 광산 7층마다 · 지하 문서고 이정표 · '공부 25분' 업무 · 옷장 도감 · 무기 해금과 전설·초월 옷에 써요",
-  ame: "공부 광산 21층마다 · 문서고 · '암송 5구절' 업무 · 플랜 하루 분량 · 높은 등급 무기 해금과 마지막 무기 돌파에 써요",
+  ore: "설교를 읽은 시간만큼 캐서 정장과 부적을 사요",
+  silver: "설교 광산 7층마다 · 지하 문서고 이정표 · '설교 읽기 25분' 업무 · 옷장 도감 · 무기 해금과 전설·초월 옷에 써요",
+  ame: "설교 광산 21층마다 · 문서고 · '암송 5구절' 업무 · 플랜 하루 분량 · 높은 등급 무기 해금과 마지막 무기 돌파에 써요",
 };
 var ECO_SINK = { manna: ["pet", "동료"], stamp: ["treasure", "보물"], ore: ["suit", "옷장"], silver: ["weapon", "무기"], ame: ["weapon", "무기"] };
 var grUI = { strip: "", ladder: "", t: 0 }, treMemo = { k: "", v: 0 }, tabCols = 0;
@@ -8291,7 +8291,7 @@ var LADDER_TODAY = ["read1", "read3", "med", "mem5", "st25"];
 var LADDER_TAB = { chap: "bible", med: "bible", mem: "mem", study: "study" };
 function ladderRows() {
   const rows = [], D = S.day || {}, t = dayKey();
-  // 오늘: 말씀·암송·공부 먼저
+  // 오늘: 말씀·암송·설교 먼저
   if (restOn(t)) rows.push({ k: "오늘", t: "안식 중이에요", v: "쉼", p: 1, s: "오늘은 쉬어도 연속과 주간 목표가 그대로예요", go: "daily", done: true });
   else {
     const left = planTodayLeft();
@@ -8343,7 +8343,7 @@ function ladderRows() {
   festLadder(rows); measLadder(rows);
   return rows;
 }
-/* 메인 화면 한 줄: 승진 가능 → 오늘 말씀·암송·공부 → 이번 주 말씀 → 시즌 승진 → 보스 */
+/* 메인 화면 한 줄: 승진 가능 → 오늘 말씀·암송·설교 → 이번 주 말씀 → 시즌 승진 → 보스 */
 function ladderPick(rows) {
   const hot = rows.find(r => r.hot); if (hot) return hot;
   const td = rows.find(r => r.k === "오늘" && !r.game && !r.done); if (td) return td;
@@ -8500,7 +8500,7 @@ function ecoNext() {
     WITEMS.forEach(it => { if (W.own[it.id] == null && it.cost) opts.push({ c: it.cost.ore, t: `${it.n} 사기` }); });
     WSLOT.forEach(sl => { const id = W.eq[sl.id]; if (!id || sl.id === "title" || W.own[id] == null || W.own[id] >= WENH_MAX) return; const c = wardEnhCost(WIT[id], W.own[id]); if (c.ore && !c.silver) opts.push({ c: c.ore, t: `${WIT[id].n} +${W.own[id] + 1} 강화` }); });
     const o = opts.sort((a, b) => a.c - b.c)[0], need = Math.max(0, o.c - S.ore);
-    out.push(need ? `${o.t}까지 광석 ${fmtR(need)}` + (opm ? ` · 공부 약 ${Math.ceil(need / opm)}분` : "") : `${o.t} 바로 할 수 있어요 (광석 ${fmtR(o.c)})`);
+    out.push(need ? `${o.t}까지 광석 ${fmtR(need)}` + (opm ? ` · 설교 읽기 약 ${Math.ceil(need / opm)}분` : "") : `${o.t} 바로 할 수 있어요 (광석 ${fmtR(o.c)})`);
   }
   return out;
 }
@@ -8527,9 +8527,9 @@ function growTick() {
 }
 
 /* ===================== 결제 대체 장치 (v31 · 고도화 4단계) =====================
-   돈으로 사는 과금 장치 일곱 가지를 말씀·암송·공부 시간으로 바꿈 (기준서 기둥 6·11, 과금 장치 대체표).
+   돈으로 사는 과금 장치 일곱 가지를 말씀·암송·설교 시간으로 바꿈 (기준서 기둥 6·11, 과금 장치 대체표).
    1) 첫걸음 꾸러미 (스타터 팩): 첫 말씀 1장 + 첫 집중 25분 → 한 번 큰 선물 + 칭호 '첫걸음'. 기한 없음.
-   2) 절기 순례 (시즌 패스): 추수감사·대림·주현·사순·부활·성령강림. 순례 XP = 그날 말씀·공부·암송·묵상·보스(하루 상한)
+   2) 절기 순례 (시즌 패스): 추수감사·대림·주현·사순·부활·성령강림. 순례 XP = 그날 말씀·설교·암송·묵상·보스(하루 상한)
       + 이번 주 목표(주간 일괄 미션, 주간 목표와 같음). 무료 길은 누구나, 헌신 길은 7일 안에 말씀 5일(안식 빼고 비율)이면 소급 개방.
       스킵 없음, 보상 영구, 끝날 때 못 받은 보상 자동 지급, 남은 토큰은 광석으로. 절기 상점(옷·칭호·재료), 한정 옷은 이듬해 다시.
    3) 시간의 두루마리 (시간 스킵): 집중 25분마다 1장, 펼치면 지금 층에서 2시간 일한 월급(하루 3장). 층·신기록·보스 첫 처치는 그대로.
@@ -8580,8 +8580,8 @@ var BK_SHORT = ["창", "출", "레", "민", "신", "수", "삿", "룻", "삼상"
   "마", "막", "눅", "요", "행", "롬", "고전", "고후", "갈", "엡", "빌", "골", "살전", "살후", "딤전", "딤후", "딛", "몬", "히", "약", "벧전", "벧후", "요일", "요이", "요삼", "유", "계"];
 var FEST_GUIDE = [
   ["첫걸음 꾸러미", "첫 말씀 1장과 첫 집중 25분을 마치면 업무 탭 맨 위에서 한 번 여는 큰 선물이에요(만나·광석·은괴·자수정·버프 + 칭호 '첫걸음'). 기한은 없어요."],
-  ["절기 순례", "교회력 절기(추수감사·대림·주현·사순·부활·성령강림)마다 4~7주 순례가 열려요. 그날 읽은 말씀·공부·암송·묵상·보스로 순례 XP가 쌓이고(하루 최대 260, 다 채우면 '오늘은 충분합니다'), 이번 주 목표를 채울 때마다 XP 60과 토큰 4를 더 받아요. 헌신 길은 7일 안에 말씀 5일이면 열리고, 열리면 지난 레벨 보상까지 모두 받아요. 레벨을 건너뛰는 방법은 없어요. 보상은 영구, 끝나는 날 못 받은 보상은 자동으로 받고 남은 토큰은 광석으로 바꿔 드려요. 절기 옷은 이듬해 같은 절기에 다시 나와요."],
-  ["시간의 두루마리", "공부 탭 집중 25분마다 1장. 펼치면 지금 층에서 2시간 일한 월급을 바로 받아요(하루 3장, 잠깐 버프는 빼고 계산). 층·신기록·보스 첫 처치는 그대로라 건너뛸 수 없어요."],
+  ["절기 순례", "교회력 절기(추수감사·대림·주현·사순·부활·성령강림)마다 4~7주 순례가 열려요. 그날 읽은 말씀·설교·암송·묵상·보스로 순례 XP가 쌓이고(하루 최대 260, 다 채우면 '오늘은 충분합니다'), 이번 주 목표를 채울 때마다 XP 60과 토큰 4를 더 받아요. 헌신 길은 7일 안에 말씀 5일이면 열리고, 열리면 지난 레벨 보상까지 모두 받아요. 레벨을 건너뛰는 방법은 없어요. 보상은 영구, 끝나는 날 못 받은 보상은 자동으로 받고 남은 토큰은 광석으로 바꿔 드려요. 절기 옷은 이듬해 같은 절기에 다시 나와요."],
+  ["시간의 두루마리", "설교 탭에서 25분 읽을 때마다 1장. 펼치면 지금 층에서 2시간 일한 월급을 바로 받아요(하루 3장, 잠깐 버프는 빼고 계산). 층·신기록·보스 첫 처치는 그대로라 건너뛸 수 없어요."],
   ["묵상 2배", "정산서나 '오늘 업무 모두 완료' 보상을 받은 뒤 말씀 1장 · 암송 5구절 · 묵상 한 줄 가운데 하나를 하면 같은 보상을 한 번 더 받아요. 기본 보상은 그대로, 기한 없음, 하루 3번."],
   ["달란트 항아리", "보스 월급의 12%가 항아리에 따로 모이고, 암송 10구절을 통과할 때마다 열 수 있어요. 퇴사해도 항아리는 그대로예요."],
   ["첫 완독·첫 암송 2배", "권마다 처음 끝까지 읽으면 완독 선물이 2배, 새 구절을 처음 통과하면 그 보상이 2배예요. 다시 읽어 끝낸 권도 완독 선물을 받아요."],
@@ -8728,7 +8728,7 @@ function festWeekEval(se, wk) {
   const f = act / 7;
   return { wk, items: [
     { n: "말씀", v: bd, g: Math.max(1, Math.ceil(Math.max(3, Math.min(7, H.wgoal || 4)) * f)), u: "일" },
-    { n: "공부", v: Math.floor(st), g: Math.max(1, Math.ceil(300 * f)), u: "분" },
+    { n: "설교", v: Math.floor(st), g: Math.max(1, Math.ceil(300 * f)), u: "분" },
     { n: "암송", v: mm, g: Math.max(1, Math.ceil(40 * f)), u: "구절" },
   ] };
 }
@@ -8880,7 +8880,7 @@ function startOpen() {
 
 /* ---------- 3) 시간의 두루마리 ---------- */
 function scrollDay() { const C = scrollState(), t = dayKey(); if (C.d !== t) { C.d = t; C.u = 0; } return C; }
-function scrollEarn(n) { n = Math.floor(n); if (!(n > 0) || roffOn()) return; const C = scrollState(); C.n += n; C.got += n; payNote(`집중 25분 · 시간의 두루마리 +${n} (공부 탭)`); }
+function scrollEarn(n) { n = Math.floor(n); if (!(n > 0) || roffOn()) return; const C = scrollState(); C.n += n; C.got += n; payNote(`집중 25분 · 시간의 두루마리 +${n} (설교 탭)`); }
 /* 지금 층에서 2시간 일한 월급: 일반 4마리 + 작은 보스 1마리를 되풀이 (다음 몹이 나오는 시간 포함).
    쾌속·분노·더블월급·스킬 같은 잠깐 효과는 빼고, 위층 보스(신기록·첫 처치)는 넣지 않음 */
 function farmRate() {
@@ -9078,7 +9078,7 @@ function festRender(force) {
     return `<div class="fs-h" style="--fc:${D.col}"><span class="pay-ic" id="fsIc"></span><div><b>${D.n}</b><small>${festMD(se.start)} ~ ${festMD(se.end)} · ${wi + 1}주차 「${th[0]}」</small></div><span class="fs-lv num">Lv <b>${F.lv}</b>/${se.maxL}</span></div>
       <p class="fs-vs">${th[1]} <small>(${th[2]})</small></p>
       <div class="fs-xp"><div class="prog"><i style="width:${pct}%"></i></div><small class="num">${F.lv >= se.maxL ? `최고 레벨 · 넘친 XP 100마다 토큰 ${FEST_OV_TOK}` : `다음 레벨까지 ${Math.max(0, FEST_XP_LV - into)} XP`} · 순례 XP ${c.xp}</small></div>
-      <div class="fs-day"><b class="num">오늘 +${T.tot} XP</b>${chip("말씀", T.c, FEST_CAP.c)}${chip("공부", T.s, FEST_CAP.s)}${chip("암송", T.m, FEST_CAP.m)}${chip("묵상", T.n, FEST_CAP.n)}${chip("보스", T.b, FEST_CAP.b)}${T.tot >= FEST_DAY_MAX ? `<em>오늘은 충분합니다</em>` : ""}</div>`;
+      <div class="fs-day"><b class="num">오늘 +${T.tot} XP</b>${chip("말씀", T.c, FEST_CAP.c)}${chip("설교", T.s, FEST_CAP.s)}${chip("암송", T.m, FEST_CAP.m)}${chip("묵상", T.n, FEST_CAP.n)}${chip("보스", T.b, FEST_CAP.b)}${T.tot >= FEST_DAY_MAX ? `<em>오늘은 충분합니다</em>` : ""}</div>`;
   }, force);
   if (hb) { const ic = $("fsIc"); if (ic) ic.appendChild(pixIcon("lamp", 32)); }
   const tb = festPart("fsTrk", JSON.stringify([se.key, F.lv, F.cf, F.cd, F.dev, wardCount()]), () => festTrackHTML(se), force);
@@ -9115,7 +9115,7 @@ function festGapHTML() {
   const F = festState(), nx = festNextSe(), D = nx ? FEST_DEF[nx.id] : null;
   const hist = F.hist.slice(-4).reverse().map(h => { const se = festByKey(h.k); return se ? `<span>${FEST_DEF[se.id].n} ${se.y} · Lv ${h.L}/${h.max}${h.dev ? " · 헌신" : ""}</span>` : ""; }).join("");
   return (D ? `<div class="fs-h" style="--fc:${D.col}"><span class="pay-ic">${ri("lamp")}</span><div><b>다음 순례: ${D.n}</b><small>${festMD(nx.start)} (${WD[keyDate(nx.start).getDay()]}) 시작 · ${nx.weeks}주 · 최대 Lv ${nx.maxL}</small></div></div>` : "")
-    + `<p class="muted">지금은 순례 사이 쉬는 기간이에요. 말씀·공부·암송 기록은 그대로 쌓이고, 순례가 시작되면 그날부터 순례 XP가 쌓여요.</p>`
+    + `<p class="muted">지금은 순례 사이 쉬는 기간이에요. 말씀·설교·암송 기록은 그대로 쌓이고, 순례가 시작되면 그날부터 순례 XP가 쌓여요.</p>`
     + (hist ? `<div class="fs-hist"><b>지난 순례</b>${hist}</div>` : "");
 }
 /* ---------- 공부 탭: 시간의 두루마리 ---------- */
@@ -9191,7 +9191,7 @@ function dexRender() {
       고임 경보(ho)·퇴사 게이지(rt)·옷 해금 날짜(wu)·버전 도입일(v).
    2) 말씀 상태판(정보 탭): 북극성 8주 그래프, 지표 9개(목표·판정), v28~v31 수용 기준 자동 판정, 주간 한 줄(주일), 패치 메모(RITE 3일).
    3) 월간 청지기 점검: 자동성 4문항(SRBAI)·동기 4문항(상대적 자율성)·후회한 기능·다음 달 한 가지. 보상 없이 기록만.
-   4) 보상 끄기 주간: 월요일부터 7일, 말씀·암송·공부에 붙은 보상을 끔(한 번뿐인 보상은 보관했다가 주가 끝나면). 결과는 평소 4주 대비 %,
+   4) 보상 끄기 주간: 월요일부터 7일, 말씀·암송·설교에 붙은 보상을 끔(한 번뿐인 보상은 보관했다가 주가 끝나면). 결과는 평소 4주 대비 %,
       80% 넘으면 '외적 보상 비중'(100·80·60%)을 고를 수 있음.
    5) 실행 의도: 언제·무엇 다음에·어디서 읽을지, 맥락 일치율(계획한 시각 ±60분). 웹 푸시(수파베이스 kjy-noti 함수, 5분마다):
       아직 안 읽은 날만, 하루 2번까지, 알림 온 날을 세 번 이어서 그냥 넘기면 쉼, 문구 24개를 돌려 씀.
@@ -9210,10 +9210,10 @@ var ROFF_KEYS = ["manna", "stamp", "gold", "ore", "silver", "ame", "haste", "gol
 var ROFF_STAT = { chap: 1, med: 1, study: 1, mem: 1 };
 var ROFF_ACH = { chap: 1, study: 1, rstreak: 1, sstreak: 1, memm: 1, planf: 1 };
 var MEAS_GUIDE = [
-  ["말씀 상태판", "정보 탭 위쪽(프로필 아래). 최근 8주 말씀일수 그래프와 꾸준함·공백 회복·확인된 공부·암송 유지·계획한 시간에 읽기·자동성·노력÷게임 화면·기록만 남은 장, 그리고 지난 패치들이 목표를 이뤘는지 자동으로 판정해 보여 줘요. 판정은 도입 14일 뒤부터예요."],
+  ["말씀 상태판", "정보 탭 위쪽(프로필 아래). 최근 8주 말씀일수 그래프와 꾸준함·공백 회복·확인된 설교 읽기·암송 유지·계획한 시간에 읽기·자동성·노력÷게임 화면·기록만 남은 장, 그리고 지난 패치들이 목표를 이뤘는지 자동으로 판정해 보여 줘요. 판정은 도입 14일 뒤부터예요."],
   ["주간 한 줄 · 패치 메모", "주일과 월요일에는 '이번 주 말씀이 내게 한 일'을 한 줄 남길 수 있어요. 새 버전이 나온 뒤 3일 동안은 '무슨 문제가 있었나·설명되나·바로 고칠 수 있나' 메모 칸이 열려요."],
   ["월간 청지기 점검", "한 달에 한 번, 말씀 읽기가 얼마나 몸에 붙었는지(자동성 4문항)와 왜 읽는지(동기 4문항), 후회한 게임 기능, 다음 달 한 가지를 기록해요. 보상은 없어요."],
-  ["보상 끄기 주간", "분기에 한 주, 월요일부터 7일 동안 말씀·암송·공부에 붙은 게임 보상을 꺼요. 기록·연속·순례 XP는 그대로이고, 첫 완독 같은 한 번뿐인 보상은 보관했다가 주가 끝나면 드려요. 평소의 80%를 넘기면 외적 보상 비중을 낮출 수 있어요."],
+  ["보상 끄기 주간", "분기에 한 주, 월요일부터 7일 동안 말씀·암송·설교에 붙은 게임 보상을 꺼요. 기록·연속·순례 XP는 그대로이고, 첫 완독 같은 한 번뿐인 보상은 보관했다가 주가 끝나면 드려요. 평소의 80%를 넘기면 외적 보상 비중을 낮출 수 있어요."],
   ["읽을 때와 곳 · 알림", "말씀 탭에서 언제·무엇 다음에·어디서 읽을지 정해요. 아이디로 로그인한 설치 앱에서는 그 시각에 알림을 받을 수 있어요(아직 안 읽은 날만, 하루 2번까지, 알림 온 날을 세 번 이어서 그냥 넘기면 알림이 쉬어요)."],
 ];
 var measUI = { k: {}, hoT: 0, wuT: 0, first: null, stew: false, sv: null, iiEdit: false, iiDraft: null, iiMsg: "", nst: null, nstT: 0, busy: false, roffAsk: 0 };
@@ -9446,7 +9446,7 @@ function measChecks() {
       { n: "퇴사 때 게이지 중앙값 +50% 이상", val: rt.length ? `중앙값 +${Math.round(rtMed)}% (${rt.length}번)` : "퇴사 기록 없음 (v32부터 셈)", st: rt.length ? (rtMed >= 50 ? "ok" : "low") : "wait" },
     ] },
     { v: 30, n: "옷장 개편", items: [
-      { n: "기록으로 연 옷 3벌 (말씀·공부·암송 각 1벌 이상)", val: `말씀 ${grp.c} · 공부 ${grp.s} · 암송 ${grp.m}`, st: grp.c && grp.s && grp.m && grp.c + grp.s + grp.m >= 3 ? "ok" : "low" },
+      { n: "기록으로 연 옷 3벌 (말씀·설교·암송 각 1벌 이상)", val: `말씀 ${grp.c} · 설교 ${grp.s} · 암송 ${grp.m}`, st: grp.c && grp.s && grp.m && grp.c + grp.s + grp.m >= 3 ? "ok" : "low" },
       { n: "옷장 사기·강화 5번 이상", val: `${W.ops || 0}번`, st: (W.ops || 0) >= 5 ? "ok" : "low" },
       { n: "예전 저장 능력치 줄어든 것 0", val: "예전 저장 4종 시험 통과", st: "ok" },
     ] },
@@ -9508,7 +9508,7 @@ function roffFinalize(early) {
   if (gold > 0) S.gold += gold; grant(rw); R.esc = {};
   if (!early && pct != null && pct >= 80) R.unl = 1;
   const esc = Object.keys(rw).length || gold > 0 ? `<br>보관했던 보상: <span class="rws">${rwHTML(rw)}</span>${gold > 0 ? ` 월급 +${fmt(gold)}원` : ""}` : "";
-  const line = `말씀 ${got.c}일 · 공부 ${studyText(got.s)} · 암송 ${got.m}구절`;
+  const line = `말씀 ${got.c}일 · 설교 ${studyText(got.s)} · 암송 ${got.m}구절`;
   celebrateLater({ ic: "board", title: early ? "보상 끄기 주간을 마쳤어요" : "보상 끄기 주간 결과", sub: (pct == null ? line + (early ? "<br>중간에 마쳐서 비교는 하지 않았어요" : "<br>평소 기록이 2주 넘게 쌓이면 비교해 드려요") : `평소의 ${pct}% · ${line}<br>${pct >= 80 ? "보상이 없어도 꾸준했어요 · 상태판에서 외적 보상 비중을 낮출 수 있어요" : "보상이 아직 큰 힘이 되고 있어요 · 다음 분기에 다시 해 봐요"}`) + esc, tone: "manna", sound: "pass", ms: 4200, keep: 1 });
 }
 
@@ -9657,7 +9657,7 @@ function buildMeasCards() {
     const b = hbBtn(e, rc); if (!b || !b.dataset) return; const a = b.dataset.act;
     if (a === "start") { sfx("tick"); roffStart(); }
     else if (a === "stop") { const R = roffState(); if (R.on && dayKey() < R.on.from) { measUI.roffAsk = 0; roffCancel(); return; } if (measUI.roffAsk > Date.now()) { measUI.roffAsk = 0; roffCancel(); } else { measUI.roffAsk = Date.now() + 3000; measUI.k.rofBody = ""; roffRender(true); setTimeout(() => { measUI.k.rofBody = ""; }, 3100); } }
-    else if (a === "wgt") { const R = roffState(), v = +b.dataset.v; if (!R.unl || [100, 80, 60].indexOf(v) < 0) return; R.wgt = v; measUI.k.rofBody = ""; toast(`외적 보상 비중 ${v}% · 말씀·묵상·암송의 만나와 공부 광석에 적용돼요`); updateUI(true); save(); }
+    else if (a === "wgt") { const R = roffState(), v = +b.dataset.v; if (!R.unl || [100, 80, 60].indexOf(v) < 0) return; R.wgt = v; measUI.k.rofBody = ""; toast(`외적 보상 비중 ${v}% · 말씀·묵상·암송의 만나와 설교 광석에 적용돼요`); updateUI(true); save(); }
   });
 }
 function measChartSVG(wk) {
@@ -9681,7 +9681,7 @@ function measRows() {
     ["주간 말씀일수 (북극성)", days < 7 ? `기록 ${days}일 중 ${w7}일` : `최근 7일 ${w7}일`, "5~7일", days < 7 ? (w7 >= 5 ? "ok" : "wait") : st(w7 >= 5, w7 >= 4)],
     ["꾸준함 (다음 날도 한 비율)", cu.v == null ? "모으는 중" : `${cu.v.toFixed(2)} · ${cu.n}일`, "0.80 이상", cu.v == null ? "wait" : st(cu.v >= 0.8, cu.v >= 0.6)],
     ["공백 회복", g.n ? `중앙값 ${g.med}일 · 7일 넘는 공백 ${g.long}번` : "아직 공백 없음", "1일 이하 · 0번", st(g.med <= 1 && !g.long, g.med <= 2)],
-    ["확인된 공부", `이번 주 ${studyText(cur ? cur.s : 0)}${fr.v == null ? "" : ` · 25분 완주 ${pc(fr.v)}`}`, "완주 80% 이상", fr.v == null ? "wait" : st(fr.v >= 0.8, fr.v >= 0.6)],
+    ["확인된 설교 읽기", `이번 주 ${studyText(cur ? cur.s : 0)}${fr.v == null ? "" : ` · 25분 완주 ${pc(fr.v)}`}`, "완주 80% 이상", fr.v == null ? "wait" : st(fr.v >= 0.8, fr.v >= 0.6)],
     ["암송 유지 (보지 않고 쓰기)", mk.w == null ? "모으는 중 (7일 넘어 다시 볼 때)" : `7일 뒤 ${pc(mk.w)}${mk.m == null ? "" : ` · 30일 뒤 ${pc(mk.m)}`}`, "90% · 80%", mk.w == null ? "wait" : st(mk.w >= 0.9 && (mk.m == null || mk.m >= 0.8), mk.w >= 0.75)],
     ["계획한 시간에 읽기", !I.on ? "말씀 탭에서 읽을 때를 정하면 재요" : cx.v == null ? "모으는 중" : `${cx.ok}/${cx.n}일 (${pc(cx.v)})`, "±1시간 안 70%", !I.on || cx.v == null ? "wait" : st(cx.v >= 0.7, cx.v >= 0.5)],
     ["자동성 (월간 점검)", au && au.a != null ? `${au.a.toFixed(1)}/7${au.rai == null ? "" : ` · 자율성 ${au.rai > 0 ? "+" : ""}${au.rai}`}` : "점검하면 보여요", "66일 무렵 5 이상", au && au.a != null ? (days < 66 ? (au.a >= 5 ? "ok" : "mid") : st(au.a >= 5, au.a >= 3.5)) : "wait"],
@@ -9744,15 +9744,15 @@ function roffRender(force) {
   measPart("rofBody", JSON.stringify([on, R.hist.length, last, R.wgt, R.unl, ask, t, R.esc]), () => {
     const esc = R.esc || {}, erw = roffEscRw(esc), escTxt = (Object.keys(erw).length || esc.gold > 0) ? `<br>보관 중: <span class="rws">${rwHTML(erw)}</span>${esc.gold > 0 ? ` 월급 ${fmt(esc.gold)}원` : ""}` : "";
     let h = "";
-    if (on && t >= on.from) h += `<div class="rof-on"><b>${dayDiff(on.from, t) + 1}일째 · ${festMD(on.from)} ~ ${festMD(on.to)}</b><small>말씀·묵상·암송·공부에 붙은 보상이 꺼져 있어요 · 기록·연속·순례 XP는 그대로 · 첫 완독 같은 한 번뿐인 보상은 보관했다가 주가 끝나면 드려요${escTxt}</small></div><button type="button" class="btn${ask ? " warn" : ""}" data-act="stop">${ask ? "한 번 더 누르면 지금 마쳐요" : "지금 마치기"}</button>`;
-    else if (on) h += `<div class="rof-on"><b>${festMD(on.from)} 월요일부터 7일</b><small>${on.base ? `비교할 평소: 말씀 ${on.base.c.toFixed(1)}일 · 공부 ${studyText(on.base.s)} · 암송 ${Math.round(on.base.m)}구절 (지난 주들 평균)` : "평소 기록이 2주 넘지 않아 결과는 기록만 보여 드려요"}</small></div><button type="button" class="btn" data-act="stop">취소</button>`;
+    if (on && t >= on.from) h += `<div class="rof-on"><b>${dayDiff(on.from, t) + 1}일째 · ${festMD(on.from)} ~ ${festMD(on.to)}</b><small>말씀·묵상·암송·설교에 붙은 보상이 꺼져 있어요 · 기록·연속·순례 XP는 그대로 · 첫 완독 같은 한 번뿐인 보상은 보관했다가 주가 끝나면 드려요${escTxt}</small></div><button type="button" class="btn${ask ? " warn" : ""}" data-act="stop">${ask ? "한 번 더 누르면 지금 마쳐요" : "지금 마치기"}</button>`;
+    else if (on) h += `<div class="rof-on"><b>${festMD(on.from)} 월요일부터 7일</b><small>${on.base ? `비교할 평소: 말씀 ${on.base.c.toFixed(1)}일 · 설교 ${studyText(on.base.s)} · 암송 ${Math.round(on.base.m)}구절 (지난 주들 평균)` : "평소 기록이 2주 넘지 않아 결과는 기록만 보여 드려요"}</small></div><button type="button" class="btn" data-act="stop">취소</button>`;
     else {
       const due = !last || dayDiff(last.from, t) >= 84, enough = dayDiff(first, t) >= 14;
-      h += `<p class="muted">월요일부터 7일 동안 게임 보상을 끄고 말씀·암송·공부를 해 봐요. 평소의 80%를 넘기면 보상이 없어도 이어 가는 힘이 있다는 뜻이에요.${enough ? "" : " 평소 기록이 2주 쌓이면 결과를 비교할 수 있어요."}</p>`;
+      h += `<p class="muted">월요일부터 7일 동안 게임 보상을 끄고 말씀·암송·설교를 해 봐요. 평소의 80%를 넘기면 보상이 없어도 이어 가는 힘이 있다는 뜻이에요.${enough ? "" : " 평소 기록이 2주 쌓이면 결과를 비교할 수 있어요."}</p>`;
       h += `<button type="button" class="buy num${due ? "" : " ghost"}" data-act="start"><span class="act">${roffNextMon() === t ? "오늘부터 시작" : `${festMD(roffNextMon())} 월요일부터`}</span>${due ? "<small>이번 분기 아직</small>" : `<small>다음 권장: ${festMD(addDays(last.from, 84))}쯤</small>`}</button>`;
     }
     if (R.hist.length) h += `<ul class="rof-h">${R.hist.slice(-3).reverse().map(x => `<li><b>${festMD(x.from)} 주</b> ${x.early ? "중간에 마침" : x.pct == null ? "비교 없음" : `평소의 ${x.pct}%`}${x.got ? ` · 말씀 ${x.got.c}일 · 암송 ${Math.round(x.got.m)}구절` : ""}</li>`).join("")}</ul>`;
-    if (R.unl) h += `<div class="rof-w"><b>외적 보상 비중</b><small>말씀·묵상·암송의 만나와 공부 광석에 적용 · 도장·순례는 그대로</small><div class="seg">${[100, 80, 60].map(v => `<button type="button" data-act="wgt" data-v="${v}" aria-pressed="${R.wgt === v}">${v}%</button>`).join("")}</div></div>`;
+    if (R.unl) h += `<div class="rof-w"><b>외적 보상 비중</b><small>말씀·묵상·암송의 만나와 설교 광석에 적용 · 도장·순례는 그대로</small><div class="seg">${[100, 80, 60].map(v => `<button type="button" data-act="wgt" data-v="${v}" aria-pressed="${R.wgt === v}">${v}%</button>`).join("")}</div></div>`;
     return h;
   }, force);
 }
@@ -9833,7 +9833,7 @@ function iiSave() {
 }
 
 /* ===================== 메뉴 묶기 · 설정 탭 · 친구 초대 (v34) =====================
-   1) 아래 메뉴 10개 → 5개: 말씀(읽기·암송·공부) · 성장(무기·동료·옷장·보물·퇴사) · 업무 · 정보 · 설정.
+   1) 아래 메뉴 10개 → 5개: 말씀(읽기·암송·설교) · 성장(무기·동료·옷장·보물·퇴사) · 업무 · 정보 · 설정.
       안쪽 화면(패널)은 그대로 두고, 묶음 안의 화면은 탭 머리띠 맨 위 작은 메뉴로 고름. 묶음마다 마지막으로 본 화면을 기억.
       묶음 안에서 열린 화면이 하나뿐이면 작은 메뉴를 숨김 (탭 차례로 열기와 같이 감).
    2) 설정 탭: 앱으로 설치(브라우저에서 열었을 때만) · 소리(전체 · 배경 음악 · 효과음, 크기) · 화면(흔들림 · 번쩍임 · 말씀 글자 크기)
@@ -9841,7 +9841,7 @@ function iiSave() {
    3) 친구 초대: 링크 보내기(공유) · 복사 · QR 코드. 초대 링크(?invite=1)로 처음 온 사람은 첫 출근 카드 인사가 달라짐.
    TABS 만들기 전에 불리므로 함수 선언과 var(+ 아이콘 등록)만 씀 */
 var APP_URL = "https://b4wkwrbtms-cpu.github.io/kjy14788/";
-var INV_TEXT = "말씀 읽고 공부하며 오르는 본사 타워, 곽준영 키우기 같이 해요!";
+var INV_TEXT = "말씀 읽고 설교 읽으며 오르는 본사 타워, 곽준영 키우기 같이 해요!";
 var MENU_G = [
   { id: "word", n: "말씀", ic: "bible", tabs: ["bible", "mem", "study"] },
   { id: "grow", n: "성장", ic: "grow", tabs: ["weapon", "pet", "suit", "treasure", "retire"] },
@@ -9851,7 +9851,7 @@ var MENU_G = [
 ];
 var MENU_SUB = { bible: "읽기", study: "설교" };
 var MENU_GUIDE = [
-  ["메뉴 묶음", "아래 메뉴는 말씀·성장·업무·정보·설정 다섯 개예요. 말씀에는 읽기·암송·공부, 성장에는 무기·동료·옷장·보물·퇴사가 있고 위쪽 작은 메뉴로 골라요. 묶음마다 마지막으로 본 화면을 기억해요."],
+  ["메뉴 묶음", "아래 메뉴는 말씀·성장·업무·정보·설정 다섯 개예요. 말씀에는 읽기·암송·설교, 성장에는 무기·동료·옷장·보물·퇴사가 있고 위쪽 작은 메뉴로 골라요. 묶음마다 마지막으로 본 화면을 기억해요."],
   ["설정", "소리(배경 음악·효과음 크기), 화면(흔들림·번쩍임·말씀 글자 크기), 말씀 알림, 친구 초대, 아이디 로그인, 기록 백업이 모여 있어요. 위쪽 스피커 버튼은 소리를 한 번에 끄고 켜요."],
   ["친구 초대", "설정 탭에서 초대 링크를 보내거나 복사하고, QR 코드를 친구 휴대폰 카메라로 찍게 할 수 있어요. 친구 기록은 친구 기기(계정)에 따로 쌓여요."],
 ];
@@ -9941,7 +9941,7 @@ function menuArrive() {
   try {
     if (!localStorage.getItem(SAVE_KEY + "-menu34")) {
       localStorage.setItem(SAVE_KEY + "-menu34", "1");
-      if (!isFreshSave(S)) celebrateLater({ ic: "set", title: "메뉴를 다섯 개로 묶었어요", sub: "말씀 › 읽기·암송·공부 · 성장 › 무기·동료·옷장·보물·퇴사<br>소리·화면·알림·친구 초대·로그인·백업은 새 <b>설정</b> 탭에", tone: "gold", ms: 4200, keep: 1 });
+      if (!isFreshSave(S)) celebrateLater({ ic: "set", title: "메뉴를 다섯 개로 묶었어요", sub: "말씀 › 읽기·암송·설교 · 성장 › 무기·동료·옷장·보물·퇴사<br>소리·화면·알림·친구 초대·로그인·백업은 새 <b>설정</b> 탭에", tone: "gold", ms: 4200, keep: 1 });
     }
   } catch (e) {}
 }
@@ -11241,7 +11241,7 @@ function wpnVfx(style, now) {
 }
 
 /* ===================== 탭 ===================== */
-const TABS = [["weapon", "무기"], ["bible", "말씀"], ["mem", "암송"], ["study", "공부"], ["pet", "동료"], ["suit", "옷장"], ["treasure", "보물"], ["daily", "업무"], ["info", "정보"], ["retire", "퇴사"], ["set", "설정"]];
+const TABS = [["weapon", "무기"], ["bible", "말씀"], ["mem", "암송"], ["study", "설교"], ["pet", "동료"], ["suit", "옷장"], ["treasure", "보물"], ["daily", "업무"], ["info", "정보"], ["retire", "퇴사"], ["set", "설정"]];
 let curTab = "weapon";
 const panels = {}, tabBtns = {}, updaters = {};
 menuBuild();
@@ -11488,7 +11488,7 @@ function renderTools() {
       const locked = wLocked(n), lk = locked ? wUnlockInfo(n) : null, ng = gradeOf(n);
       b.className = "buy num" + (nw.leg ? " rare" : ""); b.disabled = locked ? !lk.ok : S.gold < c;
       const wh = locked ? (lk.ok ? btnInner({ label: `${nw.n} 열기`, sub: `${lk.need} 사용${lk.entry ? ` · ${WGRADES[ng].n} 관문` : ""}` }) : `<span class="act">잠김: ${nw.n}</span><small>${lk.lack} 더 필요</small>`) : btnInner({ ok: S.gold >= c, label: `${fmt(c)}원`, sub: `새 무기 ${nw.n} · 공격력 x${(wPower(n, 1) / wPower(i, 5)).toFixed(1)}` }); if (b._h !== wh) { b._h = wh; b.innerHTML = wh; }
-      $("wNote").textContent = locked ? (lk.ok ? `재료가 충분해요. 눌러서 열면 바로 월급으로 살 수 있어요${lk.entry ? ` · ${WGRADES[ng].n} 등급 관문이에요` : ""}.` : `${WGRADES[ng].n} 무기 ${nw.n}은 재료로 먼저 열어요 (${lk.need}). 지금 ${matHave(lk.req)} · 공부 탭 광산과 지하 문서고에서 모여요.`) : nw.leg ? `${WGRADES[ng].n} 무기예요. 월급으로 사면 바로 장착해요.` : "새 무기를 사면 모양이 바뀌어요.";
+      $("wNote").textContent = locked ? (lk.ok ? `재료가 충분해요. 눌러서 열면 바로 월급으로 살 수 있어요${lk.entry ? ` · ${WGRADES[ng].n} 등급 관문이에요` : ""}.` : `${WGRADES[ng].n} 무기 ${nw.n}은 재료로 먼저 열어요 (${lk.need}). 지금 ${matHave(lk.req)} · 설교 탭 광산과 지하 문서고에서 모여요.`) : nw.leg ? `${WGRADES[ng].n} 무기예요. 월급으로 사면 바로 장착해요.` : "새 무기를 사면 모양이 바뀌어요.";
     }
   });
   $("wBtn").addEventListener("click", () => {
@@ -12135,7 +12135,7 @@ function updateReaderState() {
   });
 })();
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
-/* ===================== 공부 탭 광산: 수정 동굴 (7층마다 동굴 색이 바뀜: 청록 → 은빛 얼음 → 자수정 → 용암) =====================
+/* ===================== 설교 탭 광산: 수정 동굴 (7층마다 동굴 색이 바뀜: 청록 → 은빛 얼음 → 자수정 → 용암) =====================
    멈춰 있는 배경은 한 번만 그려 두고, 매 프레임에는 수정 빛, 떠다니는 빛가루, 곽준영의 곡괭이질, 튀는 광석만 그린다. */
 const MINE_W = 320, MINE_H = 150, MINE_GY = 120;
 const MINE_THEMES = [
@@ -12276,7 +12276,7 @@ function drawMine(depth, running, now) {
   const label = `B${depth} · ${th.n}`, lw = Math.ceil(g.measureText(label).width) + 14;
   g.fillStyle = "rgba(8,10,18,.72)"; g.fillRect(6, 6, lw, 19); g.fillStyle = `rgba(${th.glow},.9)`; g.fillRect(6, 6, 2, 19);
   g.fillStyle = "#ffd54a"; g.fillText(label, 13, 16);
-  if (!running) { g.textAlign = "right"; g.fillStyle = "rgba(233,237,246,.75)"; g.font = '12px "Gowun Dodum", sans-serif'; g.fillText("공부를 시작하면 캐기 시작해요", MINE_W - 8, 16); }
+  if (!running) { g.textAlign = "right"; g.fillStyle = "rgba(233,237,246,.75)"; g.font = '12px "Gowun Dodum", sans-serif'; g.fillText("설교를 읽기 시작하면 캐기 시작해요", MINE_W - 8, 16); }
 }
 function mineTick(now) {
   if (curTab !== "study" || document.hidden) return;
@@ -12347,7 +12347,7 @@ function treIcon(t) {
 /* ===================== 복귀 정산 · 출근부 =====================
    1) 오래 비웠다 돌아오면 (다시 켜거나 다른 앱에 갔다 오면) 야근 정산서: 올라간 층·잡은 보스·월급, 하루 넘게 비웠으면 복귀 선물
    2) 출근부: 매일 출근 도장 (연속일수록 만나 더, 7일마다 도장), 이번 달 5·10·15·20·25일 상자와 개근상
-   3) 달력 칸마다 그날 말씀·공부·암송 기록 점. 이번 달 빈 날은 만나로 '지각' 도장을 찍어 메움 (한 달 3번)
+   3) 달력 칸마다 그날 말씀·설교·암송 기록 점. 이번 달 빈 날은 만나로 '지각' 도장을 찍어 메움 (한 달 3번)
    (rollDay·merge·load 에서 부르므로 함수 선언과 var 만 씀) */
 var OFF_CAP = 12 * 3600, BACK_MIN = 300;
 var WD = ["일", "월", "화", "수", "목", "금", "토"];
@@ -12361,7 +12361,7 @@ var ATT_MILES = [
 var ATT_FULL = { ame: 3, stamp: 30, manna: 300 };
 var ATT_MK_MAX = 3;
 var STREAK_CEL = [7, 14, 30, 50, 100, 200, 365];
-var ATT_SAY = ["출근 완료! 오늘도 달려 보자!", "출근 도장 쾅! 오늘도 화이팅!", "좋아, 오늘 업무 시작!", "오늘도 말씀 한 장, 공부 한 판!"];
+var ATT_SAY = ["출근 완료! 오늘도 달려 보자!", "출근 도장 쾅! 오늘도 화이팅!", "좋아, 오늘 업무 시작!", "오늘도 말씀 한 장, 설교 한 편!"];
 var BACK_SAY = ["정산 완료! 다시 달려 보자!", "쉬고 왔더니 힘이 난다!", "자리 비운 사이에도 열일했지!"];
 var attVer = 0, attMemo = { k: "" }, attWatch = "", backReady = false, backOn = false, backBusy = false, hiddenAt = 0, backToast = "", backWant = false;
 var calView = { ym: "", sel: "", month: null, ms: -1, mk: "", mkT: 0 };
@@ -12412,7 +12412,7 @@ function attArchive(day) {
   const L = attLog(), r = L[day.key] || (L[day.key] = {});
   r.c = c; r.s = s; r.m = m; if (p) r.p = 1; attVer = (attVer || 0) + 1;
 }
-/* 처음 출근부를 열 때: 말씀·공부·암송 연속 기록으로 지난 날 점을 채움 */
+/* 처음 출근부를 열 때: 말씀·설교·암송 연속 기록으로 지난 날 점을 채움 */
 function attBackfill(st) {
   const L = st.att.log, today = dayKey();
   const fill = (last, n, f) => { if (!last || !(n > 0)) return; let k = last; for (let i = 0; i < Math.min(n, 400); i++) { if (k < today) { const r = L[k] || (L[k] = {}); if (!r[f]) r[f] = -1; } k = addDays(k, -1); } };
@@ -12665,7 +12665,7 @@ function calInfoHTML(ym, sel) {
   if (!sel) {
     const s = monthSum(ym), parts = [`<span class="hb">출근 ${s.n}일</span>`];
     if (s.c || s.cu) parts.push(`<span class="hb"><i class="h-c"></i>말씀 ${s.c}장${s.cu ? "+" : ""}</span>`);
-    if (s.s || s.su) parts.push(`<span class="hb"><i class="h-s"></i>공부 ${studyText(s.s)}${s.su ? "+" : ""}</span>`);
+    if (s.s || s.su) parts.push(`<span class="hb"><i class="h-s"></i>설교 ${studyText(s.s)}${s.su ? "+" : ""}</span>`);
     if (s.m || s.mu) parts.push(`<span class="hb"><i class="h-m"></i>암송 ${s.m}구절${s.mu ? "+" : ""}</span>`);
     if (s.p) parts.push(`<span class="hb"><i class="h-p"></i>플랜 ${s.p}일</span>`);
     return `<b>${+ym.slice(5)}월 합계</b>${parts.join("")}`;
@@ -12674,7 +12674,7 @@ function calInfoHTML(ym, sel) {
   const st = r.a === 1 ? `<span class="ci-st on">출근</span>` : r.a === 2 ? `<span class="ci-st mk">지각</span>` : r.a === 3 ? `<span class="ci-st sh">보호권</span>` : r.a === 4 ? `<span class="ci-st rs">안식</span>` : isT ? `<span class="ci-st todo">도장 전</span>` : sel > dayKey() ? `<span class="ci-st off">예정</span>` : `<span class="ci-st off">쉰 날</span>`;
   const parts = [];
   if (h.c) parts.push(`<span class="hb"><i class="h-c"></i>말씀 ${h.c === -1 ? "읽음" : h.c + "장"}</span>`);
-  if (h.s) parts.push(`<span class="hb"><i class="h-s"></i>공부 ${h.s === -1 ? "25분+" : studyText(h.s)}</span>`);
+  if (h.s) parts.push(`<span class="hb"><i class="h-s"></i>설교 ${h.s === -1 ? "25분+" : studyText(h.s)}</span>`);
   if (h.m) parts.push(`<span class="hb"><i class="h-m"></i>암송 ${h.m === -1 ? "함" : h.m + "구절"}</span>`);
   const pl = typeof planDayInfo === "function" ? planDayInfo(sel) : "";
   let mk = "";
@@ -12683,7 +12683,7 @@ function calInfoHTML(ym, sel) {
     if (used >= ATT_MK_MAX) mk = `<span class="ci-r">이번 달 메우기 끝</span>`;
     else { const c = attMkCost(used), armed = calView.mk === sel && Date.now() < calView.mkT; mk = `<button type="button" class="buy manna mkb${armed ? " armed" : ""}" id="calMk" data-mk="${sel}"${S.manna < c ? " disabled" : ""}>${btnInner({ label: `만나 ${c}`, sub: armed ? "한 번 더 누르면 메워요" : `지각 처리 · ${ATT_MK_MAX - used}번 남음` })}</button>`; }
   }
-  return `<b>${isT ? "오늘 · " : ""}${mdText(sel)}</b>${st}${parts.join("") || (pl && sel > dayKey() ? "" : `<span class="hb none">${isT ? "말씀·공부·암송을 하면 점이 찍혀요" : "기록 없음"}</span>`)}${pl}${mk}`;
+  return `<b>${isT ? "오늘 · " : ""}${mdText(sel)}</b>${st}${parts.join("") || (pl && sel > dayKey() ? "" : `<span class="hb none">${isT ? "말씀·설교·암송을 하면 점이 찍혀요" : "기록 없음"}</span>`)}${pl}${mk}`;
 }
 function trackHTML(ym) {
   const n = attMonthN(ym), full = daysIn(ym), mask = ((S.att && S.att.ms) || {})[ym] || 0, cur = ym === ymOf(dayKey());
@@ -13005,7 +13005,7 @@ function goLogin() { backHide(); selectTab("set", true); setTimeout(() => { cons
 })();
 
 /* ===================== 승진 · 직무 =====================
-   직급 10단계는 퇴사해도 남는 경력. 최고층·말씀 누적·공부 누적(과장부터 퇴사 횟수) 조건을 채우고 '승진 심사'를 누르면 승진식.
+   직급 10단계는 퇴사해도 남는 경력. 최고층·말씀 누적·설교 읽기 누적(과장부터 퇴사 횟수) 조건을 채우고 '승진 심사'를 누르면 승진식.
    대리·과장·부장에서 직무를 하나씩 고르고, 사장이 되면 넷째 직무가 열리며 네 직무의 특징(패시브)이 한꺼번에 적용된다.
    직무마다 기본 공격 모양·패시브·직무 스킬 2개가 다르다. 직무 스킬 버튼은 전투 화면 왼쪽 위(자동 스킬도 씀).
    merge·stats 에서 부를 수 있게 함수 선언과 var 만 씀. */
@@ -13024,7 +13024,7 @@ var RANKS = [
 var REQ_INFO = [
   ["floor", "최고층", v => `${Math.floor(v)}층`],
   ["chap", "말씀 누적", v => `${Math.floor(v)}장`],
-  ["study", "공부 누적", v => `${Math.floor(v * 10) / 10}시간`],
+  ["study", "설교 읽기 누적", v => `${Math.floor(v * 10) / 10}시간`],
   ["retire", "퇴사", v => `${Math.floor(v)}회`],
 ];
 var PROMO_LINES = ["", "주임 됐다! 이제 후배도 생기려나?", "대리 달았다! 이제 진짜 내 일이다", "과장님이라고 불러 줘!", "차장... 어깨가 무거워진다", "부장 승진! 회의가 늘겠군", "이사님 소리가 아직 어색하네", "상무! 임원 엘리베이터 탄다", "전무까지 왔다. 한 칸 남았다!", "사장 취임! 오늘부터 이 회사는 내가 책임진다"];
@@ -13289,7 +13289,7 @@ function renderCareer() {
       if (q.val) q.val.textContent = `${f(Math.min(v[q.k], 99999))} / ${f(need)}`;
     });
     go.hidden = false; go.disabled = !can; go.className = "buy cr-go" + (can ? "" : " ghost");
-    go.innerHTML = can ? btnInner({ label: "승진 심사 받기", sub: `${ro(nx.n)} 승진 · 공격력·월급 ×${mulTxt(rankMul(r + 1))}` }) : `<span class="act">조건을 다 채우면 승진 심사</span><small>말씀 읽기 · 공부 · 층 올리기</small>`;
+    go.innerHTML = can ? btnInner({ label: "승진 심사 받기", sub: `${ro(nx.n)} 승진 · 공격력·월급 ×${mulTxt(rankMul(r + 1))}` }) : `<span class="act">조건을 다 채우면 승진 심사</span><small>말씀 읽기 · 설교 읽기 · 층 올리기</small>`;
     note.hidden = !nx.job; note.textContent = r + 1 === RANKS.length - 1 ? `${iga(nx.n)} 되면 남은 직무가 모두 열리고 모든 직무 특징이 함께 적용돼요` : nx.job ? `${iga(nx.n)} 되면 새 직무를 하나 더 골라요 · 겸직 속성 +20%` : "";
   } else {
     $("crNextT").textContent = "최고 직급 · 사장"; $("crNextS").textContent = "사장 특권";
@@ -14315,16 +14315,16 @@ JFX_DRAW.kpierce = function (f) {
      → '읽기 시작'을 누르면 타이머만 켜지고 본문은 따로 열어야 했음(두 번). 이제 한 번 누르면 본문이 바로 열리고 시간이 셈.
        본문에서는 연 순간부터 '확인까지 남은 시간'을 보여 주고, 끝까지 내려 읽고 시간이 차면 버튼 없이 자동 체크.
    "공부시간도 해놓고 성경읽기 카운트도 되는 버그"
-     → 공부 타이머와 말씀 타이머가 동시에 돌아 같은 시간이 양쪽에 쌓였음. 말씀을 읽는 동안 공부는 잠깐 멈추고, 다 읽으면 다시 켬. */
+     → 공부 타이머와 말씀 타이머가 동시에 돌아 같은 시간이 양쪽에 쌓였음. 말씀을 읽는 동안 설교 읽기는 잠깐 멈추고, 다 읽으면 다시 켬. */
 
 /* ---------- 공부 ↔ 말씀: 한 번에 하나만 ---------- */
 function readPausesStudy() {
   const St = S.study;
-  if (St && St.running && S.bible.timer) { studyPauseV40(); St.pausedByRead = true; toast("말씀 읽는 동안 공부 시간은 잠깐 멈춰요 · 다 읽으면 다시 켜져요"); }
+  if (St && St.running && S.bible.timer) { studyPauseV40(); St.pausedByRead = true; toast("말씀 읽는 동안 설교 읽기 시간은 잠깐 멈춰요"); }
 }
 function readResumesStudy() {
   const St = S.study;
-  if (St && St.pausedByRead && !St.running && !S.bible.timer) { St.pausedByRead = false; studyStartV40(); toast("공부 타이머를 다시 켰어요"); }
+  if (St && St.pausedByRead && !St.running && !S.bible.timer) { St.pausedByRead = false; studyStartV40(); toast("설교 읽기 시간을 다시 재요"); }
 }
 var studyStartV40 = studyStart, studyPauseV40 = studyPause, studyStopV40 = studyStop, readTimerToggleV40 = readTimerToggle,
   openReaderV40 = openReader, closeReaderV40 = closeReader, updateReaderStateV40 = updateReaderState;
@@ -14384,7 +14384,7 @@ simulateOffline = function (sec) { return withoutTempBuffs(() => simulateOffline
 
 /* ===================== v42 체계적 밸런스 =====================
    사용자(2026-10-11 12:44 · 13:22): "무기 변환이 너무 초반부터 어렵다, 점차 어려워져야지 · 전설 신화 초월까지 · 체계적 밸런스 패치 ·
-     지하 문서고는 한 방에 부수면 시간이 늘어 계속 깊이 · 미터마다 보상 · 꾸준히 5개월(매일 말씀 몇 장 + 공부 30분)이면 중간 콘텐츠 섭렵 ·
+     지하 문서고는 한 방에 부수면 시간이 늘어 계속 깊이 · 미터마다 보상 · 꾸준히 5개월(매일 말씀 몇 장 + 설교 읽기 30분)이면 중간 콘텐츠 섭렵 ·
      자수정이나 은괴 수급을 늘려 주든지 · 게임 디자인 연구를 토대로 시뮬레이션 돌려 보고 완료"
    기준(game-design 스킬): 마일스톤 시간표를 시뮬로 먼저(G-IDLE-14, U-SYS-17·18) · 모든 재화에 지수 싱크(G-IDLE-15, U-SYS-15) ·
      타이트하게 시작해 점차 느슨하게(D4-21) · 작은 보상을 자주, 병행 활동 2개 이상(G-IDLE-12) · 난이도는 적 쪽 수치로(U-SYS-13) ·
@@ -14411,7 +14411,7 @@ var BAL = {
   chairOre: 2000, legEnhK: 1,                            // 회장님 세트 값 · 전설 옷 강화 광석 배수
   chairSilver: 1,                                        // 회장 보스(100층마다) 처치 은괴
   overAme: 5,                                            // 마지막 무기 5강 뒤 '돌파' 한 단계마다 자수정 (10단계마다 +5)
-  st25Silver: 2, st60Ame: 1, mem5Ame: 1, planAme: 1,     // 일일 업무 '공부 25분'·'공부 60분'·'암송 5구절'과 플랜 하루 분량에 재료 추가
+  st25Silver: 2, st60Ame: 1, mem5Ame: 1, planAme: 1,     // 일일 업무 '설교 읽기 25분'·'설교 읽기 60분'·'암송 5구절'과 플랜 하루 분량에 재료 추가
   // 지하 문서고: 30초로 시작, 한 방에 부수면 +1초(최대 30초). 서류함 하나 = 10m, n번째 서류함 체력 = (n+1)층 몬스터 × hp
   // 100m마다 월급, 이정표(500·2000·4500·8000… = 500×k²m)마다 은괴 1 · 광석, 이정표 3개마다 자수정 1, 처음 닿는 1000m마다 도장·은괴, 5000m마다 자수정
   vault: { t0: 30, cap: 30, one: 1.0, m: 10, hp: 0.5, gold: 0.3, step: 100, mile: 500, mileOre: 30, ameMile: 3, recEvery: 1000, recSt: 5, recSv: 2, recAmeEvery: 5000, recAme: 3, wait: 0.35, waitMin: 0.12, skipEvery: 5, skipMax: 4 },
@@ -14447,7 +14447,7 @@ function wUnlockInfo(i) {
 function weaponUnlockTry(i, quiet) {
   if (!wLocked(i)) return true;
   const lk = wUnlockInfo(i);
-  if (!lk.ok) { if (!quiet) toast(!lk.prev ? "앞 무기부터 차례로 열어요" : `${WEAPONS[i].n}: ${lk.lack} 더 필요해요 · 공부 탭 광산과 지하 문서고에서 모여요`); return false; }
+  if (!lk.ok) { if (!quiet) toast(!lk.prev ? "앞 무기부터 차례로 열어요" : `${WEAPONS[i].n}: ${lk.lack} 더 필요해요 · 설교 탭 광산과 지하 문서고에서 모여요`); return false; }
   Object.keys(lk.req).forEach(k => { S[k] -= lk.req[k]; });
   S.wunl = i;
   if (!quiet) {
@@ -14609,7 +14609,7 @@ function wGradeLadderHTML() {
     const nxt = lk ? `<div class="wgl-n">다음 ${WEAPONS[nx].n} · ${lk.need}${lk.entry ? " (등급 관문)" : ""}</div>` : "";
     return `<div class="wgl-r${g === cur ? " cur" : ""}${open || lk ? "" : " off"}"><span class="wgr" style="color:${G.c};border-color:${G.c}">${G.n}</span><div class="wgl-t">${WEAPONS[a].n} ~ ${WEAPONS[b].n}</div><span class="wgl-s">${st}</span>${nxt}</div>`;
   }).join("");
-  return `${rows}<p class="muted wgl-f">무기는 재료로 한 번 열면 퇴사해도 열린 채예요. 일반 6개는 그냥, 그다음부터 조금씩 오르고 등급 첫 무기(관문)는 조금 더 들어요.<br>지금 ${matHave({ ore: 1, silver: 1, ame: 1 })} · 은괴는 공부 광산·지하 문서고 이정표·'공부 25분' 업무, 자수정은 광산·문서고·'암송 5구절' 업무·플랜 하루 분량에서 나와요.</p>`;
+  return `${rows}<p class="muted wgl-f">무기는 재료로 한 번 열면 퇴사해도 열린 채예요. 일반 6개는 그냥, 그다음부터 조금씩 오르고 등급 첫 무기(관문)는 조금 더 들어요.<br>지금 ${matHave({ ore: 1, silver: 1, ame: 1 })} · 은괴는 설교 광산·지하 문서고 이정표·'설교 읽기 25분' 업무, 자수정은 광산·문서고·'암송 5구절' 업무·플랜 하루 분량에서 나와요.</p>`;
 }
 
 /* ---------- 찌르기 고도화 (영업 3연타 마무리 '관통 검기' · 터치 찌르기) ----------
@@ -14807,7 +14807,7 @@ wGradeLadderHTML = function () {
     const nxt = lk ? `<div class="wgl-n">다음 ${WEAPONS[nx].n} · ${lk.need}${lk.entry ? " (등급 관문)" : ""}</div>` : "";
     return `<div class="wgl-r${g === cur ? " cur" : ""}${open || lk ? "" : " off"}"><span class="wgr" style="color:${G.c};border-color:${G.c}">${G.n}</span><div class="wgl-t">${n}개 · ${WEAPONS[a].n} ~ ${WEAPONS[b].n}</div><span class="wgl-s">${st}</span>${nxt}</div>`;
   }).join("");
-  return `${rows}<p class="muted wgl-f">무기는 재료로 한 번 열면 퇴사해도 열린 채라 모양도 골라 써요. 에픽부터는 무기마다 스킬 색이 다르고, 등급이 오를수록 무기 둘레·타격 이펙트가 한 겹씩 늘어요 (에픽 빛 알갱이 → 전설 피어오르는 기운·충격 고리 → 신화 룬 고리·빛줄기 → 초월 후광·별 섬광).<br>지금 ${matHave({ ore: 1, silver: 1, ame: 1 })} · 은괴는 공부 광산·지하 문서고 이정표·'공부 25분' 업무·옷장 도감, 자수정은 광산·문서고·'암송 5구절' 업무·플랜 하루 분량에서 나와요.</p>`;
+  return `${rows}<p class="muted wgl-f">무기는 재료로 한 번 열면 퇴사해도 열린 채라 모양도 골라 써요. 에픽부터는 무기마다 스킬 색이 다르고, 등급이 오를수록 무기 둘레·타격 이펙트가 한 겹씩 늘어요 (에픽 빛 알갱이 → 전설 피어오르는 기운·충격 고리 → 신화 룬 고리·빛줄기 → 초월 후광·별 섬광).<br>지금 ${matHave({ ore: 1, silver: 1, ame: 1 })} · 은괴는 설교 광산·지하 문서고 이정표·'설교 읽기 25분' 업무·옷장 도감, 자수정은 광산·문서고·'암송 5구절' 업무·플랜 하루 분량에서 나와요.</p>`;
 };
 
 /* ---------- 저장: 예전(42개) 무기 번호 → 새 번호 (18번부터 2k−17) ---------- */
@@ -14984,9 +14984,9 @@ BAL.wd43 = { trip: { silver: 20, ame: 6 }, legShop: { silver: 30, ame: 10 }, cos
 var WSETS43 = [
   { id: "trip", n: "글로벌 출장 세트", g: 4, d: "세계 어디든 결재하러 간다 · 은괴·자수정으로 사요", col: "#d9a066",
     bonus: { 2: { gold: 300 }, 4: { boss: 250, btime: 3 }, 6: { xdmg: 4, stamp: 30 } } },
-  { id: "david", n: "다윗의 목자 세트", g: 5, d: "목동에서 왕으로 · 암송·말씀·공부·출근 기록이 열쇠 · 강화는 만나로", col: "#e8c66a",
+  { id: "david", n: "다윗의 목자 세트", g: 5, d: "목동에서 왕으로 · 암송·말씀·설교·출근 기록이 열쇠 · 강화는 만나로", col: "#e8c66a",
     bonus: { 2: { dmg: 400 }, 4: { boss: 400, btime: 5 }, 6: { xdmg: 6, mem: 30 } } },
-  { id: "victor", n: "이기는 자 세트", g: 6, d: "끝까지 지킨 사람에게 · 말씀·암송·공부·출근 기록이 열쇠 · 강화는 만나로", col: "#fff6d0",
+  { id: "victor", n: "이기는 자 세트", g: 6, d: "끝까지 지킨 사람에게 · 말씀·암송·설교·출근 기록이 열쇠 · 강화는 만나로", col: "#fff6d0",
     bonus: { 2: { dmg: 600 }, 4: { xdmg: 2, boss: 500 }, 6: { xdmg: 8, manna: 40 }, 7: { xdmg: 1.5, crit: 10 } } },
   { id: "cosmo", n: "은하 그룹 총수 세트", g: 6, d: "은하 단위로 결재하는 총수의 옷 · 은괴·자수정으로 사요", col: "#b18cff",
     bonus: { 2: { critd: 800 }, 4: { xaps: 1.15, gold: 800 }, 6: { xdmg: 8 }, 7: { xdmg: 1.5, boss: 300 } } },
@@ -15055,7 +15055,7 @@ var WITEMS43 = [
   { id: "t_k1000", slot: "title", n: "천 장의 사람", g: 4, cond: ["chap", 1000], perk: { manna: 30, dmg: 150 }, d: "말씀 1000장을 읽었습니다" },
   { id: "t_f800", slot: "title", n: "구름 위 임원실", g: 4, cond: ["floor", 800], perk: { dmg: 150, boss: 80 }, d: "800층에 올랐습니다" },
   { id: "t_vault", slot: "title", n: "문서고 탐험가", g: 4, cond: ["vault", 5000], perk: { gold: 150, ore: 15 }, d: "지하 문서고 5000m까지 내려갔습니다" },
-  { id: "t_s200", slot: "title", n: "집중의 장인", g: 4, cond: ["study", 12000], perk: { ore: 40, dmg: 120 }, d: "공부 200시간을 채웠습니다" },
+  { id: "t_s200", slot: "title", n: "집중의 장인", g: 4, cond: ["study", 12000], perk: { ore: 40, dmg: 120 }, d: "설교 읽기 200시간을 채웠습니다" },
   { id: "t_heart", slot: "title", n: "마음판에 새긴 사람", g: 5, cond: ["mem", 200], perk: { mem: 40, critd: 300 }, d: "그것을 네 목에 매며 네 마음판에 새기라 (잠 3:3) · 암송 완료 200구절" },
   { id: "t_plan3", slot: "title", n: "세 번 완주한 순례자", g: 5, cond: ["planfin", 3], perk: { manna: 40, dmg: 250 }, d: "읽기 플랜을 세 번 끝까지 마쳤습니다" },
   { id: "t_victor", slot: "title", n: "이기는 자", g: 6, cond: ["rstreak", 365], perk: { dmg: 500, manna: 50 }, d: "이기는 그에게는 내가 하나님의 낙원에 있는 생명나무의 과실을 주어 먹게 하리라 (계 2:7) · 말씀 365일 연속" },
@@ -15088,7 +15088,7 @@ var WARD_MAIN = ["manna", "ore", "silver", "ame"];
 function wardCostText(c) { return Object.keys(c || {}).map(k => `${ECO_NAME[k] || k} ${fmtR(c[k])}`).join(" · "); }
 function wardCostOk(c) { return Object.keys(c || {}).every(k => (+S[k] || 0) >= c[k]); }
 function wardCostOre(c) { c = c || {}; return (c.ore || 0) + 40 * (c.silver || 0) + 400 * (c.ame || 0) + 3 * (c.manna || 0); }
-function wardBuyWhere(it) { const c = it.cost || {}; return c.silver || c.ame ? "은괴·자수정 (공부 광산·지하 문서고·업무)" : "공부로 캔 광석"; }
+function wardBuyWhere(it) { const c = it.cost || {}; return c.silver || c.ame ? "은괴·자수정 (설교 광산·지하 문서고·업무)" : "설교를 읽어 캔 광석"; }
 wardCostLabel = function (c) {
   const main = WARD_MAIN.find(k => c[k]) || "ore", rest = Object.keys(c).filter(k => k !== main && c[k]).map(k => `${ECO_NAME[k] || k} ${fmtR(c[k])}`).join(" · ");
   return { label: `${ECO_NAME[main] || main} ${fmtR(c[main] || 0)}`, ok: wardCostOk(c), cls: main === "manna" ? "manna" : main === "ore" ? "ore" : "rare", silver: 0, rest };
@@ -15207,7 +15207,7 @@ function wardGradeHTML() {
     const sets = WSETS.filter(st => st.g === g).map(st => st.n).join(" · ");
     return `<div class="wgl-r wdg-r${own ? "" : " off"}"><span class="wgr" style="color:${G.c};border-color:${G.c}">${G.n}</span><div class="wgl-t">${sets ? `<b>${escapeHtml(sets)}</b> 등` : ""} ${all.length}벌</div><span class="wgl-s">${own >= all.length ? `<b class="ok">모두</b>` : `${own}/${all.length}`}</span><div class="wdg-m">${bm ? `사기: ${bm} · ` : ""}${keyN ? `열쇠 ${keyN}벌 · ` : ""}강화: ${enh}</div></div>`;
   }).join("");
-  return `${rows}<p class="muted wgl-f">옷장도 무기와 같은 일반~초월 7등급이에요. 등급이 높을수록 입었을 때·가지고만 있어도 효과가 커져요 (초월 x10). 말씀 세트(신화 전신갑주·다윗, 초월 이기는 자)는 말씀·암송·공부·출근 기록이 열쇠예요.</p>`;
+  return `${rows}<p class="muted wgl-f">옷장도 무기와 같은 일반~초월 7등급이에요. 등급이 높을수록 입었을 때·가지고만 있어도 효과가 커져요 (초월 x10). 말씀 세트(신화 전신갑주·다윗, 초월 이기는 자)는 말씀·암송·설교·출근 기록이 열쇠예요.</p>`;
 }
 (function () {
   if (typeof panels === "undefined" || !panels.suit || typeof secTitle !== "function") return;
@@ -15516,7 +15516,7 @@ renderReader = function () {
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47e";
+var X_VER = "47f";
 const XB = new Set([12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 64, 65]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -15895,7 +15895,9 @@ function smReadStart(s) {
 function smReadStop(quiet) {
   if (!smRead) return;
   const St = S.study; if (St.running) studyPause();
-  const m = Math.floor(St.sessionMs / 60000); St.sessionMs = 0;
+  const m = Math.floor(St.sessionMs / 60000);
+  try { if (S.bible && S.bible.timer && smRead.t0) S.bible.timer = Math.min(Date.now(), S.bible.timer + (Date.now() - smRead.t0)); } catch (e) {}   // 설교 읽은 시간은 말씀 읽기 시간에서 뺌(한 시간이 양쪽에 쌓이지 않게)
+  St.sessionMs = 0;
   if (!quiet && m > 0) toast(`설교 ${m}분 읽었어요 · 오늘 갱도 ${St.depth}층`);
   smRead = null; save();
 }
@@ -16462,13 +16464,13 @@ function legLockInfo(k) {
   const req = legReq(k), prev = k === 0 || !!S.legUnlock[k - 1];
   const ns = Math.max(0, req.silver - S.silver), na = Math.max(0, req.ame - S.ame), ok = prev && !ns && !na;
   const short = !prev ? "앞 전설 먼저" : ok ? "해금 가능" : [ns ? `은괴 ${ns}` : "", na ? `자수정 ${na}` : ""].filter(Boolean).join(" · ") + " 부족";
-  const why = !prev ? `앞 전설 무기(${WEAPONS[LEG_START + k - 1].n})를 먼저 해금해요` : `은괴 ${req.silver} · 자수정 ${req.ame} 필요 (지금 ${S.silver} · ${S.ame}) · 공부 탭에서 캐요`;
+  const why = !prev ? `앞 전설 무기(${WEAPONS[LEG_START + k - 1].n})를 먼저 해금해요` : `은괴 ${req.silver} · 자수정 ${req.ame} 필요 (지금 ${S.silver} · ${S.ame}) · 설교 탭에서 캐요`;
   return { req, ok, prev, short, why };
 }
 function legUnlockTry(k) {
   if (S.legUnlock[k]) return true;
   const lk = legLockInfo(k), i = LEG_START + k, w = WEAPONS[i];
-  if (!lk.ok) { toast(lk.prev ? `${w.n}: ${lk.short} · 공부 탭 타이머로 광산을 파면 7m마다 은괴, 21m마다 자수정이 나와요` : `${w.n}: ${lk.why}`); return false; }
+  if (!lk.ok) { toast(lk.prev ? `${w.n}: ${lk.short} · 설교 탭에서 원고를 읽어 광산을 파면 7m마다 은괴, 21m마다 자수정이 나와요` : `${w.n}: ${lk.why}`); return false; }
   S.silver -= lk.req.silver; S.ame -= lk.req.ame; S.legUnlock[k] = true;
   sfx("bigup"); celebrate({ icon: weaponBig(i, 5), title: "전설 무기 해금!", sub: `${w.n} · 이제 월급으로 살 수 있어요`, tone: "rare" });
   return true;
@@ -16484,7 +16486,7 @@ function legUnlockTry(k) {
     const rows = [
       ["직급", rankName() + (curJob() ? " · " + curJob().n : "")], ["칭호", (wardShown("title") || {}).n || "없음"], ["퇴사 횟수", S.retires + "회"], ["최고 층수", S.bestFloor + "층"], ["공격력", fmt(st.atk)], ["초당 피해", fmt(st.dps)],
       ["보스 월급", "x" + fmt(goldMult())], ["말씀 보상", "x" + readMult().toFixed(1)], ["광석 배율", "x" + oreMult().toFixed(2)],
-      ["말씀 누적", S.bible.total + "장"], ["공부 누적", (S.study.total / 60).toFixed(1) + "시간"], ["황금 몹", (S.goldenKills || 0) + "마리"], ["출근 누적", `${attTotal()}일 · 연속 ${attStreak()}`], ["읽기 플랜", planShort()],
+      ["말씀 누적", S.bible.total + "장"], ["설교 읽기 누적", (S.study.total / 60).toFixed(1) + "시간"], ["황금 몹", (S.goldenKills || 0) + "마리"], ["출근 누적", `${attTotal()}일 · 연속 ${attStreak()}`], ["읽기 플랜", planShort()],
     ];
     $("pfStats").innerHTML = rows.map(([a, b]) => `<span>${a}</span><b>${b}</b>`).join("");
     const g = $("pfCv").getContext("2d"); g.imageSmoothingEnabled = false; g.clearRect(0, 0, 112, 112);
@@ -16568,7 +16570,7 @@ function legUnlockTry(k) {
 
 /* ---------- 정보 탭: 캐릭터, 몬스터 도감 ---------- */
 (() => {
-  secTitle("info", "캐릭터", "말씀·공부·층·퇴사 기록으로 열려요 · 이름 색이 등급");
+  secTitle("info", "캐릭터", "말씀·설교·층·퇴사 기록으로 열려요 · 이름 색이 등급");
   const cg = el("div", "coll chars"); panels.info.appendChild(cg);
   const cells = CHARS.map(c => {
     const b = el("button", "cell charcell");
@@ -16649,7 +16651,7 @@ buildSetFoot();
 (() => {
   const card = el("div", "card");
   card.innerHTML = `<div class="sec-title" style="margin:0">퇴사 (환생)</div><div id="rGauge"></div><p class="muted" id="rBody"></p>
-    <p class="muted">초기화: 골드, 층, 무기, 커피<br>유지: 만나, 도장, 광석, 광물, 동료, 옷장, 부적, 보물, 곡괭이, 무기 해금(등급), 문서고 기록, 말씀·공부 기록, 달란트 항아리·두루마리<br>빠른 출근: ${QC_MIN}층 넘게 올랐다면 다음 회사는 최고층의 ${Math.round(QC_FRAC * 100)}%까지 출근 버스로 바로 올라가요</p>
+    <p class="muted">초기화: 골드, 층, 무기, 커피<br>유지: 만나, 도장, 광석, 광물, 동료, 옷장, 부적, 보물, 곡괭이, 무기 해금(등급), 문서고 기록, 말씀·설교 기록, 달란트 항아리·두루마리<br>빠른 출근: ${QC_MIN}층 넘게 올랐다면 다음 회사는 최고층의 ${Math.round(QC_FRAC * 100)}%까지 출근 버스로 바로 올라가요</p>
     <div class="row-btns" id="rRow"><button class="btn" id="rBtn">사표 제출</button><button class="btn manna" id="rPromo">영전 퇴사 (만나 300)</button></div>
     <div class="row-btns" id="rConfirm" hidden><span class="muted" id="rAsk" style="align-self:center"></span><button class="btn" id="rNo">취소</button><button class="btn warn" id="rYes">진짜 퇴사</button></div>
     <p class="muted">영전 퇴사는 도장을 1.5배로 받고, 다음 퇴사 때까지 월급과 피해가 4배가 돼요.</p>
@@ -16684,7 +16686,7 @@ function updateUI(force) {
   $("silverChip").textContent = fmtR(S.silver); $("ameChip").textContent = fmtR(S.ame);
   $("floorChip").textContent = S.floor;
   const live = $("liveChip");
-  if (S.study.running) { live.hidden = false; live.textContent = `공부 중 ${mm(S.study.sessionMs + Date.now() - S.study.lastConfirm)}`; }
+  if (S.study.running) { live.hidden = false; live.textContent = `설교 읽는 중 ${mm(S.study.sessionMs + Date.now() - S.study.lastConfirm)}`; }
   else if (S.bible.timer) { live.hidden = false; live.textContent = `말씀 ${mm(Date.now() - S.bible.timer)}`; }
   else live.hidden = true;
   renderBuffs();

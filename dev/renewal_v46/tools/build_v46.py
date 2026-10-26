@@ -231,11 +231,12 @@ p46 = open(f'{R0}/part_v46.js', encoding='utf-8').read()
 XBN = [x - 1 for x in json.load(open(f'{APP}/bible/xbooks.json')) if x > 12]
 assert p46.count('/*XB*/[]') == 1
 p46 = p46.replace('/*XB*/[]', json.dumps(XBN))
-s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
+p47m = open(f'{R0}/music_v47.js', encoding='utf-8').read()
+s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v63";')
+sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v64";')
 assert 'url.pathname.includes("/bible/")' in sw
 sw = sw.replace('url.pathname.includes("/bible/")', '(url.pathname.includes("/bible/") || url.pathname.includes("/fonts/"))')  # 글꼴도 한 번 받으면 오프라인
 open(f'{APP}/sw.js', 'w').write(sw)

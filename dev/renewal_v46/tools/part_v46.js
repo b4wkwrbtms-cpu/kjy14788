@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47a";
+var X_VER = "47b";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -180,6 +180,7 @@ function rdSheet(html, label) {
         <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-maru" data-k="maru" style="font-family:'MaruBuri',serif">마루부리</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button></div></div>
         <div class="rd-sh-or"><span>손글씨</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-donghwa" data-k="donghwa" style="font-family:'NSDonghwa'">동화또박</button><button type="button" data-r="sh-font-kkot" data-k="kkot" style="font-family:'NSKkot'">꽃내음</button><button type="button" data-r="sh-font-dahaeng" data-k="dahaeng" style="font-family:'NSDahaeng'">다행체</button><button type="button" data-r="sh-font-seongsil" data-k="seongsil" style="font-family:'NSSeongsil'">성실체</button><button type="button" data-r="sh-font-mirae" data-k="mirae" style="font-family:'NSMirae'">미래나무</button></div></div>
         <div class="rd-sh-or"><span>바탕</span><div class="rd-sh-seg"><button type="button" data-r="sh-bg-dark" data-k="dark">어둡게</button><button type="button" data-r="sh-bg-paper" data-k="paper">종이</button><button type="button" data-r="sh-bg-night" data-k="night">밤</button></div></div>
+        <div class="rd-sh-or"><span>읽을 때 음악</span><div class="rd-sh-seg"><button type="button" data-r="sh-fm-on" data-k="on">집중곡</button><button type="button" data-r="sh-fm-off" data-k="off">끄기</button></div></div>
         <div class="rd-sh-or"><span>줄 간격</span><div class="rd-sh-seg"><button type="button" data-r="sh-lh-n" data-k="n">보통</button><button type="button" data-r="sh-lh-w" data-k="w">넓게</button></div></div>
       </div>
       <div class="rd-sh-body" id="rdShBody"></div>
@@ -206,7 +207,7 @@ function shApplyLook() {
   sh.classList.toggle("paper", L.bg === "paper"); sh.classList.toggle("night", L.bg === "night"); sh.classList.toggle("wide", L.lh === "w");
   SH_FONTS.forEach(f => sh.classList.toggle("f-" + f, L.font === f));
   const f = $("rdShFs"); if (f) f.textContent = shFs();
-  sh.querySelectorAll(".rd-sh-seg [data-k]").forEach(b => { const r = b.dataset.r; b.classList.toggle("on", (r.startsWith("sh-font") && b.dataset.k === L.font) || (r.startsWith("sh-bg") && b.dataset.k === L.bg) || (r.startsWith("sh-lh") && b.dataset.k === L.lh)); });
+  sh.querySelectorAll(".rd-sh-seg [data-k]").forEach(b => { const r = b.dataset.r; b.classList.toggle("on", (r.startsWith("sh-font") && b.dataset.k === L.font) || (r.startsWith("sh-bg") && b.dataset.k === L.bg) || (r.startsWith("sh-lh") && b.dataset.k === L.lh) || (r.startsWith("sh-fm") && b.dataset.k === (S.focusMusic === false ? "off" : "on"))); });
 }
 function shTool(a) {
   if (a === "sh-aa") { const o = $("rdShOpts"); o.hidden = !o.hidden; return; }
@@ -214,6 +215,7 @@ function shTool(a) {
   else if (a.startsWith("sh-font-")) S.shFont = a.slice(8);
   else if (a.startsWith("sh-bg-")) { S.shBg = a.slice(6); S.shPaper = S.shBg === "paper"; }
   else if (a.startsWith("sh-lh-")) S.shLh = a.slice(6);
+  else if (a.startsWith("sh-fm-")) { S.focusMusic = a.slice(6) === "on"; try { bgmUpdate(); } catch (e) {} }
   else if (a === "sh-paper") { S.shBg = shLook().bg === "paper" ? "dark" : "paper"; S.shPaper = S.shBg === "paper"; }
   shApplyLook(); save();
 }
@@ -500,7 +502,7 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       if (d.smn) { openSmn(d.smn); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
-      if (a === "sh-aa" || a === "sh-paper" || /^sh-(fs|font|bg|lh)/.test(a)) { shTool(a); e.stopPropagation(); return true; }
+      if (a === "sh-aa" || a === "sh-paper" || /^sh-(fs|font|bg|lh|fm)/.test(a)) { shTool(a); e.stopPropagation(); return true; }
       if (a === "sh-prev") { const st = rd.shStack || [], p = st.pop(); if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; } e.stopPropagation(); return true; }
       if (a === "ops") { rd.ops = !rd.ops; renderReader(); return true; }
       if (a === "op") { const k = d.k, o = rdOpt(); setOpt(k, !o[k]); renderReader(); return true; }

@@ -18,7 +18,7 @@ with sync_playwright() as p:
     print('done', E("JSON.stringify(S.smDone)"), '| ore', E("S.ore"))
     E("S.study.lastConfirm -= 26*60000"); pg.wait_for_timeout(1500)
     print('today min', E("S.study.today"), 'depth', E("S.study.depth"))
-    pg.locator('.rd-sh-back').click(); pg.wait_for_timeout(1500)
+    pg.locator('button.rd-sh-x').click(); pg.wait_for_timeout(1500)
     print('after close smRead', E("smRead"), 'running', E("S.study.running"))
     E("closeReader()"); pg.wait_for_timeout(800)
     print('list done count', E("document.querySelectorAll('#smList .sm-li.done').length"))

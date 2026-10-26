@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46y";
+var X_VER = "46z";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -166,31 +166,65 @@ renderReader = function () {
   body.innerHTML = html; body.scrollTop = st;
   updateReaderState();
 };
-/* 아래에서 올라오는 창 (해설 · 원어 메모) — 닫으면 읽던 자리 그대로 */
+/* 아래에서 올라오는 창 (해설 · 원어 메모 · 설교 전문) — 닫으면 읽던 자리 그대로.
+   10-27 읽기 모양(사용자: 아이폰 14 Pro로 오래 봐도 피로하지 않게): 위 띠(닫기 · 제목/남은 분량 · Aa), 진행선, Aa 판(글자 크기·글꼴·바탕·줄 간격), 설교는 화면 가득, 읽던 자리 기억 */
 function rdSheet(html, label) {
   let sh = $("rdSheet");
   if (!sh) {
     sh = el("div", "rd-sheet"); sh.id = "rdSheet"; sh.hidden = true;
-    sh.innerHTML = `<div class="rd-sh-bg" data-r="sh-x"></div><div class="rd-sh-card" role="dialog" aria-modal="true"><div class="rd-sh-tools"><div class="rd-sh-prog"><i id="rdShProg"></i></div><button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button><button type="button" data-r="sh-paper" id="rdShPaper" aria-label="종이 느낌 바꾸기">종이</button></div><div class="rd-sh-body" id="rdShBody"></div><button type="button" class="btn rd-sh-back" data-r="sh-x">← 읽던 본문으로</button></div>`;
+    sh.innerHTML = `<div class="rd-sh-bg" data-r="sh-x"></div><div class="rd-sh-card" role="dialog" aria-modal="true">
+      <div class="rd-sh-top"><button type="button" class="rd-sh-x" data-r="sh-x" aria-label="읽던 본문으로">‹ <span id="rdShLab">본문</span></button><div class="rd-sh-tt" id="rdShTt"></div><button type="button" class="rd-sh-aa" data-r="sh-aa" aria-label="읽기 모양">Aa</button></div>
+      <div class="rd-sh-prog"><i id="rdShProg"></i></div>
+      <div class="rd-sh-opts" id="rdShOpts" hidden>
+        <div class="rd-sh-or"><span>글자 크기</span><div class="rd-sh-seg"><button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><b class="num" id="rdShFs">18</b><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button></div></div>
+        <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-serif" data-k="serif" style="font-family:'Noto Serif KR',serif">명조</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button><button type="button" data-r="sh-font-gaegu" data-k="gaegu" style="font-family:'Gaegu',cursive">손글씨</button></div></div>
+        <div class="rd-sh-or"><span>바탕</span><div class="rd-sh-seg"><button type="button" data-r="sh-bg-dark" data-k="dark">어둡게</button><button type="button" data-r="sh-bg-paper" data-k="paper">종이</button><button type="button" data-r="sh-bg-night" data-k="night">밤</button></div></div>
+        <div class="rd-sh-or"><span>줄 간격</span><div class="rd-sh-seg"><button type="button" data-r="sh-lh-n" data-k="n">보통</button><button type="button" data-r="sh-lh-w" data-k="w">넓게</button></div></div>
+      </div>
+      <div class="rd-sh-body" id="rdShBody"></div>
+      <button type="button" class="btn rd-sh-back" data-r="sh-x">← 읽던 본문으로</button></div>`;
     $("reader").appendChild(sh);
-    $("rdShBody").addEventListener("scroll", () => { const b = $("rdShBody"), p = $("rdShProg"); if (p) p.style.width = (b.scrollHeight > b.clientHeight + 40 ? Math.min(1, b.scrollTop / (b.scrollHeight - b.clientHeight)) * 100 : 0) + "%"; }, { passive: true });
+    $("rdShBody").addEventListener("scroll", shOnScroll, { passive: true });
   }
+  $("rdShOpts").hidden = true;
+  sh.classList.toggle("full", /data-smread=/.test(html));
   shApplyLook();
-  $("rdShBody").innerHTML = html; $("rdShBody").scrollTop = 0; sh.hidden = false; sh.dataset.label = label || "";
-  const pr = $("rdShProg"); if (pr) pr.style.width = "0%";
+  $("rdShBody").innerHTML = html; sh.hidden = false; $("rdShBody").scrollTop = 0; sh.dataset.label = label || "";
+  $("rdShLab").textContent = label || "본문"; $("rdShTt").removeAttribute("data-left");
+  const h3 = $("rdShBody").querySelector("h3"); $("rdShTt").textContent = h3 ? h3.textContent : "";
+  shOnScroll();
   sh.querySelector(".rd-sh-back").innerHTML = `← 읽던 본문으로${label ? `<small>${escapeHtml(label)}</small>` : ""}`;
 }
-/* 읽기 모양 (10-26 사용자: 긴 글 가독성): 글자 크기 S.shfs(15~24, 기본 17) · 종이(밝은 바탕) S.shPaper */
-function shFs() { const v = +S.shfs; return v >= 15 && v <= 24 ? v : 17; }
+function shFs() { const v = +S.shfs; return v >= 15 && v <= 26 ? v : 18; }
+const SH_FONTS = ["serif", "batang", "sans", "dodum", "gaegu"];
+function shLook() { return { font: SH_FONTS.indexOf(S.shFont) >= 0 ? S.shFont : "serif", bg: S.shBg === "paper" || S.shBg === "night" ? S.shBg : (S.shPaper ? "paper" : "dark"), lh: S.shLh === "w" ? "w" : "n" }; }
 function shApplyLook() {
   const sh = $("rdSheet"), bd = $("rdShBody"); if (!sh || !bd) return;
-  bd.style.fontSize = shFs() + "px"; sh.classList.toggle("paper", !!S.shPaper);
-  const pb = $("rdShPaper"); if (pb) pb.textContent = S.shPaper ? "어둡게" : "종이";
+  const L = shLook();
+  bd.style.setProperty("--shfs", shFs() + "px"); bd.style.fontSize = "";
+  sh.classList.toggle("paper", L.bg === "paper"); sh.classList.toggle("night", L.bg === "night"); sh.classList.toggle("wide", L.lh === "w");
+  SH_FONTS.forEach(f => sh.classList.toggle("f-" + f, L.font === f));
+  const f = $("rdShFs"); if (f) f.textContent = shFs();
+  sh.querySelectorAll(".rd-sh-seg [data-k]").forEach(b => { const r = b.dataset.r; b.classList.toggle("on", (r.startsWith("sh-font") && b.dataset.k === L.font) || (r.startsWith("sh-bg") && b.dataset.k === L.bg) || (r.startsWith("sh-lh") && b.dataset.k === L.lh)); });
 }
 function shTool(a) {
-  if (a === "sh-fs-" || a === "sh-fs+") S.shfs = Math.max(15, Math.min(24, shFs() + (a === "sh-fs+" ? 1 : -1)));
-  else if (a === "sh-paper") S.shPaper = !S.shPaper;
+  if (a === "sh-aa") { const o = $("rdShOpts"); o.hidden = !o.hidden; return; }
+  if (a === "sh-fs-" || a === "sh-fs+") S.shfs = Math.max(15, Math.min(26, shFs() + (a === "sh-fs+" ? 1 : -1)));
+  else if (a.startsWith("sh-font-")) S.shFont = a.slice(8);
+  else if (a.startsWith("sh-bg-")) { S.shBg = a.slice(6); S.shPaper = S.shBg === "paper"; }
+  else if (a.startsWith("sh-lh-")) S.shLh = a.slice(6);
+  else if (a === "sh-paper") { S.shBg = shLook().bg === "paper" ? "dark" : "paper"; S.shPaper = S.shBg === "paper"; }
   shApplyLook(); save();
+}
+var shScrollT = 0;
+function shOnScroll() {
+  const b = $("rdShBody"), p = $("rdShProg"), tt = $("rdShTt"); if (!b) return;
+  const room = b.scrollHeight - b.clientHeight, r = room > 40 ? Math.min(1, b.scrollTop / room) : 0;
+  if (p) p.style.width = r * 100 + "%";
+  const w = b.querySelector("[data-smread]");
+  if (!w && tt) tt.removeAttribute("data-left");
+  if (w && tt) { const min = Math.max(1, Math.round((+w.dataset.len || 0) / 500)), left = Math.ceil(min * (1 - r)); tt.textContent = `${w.dataset.title || ""}`; tt.setAttribute("data-left", r >= 0.98 ? "끝까지 읽었어요" : `${left}분 남음`); }
+  if (w && smRead && smRead.sid === w.dataset.smread) { const now = Date.now(); if (now - shScrollT > 1500) { shScrollT = now; (S.smPos = S.smPos || {})[smRead.sid] = r >= 0.98 ? 0 : Math.round(b.scrollTop); } }
 }
 function rdSheetClose() { const sh = $("rdSheet"); if (sh) sh.hidden = true; if (rd) rd.shStack = []; }
 function shPush() { const sh = $("rdSheet"), bd = $("rdShBody"); if (!rd || !sh || sh.hidden || !bd) return; (rd.shStack = rd.shStack || []).push({ html: bd.innerHTML, y: bd.scrollTop, label: sh.dataset.label || "" }); }
@@ -304,8 +338,10 @@ function openSmt(sid) {
   Promise.all([loadSm(), loadSmt(sid)]).then(([, d]) => {
     const s = smById(sid);
     if (!s || !d) { rdSheet(`<p class="muted">설교 전문을 불러오지 못했어요. 인터넷에 연결된 상태로 다시 열어 주세요.</p>`, label); return; }
-    shPush(); rdSheet(BACK_BTN + `<div data-smread="${escapeHtml(sid)}" data-len="${(d.paras || []).reduce((n, p) => n + (p.t || "").length, 0)}">` + smtHtml(s, d) + `</div>`, label);
+    const was = $("rdSheet") && !$("rdSheet").hidden;
+    shPush(); rdSheet((was ? BACK_BTN : "") + `<div data-smread="${escapeHtml(sid)}" data-title="${escapeHtml(s.title)}" data-len="${(d.paras || []).reduce((n, p) => n + (p.t || "").length, 0)}">` + smtHtml(s, d) + `</div>`, label);
     smReadStart(s);
+    const pos = S.smPos && S.smPos[sid]; if (pos > 400) { const bd = $("rdShBody"); if (bd.scrollHeight - pos > bd.clientHeight) { bd.scrollTop = pos; toast("읽던 자리로 이어서 읽어요"); } }
   });
 }
 /* ===== 설교 읽기 = 광산 (10-26 사용자: 공부 타이머 대신 설교 원고를 읽은 시간만큼 캐고, 끝까지 읽으면 보너스) ===== */
@@ -463,7 +499,7 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       if (d.smn) { openSmn(d.smn); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
-      if (a === "sh-fs-" || a === "sh-fs+" || a === "sh-paper") { shTool(a); e.stopPropagation(); return true; }
+      if (a === "sh-aa" || a === "sh-paper" || /^sh-(fs|font|bg|lh)/.test(a)) { shTool(a); e.stopPropagation(); return true; }
       if (a === "sh-prev") { const st = rd.shStack || [], p = st.pop(); if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; } e.stopPropagation(); return true; }
       if (a === "ops") { rd.ops = !rd.ops; renderReader(); return true; }
       if (a === "op") { const k = d.k, o = rdOpt(); setOpt(k, !o[k]); renderReader(); return true; }

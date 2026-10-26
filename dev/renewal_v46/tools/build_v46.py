@@ -150,36 +150,66 @@ V46_CSS += """.sm-li { display: block; width: 100%; text-align: left; font: inhe
 
 # ---------- 10-26 사용자: 긴 글(설교 전문·해설) 가독성 — 본문용 명조, 큰 글자, 넉넉한 행간, 종이 모드, 읽은 만큼 표시 ----------
 rep('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&display=swap">',
-    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;600&display=swap">')
-V46_CSS += """/* 긴 글 읽기 모양 (10-26) */
-.rd-sheet { --rfg: #e9edf6; --rmut: #a3aec8; --rbg: #11161f; --rline: #2b3655; --rq: #f0c674; }
-.rd-sheet.paper { --rfg: #2a2622; --rmut: #6b655c; --rbg: #f6f1e7; --rline: #d9d0bf; --rq: #b8862b; }
-.rd-sheet .rd-sh-card { background: var(--rbg); color: var(--rfg); max-height: 92vh; padding: 10px 18px calc(12px + env(safe-area-inset-bottom, 0px)); border-top-color: var(--rline); }
-.rd-sheet.paper .rd-sh-bg { background: rgba(20, 16, 10, .55); }
-.rd-sh-tools { display: flex; align-items: center; gap: 6px; margin: 0 0 8px; }
-.rd-sh-tools .rd-sh-prog { flex: 1; height: 3px; border-radius: 2px; background: var(--rline); overflow: hidden; margin-right: 6px; }
-.rd-sh-tools .rd-sh-prog i { display: block; height: 100%; width: 0; background: var(--rq); transition: width .15s linear; }
-.rd-sh-tools button { font: inherit; font-size: 13px; line-height: 1; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--rline); background: transparent; color: var(--rmut); cursor: pointer; min-height: 32px; }
-.rd-sh-tools button:active { color: var(--rfg); }
-.rd-sh-body { font-family: "Noto Serif KR", "Apple SD Gothic Neo", "Nanum Myeongjo", serif; font-size: 17px; line-height: 1.95; letter-spacing: -.005em; color: var(--rfg); padding: 0 1px 12px; }
-.rd-sh-body h3 { font-family: inherit; font-weight: 600; font-size: 1.3em; line-height: 1.4; margin: 6px 0 4px; color: var(--rfg); }
-.rd-sh-body h4 { font-family: inherit; font-weight: 600; font-size: 1.06em; margin: 1.6em 0 .5em; color: var(--rq); line-height: 1.5; }
-.rd-sh-body p { margin: 0 0 .95em; }
+    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600&family=Gowun+Batang:wght@400;700&family=Gaegu:wght@400;700&display=swap">')
+V46_CSS += """/* 긴 글 읽기 모양 (10-27, 아이폰 14 Pro 기준 393pt) — 읽기 창 안에서만 쓰는 색·글꼴 변수 */
+.rd-sheet { --rfg: #d8d5cc; --rmut: #8c9099; --rbg: #15171d; --rline: #262a33; --rq: #d8b86a; --rqbg: rgba(216, 184, 106, .07); --rbtn: #1d2027; --rhi: #e9e6de; }
+.rd-sheet.night { --rfg: #c9c6bf; --rmut: #7d8088; --rbg: #000; --rline: #1c1e24; --rq: #c9ab62; --rqbg: rgba(201, 171, 98, .08); --rbtn: #121317; --rhi: #e2dfd7; }
+.rd-sheet.paper { --rfg: #2b2926; --rmut: #716b62; --rbg: #f4eee3; --rline: #ddd4c4; --rq: #7f601c; --rqbg: rgba(127, 96, 28, .07); --rbtn: #ebe4d6; --rhi: #1d1b18; }
+.rd-sheet .rd-sh-card { background: var(--rbg); color: var(--rfg); max-height: 92vh; max-height: 92dvh; padding: 0 0 calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rline); border-radius: 18px 18px 0 0; }
+.rd-sheet.full .rd-sh-card { max-height: none; height: 100vh; height: 100dvh; border-radius: 0; border-top: 0; padding-top: env(safe-area-inset-top, 0px); }
+.rd-sheet.full .rd-sh-bg { background: var(--rbg); }
+.rd-sheet.paper .rd-sh-bg { background: rgba(24, 20, 12, .5); }
+.rd-sh-top { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 4px 8px 2px 4px; }
+.rd-sh-top button { font: inherit; font-size: 15px; line-height: 1; min-height: 40px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: var(--rmut); cursor: pointer; }
+.rd-sh-top .rd-sh-x { font-size: 16px; }
+.rd-sh-top .rd-sh-aa { font-family: "Noto Serif KR", serif; font-weight: 600; letter-spacing: .02em; border: 1px solid var(--rline); min-width: 46px; }
+.rd-sh-top button:active { color: var(--rhi); }
+.rd-sh-tt { flex: 1; min-width: 0; text-align: center; font-size: 13px; line-height: 1.25; color: var(--rmut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rd-sh-tt[data-left]::after { content: attr(data-left); display: block; font-size: 11.5px; color: var(--rq); }
+.rd-sh-prog { height: 2px; background: var(--rline); margin: 0 0 2px; }
+.rd-sh-prog i { display: block; height: 100%; width: 0; background: var(--rq); transition: width .12s linear; }
+.rd-sh-opts { margin: 6px 12px 4px; padding: 6px 12px; border: 1px solid var(--rline); border-radius: 12px; background: var(--rbtn); font-family: var(--body); }
+.rd-sh-or { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; font-size: 14px; color: var(--rmut); }
+.rd-sh-or + .rd-sh-or { border-top: 1px solid var(--rline); }
+.rd-sh-seg { display: flex; align-items: center; gap: 4px; }
+.rd-sh-seg button { font: inherit; font-size: 14px; line-height: 1; min-height: 36px; min-width: 52px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--rline); background: transparent; color: var(--rmut); cursor: pointer; }
+.rd-sh-seg button.on { background: var(--rq); border-color: var(--rq); color: #1b1608; font-weight: 700; }
+.rd-sh-seg b { min-width: 30px; text-align: center; color: var(--rfg); font-size: 15px; }
+.rd-sh-body { flex: 1; font-family: "Noto Serif KR", "Apple SD Gothic Neo", "Nanum Myeongjo", serif; font-weight: 400; font-size: var(--shfs, 18px); line-height: 1.9; letter-spacing: 0; color: var(--rfg); padding: 6px 20px 24px; max-width: 640px; width: 100%; margin: 0 auto; box-sizing: border-box; text-align: left; word-break: keep-all; overflow-wrap: anywhere; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+.rd-sheet.f-sans .rd-sh-body { font-family: "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", "Noto Sans KR", sans-serif; line-height: 1.8; letter-spacing: -.01em; }
+.rd-sheet.f-batang .rd-sh-body { font-family: "Gowun Batang", "Noto Serif KR", serif; font-size: calc(var(--shfs, 18px) * 1.04); line-height: 1.9; }
+.rd-sheet.f-dodum .rd-sh-body { font-family: "Gowun Dodum", "Apple SD Gothic Neo", sans-serif; font-size: calc(var(--shfs, 18px) * 1.03); line-height: 1.85; letter-spacing: 0; }
+.rd-sheet.f-gaegu .rd-sh-body { font-family: "Gaegu", "Gowun Dodum", cursive; font-size: calc(var(--shfs, 18px) * 1.16); line-height: 1.75; letter-spacing: .01em; }
+.rd-sheet.f-gaegu .rd-sh-body h3, .rd-sheet.f-gaegu .rd-sh-body h4, .rd-sheet.f-batang .rd-sh-body h3, .rd-sheet.f-batang .rd-sh-body h4 { font-weight: 700; }
+.rd-sh-fonts { flex-wrap: wrap; justify-content: flex-end; max-width: 72%; }
+.rd-sh-fonts button { min-width: 0; padding: 0 10px; font-size: 15px; }
+.rd-sh-or:has(.rd-sh-fonts) { align-items: flex-start; padding: 8px 0; }
+.rd-sh-or:has(.rd-sh-fonts) > span { padding-top: 10px; }
+.rd-sheet.wide .rd-sh-body { line-height: 2.15; }
+.rd-sheet.wide .rd-sh-body p, .rd-sheet.wide .rd-sh-body .sm-p { margin-bottom: 1.35em; }
+.rd-sh-body h3 { font-family: inherit; font-weight: 600; font-size: 1.32em; line-height: 1.4; margin: 10px 0 4px; color: var(--rhi); letter-spacing: -.01em; }
+.rd-sh-body h4 { font-family: inherit; font-weight: 600; font-size: 1.08em; line-height: 1.5; margin: 2em 0 .55em; color: var(--rq); }
+.rd-sh-body h4::before { content: ""; display: block; width: 28px; height: 2px; background: var(--rq); margin: 0 0 .5em; opacity: .7; }
+.rd-sh-body p { margin: 0 0 1em; }
 .rd-sh-body .muted, .rd-sh-body .nt-cap, .rd-sh-body .nt-src, .rd-sh-body .sm-meta { color: var(--rmut); }
-.rd-sh-body .sm-meta { font-size: .8em; margin: 0 0 1.2em; line-height: 1.6; }
-.rd-sh-body .sm-p { margin: 0 0 1.05em; line-height: 1.95; }
-.rd-sh-body .sm-qb { margin: .6em 0 1.2em; padding: .5em .9em; border-left: 3px solid var(--rq); background: rgba(128, 128, 128, .08); border-radius: 0 8px 8px 0; font-size: .94em; line-height: 1.85; color: var(--rfg); }
-.rd-sh-body .sm-ml { margin: -.5em 0 1.1em; gap: 6px 10px; }
-.rd-sh-body .sm-ml .vref { font-size: .78em; padding: 5px 8px; min-height: 30px; }
+.rd-sh-body .nt-cap { font-size: .78em; line-height: 1.6; }
+.rd-sh-body .sm-meta { font-size: .78em; margin: 0 0 1.6em; line-height: 1.6; }
+.rd-sh-body .sm-p { margin: 0 0 1.1em; }
+.rd-sh-body .sm-qb { margin: .4em 0 1.3em; padding: .55em .95em; border-left: 3px solid var(--rq); background: var(--rqbg); border-radius: 0 10px 10px 0; font-size: .93em; line-height: 1.85; color: var(--rfg); }
+.rd-sh-body .nt-form { color: var(--rq); font-size: .82em; }
+.rd-sh-body .sm-ml { margin: -.6em 0 1.2em; gap: 6px 8px; }
+.rd-sh-body .sm-ml .vref { font-family: var(--body); font-size: 12.5px; padding: 6px 9px; min-height: 32px; border-radius: 8px; background: var(--rbtn); border: 1px solid var(--rline); color: var(--rmut); }
 .rd-sh-body .nt-bl { border-top-color: var(--rline); }
-.rd-sh-body .nt-bl summary { color: var(--rfg); }
-.rd-sh-body .nt-form { color: var(--rq); }
+.rd-sh-body .nt-bl summary { color: var(--rhi); }
 .rd-sh-body .vm { border-top-color: var(--rline); }
-.rd-sh-body .nt-brief { color: var(--rfg); }
-.rd-sheet.paper .rd-sh-body .nt-badge, .rd-sheet.paper .rd-sh-body .nt-chip, .rd-sheet.paper .rd-sh-body .vref { filter: saturate(.85) brightness(.75); }
-.rd-sheet.paper .rd-sh-back { background: #e9e1d2; color: #2a2622; border-color: #d9d0bf; }
-.rd-sheet.paper .rd-sh-back small { color: #6b655c; }
-@media (prefers-reduced-motion: reduce) { .rd-sh-tools .rd-sh-prog i { transition: none; } }
+.rd-sh-body .nt-brief { color: var(--rhi); }
+.rd-sh-body .sm-pre { font-size: .7em; color: var(--rmut); background: var(--rbtn); }
+.rd-sh-body .rd-sh-prev { font-family: var(--body); margin: 0 0 10px; }
+.rd-sheet.paper .rd-sh-body .nt-badge, .rd-sheet.paper .rd-sh-body .nt-chip, .rd-sheet.paper .rd-sh-body .vref:not(.sm-mc) { filter: saturate(.85) brightness(.75); }
+.rd-sheet .rd-sh-back { margin: 6px 16px 0; width: auto; background: var(--rbtn); color: var(--rfg); border-color: var(--rline); }
+.rd-sheet .rd-sh-back small { color: var(--rmut); }
+.rd-sheet.full .rd-sh-back { display: none; }
+@media (prefers-reduced-motion: reduce) { .rd-sh-prog i { transition: none; } }
 """
 
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)
@@ -194,5 +224,5 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v61";'))
+open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v62";'))
 print('built', len(s))

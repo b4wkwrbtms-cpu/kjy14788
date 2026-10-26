@@ -1,5 +1,5 @@
 // 오프라인에서도 열리도록 앱 파일과 글꼴을 저장해 둠
-const CACHE = "yageun-v62";
+const CACHE = "yageun-v63";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const BIBLE = "yageun-bible-1";  // 성경 본문은 앱을 업데이트해도 지우지 않음
@@ -13,7 +13,7 @@ self.addEventListener("fetch", e => {
     e.respondWith(fetch(req).then(r => { const cp = r.clone(); caches.open(CACHE).then(c => c.put("index.html", cp)); return r; }).catch(() => caches.match("index.html")));
     return;
   }
-  if (url.origin === location.origin && url.pathname.includes("/bible/")) {
+  if (url.origin === location.origin && (url.pathname.includes("/bible/") || url.pathname.includes("/fonts/"))) {
     e.respondWith(caches.open(BIBLE).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));
     return;
   }

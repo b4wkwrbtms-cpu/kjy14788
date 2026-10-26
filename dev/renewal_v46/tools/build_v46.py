@@ -147,6 +147,41 @@ V46_CSS += """.sm-li { display: block; width: 100%; text-align: left; font: inhe
 .sm-li.done b::before { content: "✓ "; color: var(--ore, #6fd3ff); }
 """
 
+
+# ---------- 10-26 사용자: 긴 글(설교 전문·해설) 가독성 — 본문용 명조, 큰 글자, 넉넉한 행간, 종이 모드, 읽은 만큼 표시 ----------
+rep('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&display=swap">',
+    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;600&display=swap">')
+V46_CSS += """/* 긴 글 읽기 모양 (10-26) */
+.rd-sheet { --rfg: #e9edf6; --rmut: #a3aec8; --rbg: #11161f; --rline: #2b3655; --rq: #f0c674; }
+.rd-sheet.paper { --rfg: #2a2622; --rmut: #6b655c; --rbg: #f6f1e7; --rline: #d9d0bf; --rq: #b8862b; }
+.rd-sheet .rd-sh-card { background: var(--rbg); color: var(--rfg); max-height: 92vh; padding: 10px 18px calc(12px + env(safe-area-inset-bottom, 0px)); border-top-color: var(--rline); }
+.rd-sheet.paper .rd-sh-bg { background: rgba(20, 16, 10, .55); }
+.rd-sh-tools { display: flex; align-items: center; gap: 6px; margin: 0 0 8px; }
+.rd-sh-tools .rd-sh-prog { flex: 1; height: 3px; border-radius: 2px; background: var(--rline); overflow: hidden; margin-right: 6px; }
+.rd-sh-tools .rd-sh-prog i { display: block; height: 100%; width: 0; background: var(--rq); transition: width .15s linear; }
+.rd-sh-tools button { font: inherit; font-size: 13px; line-height: 1; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--rline); background: transparent; color: var(--rmut); cursor: pointer; min-height: 32px; }
+.rd-sh-tools button:active { color: var(--rfg); }
+.rd-sh-body { font-family: "Noto Serif KR", "Apple SD Gothic Neo", "Nanum Myeongjo", serif; font-size: 17px; line-height: 1.95; letter-spacing: -.005em; color: var(--rfg); padding: 0 1px 12px; }
+.rd-sh-body h3 { font-family: inherit; font-weight: 600; font-size: 1.3em; line-height: 1.4; margin: 6px 0 4px; color: var(--rfg); }
+.rd-sh-body h4 { font-family: inherit; font-weight: 600; font-size: 1.06em; margin: 1.6em 0 .5em; color: var(--rq); line-height: 1.5; }
+.rd-sh-body p { margin: 0 0 .95em; }
+.rd-sh-body .muted, .rd-sh-body .nt-cap, .rd-sh-body .nt-src, .rd-sh-body .sm-meta { color: var(--rmut); }
+.rd-sh-body .sm-meta { font-size: .8em; margin: 0 0 1.2em; line-height: 1.6; }
+.rd-sh-body .sm-p { margin: 0 0 1.05em; line-height: 1.95; }
+.rd-sh-body .sm-qb { margin: .6em 0 1.2em; padding: .5em .9em; border-left: 3px solid var(--rq); background: rgba(128, 128, 128, .08); border-radius: 0 8px 8px 0; font-size: .94em; line-height: 1.85; color: var(--rfg); }
+.rd-sh-body .sm-ml { margin: -.5em 0 1.1em; gap: 6px 10px; }
+.rd-sh-body .sm-ml .vref { font-size: .78em; padding: 5px 8px; min-height: 30px; }
+.rd-sh-body .nt-bl { border-top-color: var(--rline); }
+.rd-sh-body .nt-bl summary { color: var(--rfg); }
+.rd-sh-body .nt-form { color: var(--rq); }
+.rd-sh-body .vm { border-top-color: var(--rline); }
+.rd-sh-body .nt-brief { color: var(--rfg); }
+.rd-sheet.paper .rd-sh-body .nt-badge, .rd-sheet.paper .rd-sh-body .nt-chip, .rd-sheet.paper .rd-sh-body .vref { filter: saturate(.85) brightness(.75); }
+.rd-sheet.paper .rd-sh-back { background: #e9e1d2; color: #2a2622; border-color: #d9d0bf; }
+.rd-sheet.paper .rd-sh-back small { color: #6b655c; }
+@media (prefers-reduced-motion: reduce) { .rd-sh-tools .rd-sh-prog i { transition: none; } }
+"""
+
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)
 mk = '/* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */'
 assert s.count(mk) == 1
@@ -159,5 +194,5 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v60";'))
+open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v61";'))
 print('built', len(s))

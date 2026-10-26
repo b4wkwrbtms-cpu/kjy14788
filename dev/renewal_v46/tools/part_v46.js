@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46x";
+var X_VER = "46y";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -171,11 +171,26 @@ function rdSheet(html, label) {
   let sh = $("rdSheet");
   if (!sh) {
     sh = el("div", "rd-sheet"); sh.id = "rdSheet"; sh.hidden = true;
-    sh.innerHTML = `<div class="rd-sh-bg" data-r="sh-x"></div><div class="rd-sh-card" role="dialog" aria-modal="true"><div class="rd-sh-body" id="rdShBody"></div><button type="button" class="btn rd-sh-back" data-r="sh-x">← 읽던 본문으로</button></div>`;
+    sh.innerHTML = `<div class="rd-sh-bg" data-r="sh-x"></div><div class="rd-sh-card" role="dialog" aria-modal="true"><div class="rd-sh-tools"><div class="rd-sh-prog"><i id="rdShProg"></i></div><button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button><button type="button" data-r="sh-paper" id="rdShPaper" aria-label="종이 느낌 바꾸기">종이</button></div><div class="rd-sh-body" id="rdShBody"></div><button type="button" class="btn rd-sh-back" data-r="sh-x">← 읽던 본문으로</button></div>`;
     $("reader").appendChild(sh);
+    $("rdShBody").addEventListener("scroll", () => { const b = $("rdShBody"), p = $("rdShProg"); if (p) p.style.width = (b.scrollHeight > b.clientHeight + 40 ? Math.min(1, b.scrollTop / (b.scrollHeight - b.clientHeight)) * 100 : 0) + "%"; }, { passive: true });
   }
+  shApplyLook();
   $("rdShBody").innerHTML = html; $("rdShBody").scrollTop = 0; sh.hidden = false; sh.dataset.label = label || "";
+  const pr = $("rdShProg"); if (pr) pr.style.width = "0%";
   sh.querySelector(".rd-sh-back").innerHTML = `← 읽던 본문으로${label ? `<small>${escapeHtml(label)}</small>` : ""}`;
+}
+/* 읽기 모양 (10-26 사용자: 긴 글 가독성): 글자 크기 S.shfs(15~24, 기본 17) · 종이(밝은 바탕) S.shPaper */
+function shFs() { const v = +S.shfs; return v >= 15 && v <= 24 ? v : 17; }
+function shApplyLook() {
+  const sh = $("rdSheet"), bd = $("rdShBody"); if (!sh || !bd) return;
+  bd.style.fontSize = shFs() + "px"; sh.classList.toggle("paper", !!S.shPaper);
+  const pb = $("rdShPaper"); if (pb) pb.textContent = S.shPaper ? "어둡게" : "종이";
+}
+function shTool(a) {
+  if (a === "sh-fs-" || a === "sh-fs+") S.shfs = Math.max(15, Math.min(24, shFs() + (a === "sh-fs+" ? 1 : -1)));
+  else if (a === "sh-paper") S.shPaper = !S.shPaper;
+  shApplyLook(); save();
 }
 function rdSheetClose() { const sh = $("rdSheet"); if (sh) sh.hidden = true; if (rd) rd.shStack = []; }
 function shPush() { const sh = $("rdSheet"), bd = $("rdShBody"); if (!rd || !sh || sh.hidden || !bd) return; (rd.shStack = rd.shStack || []).push({ html: bd.innerHTML, y: bd.scrollTop, label: sh.dataset.label || "" }); }
@@ -265,7 +280,8 @@ function smtBtn(sid) { return `<button type="button" class="btn manna sm-full" d
 const smtCache = new Map();
 function loadSmt(id) { if (smtCache.has(id)) return Promise.resolve(smtCache.get(id)); return fetch(`bible/smt/${id}.json?v=${X_VER}`).then(r => r.ok ? r.json() : null).catch(() => null).then(d => { if (d) smtCache.set(id, d); return d; }); }
 function smtHtml(s, d) {
-  let h = `<div class="nt-head"><span class="nt-badge k-sm">설교 전문</span><small>${escapeHtml(s.preacher)} 목사 · ${escapeHtml(s.place || "")}</small></div><h3>${escapeHtml(s.title)}</h3>`;
+  const len = (d.paras || []).reduce((n, p) => n + (p.t || "").length, 0), min = Math.max(1, Math.round(len / 500));
+  let h = `<div class="nt-head"><span class="nt-badge k-sm">설교 전문</span><small>${escapeHtml(s.preacher)} 목사 · ${escapeHtml(s.place || "")}</small></div><h3 class="sm-t">${escapeHtml(s.title)}</h3><p class="sm-meta">${(s.refs || []).map(refHtml).join(", ")} · 약 ${min}분 분량 · 끝까지 읽으면 광석을 받아요</p>`;
   const chips = ix => (ix || []).map(i => { const m = s.m && s.m[i], sp = m && m.spans && m.spans[0]; return sp ? `<button type="button" class="vref sm-mc" data-go="${sp[0] - 1}|${sp[1]}|${sp[2]}|${sp[3]}">↳ ${escapeHtml(m.ref)}</button>` : ""; }).join("");
   (d.paras || []).forEach(p => {
     const t = refHtml(p.t);
@@ -447,6 +463,7 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       if (d.smn) { openSmn(d.smn); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
+      if (a === "sh-fs-" || a === "sh-fs+" || a === "sh-paper") { shTool(a); e.stopPropagation(); return true; }
       if (a === "sh-prev") { const st = rd.shStack || [], p = st.pop(); if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; } e.stopPropagation(); return true; }
       if (a === "ops") { rd.ops = !rd.ops; renderReader(); return true; }
       if (a === "op") { const k = d.k, o = rdOpt(); setOpt(k, !o[k]); renderReader(); return true; }

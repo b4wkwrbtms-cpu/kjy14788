@@ -206,9 +206,11 @@ function readingNow() { const r = $("reader"); return !!(r && !r.hidden); }
 function bgmUpdate() {
   if (!audioCtx) return; if (!masterGain && !audioReady()) return;
   const on = musicOn() && !document.hidden;
-  const wantFocus = on && readingNow() && focusOn();
+  const useFiles = typeof fbReady === "function" && fbReady();           // 사용자가 넣은 음악 파일이 있으면 그걸로
+  if (typeof fbUpdate === "function") { try { fbUpdate(on && useFiles); } catch (e) {} }
+  const wantFocus = on && !useFiles && readingNow() && focusOn();
   if (wantFocus) { if (!focus) focusStart(); } else if (focus) focusStop();
-  const w = bgmWant(), want = on && !readingNow() ? w[0] * 10 + w[1] : -1;
+  const w = bgmWant(), want = on && !useFiles && !readingNow() ? w[0] * 10 + w[1] : -1;
   if (want === bgm.theme) return;
   const now = audioCtx.currentTime, old = bgm.main;
   bgmGain.gain.cancelScheduledValues(now); bgmGain.gain.setTargetAtTime(0, now, want < 0 ? 0.6 : 0.12);

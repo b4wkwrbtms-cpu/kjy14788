@@ -17,11 +17,10 @@ async function fbAll() { const db = await fbOpen(); return new Promise((res, rej
 async function fbPut(files) { const db = await fbOpen(); const tx = db.transaction("t", "readwrite"), st = tx.objectStore("t"); for (const f of files) st.put({ name: fbKey(f.name), orig: f.name, blob: f, type: f.type || "audio/mpeg", size: f.size }); return new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); }
 async function fbDel(name) { const db = await fbOpen(); const tx = db.transaction("t", "readwrite"); tx.objectStore("t").delete(name); return new Promise(res => { tx.oncomplete = res; tx.onerror = res; }); }
 async function fbClear() { const db = await fbOpen(); const tx = db.transaction("t", "readwrite"); tx.objectStore("t").clear(); return new Promise(res => { tx.oncomplete = res; tx.onerror = res; }); }
-let fb = { list: null, by: {}, urls: {}, el: [], g: [], cur: -1, scene: "", track: "", readPick: "", jingled: false, unlocked: false, src: [] };
+let fb = { list: null, by: {}, cur: null, pending: "", scene: "", track: "", readPick: "", jingled: false, bad: {} };
 function fbSceneOf(name) { if (FB_MAP.read.includes(name)) return "read"; if (FB_MAP.shop.includes(name)) return "shop"; if (FB_MAP.jingle.includes(name)) return "jingle"; const z = FB_MAP.zones.indexOf(name); return z >= 0 ? "zone" : "zone+"; }
 function fbReady() { return !!(fb.list && fb.list.length && S.bgmFiles !== false); }
 function fbLoad() { fbAll().then(l => { fb.list = l; fb.by = {}; l.forEach(t => { fb.by[t.name] = t; }); fb.k = ""; try { updateUI(true); } catch (e) {} }).catch(() => { fb.list = []; }); }
-function fbUrl(t) { if (!fb.urls[t.name]) fb.urls[t.name] = URL.createObjectURL(t.blob); return fb.urls[t.name]; }
 function fbHave(names) { return names.filter(n => fb.by[n]); }
 function fbZoneTrack(z) {
   const want = FB_MAP.zones[z % FB_MAP.zones.length];
@@ -40,40 +39,50 @@ function fbTrackFor(scene) {
   if (scene === "shop") { const c = fbHave(FB_MAP.shop); return c.length ? c[0] : fbZoneTrack(0); }
   return fbZoneTrack(+scene.slice(1) || 0);
 }
-function fbEnsure() {
-  if (fb.el.length) return;
-  for (let i = 0; i < 2; i++) {
-    const el = document.createElement("audio"); el.preload = "auto"; el.loop = true; el.setAttribute("playsinline", "");
-    const g = audioCtx.createGain(); g.gain.value = 0.0001; g.connect(masterGain);
-    try { const src = audioCtx.createMediaElementSource(el); src.connect(g); fb.src.push(src); } catch (e) { el.volume = 0; }
-    fb.el.push(el); fb.g.push(g);
-  }
+/* 재생: 파일을 디코드해 웹오디오 버퍼로 틂 (아이폰 사파리에서 <audio>+MediaElementSource는 소리가 안 나는 일이 잦아서).
+   32kHz 모노로 디코드해 메모리를 아낌(3분 곡 ≈ 23MB). 최근 3곡만 캐시. */
+let fbBuf = new Map(), fbDecoding = null;
+function fbDecode(name) {
+  if (fbBuf.has(name)) { const b = fbBuf.get(name); fbBuf.delete(name); fbBuf.set(name, b); return Promise.resolve(b); }
+  const t = fb.by[name]; if (!t) return Promise.reject(new Error("no track"));
+  const rd = t.blob.arrayBuffer ? t.blob.arrayBuffer() : new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = () => rej(fr.error); fr.readAsArrayBuffer(t.blob); });
+  return rd.then(ab => new Promise((res, rej) => {
+    let oc; try { oc = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 1, 32000); } catch (e) { oc = audioCtx; }
+    const p = oc.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej);
+  })).then(buf => { fbBuf.set(name, buf); while (fbBuf.size > 3) fbBuf.delete(fbBuf.keys().next().value); return buf; });
 }
 function fbVol(scene) { return BGM_VOL * sndVol("m") * (scene === "read" ? 0.6 : 1); }
+function fbFadeOut(v, sec) { if (!v) return; try { const now = audioCtx.currentTime; v.g.gain.cancelScheduledValues(now); v.g.gain.setTargetAtTime(0.0001, now, sec || 0.5); v.src.stop(now + (sec || 0.5) * 5); v.src.onended = null; } catch (e) {} }
 function fbPlay(name, scene, loop) {
-  const t = fb.by[name]; if (!t) return;
-  fbEnsure(); const now = audioCtx.currentTime, next = fb.cur < 0 ? 0 : 1 - fb.cur, el = fb.el[next], g = fb.g[next];
-  if (fb.cur >= 0) { const og = fb.g[fb.cur], oe = fb.el[fb.cur]; og.gain.cancelScheduledValues(now); og.gain.setTargetAtTime(0.0001, now, 0.5); setTimeout(() => { try { if (fb.cur !== fb.el.indexOf(oe)) { oe.pause(); } } catch (e) {} }, 2200); }
-  el.loop = loop !== false; el.src = fbUrl(t); el.currentTime = 0;
-  const p = el.play(); if (p && p.catch) p.catch(() => {});
-  g.gain.cancelScheduledValues(now); g.gain.setValueAtTime(0.0001, now); g.gain.setTargetAtTime(fbVol(scene), now + 0.05, 0.7);
-  fb.cur = next; fb.track = name; fb.scene = scene;
-  if (!loop) el.onended = () => { fb.track = ""; fb.scene = ""; try { bgmUpdate(); } catch (e) {} };
-  else el.onended = null;
+  const t = fb.by[name]; if (!t || !audioCtx) return;
+  fb.pending = name; fb.track = name; fb.scene = scene; fb.k = "";
+  fbDecode(name).then(buf => {
+    if (fb.pending !== name || !audioCtx) return;
+    fb.pending = "";
+    const now = audioCtx.currentTime, src = audioCtx.createBufferSource(), g = audioCtx.createGain();
+    src.buffer = buf; src.loop = loop !== false; g.gain.setValueAtTime(0.0001, now); src.connect(g); g.connect(masterGain); src.start(now + 0.02);
+    g.gain.setTargetAtTime(fbVol(scene), now + 0.05, 0.7);
+    if (fb.cur) fbFadeOut(fb.cur, 0.6);
+    fb.cur = { src, g, name, scene };
+    if (loop === false) src.onended = () => { if (fb.cur && fb.cur.src === src) { fb.cur = null; fb.track = ""; fb.scene = ""; } try { bgmUpdate(); } catch (e) {} };
+    try { updateUI(true); } catch (e) {}
+  }).catch(e => { fb.pending = ""; fb.bad = fb.bad || {}; fb.bad[name] = 1; fb.track = ""; fb.scene = ""; toast("이 곡은 열 수 없어요: " + (t.orig || name)); });
 }
 function fbStop() {
-  if (fb.cur < 0) return; const now = audioCtx ? audioCtx.currentTime : 0;
-  fb.g.forEach(g => { g.gain.cancelScheduledValues(now); g.gain.setTargetAtTime(0.0001, now, 0.5); });
-  const els = fb.el.slice(); setTimeout(() => els.forEach(e => { try { e.pause(); } catch (x) {} }), 2200);
-  fb.cur = -1; fb.track = ""; fb.scene = "";
+  fb.pending = ""; if (fb.cur) fbFadeOut(fb.cur, 0.5); fb.cur = null; fb.track = ""; fb.scene = ""; fb.k = "";
 }
 function fbUpdate(on) {
-  if (!on) { fbStop(); return; }
+  if (!on) { if (fb.cur || fb.pending) fbStop(); return; }
+  if (!masterGain) return;
   if (!fb.jingled && fb.by[FB_MAP.jingle[0]]) { fb.jingled = true; fbPlay(FB_MAP.jingle[0], "jingle", false); return; }
-  if (fb.scene === "jingle") return;                              // 시작 소리 끝나면 onended → 다시 고름
-  const scene = fbScene(), name = fbTrackFor(scene);
-  if (!name) { if (fb.cur >= 0) fbStop(); return; }
-  if (name === fb.track && fb.cur >= 0) { const g = fb.g[fb.cur]; const v = fbVol(scene); if (Math.abs(g.gain.value - v) > 0.01 && scene !== fb.scene) { g.gain.setTargetAtTime(v, audioCtx.currentTime, 0.5); fb.scene = scene; } return; }
+  if (fb.scene === "jingle" && (fb.cur || fb.pending)) return;          // 시작 소리 끝나면 onended → 다시 고름
+  const scene = fbScene(); let name = fbTrackFor(scene);
+  if (name && fb.bad && fb.bad[name]) name = "";
+  if (!name) { if (fb.cur || fb.pending) fbStop(); return; }
+  if (name === fb.track && (fb.cur || fb.pending)) {
+    if (fb.cur && scene !== fb.scene) { fb.cur.g.gain.setTargetAtTime(fbVol(scene), audioCtx.currentTime, 0.5); fb.scene = scene; fb.cur.scene = scene; }
+    return;
+  }
   fbPlay(name, scene, true);
 }
 /* ---------- 설정 탭 카드 ---------- */
@@ -110,4 +119,5 @@ function buildFbCard() {
 }
 try { buildFbCard(); } catch (e) {}
 fbLoad();
-document.addEventListener("pointerdown", () => { if (!fb.unlocked && fbReady() && audioCtx) { fb.unlocked = true; fbEnsure(); fb.el.forEach(el => { if (!el.src) { el.src = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="; const p = el.play(); if (p && p.then) p.then(() => el.pause(), () => {}); } }); } }, { passive: true });
+/* 음량 설정이 바뀌면 지금 곡에도 반영 */
+setInterval(() => { try { if (fb.cur && audioCtx) { const v = fbVol(fb.scene); if (Math.abs(fb.cur.g.gain.value - v) > 0.02 && !fb.cur.g.gain._ramp) fb.cur.g.gain.setTargetAtTime(v, audioCtx.currentTime, 0.3); } } catch (e) {} }, 1000);

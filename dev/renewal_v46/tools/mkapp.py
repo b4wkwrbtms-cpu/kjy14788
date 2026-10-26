@@ -358,6 +358,43 @@ for nid, o in N3.items():
         if not ch or v > len(ch['v']): continue
         if findterm2(ch['v'][v - 1].replace('\n', ' '), o['term']) < 0: continue
         add3[b][c][str(v)].append([nid, o['term'], o.get('k') or 'hebrew']); n3 += 1
+# 11b) 공통 링크(10-26 사용자: 시편에 반복되는 낱말은 새 카드 대신 기존 카드로): 카드의 우리말 낱말 + 원어(자음)가 함께 있는 다른 절에도 같은 카드 연결
+import unicodedata
+def _cons(w):
+    w = unicodedata.normalize('NFD', w.split('/')[-1] if '/' in w and len(w.split('/')[-1]) > 1 else w.replace('/', ''))
+    return ''.join(ch for ch in w if not unicodedata.combining(ch) and ch not in '־׀').lower()
+SEL3 = {}
+for sf in (f'{R0}/notes3/ot_selection.json', f'{R0}/notes3/nt_selection.json'):
+    if os.path.exists(sf):
+        for o in json.load(open(sf)): SEL3[o['id']] = o
+def _orig_hit(b, c, v, toks):
+    op = f'/home/claude/bw/orig/{b:02d}/{c:03d}.json'
+    if not os.path.exists(op): return False
+    O = json.load(open(op)); vs = [str(v)] + ([str(v - 1), str(v + 1)] if b == 19 else [])
+    for vv in vs:
+        ws = [_cons(w[0]) for w in O.get(vv, [])] + [_cons(w[1]) for w in O.get(vv, []) if b >= 40]
+        if all(any(t in w for w in ws) for t in toks): return True
+    return False
+na = 0; ALT = {}
+for nid, o in N3.items():
+    s = SEL3.get(nid); orig = (s or {}).get('orig') or ''
+    toks = [_cons(t) for t in re.split(r'[\s,/·]+', orig) if len(_cons(t)) >= 2]
+    if not toks or len(o['term']) < 2: continue
+    have = {(o['b'], o['c'], o['v'])} | {p for p in (parse_ref(r) for r in o.get('also') or []) if p}
+    for b in range(13, 67):
+        if (b < 40) != (o['b'] < 40): continue
+        for ci, ch in enumerate(MZ.get(b) or [], 1):
+            if not ch: continue
+            for vi, text in enumerate(ch['v'], 1):
+                if (b, ci, vi) in have or findterm2(text.replace('\n', ' '), o['term']) < 0: continue
+                if _orig_hit(b, ci, vi, toks):
+                    add3[b][ci][str(vi)].append([nid, o['term'], o.get('k') or 'hebrew']); na += 1; ALT.setdefault(nid, []).append(f'{b}:{ci}:{vi}')
+    for r, t in o.get('alt') or []:  # 다른 우리말로 옮긴 같은 낱말: [주소, 그 자리 낱말]
+        p = parse_ref(r)
+        if p and findterm2(MZ[p[0]][p[1] - 1]['v'][p[2] - 1].replace('\n', ' '), t) >= 0:
+            add3[p[0]][p[1]][str(p[2])].append([nid, t, o.get('k') or 'hebrew']); na += 1
+json.dump(ALT, open(f'{R0}/notes3/autolinks.json', 'w'), ensure_ascii=False, indent=0)
+print('13~66 common links', na)
 XB = set(json.load(open(f'{APP}/bible/xbooks.json')))
 for b, chs in add3.items():
     xp = f'{APP}/bible/x/{b:02d}.json'; X = json.load(open(xp)) if os.path.exists(xp) else {}

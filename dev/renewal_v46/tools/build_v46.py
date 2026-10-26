@@ -118,6 +118,35 @@ V46_CSS = '''/* v46 읽기 창 */
 .sm-pre { white-space: pre; overflow-x: auto; font-size: 11.5px; line-height: 1.5; background: var(--panel); padding: 8px; border-radius: 8px; }
 .rf-v { font-size: 16.5px; line-height: 1.8; } .rf-v sup { color: var(--muted); font-size: .7em; margin-right: 2px; }
 '''
+
+# ---------- 10-26 사용자: 공부 타이머(점수) 빼고, 설교 원고를 읽으면 얻게 ----------
+rep('var MENU_SUB = { bible: "읽기" };', 'var MENU_SUB = { bible: "읽기", study: "설교" };')
+rep('study: ["공부한 시간만큼 광산을 파요",', 'study: ["설교 원고(장진명·유기성)를 읽은 시간만큼 광산을 파요",')
+rep("""  const card = el("div", "card hero-card");
+  card.innerHTML = `<input type="text" id="subj" maxlength="20" placeholder="무엇을 공부하나요? (예: 헬라어, 조직신학)">""", """  const card = el("div", "card hero-card");
+  smCardBuild(card); if (0) card.innerHTML = `<input type="text" id="subj" maxlength="20" placeholder="무엇을 공부하나요? (예: 헬라어, 조직신학)">""")
+rep("""  addCustom("study", card, () => {
+    const St = S.study, since = St.running ? Date.now() - St.lastConfirm : 0;
+    $("stClock").textContent = mm(St.sessionMs + since);
+    $("stSub").textContent = St.running""", """  if (0) addCustom("study", card, () => {
+    const St = S.study, since = St.running ? Date.now() - St.lastConfirm : 0;
+    $("stClock").textContent = mm(St.sessionMs + since);
+    $("stSub").textContent = St.running""")
+rep("""  $("subj").addEventListener("input", e => { S.study.subject = e.target.value.trim(); });
+  $("stStart").addEventListener("click", () => { studyStart(); updateUI(true); save(); });
+  $("stOk").addEventListener("click", () => { studyConfirm(); updateUI(true); save(); });
+  $("stPause").addEventListener("click", () => { studyPause(); updateUI(true); save(); });
+  $("stStop").addEventListener("click", () => { studyStop(); updateUI(true); save(); });
+""", "")
+rep('<div class="stat"><span>오늘 공부</span><b class="num" id="mToday"></b></div><div class="stat"><span>공부 연속</span>', '<div class="stat"><span>오늘 읽기</span><b class="num" id="mToday"></b></div><div class="stat"><span>읽기 연속</span>')
+rep('하루 ${STUDY_CAP}분까지, 10분 이상 공부한 날이 이어지면 연속 보너스(주일은 쉬어 가요).', '하루 ${STUDY_CAP}분까지, 설교를 10분 이상 읽은 날이 이어지면 연속 보너스(주일은 쉬어 가요). 설교 한 편을 끝까지 읽으면 처음엔 광석 60·도장 1, 다른 날 다시 읽으면 광석 15.')
+V46_CSS += """.sm-li { display: block; width: 100%; text-align: left; font: inherit; padding: 9px 10px; margin: 0 0 6px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); line-height: 1.3; cursor: pointer; }
+.sm-li b { display: block; font-size: 14px; font-weight: 700; }
+.sm-li small { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.sm-li.done { border-color: var(--ore, #6fd3ff); }
+.sm-li.done b::before { content: "✓ "; color: var(--ore, #6fd3ff); }
+"""
+
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)
 mk = '/* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */'
 assert s.count(mk) == 1
@@ -130,5 +159,5 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v59";'))
+open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v60";'))
 print('built', len(s))

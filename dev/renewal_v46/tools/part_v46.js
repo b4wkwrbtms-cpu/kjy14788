@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46w";
+var X_VER = "46x";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -288,9 +288,81 @@ function openSmt(sid) {
   Promise.all([loadSm(), loadSmt(sid)]).then(([, d]) => {
     const s = smById(sid);
     if (!s || !d) { rdSheet(`<p class="muted">설교 전문을 불러오지 못했어요. 인터넷에 연결된 상태로 다시 열어 주세요.</p>`, label); return; }
-    shPush(); rdSheet(BACK_BTN + smtHtml(s, d), label);
+    shPush(); rdSheet(BACK_BTN + `<div data-smread="${escapeHtml(sid)}" data-len="${(d.paras || []).reduce((n, p) => n + (p.t || "").length, 0)}">` + smtHtml(s, d) + `</div>`, label);
+    smReadStart(s);
   });
 }
+/* ===== 설교 읽기 = 광산 (10-26 사용자: 공부 타이머 대신 설교 원고를 읽은 시간만큼 캐고, 끝까지 읽으면 보너스) ===== */
+var smRead = null;
+function smReadStart(s) {
+  rollDay(); const St = S.study;
+  if (St.running && !smRead) studyPause();
+  if (smRead && smRead.sid === s.sid) return;
+  if (smRead) smReadStop(true);
+  St.subject = (s.title || "설교").slice(0, 20); St.running = true; St.lastConfirm = Date.now(); St.beeped = true;
+  smRead = { sid: s.sid, t0: Date.now(), done: false };
+}
+function smReadStop(quiet) {
+  if (!smRead) return;
+  const St = S.study; if (St.running) studyPause();
+  const m = Math.floor(St.sessionMs / 60000); St.sessionMs = 0;
+  if (!quiet && m > 0) toast(`설교 ${m}분 읽었어요 · 오늘 갱도 ${St.depth}층`);
+  smRead = null; save();
+}
+function smReadTick() {
+  if (!smRead) return;
+  const sh = $("rdSheet"), bd = $("rdShBody"), rdr = $("reader");
+  const on = sh && !sh.hidden && rdr && !rdr.hidden && bd && bd.querySelector(`[data-smread="${smRead.sid}"]`);
+  if (!on) { smReadStop(false); return; }
+  const St = S.study;
+  if (St.running && Date.now() - St.lastConfirm >= CONFIRM_MS) { const since = Date.now() - St.lastConfirm; measFocus(since, false); addStudy(since); St.sessionMs += since; St.lastConfirm = Date.now(); St.beeped = true; }
+  if (!smRead.done && bd.scrollTop + bd.clientHeight >= bd.scrollHeight - 80) {
+    const len = +on.dataset.len || 0, needMs = Math.min(20, Math.max(2, len / 800)) * 60000;
+    if (Date.now() - smRead.t0 >= needMs) { smRead.done = true; smReadDone(smRead.sid); }
+  }
+}
+function smReadDone(sid) {
+  S.smDone = S.smDone || {}; const r = S.smDone[sid] || { n: 0, last: "" }, today = dayKey(), first = r.n === 0;
+  if (r.last === today) return;
+  r.n++; r.last = today; S.smDone[sid] = r;
+  if (roffOn()) { toast("설교를 끝까지 읽었어요 · 보상 끄기 주간이라 기록만"); return; }
+  const ore = Math.round((first ? 60 : 15) * oreMult() * devWgt()); S.ore += ore; if (first) S.stamp += 1;
+  toast(first ? `설교를 끝까지 읽었어요 · 광석 +${ore}, 도장 +1` : `설교를 다시 읽었어요 · 광석 +${ore}`);
+  try { addFloat(320, 60, `광석 +${ore}`, "#6fd3ff", 20); } catch (e) {}
+  save();
+}
+function smOpenFromTab(sid) {
+  loadSm().then(() => {
+    const s = smById(sid), sp = s && s.spans && s.spans[0];
+    if (sp) openReader(sp[0] - 1, sp[1] - 1);
+    setTimeout(() => openSmt(sid), 60);
+  });
+}
+function smListHtml() {
+  const G = [["장진명 목사 · 군산성결교회", s => s.preacher === "장진명" && /군산/.test(s.place || "")], ["장진명 목사 · 은평교회", s => s.preacher === "장진명" && !/군산/.test(s.place || "")], ["유기성 목사 · 제자훈련 강의", s => s.preacher === "유기성"]];
+  const D = S.smDone || {}; let h = "", rest = (bibleSm || []).slice();
+  G.forEach(([t, f]) => {
+    const L = rest.filter(f); rest = rest.filter(s => !f(s)); if (!L.length) return;
+    h += `<div class="sec-title" style="margin:10px 0 6px">${t} <small>${L.length}편 · 읽음 ${L.filter(s => D[s.sid]).length}</small></div>`;
+    h += L.map(s => `<button type="button" class="sm-li${D[s.sid] ? " done" : ""}" data-smopen="${escapeHtml(s.sid)}"><b>${escapeHtml(s.title)}</b><small>${escapeHtml((s.refs || []).join(" · "))}${s.series ? ` · ${escapeHtml(s.series)}` : ""}${D[s.sid] ? ` · ✓ ${D[s.sid].n}번 읽음` : ""}</small></button>`).join("");
+  });
+  if (rest.length) h += rest.map(s => `<button type="button" class="sm-li" data-smopen="${escapeHtml(s.sid)}"><b>${escapeHtml(s.title)}</b><small>${escapeHtml(s.preacher)} 목사</small></button>`).join("");
+  return h;
+}
+function smCardBuild(card) {
+  card.innerHTML = `<div class="clock num" id="stClock">00:00</div><div class="muted num" id="stSub" style="text-align:center">설교 원고를 열면 읽는 시간만큼 광산을 캐요</div><div id="smList"><p class="muted">설교 목록을 불러오는 중…</p></div>`;
+  let key = "";
+  addCustom("study", card, () => {
+    const St = S.study, since = St.running ? Date.now() - St.lastConfirm : 0;
+    $("stClock").textContent = mm(St.sessionMs + since);
+    $("stSub").textContent = smRead ? `읽는 중 · ${St.subject}` : "설교 원고를 열면 읽는 시간만큼 광산을 캐요 · 끝까지 읽으면 광석 보너스";
+    const k = (bibleSm ? bibleSm.length : 0) + ":" + JSON.stringify(S.smDone || {});
+    if (k !== key && bibleSm) { key = k; $("smList").innerHTML = smListHtml(); }
+  });
+  loadSm().then(() => { key = ""; try { updateUI(true); } catch (e) {} });
+  card.addEventListener("click", e => { const b = e.target.closest("[data-smopen]"); if (b) { smOpenFromTab(b.dataset.smopen); } });
+}
+
 function openSmn(id) {
   const label = rd ? `${BOOKS[rd.b][0]} ${rd.c + 1}장` : "";
   loadSmt(id).then(d => { if (!d) return; shPush(); rdSheet(BACK_BTN + `<div class="nt-head"><span class="nt-badge k-sm">원고집</span><small>${escapeHtml(d.book || "")}</small></div><h3>편집 주·교정 확인사항</h3>` + d.paras.map(p => p.k === "pre" ? `<pre class="sm-pre">${escapeHtml(p.t)}</pre>` : `<p>${refHtml(p.t)}</p>`).join(""), label); });
@@ -389,3 +461,6 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
   box.addEventListener("click", e => { act(e.target, e); }, true);
   box.addEventListener("keydown", e => { if (e.key === "Enter" && e.target && e.target.dataset && (e.target.dataset.nt || e.target.dataset.vn)) act(e.target, e); if (e.key === "Escape") rdSheetClose(); });
 })();
+
+/* 설교 읽기 시간 → 공부(광산) 기록: 250ms 틱에 얹음 */
+setInterval(() => { try { smReadTick(); } catch (e) {} }, 1000);

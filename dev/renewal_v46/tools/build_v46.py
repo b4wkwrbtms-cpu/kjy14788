@@ -150,8 +150,15 @@ V46_CSS += """.sm-li { display: block; width: 100%; text-align: left; font: inhe
 
 # ---------- 10-26 사용자: 긴 글(설교 전문·해설) 가독성 — 본문용 명조, 큰 글자, 넉넉한 행간, 종이 모드, 읽은 만큼 표시 ----------
 rep('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&display=swap">',
-    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600&family=Gowun+Batang:wght@400;700&family=Gaegu:wght@400;700&display=swap">')
+    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&display=swap">')
 V46_CSS += """/* 긴 글 읽기 모양 (10-27, 아이폰 14 Pro 기준 393pt) — 읽기 창 안에서만 쓰는 색·글꼴 변수 */
+@font-face { font-family: "MaruBuri"; font-weight: 400; font-display: swap; src: url(fonts/maruburi-r.woff) format("woff"); }
+@font-face { font-family: "MaruBuri"; font-weight: 600 700; font-display: swap; src: url(fonts/maruburi-sb.woff) format("woff"); }
+@font-face { font-family: "NSDonghwa"; font-display: swap; src: url(fonts/donghwa.woff) format("woff"); }
+@font-face { font-family: "NSKkot"; font-display: swap; src: url(fonts/kkot.woff) format("woff"); }
+@font-face { font-family: "NSDahaeng"; font-display: swap; src: url(fonts/dahaeng.woff) format("woff"); }
+@font-face { font-family: "NSSeongsil"; font-display: swap; src: url(fonts/seongsil.woff) format("woff"); }
+@font-face { font-family: "NSMirae"; font-display: swap; src: url(fonts/mirae.woff) format("woff"); }
 .rd-sheet { --rfg: #d8d5cc; --rmut: #8c9099; --rbg: #15171d; --rline: #262a33; --rq: #d8b86a; --rqbg: rgba(216, 184, 106, .07); --rbtn: #1d2027; --rhi: #e9e6de; }
 .rd-sheet.night { --rfg: #c9c6bf; --rmut: #7d8088; --rbg: #000; --rline: #1c1e24; --rq: #c9ab62; --rqbg: rgba(201, 171, 98, .08); --rbtn: #121317; --rhi: #e2dfd7; }
 .rd-sheet.paper { --rfg: #2b2926; --rmut: #716b62; --rbg: #f4eee3; --rline: #ddd4c4; --rq: #7f601c; --rqbg: rgba(127, 96, 28, .07); --rbtn: #ebe4d6; --rhi: #1d1b18; }
@@ -162,7 +169,7 @@ V46_CSS += """/* 긴 글 읽기 모양 (10-27, 아이폰 14 Pro 기준 393pt) �
 .rd-sh-top { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 4px 8px 2px 4px; }
 .rd-sh-top button { font: inherit; font-size: 15px; line-height: 1; min-height: 40px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: var(--rmut); cursor: pointer; }
 .rd-sh-top .rd-sh-x { font-size: 16px; }
-.rd-sh-top .rd-sh-aa { font-family: "Noto Serif KR", serif; font-weight: 600; letter-spacing: .02em; border: 1px solid var(--rline); min-width: 46px; }
+.rd-sh-top .rd-sh-aa { font-family: "MaruBuri", serif; font-weight: 600; letter-spacing: .02em; border: 1px solid var(--rline); min-width: 46px; }
 .rd-sh-top button:active { color: var(--rhi); }
 .rd-sh-tt { flex: 1; min-width: 0; text-align: center; font-size: 13px; line-height: 1.25; color: var(--rmut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rd-sh-tt[data-left]::after { content: attr(data-left); display: block; font-size: 11.5px; color: var(--rq); }
@@ -175,12 +182,16 @@ V46_CSS += """/* 긴 글 읽기 모양 (10-27, 아이폰 14 Pro 기준 393pt) �
 .rd-sh-seg button { font: inherit; font-size: 14px; line-height: 1; min-height: 36px; min-width: 52px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--rline); background: transparent; color: var(--rmut); cursor: pointer; }
 .rd-sh-seg button.on { background: var(--rq); border-color: var(--rq); color: #1b1608; font-weight: 700; }
 .rd-sh-seg b { min-width: 30px; text-align: center; color: var(--rfg); font-size: 15px; }
-.rd-sh-body { flex: 1; font-family: "Noto Serif KR", "Apple SD Gothic Neo", "Nanum Myeongjo", serif; font-weight: 400; font-size: var(--shfs, 18px); line-height: 1.9; letter-spacing: 0; color: var(--rfg); padding: 6px 20px 24px; max-width: 640px; width: 100%; margin: 0 auto; box-sizing: border-box; text-align: left; word-break: keep-all; overflow-wrap: anywhere; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+.rd-sh-body { flex: 1; font-family: "MaruBuri", "Apple SD Gothic Neo", "Nanum Myeongjo", serif; font-weight: 400; font-size: var(--shfs, 18px); line-height: 1.9; letter-spacing: 0; color: var(--rfg); padding: 6px 20px 24px; max-width: 640px; width: 100%; margin: 0 auto; box-sizing: border-box; text-align: left; word-break: keep-all; overflow-wrap: anywhere; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 .rd-sheet.f-sans .rd-sh-body { font-family: "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", "Noto Sans KR", sans-serif; line-height: 1.8; letter-spacing: -.01em; }
-.rd-sheet.f-batang .rd-sh-body { font-family: "Gowun Batang", "Noto Serif KR", serif; font-size: calc(var(--shfs, 18px) * 1.04); line-height: 1.9; }
+.rd-sheet.f-batang .rd-sh-body { font-family: "Gowun Batang", "MaruBuri", serif; font-size: calc(var(--shfs, 18px) * 1.04); line-height: 1.9; }
 .rd-sheet.f-dodum .rd-sh-body { font-family: "Gowun Dodum", "Apple SD Gothic Neo", sans-serif; font-size: calc(var(--shfs, 18px) * 1.03); line-height: 1.85; letter-spacing: 0; }
-.rd-sheet.f-gaegu .rd-sh-body { font-family: "Gaegu", "Gowun Dodum", cursive; font-size: calc(var(--shfs, 18px) * 1.16); line-height: 1.75; letter-spacing: .01em; }
-.rd-sheet.f-gaegu .rd-sh-body h3, .rd-sheet.f-gaegu .rd-sh-body h4, .rd-sheet.f-batang .rd-sh-body h3, .rd-sheet.f-batang .rd-sh-body h4 { font-weight: 700; }
+.rd-sheet.f-donghwa .rd-sh-body { font-family: "NSDonghwa", "Gowun Dodum", sans-serif; font-size: calc(var(--shfs, 18px) * 1.1); line-height: 1.8; }
+.rd-sheet.f-kkot .rd-sh-body { font-family: "NSKkot", "Gowun Dodum", sans-serif; font-size: calc(var(--shfs, 18px) * 1.1); line-height: 1.8; }
+.rd-sheet.f-dahaeng .rd-sh-body { font-family: "NSDahaeng", "Gowun Dodum", sans-serif; font-size: calc(var(--shfs, 18px) * 1.12); line-height: 1.8; }
+.rd-sheet.f-seongsil .rd-sh-body { font-family: "NSSeongsil", "Gowun Dodum", sans-serif; font-size: calc(var(--shfs, 18px) * 1.06); line-height: 1.8; }
+.rd-sheet.f-mirae .rd-sh-body { font-family: "NSMirae", "Gowun Dodum", sans-serif; font-size: calc(var(--shfs, 18px) * 1.06); line-height: 1.8; }
+.rd-sheet.f-batang .rd-sh-body h3, .rd-sheet.f-batang .rd-sh-body h4, .rd-sheet.f-donghwa .rd-sh-body h3, .rd-sheet.f-kkot .rd-sh-body h3, .rd-sheet.f-dahaeng .rd-sh-body h3 { font-weight: 700; }
 .rd-sh-fonts { flex-wrap: wrap; justify-content: flex-end; max-width: 72%; }
 .rd-sh-fonts button { min-width: 0; padding: 0 10px; font-size: 15px; }
 .rd-sh-or:has(.rd-sh-fonts) { align-items: flex-start; padding: 8px 0; }
@@ -224,5 +235,8 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-open(f'{APP}/sw.js', 'w').write(sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v62";'))
+sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v63";')
+assert 'url.pathname.includes("/bible/")' in sw
+sw = sw.replace('url.pathname.includes("/bible/")', '(url.pathname.includes("/bible/") || url.pathname.includes("/fonts/"))')  # 글꼴도 한 번 받으면 오프라인
+open(f'{APP}/sw.js', 'w').write(sw)
 print('built', len(s))

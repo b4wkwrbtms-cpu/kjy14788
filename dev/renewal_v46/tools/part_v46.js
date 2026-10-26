@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "46z";
+var X_VER = "47a";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -177,7 +177,8 @@ function rdSheet(html, label) {
       <div class="rd-sh-prog"><i id="rdShProg"></i></div>
       <div class="rd-sh-opts" id="rdShOpts" hidden>
         <div class="rd-sh-or"><span>글자 크기</span><div class="rd-sh-seg"><button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><b class="num" id="rdShFs">18</b><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button></div></div>
-        <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-serif" data-k="serif" style="font-family:'Noto Serif KR',serif">명조</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button><button type="button" data-r="sh-font-gaegu" data-k="gaegu" style="font-family:'Gaegu',cursive">손글씨</button></div></div>
+        <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-maru" data-k="maru" style="font-family:'MaruBuri',serif">마루부리</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button></div></div>
+        <div class="rd-sh-or"><span>손글씨</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-donghwa" data-k="donghwa" style="font-family:'NSDonghwa'">동화또박</button><button type="button" data-r="sh-font-kkot" data-k="kkot" style="font-family:'NSKkot'">꽃내음</button><button type="button" data-r="sh-font-dahaeng" data-k="dahaeng" style="font-family:'NSDahaeng'">다행체</button><button type="button" data-r="sh-font-seongsil" data-k="seongsil" style="font-family:'NSSeongsil'">성실체</button><button type="button" data-r="sh-font-mirae" data-k="mirae" style="font-family:'NSMirae'">미래나무</button></div></div>
         <div class="rd-sh-or"><span>바탕</span><div class="rd-sh-seg"><button type="button" data-r="sh-bg-dark" data-k="dark">어둡게</button><button type="button" data-r="sh-bg-paper" data-k="paper">종이</button><button type="button" data-r="sh-bg-night" data-k="night">밤</button></div></div>
         <div class="rd-sh-or"><span>줄 간격</span><div class="rd-sh-seg"><button type="button" data-r="sh-lh-n" data-k="n">보통</button><button type="button" data-r="sh-lh-w" data-k="w">넓게</button></div></div>
       </div>
@@ -196,8 +197,8 @@ function rdSheet(html, label) {
   sh.querySelector(".rd-sh-back").innerHTML = `← 읽던 본문으로${label ? `<small>${escapeHtml(label)}</small>` : ""}`;
 }
 function shFs() { const v = +S.shfs; return v >= 15 && v <= 26 ? v : 18; }
-const SH_FONTS = ["serif", "batang", "sans", "dodum", "gaegu"];
-function shLook() { return { font: SH_FONTS.indexOf(S.shFont) >= 0 ? S.shFont : "serif", bg: S.shBg === "paper" || S.shBg === "night" ? S.shBg : (S.shPaper ? "paper" : "dark"), lh: S.shLh === "w" ? "w" : "n" }; }
+const SH_FONTS = ["maru", "batang", "sans", "dodum", "donghwa", "kkot", "dahaeng", "seongsil", "mirae"];
+function shLook() { return { font: SH_FONTS.indexOf(S.shFont) >= 0 ? S.shFont : "maru", bg: S.shBg === "paper" || S.shBg === "night" ? S.shBg : (S.shPaper ? "paper" : "dark"), lh: S.shLh === "w" ? "w" : "n" }; }
 function shApplyLook() {
   const sh = $("rdSheet"), bd = $("rdShBody"); if (!sh || !bd) return;
   const L = shLook();

@@ -159,9 +159,10 @@ V46_CSS += """/* 긴 글 읽기 모양 (10-27, 아이폰 14 Pro 기준 393pt) �
 @font-face { font-family: "NSDahaeng"; font-display: swap; src: url(fonts/dahaeng.woff) format("woff"); }
 @font-face { font-family: "NSSeongsil"; font-display: swap; src: url(fonts/seongsil.woff) format("woff"); }
 @font-face { font-family: "NSMirae"; font-display: swap; src: url(fonts/mirae.woff) format("woff"); }
-.rd-sheet { --rfg: #d8d5cc; --rmut: #8c9099; --rbg: #15171d; --rline: #262a33; --rq: #d8b86a; --rqbg: rgba(216, 184, 106, .07); --rbtn: #1d2027; --rhi: #e9e6de; }
-.rd-sheet.night { --rfg: #c9c6bf; --rmut: #7d8088; --rbg: #000; --rline: #1c1e24; --rq: #c9ab62; --rqbg: rgba(201, 171, 98, .08); --rbtn: #121317; --rhi: #e2dfd7; }
-.rd-sheet.paper { --rfg: #2b2926; --rmut: #716b62; --rbg: #f4eee3; --rline: #ddd4c4; --rq: #7f601c; --rqbg: rgba(127, 96, 28, .07); --rbtn: #ebe4d6; --rhi: #1d1b18; }
+.rd-sheet, .reader { --rfg: #d8d5cc; --rmut: #8c9099; --rbg: #15171d; --rline: #262a33; --rq: #d8b86a; --rqbg: rgba(216, 184, 106, .07); --rbtn: #1d2027; --rhi: #e9e6de; --rtop: #171a21; }
+.rd-sheet.night, .reader.night { --rfg: #c9c6bf; --rmut: #7d8088; --rbg: #000; --rline: #1c1e24; --rq: #c9ab62; --rqbg: rgba(201, 171, 98, .08); --rbtn: #121317; --rhi: #e2dfd7; --rtop: #070708; }
+.rd-sheet.paper, .reader.paper { --rfg: #2b2926; --rmut: #716b62; --rbg: #f4eee3; --rline: #ddd4c4; --rq: #7f601c; --rqbg: rgba(127, 96, 28, .07); --rbtn: #ebe4d6; --rhi: #1d1b18; --rtop: #ece5d8; }
+.rd-sheet.cream, .reader.cream { --rfg: #2d2b28; --rmut: #76706a; --rbg: #faf7f0; --rline: #e6dfd1; --rq: #8a6b25; --rqbg: rgba(138, 107, 37, .07); --rbtn: #f0ebe0; --rhi: #1f1d1a; --rtop: #f3eee4; }
 .rd-sheet .rd-sh-card { background: var(--rbg); color: var(--rfg); max-height: 92vh; max-height: 92dvh; padding: 0 0 calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rline); border-radius: 18px 18px 0 0; }
 .rd-sheet.full .rd-sh-card { max-height: none; height: 100vh; height: 100dvh; border-radius: 0; border-top: 0; padding-top: env(safe-area-inset-top, 0px); }
 .rd-sheet.full .rd-sh-bg { background: var(--rbg); }
@@ -220,6 +221,66 @@ V46_CSS += """/* 긴 글 읽기 모양 (10-27, 아이폰 14 Pro 기준 393pt) �
 .rd-sheet .rd-sh-back { margin: 6px 16px 0; width: auto; background: var(--rbtn); color: var(--rfg); border-color: var(--rline); }
 .rd-sheet .rd-sh-back small { color: var(--rmut); }
 .rd-sheet.full .rd-sh-back { display: none; }
+.rd-sheet.tight .rd-sh-body { line-height: 1.7; }
+.rd-sheet.tight .rd-sh-body p, .rd-sheet.tight .rd-sh-body .sm-p { margin-bottom: .75em; }
+/* 종이 결: 아주 옅은 노이즈를 위에 한 겹 (종이·크림은 곱하기, 어두운 바탕은 소프트라이트) */
+.rd-sheet.grain .rd-sh-card::before, .reader.grain::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); background-size: 180px 180px; opacity: .05; mix-blend-mode: soft-light; }
+.rd-sheet.grain.paper .rd-sh-card::before, .rd-sheet.grain.cream .rd-sh-card::before, .reader.grain.paper::before, .reader.grain.cream::before { opacity: .55; mix-blend-mode: multiply; }
+.rd-sheet .rd-sh-card { overflow: hidden; }
+/* 성경 읽기 창 — 같은 변수·글꼴·바탕 */
+.reader { background: var(--rbg); color: var(--rfg); }
+.reader .rd-top { background: var(--rtop); border-bottom-color: var(--rline); }
+.reader .rd-title b { color: var(--rhi); } .reader .rd-title small { color: var(--rmut); }
+.reader .rd-x, .reader .rd-fs button, .reader .rd-top .rd-aa { background: var(--rbtn); color: var(--rfg); border: 1px solid var(--rline); }
+.reader .rd-top .rd-aa { font-family: "MaruBuri", serif; font-weight: 600; font-size: 15px; border-radius: 8px; padding: 7px 10px; min-height: 36px; cursor: pointer; }
+.reader .rd-top .rd-fs { display: none; }
+.reader .rd-sh-opts { margin: 8px 14px 0; flex: none; max-height: 52vh; overflow-y: auto; }
+.reader .rd-bot { background: var(--rtop); border-top: 1px solid var(--rline); }
+.reader .rd-state { color: var(--rmut); }
+.reader.paper .rd-bot .btn, .reader.cream .rd-bot .btn { background: var(--rbtn); color: var(--rfg); border-color: var(--rline); box-shadow: none; }
+.reader.paper .rd-bot .btn.manna, .reader.cream .rd-bot .btn.manna { background: var(--rq); color: #fff; border-color: var(--rq); }
+.reader .rd-ver { background: var(--rbg); }
+.reader .rd-ver button { border-color: var(--rline); color: var(--rmut); }
+.reader .rd-ver button.on { background: var(--rq); border-color: var(--rq); color: #1b1608; }
+.reader.paper .rd-ver button.on, .reader.cream .rd-ver button.on { color: #fff; }
+.reader .rd-body { font-family: "MaruBuri", "Apple SD Gothic Neo", "Nanum Myeongjo", serif; font-size: var(--rdfs, 18px); line-height: 1.9; color: var(--rfg); padding: 14px 20px 36px; max-width: 640px; width: 100%; margin: 0 auto; box-sizing: border-box; text-align: left; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; letter-spacing: 0; }
+.reader.f-sans .rd-body { font-family: "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", "Noto Sans KR", sans-serif; line-height: 1.8; letter-spacing: -.01em; }
+.reader.f-batang .rd-body { font-family: "Gowun Batang", "MaruBuri", serif; font-size: calc(var(--rdfs, 18px) * 1.04); }
+.reader.f-dodum .rd-body { font-family: "Gowun Dodum", "Apple SD Gothic Neo", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.03); line-height: 1.85; }
+.reader.f-donghwa .rd-body { font-family: "NSDonghwa", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.1); line-height: 1.8; }
+.reader.f-kkot .rd-body { font-family: "NSKkot", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.1); line-height: 1.8; }
+.reader.f-dahaeng .rd-body { font-family: "NSDahaeng", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.12); line-height: 1.8; }
+.reader.f-seongsil .rd-body { font-family: "NSSeongsil", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.06); line-height: 1.8; }
+.reader.f-mirae .rd-body { font-family: "NSMirae", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.06); line-height: 1.8; }
+.reader.wide .rd-body { line-height: 2.2; } .reader.tight .rd-body { line-height: 1.68; }
+.reader .rd-body p.mz { margin: 0 0 1em; }
+.reader .rd-body p.mz .ln { margin: 0 0 .18em; }
+.reader.wide .rd-body p.mz { margin-bottom: 1.3em; } .reader.wide .rd-body p.mz .ln { margin-bottom: .35em; }
+.reader.tight .rd-body p.mz { margin-bottom: .7em; } .reader.tight .rd-body p.mz .ln { margin-bottom: .08em; }
+.reader .rd-body sup { font-family: inherit; font-size: .58em; font-weight: 600; color: var(--rmut); margin-right: 4px; vertical-align: .5em; }
+.reader .rd-body sup.sm { color: var(--rq); } .reader .rd-body sup.sm::after { color: var(--rq); }
+.reader .rd-body sup.vn-t.has { color: var(--rq); opacity: .85; }
+.reader .rd-body h4.rd-h { display: block; font-family: inherit; font-weight: 600; font-size: 1.04em; line-height: 1.5; color: var(--rq); margin: 1.9em 0 .6em; }
+.reader .rd-body h4.rd-h::after { display: none; }
+.reader .rd-body h4.rd-h::before { content: ""; display: block; width: 28px; height: 2px; background: var(--rq); margin: 0 0 .5em; opacity: .7; }
+.reader .rd-body h4.rd-h:first-of-type { margin-top: .6em; }
+.reader .rd-body .sp-lab { color: var(--rmut); } .reader .rd-body .sp-lab b { color: var(--rq); } .reader .rd-body .sp-lab i { border-color: var(--rline); }
+.reader .rd-body p.mz .ln.sup-t { color: var(--rmut); }
+.reader .rd-body .rd-note, .reader .rd-body .muted { color: var(--rmut); }
+.reader .rd-body .rd-sm { border-color: var(--rq); background: var(--rqbg); }
+.reader .rd-body .rd-op { border-color: var(--rline); background: var(--rbtn); color: var(--rmut); } .reader .rd-body .rd-op b { color: var(--rfg); }
+.reader.paper .rd-body a.nl, .reader.cream .rd-body a.nl { text-decoration-color: #9a8c6a; }
+.reader.paper .rd-body.rd-col a.nl.k-person, .reader.cream .rd-body.rd-col a.nl.k-person { color: #2b5aa6; text-decoration-color: #2b5aa6; }
+.reader.paper .rd-body.rd-col a.nl.k-place, .reader.cream .rd-body.rd-col a.nl.k-place { color: #1f7a4d; text-decoration-color: #1f7a4d; }
+.reader.paper .rd-body.rd-col a.nl.k-hebrew, .reader.cream .rd-body.rd-col a.nl.k-hebrew { color: #6a3fb5; text-decoration-color: #6a3fb5; }
+.reader.paper .rd-body.rd-col a.nl.k-culture, .reader.cream .rd-body.rd-col a.nl.k-culture { color: #a0561a; text-decoration-color: #a0561a; }
+.reader.paper .rd-body .nt-chip, .reader.cream .rd-body .nt-chip { filter: saturate(.8) brightness(.72); }
+/* 판 안의 고르기 상자 */
+.rd-sh-sel { font: inherit; font-size: 14px; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--rline); background: var(--rbtn); color: var(--rfg); max-width: 220px; }
+.rd-sh-note { font-size: 12px; color: var(--rmut); margin: 6px 0 4px; line-height: 1.5; }
+.fb-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.fb-ctl { display: flex; align-items: center; gap: 6px; flex: none; }
+.fb-sel { font: inherit; font-size: 13px; padding: 6px 6px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); max-width: 140px; }
 @media (prefers-reduced-motion: reduce) { .rd-sh-prog i { transition: none; } }
 """
 
@@ -236,7 +297,7 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v66";')
+sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v67";')
 assert 'url.pathname.includes("/bible/")' in sw
 sw = sw.replace('url.pathname.includes("/bible/")', '(url.pathname.includes("/bible/") || url.pathname.includes("/fonts/"))')  # 글꼴도 한 번 받으면 오프라인
 open(f'{APP}/sw.js', 'w').write(sw)

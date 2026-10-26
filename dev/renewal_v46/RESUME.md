@@ -4,6 +4,8 @@
 - 본문: 우리 v45 20대 말투 유지 + 그쪽 '원어·의미' 교정만 골라 반영 (이름 표기 교정은 되돌리고 메모로 — 개역한글 인명·지명 유지).
 - 기능: 다 넣되 앱에 맞게(책별 나눠 받기, 끄고 켜기).
 
+## 10-27 3시 40분 (47e): 사용자 요청 4가지. ① 곡 전환 '틱' — cancelScheduledValues 뒤 값이 초기값으로 튀던 것 → fbHold(현재값 고정) 뒤 페이드(나감 1.2s·들어옴 1.8s·읽기 전환 2.4s). ② 곡 자리 배치 — 설정 '내 배경음악' 곡마다 <select>(읽을 때·옷장보물·시작 소리·구역 21·안 씀), S.bgmMap; 같은 자리 여러 곡이면 무작위(fb.picks). ③ 읽을 때 — sfxGain 0으로(공격·효과음 끔), Aa 판 '읽을 때 음악' 고르기(S.readTrack: auto/synth/off/곡 이름; readMode()). ④ 성경 본문도 같은 읽기 모양 — 읽기 창 상단 Aa 버튼 + 판(shOptsHtml("rd")), 글자 크기 S.rdfs(--rdfs 변수, 손글씨는 배율), 글꼴 9종·바탕 4종(어둡게·종이·크림·밤)·종이 결(SVG 노이즈 오버레이, S.shGrain)·줄 간격 3단(촘촘·보통·넓게). .reader에 --r* 변수 적용(상단·하단 바·번역 버튼·설교 상자·링크 색까지). 본문: 절 번호 작고 회색(설교 절은 금색), 소제목 금색+짧은 선(선 뒤 줄 없앰), 절 사이 1em·줄 사이 .18em, 최대 폭 640. 검사 t67 통과. sw yageun-v67.
+
 ## 10-27 3시 (47d): 내 배경음악이 아이폰에서 소리 안 남(사용자 보고, 29곡 넣음) → <audio>+MediaElementSource 대신 blob→decodeAudioData(32kHz 모노 OfflineAudioContext)→AudioBufferSourceNode(loop)→gain→masterGain. 최근 3곡 캐시, 못 여는 곡은 건너뜀(fb.bad). 검사 t65 통과. sw yageun-v66.
 
 ## 10-27 2시 40분 (47c): **내 배경음악 파일** (사용자가 mp3 20곡을 줌 — 메이플스토리 BGM 이름들: Title·Aquarium·ShopBgm 등). 저작권 때문에 저장소·Pages에는 올리지 않고, 설정 탭 '내 배경음악' 카드에서 사용자가 파일을 넣으면 기기 IndexedDB(yageun-bgm)에 저장해 그걸로 틂(tools/music_files_v47.js). 이름→장면 자동 배정(FB_MAP: 읽을 때 6곡 중 무작위 1곡·옷장/보물 ShopBgm·시작 Title_2002 한 번·50층마다 한 곡), 두 <audio>를 MediaElementSource→gain→masterGain으로 크로스페이드 0.5~0.7초, 읽을 때는 0.6배. 파일이 있으면 합성 음악(v47)·집중곡을 쓰지 않음(S.bgmFiles 스위치). 원본 mp3는 /home/claude/bgm_in (저장소 밖). 검사 t63·t64. sw yageun-v65.

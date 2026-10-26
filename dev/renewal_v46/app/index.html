@@ -420,9 +420,10 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
 @font-face { font-family: "NSDahaeng"; font-display: swap; src: url(fonts/dahaeng.woff) format("woff"); }
 @font-face { font-family: "NSSeongsil"; font-display: swap; src: url(fonts/seongsil.woff) format("woff"); }
 @font-face { font-family: "NSMirae"; font-display: swap; src: url(fonts/mirae.woff) format("woff"); }
-.rd-sheet { --rfg: #d8d5cc; --rmut: #8c9099; --rbg: #15171d; --rline: #262a33; --rq: #d8b86a; --rqbg: rgba(216, 184, 106, .07); --rbtn: #1d2027; --rhi: #e9e6de; }
-.rd-sheet.night { --rfg: #c9c6bf; --rmut: #7d8088; --rbg: #000; --rline: #1c1e24; --rq: #c9ab62; --rqbg: rgba(201, 171, 98, .08); --rbtn: #121317; --rhi: #e2dfd7; }
-.rd-sheet.paper { --rfg: #2b2926; --rmut: #716b62; --rbg: #f4eee3; --rline: #ddd4c4; --rq: #7f601c; --rqbg: rgba(127, 96, 28, .07); --rbtn: #ebe4d6; --rhi: #1d1b18; }
+.rd-sheet, .reader { --rfg: #d8d5cc; --rmut: #8c9099; --rbg: #15171d; --rline: #262a33; --rq: #d8b86a; --rqbg: rgba(216, 184, 106, .07); --rbtn: #1d2027; --rhi: #e9e6de; --rtop: #171a21; }
+.rd-sheet.night, .reader.night { --rfg: #c9c6bf; --rmut: #7d8088; --rbg: #000; --rline: #1c1e24; --rq: #c9ab62; --rqbg: rgba(201, 171, 98, .08); --rbtn: #121317; --rhi: #e2dfd7; --rtop: #070708; }
+.rd-sheet.paper, .reader.paper { --rfg: #2b2926; --rmut: #716b62; --rbg: #f4eee3; --rline: #ddd4c4; --rq: #7f601c; --rqbg: rgba(127, 96, 28, .07); --rbtn: #ebe4d6; --rhi: #1d1b18; --rtop: #ece5d8; }
+.rd-sheet.cream, .reader.cream { --rfg: #2d2b28; --rmut: #76706a; --rbg: #faf7f0; --rline: #e6dfd1; --rq: #8a6b25; --rqbg: rgba(138, 107, 37, .07); --rbtn: #f0ebe0; --rhi: #1f1d1a; --rtop: #f3eee4; }
 .rd-sheet .rd-sh-card { background: var(--rbg); color: var(--rfg); max-height: 92vh; max-height: 92dvh; padding: 0 0 calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rline); border-radius: 18px 18px 0 0; }
 .rd-sheet.full .rd-sh-card { max-height: none; height: 100vh; height: 100dvh; border-radius: 0; border-top: 0; padding-top: env(safe-area-inset-top, 0px); }
 .rd-sheet.full .rd-sh-bg { background: var(--rbg); }
@@ -481,6 +482,66 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
 .rd-sheet .rd-sh-back { margin: 6px 16px 0; width: auto; background: var(--rbtn); color: var(--rfg); border-color: var(--rline); }
 .rd-sheet .rd-sh-back small { color: var(--rmut); }
 .rd-sheet.full .rd-sh-back { display: none; }
+.rd-sheet.tight .rd-sh-body { line-height: 1.7; }
+.rd-sheet.tight .rd-sh-body p, .rd-sheet.tight .rd-sh-body .sm-p { margin-bottom: .75em; }
+/* 종이 결: 아주 옅은 노이즈를 위에 한 겹 (종이·크림은 곱하기, 어두운 바탕은 소프트라이트) */
+.rd-sheet.grain .rd-sh-card::before, .reader.grain::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); background-size: 180px 180px; opacity: .05; mix-blend-mode: soft-light; }
+.rd-sheet.grain.paper .rd-sh-card::before, .rd-sheet.grain.cream .rd-sh-card::before, .reader.grain.paper::before, .reader.grain.cream::before { opacity: .55; mix-blend-mode: multiply; }
+.rd-sheet .rd-sh-card { overflow: hidden; }
+/* 성경 읽기 창 — 같은 변수·글꼴·바탕 */
+.reader { background: var(--rbg); color: var(--rfg); }
+.reader .rd-top { background: var(--rtop); border-bottom-color: var(--rline); }
+.reader .rd-title b { color: var(--rhi); } .reader .rd-title small { color: var(--rmut); }
+.reader .rd-x, .reader .rd-fs button, .reader .rd-top .rd-aa { background: var(--rbtn); color: var(--rfg); border: 1px solid var(--rline); }
+.reader .rd-top .rd-aa { font-family: "MaruBuri", serif; font-weight: 600; font-size: 15px; border-radius: 8px; padding: 7px 10px; min-height: 36px; cursor: pointer; }
+.reader .rd-top .rd-fs { display: none; }
+.reader .rd-sh-opts { margin: 8px 14px 0; flex: none; max-height: 52vh; overflow-y: auto; }
+.reader .rd-bot { background: var(--rtop); border-top: 1px solid var(--rline); }
+.reader .rd-state { color: var(--rmut); }
+.reader.paper .rd-bot .btn, .reader.cream .rd-bot .btn { background: var(--rbtn); color: var(--rfg); border-color: var(--rline); box-shadow: none; }
+.reader.paper .rd-bot .btn.manna, .reader.cream .rd-bot .btn.manna { background: var(--rq); color: #fff; border-color: var(--rq); }
+.reader .rd-ver { background: var(--rbg); }
+.reader .rd-ver button { border-color: var(--rline); color: var(--rmut); }
+.reader .rd-ver button.on { background: var(--rq); border-color: var(--rq); color: #1b1608; }
+.reader.paper .rd-ver button.on, .reader.cream .rd-ver button.on { color: #fff; }
+.reader .rd-body { font-family: "MaruBuri", "Apple SD Gothic Neo", "Nanum Myeongjo", serif; font-size: var(--rdfs, 18px); line-height: 1.9; color: var(--rfg); padding: 14px 20px 36px; max-width: 640px; width: 100%; margin: 0 auto; box-sizing: border-box; text-align: left; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; letter-spacing: 0; }
+.reader.f-sans .rd-body { font-family: "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", "Noto Sans KR", sans-serif; line-height: 1.8; letter-spacing: -.01em; }
+.reader.f-batang .rd-body { font-family: "Gowun Batang", "MaruBuri", serif; font-size: calc(var(--rdfs, 18px) * 1.04); }
+.reader.f-dodum .rd-body { font-family: "Gowun Dodum", "Apple SD Gothic Neo", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.03); line-height: 1.85; }
+.reader.f-donghwa .rd-body { font-family: "NSDonghwa", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.1); line-height: 1.8; }
+.reader.f-kkot .rd-body { font-family: "NSKkot", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.1); line-height: 1.8; }
+.reader.f-dahaeng .rd-body { font-family: "NSDahaeng", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.12); line-height: 1.8; }
+.reader.f-seongsil .rd-body { font-family: "NSSeongsil", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.06); line-height: 1.8; }
+.reader.f-mirae .rd-body { font-family: "NSMirae", "Gowun Dodum", sans-serif; font-size: calc(var(--rdfs, 18px) * 1.06); line-height: 1.8; }
+.reader.wide .rd-body { line-height: 2.2; } .reader.tight .rd-body { line-height: 1.68; }
+.reader .rd-body p.mz { margin: 0 0 1em; }
+.reader .rd-body p.mz .ln { margin: 0 0 .18em; }
+.reader.wide .rd-body p.mz { margin-bottom: 1.3em; } .reader.wide .rd-body p.mz .ln { margin-bottom: .35em; }
+.reader.tight .rd-body p.mz { margin-bottom: .7em; } .reader.tight .rd-body p.mz .ln { margin-bottom: .08em; }
+.reader .rd-body sup { font-family: inherit; font-size: .58em; font-weight: 600; color: var(--rmut); margin-right: 4px; vertical-align: .5em; }
+.reader .rd-body sup.sm { color: var(--rq); } .reader .rd-body sup.sm::after { color: var(--rq); }
+.reader .rd-body sup.vn-t.has { color: var(--rq); opacity: .85; }
+.reader .rd-body h4.rd-h { display: block; font-family: inherit; font-weight: 600; font-size: 1.04em; line-height: 1.5; color: var(--rq); margin: 1.9em 0 .6em; }
+.reader .rd-body h4.rd-h::after { display: none; }
+.reader .rd-body h4.rd-h::before { content: ""; display: block; width: 28px; height: 2px; background: var(--rq); margin: 0 0 .5em; opacity: .7; }
+.reader .rd-body h4.rd-h:first-of-type { margin-top: .6em; }
+.reader .rd-body .sp-lab { color: var(--rmut); } .reader .rd-body .sp-lab b { color: var(--rq); } .reader .rd-body .sp-lab i { border-color: var(--rline); }
+.reader .rd-body p.mz .ln.sup-t { color: var(--rmut); }
+.reader .rd-body .rd-note, .reader .rd-body .muted { color: var(--rmut); }
+.reader .rd-body .rd-sm { border-color: var(--rq); background: var(--rqbg); }
+.reader .rd-body .rd-op { border-color: var(--rline); background: var(--rbtn); color: var(--rmut); } .reader .rd-body .rd-op b { color: var(--rfg); }
+.reader.paper .rd-body a.nl, .reader.cream .rd-body a.nl { text-decoration-color: #9a8c6a; }
+.reader.paper .rd-body.rd-col a.nl.k-person, .reader.cream .rd-body.rd-col a.nl.k-person { color: #2b5aa6; text-decoration-color: #2b5aa6; }
+.reader.paper .rd-body.rd-col a.nl.k-place, .reader.cream .rd-body.rd-col a.nl.k-place { color: #1f7a4d; text-decoration-color: #1f7a4d; }
+.reader.paper .rd-body.rd-col a.nl.k-hebrew, .reader.cream .rd-body.rd-col a.nl.k-hebrew { color: #6a3fb5; text-decoration-color: #6a3fb5; }
+.reader.paper .rd-body.rd-col a.nl.k-culture, .reader.cream .rd-body.rd-col a.nl.k-culture { color: #a0561a; text-decoration-color: #a0561a; }
+.reader.paper .rd-body .nt-chip, .reader.cream .rd-body .nt-chip { filter: saturate(.8) brightness(.72); }
+/* 판 안의 고르기 상자 */
+.rd-sh-sel { font: inherit; font-size: 14px; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--rline); background: var(--rbtn); color: var(--rfg); max-width: 220px; }
+.rd-sh-note { font-size: 12px; color: var(--rmut); margin: 6px 0 4px; line-height: 1.5; }
+.fb-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.fb-ctl { display: flex; align-items: center; gap: 6px; flex: none; }
+.fb-sel { font: inherit; font-size: 13px; padding: 6px 6px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2); color: var(--fg); max-width: 140px; }
 @media (prefers-reduced-motion: reduce) { .rd-sh-prog i { transition: none; } }
 
 .rd-vers a { font-size: 13px; padding: 7px 11px; border-radius: 8px; border: 1px solid var(--line); color: var(--fg); text-decoration: none; background: var(--panel-2); }
@@ -15455,7 +15516,7 @@ renderReader = function () {
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47d";
+var X_VER = "47e";
 const XB = new Set([12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 64, 65]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -15624,14 +15685,7 @@ function rdSheet(html, label) {
     sh.innerHTML = `<div class="rd-sh-bg" data-r="sh-x"></div><div class="rd-sh-card" role="dialog" aria-modal="true">
       <div class="rd-sh-top"><button type="button" class="rd-sh-x" data-r="sh-x" aria-label="읽던 본문으로">‹ <span id="rdShLab">본문</span></button><div class="rd-sh-tt" id="rdShTt"></div><button type="button" class="rd-sh-aa" data-r="sh-aa" aria-label="읽기 모양">Aa</button></div>
       <div class="rd-sh-prog"><i id="rdShProg"></i></div>
-      <div class="rd-sh-opts" id="rdShOpts" hidden>
-        <div class="rd-sh-or"><span>글자 크기</span><div class="rd-sh-seg"><button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><b class="num" id="rdShFs">18</b><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button></div></div>
-        <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-maru" data-k="maru" style="font-family:'MaruBuri',serif">마루부리</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button></div></div>
-        <div class="rd-sh-or"><span>손글씨</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-donghwa" data-k="donghwa" style="font-family:'NSDonghwa'">동화또박</button><button type="button" data-r="sh-font-kkot" data-k="kkot" style="font-family:'NSKkot'">꽃내음</button><button type="button" data-r="sh-font-dahaeng" data-k="dahaeng" style="font-family:'NSDahaeng'">다행체</button><button type="button" data-r="sh-font-seongsil" data-k="seongsil" style="font-family:'NSSeongsil'">성실체</button><button type="button" data-r="sh-font-mirae" data-k="mirae" style="font-family:'NSMirae'">미래나무</button></div></div>
-        <div class="rd-sh-or"><span>바탕</span><div class="rd-sh-seg"><button type="button" data-r="sh-bg-dark" data-k="dark">어둡게</button><button type="button" data-r="sh-bg-paper" data-k="paper">종이</button><button type="button" data-r="sh-bg-night" data-k="night">밤</button></div></div>
-        <div class="rd-sh-or"><span>읽을 때 음악</span><div class="rd-sh-seg"><button type="button" data-r="sh-fm-on" data-k="on">집중곡</button><button type="button" data-r="sh-fm-off" data-k="off">끄기</button></div></div>
-        <div class="rd-sh-or"><span>줄 간격</span><div class="rd-sh-seg"><button type="button" data-r="sh-lh-n" data-k="n">보통</button><button type="button" data-r="sh-lh-w" data-k="w">넓게</button></div></div>
-      </div>
+      ${shOptsHtml("sh")}
       <div class="rd-sh-body" id="rdShBody"></div>
       <button type="button" class="btn rd-sh-back" data-r="sh-x">← 읽던 본문으로</button></div>`;
     $("reader").appendChild(sh);
@@ -15646,25 +15700,57 @@ function rdSheet(html, label) {
   shOnScroll();
   sh.querySelector(".rd-sh-back").innerHTML = `← 읽던 본문으로${label ? `<small>${escapeHtml(label)}</small>` : ""}`;
 }
+
+/* 읽기 모양 판 (아래 창·성경 읽기 창이 같이 씀). kind: "sh"(아래 창 글자 크기 S.shfs) / "rd"(성경 본문 S.rdfs) */
+function shOptsHtml(kind) {
+  const fs = kind === "rd" ? `<button type="button" data-r="fs-" aria-label="글자 작게">가−</button><b class="num" id="rdFsV">18</b><button type="button" data-r="fs+" aria-label="글자 크게">가+</button>` : `<button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><b class="num" id="rdShFs">18</b><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button>`;
+  return `<div class="rd-sh-opts" id="${kind === "rd" ? "rdOpts" : "rdShOpts"}" hidden>
+        <div class="rd-sh-or"><span>글자 크기</span><div class="rd-sh-seg">${fs}</div></div>
+        <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-maru" data-k="maru" style="font-family:'MaruBuri',serif">마루부리</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button></div></div>
+        <div class="rd-sh-or"><span>손글씨</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-donghwa" data-k="donghwa" style="font-family:'NSDonghwa'">동화또박</button><button type="button" data-r="sh-font-kkot" data-k="kkot" style="font-family:'NSKkot'">꽃내음</button><button type="button" data-r="sh-font-dahaeng" data-k="dahaeng" style="font-family:'NSDahaeng'">다행체</button><button type="button" data-r="sh-font-seongsil" data-k="seongsil" style="font-family:'NSSeongsil'">성실체</button><button type="button" data-r="sh-font-mirae" data-k="mirae" style="font-family:'NSMirae'">미래나무</button></div></div>
+        <div class="rd-sh-or"><span>바탕</span><div class="rd-sh-seg"><button type="button" data-r="sh-bg-dark" data-k="dark">어둡게</button><button type="button" data-r="sh-bg-paper" data-k="paper">종이</button><button type="button" data-r="sh-bg-cream" data-k="cream">크림</button><button type="button" data-r="sh-bg-night" data-k="night">밤</button></div></div>
+        <div class="rd-sh-or"><span>종이 결</span><div class="rd-sh-seg"><button type="button" data-r="sh-gr-on" data-k="on">있음</button><button type="button" data-r="sh-gr-off" data-k="off">없음</button></div></div>
+        <div class="rd-sh-or"><span>줄 간격</span><div class="rd-sh-seg"><button type="button" data-r="sh-lh-t" data-k="t">촘촘</button><button type="button" data-r="sh-lh-n" data-k="n">보통</button><button type="button" data-r="sh-lh-w" data-k="w">넓게</button></div></div>
+        <div class="rd-sh-or"><span>읽을 때 음악</span><div class="rd-sh-seg rd-sh-music"><select class="rd-sh-sel" data-r="sh-rm" aria-label="읽을 때 음악"></select></div></div>
+        <p class="rd-sh-note">읽는 동안은 공격·효과음이 꺼지고 음악만 나와요.</p>
+      </div>`;
+}
+function shMusicOptions() {
+  const cur = readMode(), o = [["auto", "내 음악 중에서 (읽을 때 자리에 둔 곡)"], ["synth", "집중곡 (앱이 만드는 잔잔한 소리)"], ["off", "끄기"]];
+  const mine = (typeof fb !== "undefined" && fb.list) ? fb.list.map(t => [t.name, (t.orig || t.name).replace(/^[0-9a-f]{8}-/, "").replace(/\.[^.]+$/, "")]) : [];
+  return o.concat(mine).map(([v, l]) => `<option value="${escapeHtml(v)}"${v === cur ? " selected" : ""}>${escapeHtml(l)}</option>`).join("");
+}
+function readMode() { const v = S.readTrack; if (v === "off" || v === "synth" || v === "auto") return v; if (v && typeof fb !== "undefined" && fb.by && fb.by[v]) return v; if (S.focusMusic === false) return "off"; return (typeof fb !== "undefined" && fb.list && fb.list.length && S.bgmFiles !== false) ? "auto" : "synth"; }
 function shFs() { const v = +S.shfs; return v >= 15 && v <= 26 ? v : 18; }
 const SH_FONTS = ["maru", "batang", "sans", "dodum", "donghwa", "kkot", "dahaeng", "seongsil", "mirae"];
-function shLook() { return { font: SH_FONTS.indexOf(S.shFont) >= 0 ? S.shFont : "maru", bg: S.shBg === "paper" || S.shBg === "night" ? S.shBg : (S.shPaper ? "paper" : "dark"), lh: S.shLh === "w" ? "w" : "n" }; }
+function shLook() { return { font: SH_FONTS.indexOf(S.shFont) >= 0 ? S.shFont : "maru", bg: ["paper", "night", "cream"].includes(S.shBg) ? S.shBg : (S.shPaper ? "paper" : "dark"), lh: S.shLh === "w" ? "w" : S.shLh === "t" ? "t" : "n", gr: S.shGrain !== false ? "on" : "off" }; }
 function shApplyLook() {
-  const sh = $("rdSheet"), bd = $("rdShBody"); if (!sh || !bd) return;
-  const L = shLook();
-  bd.style.setProperty("--shfs", shFs() + "px"); bd.style.fontSize = "";
-  sh.classList.toggle("paper", L.bg === "paper"); sh.classList.toggle("night", L.bg === "night"); sh.classList.toggle("wide", L.lh === "w");
-  SH_FONTS.forEach(f => sh.classList.toggle("f-" + f, L.font === f));
+  const L = shLook(), rdr = $("reader"), sh = $("rdSheet");
+  const roots = [sh, rdr].filter(Boolean);
+  roots.forEach(r => {
+    ["paper", "night", "cream"].forEach(k => r.classList.toggle(k, L.bg === k));
+    r.classList.toggle("wide", L.lh === "w"); r.classList.toggle("tight", L.lh === "t"); r.classList.toggle("grain", L.gr === "on");
+    SH_FONTS.forEach(f => r.classList.toggle("f-" + f, L.font === f));
+    r.querySelectorAll(".rd-sh-seg [data-k]").forEach(b => { const x = b.dataset.r; b.classList.toggle("on", (x.startsWith("sh-font") && b.dataset.k === L.font) || (x.startsWith("sh-bg") && b.dataset.k === L.bg) || (x.startsWith("sh-lh") && b.dataset.k === L.lh) || (x.startsWith("sh-gr") && b.dataset.k === L.gr)); });
+  });
+  const bd = $("rdShBody"); if (bd) { bd.style.setProperty("--shfs", shFs() + "px"); bd.style.fontSize = ""; }
   const f = $("rdShFs"); if (f) f.textContent = shFs();
-  sh.querySelectorAll(".rd-sh-seg [data-k]").forEach(b => { const r = b.dataset.r; b.classList.toggle("on", (r.startsWith("sh-font") && b.dataset.k === L.font) || (r.startsWith("sh-bg") && b.dataset.k === L.bg) || (r.startsWith("sh-lh") && b.dataset.k === L.lh) || (r.startsWith("sh-fm") && b.dataset.k === (S.focusMusic === false ? "off" : "on"))); });
+  const rb = $("rdBody"); if (rb) { rb.style.setProperty("--rdfs", rdFs() + "px"); rb.style.fontSize = ""; }
+  const f2 = $("rdFsV"); if (f2) f2.textContent = rdFs();
+  // 성경 읽기 창에도 Aa 버튼·판 (한 번만)
+  if (rdr && !$("rdOpts")) {
+    const top = rdr.querySelector(".rd-top"); if (top) { const bt = document.createElement("button"); bt.className = "rd-aa"; bt.setAttribute("data-r", "rd-aa"); bt.setAttribute("aria-label", "읽기 모양"); bt.textContent = "Aa"; top.appendChild(bt); top.insertAdjacentHTML("afterend", shOptsHtml("rd")); shApplyLook(); }
+  }
 }
+function shFillMusic() { document.querySelectorAll('select[data-r="sh-rm"]').forEach(sel => { sel.innerHTML = shMusicOptions(); }); }
 function shTool(a) {
-  if (a === "sh-aa") { const o = $("rdShOpts"); o.hidden = !o.hidden; return; }
+  if (a === "sh-aa" || a === "rd-aa") { const o = $(a === "rd-aa" ? "rdOpts" : "rdShOpts"); if (!o) return; o.hidden = !o.hidden; if (!o.hidden) shFillMusic(); return; }
+  if (a.startsWith("sh-gr-")) { S.shGrain = a.slice(6) === "on"; shApplyLook(); save(); return; }
   if (a === "sh-fs-" || a === "sh-fs+") S.shfs = Math.max(15, Math.min(26, shFs() + (a === "sh-fs+" ? 1 : -1)));
   else if (a.startsWith("sh-font-")) S.shFont = a.slice(8);
   else if (a.startsWith("sh-bg-")) { S.shBg = a.slice(6); S.shPaper = S.shBg === "paper"; }
   else if (a.startsWith("sh-lh-")) S.shLh = a.slice(6);
-  else if (a.startsWith("sh-fm-")) { S.focusMusic = a.slice(6) === "on"; try { bgmUpdate(); } catch (e) {} }
+  else if (a.startsWith("sh-fm-")) { S.focusMusic = a.slice(6) === "on"; S.readTrack = S.focusMusic ? "auto" : "off"; try { bgmUpdate(); } catch (e) {} }
   else if (a === "sh-paper") { S.shBg = shLook().bg === "paper" ? "dark" : "paper"; S.shPaper = S.shBg === "paper"; }
   shApplyLook(); save();
 }
@@ -15951,7 +16037,8 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       if (d.smn) { openSmn(d.smn); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
-      if (a === "sh-aa" || a === "sh-paper" || /^sh-(fs|font|bg|lh|fm)/.test(a)) { shTool(a); e.stopPropagation(); return true; }
+      if (a === "sh-aa" || a === "rd-aa" || a === "sh-paper" || /^sh-(fs|font|bg|lh|fm|gr)/.test(a)) { shTool(a); e.stopPropagation(); return true; }
+      if (a === "fs-" || a === "fs+") { S.rdfs = Math.max(14, Math.min(30, rdFs() + (a === "fs+" ? 1 : -1))); shApplyLook(); save(); e.stopPropagation(); return true; }
       if (a === "sh-prev") { const st = rd.shStack || [], p = st.pop(); if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; } e.stopPropagation(); return true; }
       if (a === "ops") { rd.ops = !rd.ops; renderReader(); return true; }
       if (a === "op") { const k = d.k, o = rdOpt(); setOpt(k, !o[k]); renderReader(); return true; }
@@ -15964,6 +16051,8 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
     return false;
   };
   box.addEventListener("click", e => { act(e.target, e); }, true);
+  box.addEventListener("change", e => { const t = e.target; if (t && t.dataset && t.dataset.r === "sh-rm") { S.readTrack = t.value; S.focusMusic = t.value !== "off"; save(); try { bgmUpdate(); } catch (x) {} } });
+  const or1 = openReader; openReader = function () { const r = or1.apply(this, arguments); try { shApplyLook(); } catch (e) {} return r; };
   box.addEventListener("keydown", e => { if (e.key === "Enter" && e.target && e.target.dataset && (e.target.dataset.nt || e.target.dataset.vn)) act(e.target, e); if (e.key === "Escape") rdSheetClose(); });
 })();
 
@@ -16172,13 +16261,15 @@ function focusStop() {
   F.out.gain.setTargetAtTime(0.0001, now, 0.8);
   setTimeout(() => { try { F.dr.forEach(d => d.o.stop()); F.lfo.stop(); F.ns.stop(); F.nlfo.stop(); F.out.disconnect(); } catch (e) {} }, 4000);
 }
-const focusOn = () => S.focusMusic !== false;
+const focusOn = () => (typeof readMode === "function" ? readMode() !== "off" : S.focusMusic !== false);
 function readingNow() { const r = $("reader"); return !!(r && !r.hidden); }
 /* ---------- 무엇을 틀지 ---------- */
 function bgmUpdate() {
   if (!audioCtx) return; if (!masterGain && !audioReady()) return;
   const on = musicOn() && !document.hidden;
-  const useFiles = typeof fbReady === "function" && fbReady();           // 사용자가 넣은 음악 파일이 있으면 그걸로
+  const reading = readingNow(), rm = typeof readMode === "function" ? readMode() : (focusOn() ? "auto" : "off");
+  if (sfxGain) { const tgt = reading ? 0 : 0.9 * sndVol("s"); if (Math.abs(sfxGain.gain.value - tgt) > 0.01) sfxGain.gain.setTargetAtTime(tgt, audioCtx.currentTime, 0.25); }   // 읽는 동안 공격·효과음 끔
+  const useFiles = typeof fbReady === "function" && fbReady() && !(reading && rm === "synth");   // 사용자가 넣은 음악 파일이 있으면 그걸로 (읽을 때 '집중곡'을 고르면 합성)
   if (typeof fbUpdate === "function") { try { fbUpdate(on && useFiles); } catch (e) {} }
   const wantFocus = on && !useFiles && readingNow() && focusOn();
   if (wantFocus) { if (!focus) focusStart(); } else if (focus) focusStop();
@@ -16223,9 +16314,9 @@ function fbLoad() { fbAll().then(l => { fb.list = l; fb.by = {}; l.forEach(t => 
 function fbHave(names) { return names.filter(n => fb.by[n]); }
 function fbZoneTrack(z) {
   const want = FB_MAP.zones[z % FB_MAP.zones.length];
-  if (fb.by[want]) return want;
-  const pool = fb.list.map(t => t.name).filter(n => !FB_MAP.read.includes(n) && !FB_MAP.shop.includes(n) && !FB_MAP.jingle.includes(n));
-  return pool.length ? pool[z % pool.length] : fb.list[0].name;
+  if (fb.by[want] && !(S.bgmMap && S.bgmMap[want] && S.bgmMap[want] !== "z" + z)) return want;
+  const pool = fb.list.map(t => t.name).filter(n => { const k = fbSceneKey(n); return k !== "read" && k !== "shop" && k !== "jingle" && k !== "off"; });
+  return pool.length ? pool[z % pool.length] : "";
 }
 function fbScene() {
   if (readingNow()) return S.focusMusic === false ? "" : "read";
@@ -16234,9 +16325,14 @@ function fbScene() {
 }
 function fbTrackFor(scene) {
   if (!scene) return "";
-  if (scene === "read") { const c = fbHave(FB_MAP.read); if (!c.length) return fbZoneTrack(0); if (!fb.readPick || !fb.by[fb.readPick]) fb.readPick = c[Math.floor(Math.random() * c.length)]; return fb.readPick; }
-  if (scene === "shop") { const c = fbHave(FB_MAP.shop); return c.length ? c[0] : fbZoneTrack(0); }
-  return fbZoneTrack(+scene.slice(1) || 0);
+  if (scene === "read") {
+    const rm = readMode(); if (rm === "off" || rm === "synth") return ""; if (rm !== "auto") return fb.by[rm] ? rm : "";
+    const c = fbIn("read"); return c.length ? fbPickFrom(c, "read") : fbZoneTrack(0);
+  }
+  if (scene === "shop") { const c = fbIn("shop"); return c.length ? fbPickFrom(c, "shop") : fbZoneTrack(0); }
+  const z = +scene.slice(1) || 0, c = fbIn("z" + z); if (c.length) return fbPickFrom(c, "z" + z);
+  const spare = fbIn("zone+"); if (spare.length) return spare[z % spare.length];
+  return fbZoneTrack(z);
 }
 /* 재생: 파일을 디코드해 웹오디오 버퍼로 틂 (아이폰 사파리에서 <audio>+MediaElementSource는 소리가 안 나는 일이 잦아서).
    32kHz 모노로 디코드해 메모리를 아낌(3분 곡 ≈ 23MB). 최근 3곡만 캐시. */
@@ -16251,7 +16347,13 @@ function fbDecode(name) {
   })).then(buf => { fbBuf.set(name, buf); while (fbBuf.size > 3) fbBuf.delete(fbBuf.keys().next().value); return buf; });
 }
 function fbVol(scene) { return BGM_VOL * sndVol("m") * (scene === "read" ? 0.6 : 1); }
-function fbFadeOut(v, sec) { if (!v) return; try { const now = audioCtx.currentTime; v.g.gain.cancelScheduledValues(now); v.g.gain.setTargetAtTime(0.0001, now, sec || 0.5); v.src.stop(now + (sec || 0.5) * 5); v.src.onended = null; } catch (e) {} }
+function fbHold(g) { const now = audioCtx.currentTime, v = Math.max(0.0001, g.gain.value); g.gain.cancelScheduledValues(now); g.gain.setValueAtTime(v, now); return now; }   // 자동화 취소 뒤 값이 튀어 '틱' 나는 것 막기
+function fbFadeOut(v, sec) { if (!v) return; try { const now = fbHold(v.g); v.g.gain.setTargetAtTime(0.0001, now, sec || 1); v.src.stop(now + (sec || 1) * 5); v.src.onended = null; } catch (e) {} }
+const FB_FADE = { out: 1.2, in: 1.8, read: 2.4 };
+/* 사용자 배치(S.bgmMap: 곡 이름 → 장면 "read"|"shop"|"jingle"|"z0".."z20"|"off"), 없으면 이름 기본 배치 */
+function fbSceneKey(name) { const m = S.bgmMap && S.bgmMap[name]; if (m) return m; const sc = fbSceneOf(name); if (sc === "zone") return "z" + FB_MAP.zones.indexOf(name); return sc === "zone+" ? "zone+" : sc; }
+function fbIn(scene) { return (fb.list || []).map(t => t.name).filter(n => fbSceneKey(n) === scene && !(fb.bad && fb.bad[n])); }
+function fbPickFrom(list, seedKey) { if (!list.length) return ""; fb.picks = fb.picks || {}; if (!fb.picks[seedKey] || !list.includes(fb.picks[seedKey])) fb.picks[seedKey] = list[Math.floor(Math.random() * list.length)]; return fb.picks[seedKey]; }
 function fbPlay(name, scene, loop) {
   const t = fb.by[name]; if (!t || !audioCtx) return;
   fb.pending = name; fb.track = name; fb.scene = scene; fb.k = "";
@@ -16260,26 +16362,27 @@ function fbPlay(name, scene, loop) {
     fb.pending = "";
     const now = audioCtx.currentTime, src = audioCtx.createBufferSource(), g = audioCtx.createGain();
     src.buffer = buf; src.loop = loop !== false; g.gain.setValueAtTime(0.0001, now); src.connect(g); g.connect(masterGain); src.start(now + 0.02);
-    g.gain.setTargetAtTime(fbVol(scene), now + 0.05, 0.7);
-    if (fb.cur) fbFadeOut(fb.cur, 0.6);
-    fb.cur = { src, g, name, scene };
+    const slow = scene === "read" || (fb.cur && fb.cur.scene === "read");
+    g.gain.setTargetAtTime(fbVol(scene), now + 0.05, slow ? FB_FADE.read : FB_FADE.in);
+    if (fb.cur) fbFadeOut(fb.cur, slow ? FB_FADE.read : FB_FADE.out);
+    fb.cur = { src, g, name, scene, t0: now };
     if (loop === false) src.onended = () => { if (fb.cur && fb.cur.src === src) { fb.cur = null; fb.track = ""; fb.scene = ""; } try { bgmUpdate(); } catch (e) {} };
     try { updateUI(true); } catch (e) {}
   }).catch(e => { fb.pending = ""; fb.bad = fb.bad || {}; fb.bad[name] = 1; fb.track = ""; fb.scene = ""; toast("이 곡은 열 수 없어요: " + (t.orig || name)); });
 }
 function fbStop() {
-  fb.pending = ""; if (fb.cur) fbFadeOut(fb.cur, 0.5); fb.cur = null; fb.track = ""; fb.scene = ""; fb.k = "";
+  fb.pending = ""; if (fb.cur) fbFadeOut(fb.cur, FB_FADE.out); fb.cur = null; fb.track = ""; fb.scene = ""; fb.k = "";
 }
 function fbUpdate(on) {
   if (!on) { if (fb.cur || fb.pending) fbStop(); return; }
   if (!masterGain) return;
-  if (!fb.jingled && fb.by[FB_MAP.jingle[0]]) { fb.jingled = true; fbPlay(FB_MAP.jingle[0], "jingle", false); return; }
+  if (!fb.jingled) { fb.jingled = true; const j = fbIn("jingle"); if (j.length) { fbPlay(j[0], "jingle", false); return; } }
   if (fb.scene === "jingle" && (fb.cur || fb.pending)) return;          // 시작 소리 끝나면 onended → 다시 고름
   const scene = fbScene(); let name = fbTrackFor(scene);
   if (name && fb.bad && fb.bad[name]) name = "";
   if (!name) { if (fb.cur || fb.pending) fbStop(); return; }
   if (name === fb.track && (fb.cur || fb.pending)) {
-    if (fb.cur && scene !== fb.scene) { fb.cur.g.gain.setTargetAtTime(fbVol(scene), audioCtx.currentTime, 0.5); fb.scene = scene; fb.cur.scene = scene; }
+    if (fb.cur && scene !== fb.scene) { const now = fbHold(fb.cur.g); fb.cur.g.gain.setTargetAtTime(fbVol(scene), now, 1.5); fb.scene = scene; fb.cur.scene = scene; }
     return;
   }
   fbPlay(name, scene, true);
@@ -16291,16 +16394,18 @@ function buildFbCard() {
     <div class="row-btns"><button type="button" class="buy" data-act="fbadd"><span class="act">음악 파일 넣기</span></button><button type="button" class="btn" data-act="fbclear">모두 지우기</button></div>
     <input type="file" id="stFbFile" accept="audio/*,.mp3,.m4a" multiple hidden>
     <div class="log" id="stFbList"></div>
-    <p class="muted">곡은 이 기기 안에만 저장돼요(인터넷에 올라가지 않아요). 이름으로 자리를 정해요 — 읽을 때: Aquarium·RestNPeace·Resting place of God·RaindropFlower·WhenTheMorningComes·AboveTheTreetops / 옷장·보물: ShopBgm / 시작 소리: Title_2002 / 나머지는 50층마다 한 곡씩.</p>`;
+    <p class="muted">곡은 이 기기 안에만 저장돼요(인터넷에 올라가지 않아요). 곡마다 자리를 고를 수 있어요 — 읽을 때 · 옷장·보물 · 시작 소리(앱 열 때 한 번) · 구역(50층마다) · 안 씀. 한 자리에 여러 곡이면 그때그때 하나를 골라 틀어요. 처음엔 이름을 보고 자동으로 정해 둬요.</p>`;
   addCustom("set", card, () => {
     const n = fb.list ? fb.list.length : 0, on = S.bgmFiles !== false, k = n + ":" + on + ":" + (fb.track || "");
     if (fb.k === k) return; fb.k = k;
     const sw = $("stFbOn"); if (sw) { sw.setAttribute("aria-checked", on ? "true" : "false"); sw.classList.toggle("on", on); }
     const mb = fb.list ? (fb.list.reduce((a, t) => a + (t.size || 0), 0) / 1048576).toFixed(0) : 0;
     $("stFbSub").textContent = n ? `${n}곡 · ${mb}MB · ${on ? (fb.track ? "지금: " + (fb.by[fb.track] ? fb.by[fb.track].orig.replace(/^[0-9a-f]{8}-/, "").replace(/\.[^.]+$/, "") : fb.track) : "곡 고르는 중") : "꺼짐 (합성 음악 사용)"}` : "음악 파일을 넣으면 그 곡으로 틀어요 (없으면 합성 음악)";
-    $("stFbList").innerHTML = n ? fb.list.map(t => { const sc = fbSceneOf(t.name), z = FB_MAP.zones.indexOf(t.name); const lab = FB_SCENE_KO[sc] || (z >= 0 ? `${BGM_Z[z].n} 구역` : "구역 순환"); return `<div><span>${escapeHtml(t.orig.replace(/^[0-9a-f]{8}-/, "").replace(/\.[^.]+$/, ""))}${t.name === fb.track ? " ♪" : ""}</span><span class="num">${lab} <button type="button" class="btn ghost" data-del="${escapeHtml(t.name)}" aria-label="지우기">×</button></span></div>`; }).join("") : "";
+    const SC = [["read", "읽을 때"], ["shop", "옷장·보물"], ["jingle", "시작 소리"]].concat(BGM_Z.map((z, i) => ["z" + i, z.n])).concat([["off", "안 씀"]]);
+    $("stFbList").innerHTML = n ? fb.list.map(t => { const k = fbSceneKey(t.name), kk = k === "zone+" ? "" : k; return `<div class="fb-row"><span>${escapeHtml(t.orig.replace(/^[0-9a-f]{8}-/, "").replace(/\.[^.]+$/, ""))}${t.name === fb.track ? " ♪" : ""}</span><span class="fb-ctl"><select class="fb-sel" data-map="${escapeHtml(t.name)}" aria-label="자리">${kk ? "" : `<option value="" selected>구역 순환</option>`}${SC.map(([v, l]) => `<option value="${v}"${v === kk ? " selected" : ""}>${escapeHtml(l)}</option>`).join("")}</select><button type="button" class="btn ghost" data-del="${escapeHtml(t.name)}" aria-label="지우기">×</button></span></div>`; }).join("") : "";
   });
   stIcon("stFbIc", "music");
+  card.addEventListener("change", e => { const sel = e.target.closest("select[data-map]"); if (!sel) return; S.bgmMap = S.bgmMap || {}; if (sel.value) S.bgmMap[sel.dataset.map] = sel.value; else delete S.bgmMap[sel.dataset.map]; fb.picks = {}; fb.k = ""; save(); try { bgmUpdate(); } catch (x) {} toast("자리를 바꿨어요"); });
   card.addEventListener("click", e => {
     const d = e.target.closest("[data-del]"); if (d) { fbDel(d.dataset.del).then(() => { if (fb.track === d.dataset.del) fbStop(); fbLoad(); toast("지웠어요"); }); return; }
     const b = e.target.closest("[data-act]"); if (!b) return; const a = b.dataset.act;
@@ -16319,7 +16424,7 @@ function buildFbCard() {
 try { buildFbCard(); } catch (e) {}
 fbLoad();
 /* 음량 설정이 바뀌면 지금 곡에도 반영 */
-setInterval(() => { try { if (fb.cur && audioCtx) { const v = fbVol(fb.scene); if (Math.abs(fb.cur.g.gain.value - v) > 0.02 && !fb.cur.g.gain._ramp) fb.cur.g.gain.setTargetAtTime(v, audioCtx.currentTime, 0.3); } } catch (e) {} }, 1000);
+setInterval(() => { try { if (fb.cur && audioCtx && !fb.pending) { const v = fbVol(fb.scene); if (Math.abs(fb.cur.g.gain.value - v) > 0.02 && audioCtx.currentTime - (fb.cur.t0 || 0) > 6) { const now = fbHold(fb.cur.g); fb.cur.g.gain.setTargetAtTime(v, now, 0.5); } } } catch (e) {} }, 1000);
 
 /* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */
 function drawJobUi(t) {

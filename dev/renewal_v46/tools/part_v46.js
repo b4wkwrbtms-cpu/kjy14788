@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47d";
+var X_VER = "47e";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -175,14 +175,7 @@ function rdSheet(html, label) {
     sh.innerHTML = `<div class="rd-sh-bg" data-r="sh-x"></div><div class="rd-sh-card" role="dialog" aria-modal="true">
       <div class="rd-sh-top"><button type="button" class="rd-sh-x" data-r="sh-x" aria-label="읽던 본문으로">‹ <span id="rdShLab">본문</span></button><div class="rd-sh-tt" id="rdShTt"></div><button type="button" class="rd-sh-aa" data-r="sh-aa" aria-label="읽기 모양">Aa</button></div>
       <div class="rd-sh-prog"><i id="rdShProg"></i></div>
-      <div class="rd-sh-opts" id="rdShOpts" hidden>
-        <div class="rd-sh-or"><span>글자 크기</span><div class="rd-sh-seg"><button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><b class="num" id="rdShFs">18</b><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button></div></div>
-        <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-maru" data-k="maru" style="font-family:'MaruBuri',serif">마루부리</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button></div></div>
-        <div class="rd-sh-or"><span>손글씨</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-donghwa" data-k="donghwa" style="font-family:'NSDonghwa'">동화또박</button><button type="button" data-r="sh-font-kkot" data-k="kkot" style="font-family:'NSKkot'">꽃내음</button><button type="button" data-r="sh-font-dahaeng" data-k="dahaeng" style="font-family:'NSDahaeng'">다행체</button><button type="button" data-r="sh-font-seongsil" data-k="seongsil" style="font-family:'NSSeongsil'">성실체</button><button type="button" data-r="sh-font-mirae" data-k="mirae" style="font-family:'NSMirae'">미래나무</button></div></div>
-        <div class="rd-sh-or"><span>바탕</span><div class="rd-sh-seg"><button type="button" data-r="sh-bg-dark" data-k="dark">어둡게</button><button type="button" data-r="sh-bg-paper" data-k="paper">종이</button><button type="button" data-r="sh-bg-night" data-k="night">밤</button></div></div>
-        <div class="rd-sh-or"><span>읽을 때 음악</span><div class="rd-sh-seg"><button type="button" data-r="sh-fm-on" data-k="on">집중곡</button><button type="button" data-r="sh-fm-off" data-k="off">끄기</button></div></div>
-        <div class="rd-sh-or"><span>줄 간격</span><div class="rd-sh-seg"><button type="button" data-r="sh-lh-n" data-k="n">보통</button><button type="button" data-r="sh-lh-w" data-k="w">넓게</button></div></div>
-      </div>
+      ${shOptsHtml("sh")}
       <div class="rd-sh-body" id="rdShBody"></div>
       <button type="button" class="btn rd-sh-back" data-r="sh-x">← 읽던 본문으로</button></div>`;
     $("reader").appendChild(sh);
@@ -197,25 +190,57 @@ function rdSheet(html, label) {
   shOnScroll();
   sh.querySelector(".rd-sh-back").innerHTML = `← 읽던 본문으로${label ? `<small>${escapeHtml(label)}</small>` : ""}`;
 }
+
+/* 읽기 모양 판 (아래 창·성경 읽기 창이 같이 씀). kind: "sh"(아래 창 글자 크기 S.shfs) / "rd"(성경 본문 S.rdfs) */
+function shOptsHtml(kind) {
+  const fs = kind === "rd" ? `<button type="button" data-r="fs-" aria-label="글자 작게">가−</button><b class="num" id="rdFsV">18</b><button type="button" data-r="fs+" aria-label="글자 크게">가+</button>` : `<button type="button" data-r="sh-fs-" aria-label="글자 작게">가−</button><b class="num" id="rdShFs">18</b><button type="button" data-r="sh-fs+" aria-label="글자 크게">가+</button>`;
+  return `<div class="rd-sh-opts" id="${kind === "rd" ? "rdOpts" : "rdShOpts"}" hidden>
+        <div class="rd-sh-or"><span>글자 크기</span><div class="rd-sh-seg">${fs}</div></div>
+        <div class="rd-sh-or"><span>글꼴</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-maru" data-k="maru" style="font-family:'MaruBuri',serif">마루부리</button><button type="button" data-r="sh-font-batang" data-k="batang" style="font-family:'Gowun Batang',serif">고운바탕</button><button type="button" data-r="sh-font-sans" data-k="sans" style="font-family:'Apple SD Gothic Neo',sans-serif">고딕</button><button type="button" data-r="sh-font-dodum" data-k="dodum" style="font-family:'Gowun Dodum',sans-serif">둥근돋움</button></div></div>
+        <div class="rd-sh-or"><span>손글씨</span><div class="rd-sh-seg rd-sh-fonts"><button type="button" data-r="sh-font-donghwa" data-k="donghwa" style="font-family:'NSDonghwa'">동화또박</button><button type="button" data-r="sh-font-kkot" data-k="kkot" style="font-family:'NSKkot'">꽃내음</button><button type="button" data-r="sh-font-dahaeng" data-k="dahaeng" style="font-family:'NSDahaeng'">다행체</button><button type="button" data-r="sh-font-seongsil" data-k="seongsil" style="font-family:'NSSeongsil'">성실체</button><button type="button" data-r="sh-font-mirae" data-k="mirae" style="font-family:'NSMirae'">미래나무</button></div></div>
+        <div class="rd-sh-or"><span>바탕</span><div class="rd-sh-seg"><button type="button" data-r="sh-bg-dark" data-k="dark">어둡게</button><button type="button" data-r="sh-bg-paper" data-k="paper">종이</button><button type="button" data-r="sh-bg-cream" data-k="cream">크림</button><button type="button" data-r="sh-bg-night" data-k="night">밤</button></div></div>
+        <div class="rd-sh-or"><span>종이 결</span><div class="rd-sh-seg"><button type="button" data-r="sh-gr-on" data-k="on">있음</button><button type="button" data-r="sh-gr-off" data-k="off">없음</button></div></div>
+        <div class="rd-sh-or"><span>줄 간격</span><div class="rd-sh-seg"><button type="button" data-r="sh-lh-t" data-k="t">촘촘</button><button type="button" data-r="sh-lh-n" data-k="n">보통</button><button type="button" data-r="sh-lh-w" data-k="w">넓게</button></div></div>
+        <div class="rd-sh-or"><span>읽을 때 음악</span><div class="rd-sh-seg rd-sh-music"><select class="rd-sh-sel" data-r="sh-rm" aria-label="읽을 때 음악"></select></div></div>
+        <p class="rd-sh-note">읽는 동안은 공격·효과음이 꺼지고 음악만 나와요.</p>
+      </div>`;
+}
+function shMusicOptions() {
+  const cur = readMode(), o = [["auto", "내 음악 중에서 (읽을 때 자리에 둔 곡)"], ["synth", "집중곡 (앱이 만드는 잔잔한 소리)"], ["off", "끄기"]];
+  const mine = (typeof fb !== "undefined" && fb.list) ? fb.list.map(t => [t.name, (t.orig || t.name).replace(/^[0-9a-f]{8}-/, "").replace(/\.[^.]+$/, "")]) : [];
+  return o.concat(mine).map(([v, l]) => `<option value="${escapeHtml(v)}"${v === cur ? " selected" : ""}>${escapeHtml(l)}</option>`).join("");
+}
+function readMode() { const v = S.readTrack; if (v === "off" || v === "synth" || v === "auto") return v; if (v && typeof fb !== "undefined" && fb.by && fb.by[v]) return v; if (S.focusMusic === false) return "off"; return (typeof fb !== "undefined" && fb.list && fb.list.length && S.bgmFiles !== false) ? "auto" : "synth"; }
 function shFs() { const v = +S.shfs; return v >= 15 && v <= 26 ? v : 18; }
 const SH_FONTS = ["maru", "batang", "sans", "dodum", "donghwa", "kkot", "dahaeng", "seongsil", "mirae"];
-function shLook() { return { font: SH_FONTS.indexOf(S.shFont) >= 0 ? S.shFont : "maru", bg: S.shBg === "paper" || S.shBg === "night" ? S.shBg : (S.shPaper ? "paper" : "dark"), lh: S.shLh === "w" ? "w" : "n" }; }
+function shLook() { return { font: SH_FONTS.indexOf(S.shFont) >= 0 ? S.shFont : "maru", bg: ["paper", "night", "cream"].includes(S.shBg) ? S.shBg : (S.shPaper ? "paper" : "dark"), lh: S.shLh === "w" ? "w" : S.shLh === "t" ? "t" : "n", gr: S.shGrain !== false ? "on" : "off" }; }
 function shApplyLook() {
-  const sh = $("rdSheet"), bd = $("rdShBody"); if (!sh || !bd) return;
-  const L = shLook();
-  bd.style.setProperty("--shfs", shFs() + "px"); bd.style.fontSize = "";
-  sh.classList.toggle("paper", L.bg === "paper"); sh.classList.toggle("night", L.bg === "night"); sh.classList.toggle("wide", L.lh === "w");
-  SH_FONTS.forEach(f => sh.classList.toggle("f-" + f, L.font === f));
+  const L = shLook(), rdr = $("reader"), sh = $("rdSheet");
+  const roots = [sh, rdr].filter(Boolean);
+  roots.forEach(r => {
+    ["paper", "night", "cream"].forEach(k => r.classList.toggle(k, L.bg === k));
+    r.classList.toggle("wide", L.lh === "w"); r.classList.toggle("tight", L.lh === "t"); r.classList.toggle("grain", L.gr === "on");
+    SH_FONTS.forEach(f => r.classList.toggle("f-" + f, L.font === f));
+    r.querySelectorAll(".rd-sh-seg [data-k]").forEach(b => { const x = b.dataset.r; b.classList.toggle("on", (x.startsWith("sh-font") && b.dataset.k === L.font) || (x.startsWith("sh-bg") && b.dataset.k === L.bg) || (x.startsWith("sh-lh") && b.dataset.k === L.lh) || (x.startsWith("sh-gr") && b.dataset.k === L.gr)); });
+  });
+  const bd = $("rdShBody"); if (bd) { bd.style.setProperty("--shfs", shFs() + "px"); bd.style.fontSize = ""; }
   const f = $("rdShFs"); if (f) f.textContent = shFs();
-  sh.querySelectorAll(".rd-sh-seg [data-k]").forEach(b => { const r = b.dataset.r; b.classList.toggle("on", (r.startsWith("sh-font") && b.dataset.k === L.font) || (r.startsWith("sh-bg") && b.dataset.k === L.bg) || (r.startsWith("sh-lh") && b.dataset.k === L.lh) || (r.startsWith("sh-fm") && b.dataset.k === (S.focusMusic === false ? "off" : "on"))); });
+  const rb = $("rdBody"); if (rb) { rb.style.setProperty("--rdfs", rdFs() + "px"); rb.style.fontSize = ""; }
+  const f2 = $("rdFsV"); if (f2) f2.textContent = rdFs();
+  // 성경 읽기 창에도 Aa 버튼·판 (한 번만)
+  if (rdr && !$("rdOpts")) {
+    const top = rdr.querySelector(".rd-top"); if (top) { const bt = document.createElement("button"); bt.className = "rd-aa"; bt.setAttribute("data-r", "rd-aa"); bt.setAttribute("aria-label", "읽기 모양"); bt.textContent = "Aa"; top.appendChild(bt); top.insertAdjacentHTML("afterend", shOptsHtml("rd")); shApplyLook(); }
+  }
 }
+function shFillMusic() { document.querySelectorAll('select[data-r="sh-rm"]').forEach(sel => { sel.innerHTML = shMusicOptions(); }); }
 function shTool(a) {
-  if (a === "sh-aa") { const o = $("rdShOpts"); o.hidden = !o.hidden; return; }
+  if (a === "sh-aa" || a === "rd-aa") { const o = $(a === "rd-aa" ? "rdOpts" : "rdShOpts"); if (!o) return; o.hidden = !o.hidden; if (!o.hidden) shFillMusic(); return; }
+  if (a.startsWith("sh-gr-")) { S.shGrain = a.slice(6) === "on"; shApplyLook(); save(); return; }
   if (a === "sh-fs-" || a === "sh-fs+") S.shfs = Math.max(15, Math.min(26, shFs() + (a === "sh-fs+" ? 1 : -1)));
   else if (a.startsWith("sh-font-")) S.shFont = a.slice(8);
   else if (a.startsWith("sh-bg-")) { S.shBg = a.slice(6); S.shPaper = S.shBg === "paper"; }
   else if (a.startsWith("sh-lh-")) S.shLh = a.slice(6);
-  else if (a.startsWith("sh-fm-")) { S.focusMusic = a.slice(6) === "on"; try { bgmUpdate(); } catch (e) {} }
+  else if (a.startsWith("sh-fm-")) { S.focusMusic = a.slice(6) === "on"; S.readTrack = S.focusMusic ? "auto" : "off"; try { bgmUpdate(); } catch (e) {} }
   else if (a === "sh-paper") { S.shBg = shLook().bg === "paper" ? "dark" : "paper"; S.shPaper = S.shBg === "paper"; }
   shApplyLook(); save();
 }
@@ -502,7 +527,8 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
       if (d.smn) { openSmn(d.smn); e.stopPropagation(); return true; }
       const a = d.r;
       if (a === "sh-x") { rdSheetClose(); e.stopPropagation(); return true; }
-      if (a === "sh-aa" || a === "sh-paper" || /^sh-(fs|font|bg|lh|fm)/.test(a)) { shTool(a); e.stopPropagation(); return true; }
+      if (a === "sh-aa" || a === "rd-aa" || a === "sh-paper" || /^sh-(fs|font|bg|lh|fm|gr)/.test(a)) { shTool(a); e.stopPropagation(); return true; }
+      if (a === "fs-" || a === "fs+") { S.rdfs = Math.max(14, Math.min(30, rdFs() + (a === "fs+" ? 1 : -1))); shApplyLook(); save(); e.stopPropagation(); return true; }
       if (a === "sh-prev") { const st = rd.shStack || [], p = st.pop(); if (p) { rdSheet(p.html, p.label); $("rdShBody").scrollTop = p.y; } e.stopPropagation(); return true; }
       if (a === "ops") { rd.ops = !rd.ops; renderReader(); return true; }
       if (a === "op") { const k = d.k, o = rdOpt(); setOpt(k, !o[k]); renderReader(); return true; }
@@ -515,6 +541,8 @@ function rdKeepPos() { if (!rd) return; const bd = $("rdBody"); if (!bd) return;
     return false;
   };
   box.addEventListener("click", e => { act(e.target, e); }, true);
+  box.addEventListener("change", e => { const t = e.target; if (t && t.dataset && t.dataset.r === "sh-rm") { S.readTrack = t.value; S.focusMusic = t.value !== "off"; save(); try { bgmUpdate(); } catch (x) {} } });
+  const or1 = openReader; openReader = function () { const r = or1.apply(this, arguments); try { shApplyLook(); } catch (e) {} return r; };
   box.addEventListener("keydown", e => { if (e.key === "Enter" && e.target && e.target.dataset && (e.target.dataset.nt || e.target.dataset.vn)) act(e.target, e); if (e.key === "Escape") rdSheetClose(); });
 })();
 

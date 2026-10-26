@@ -200,13 +200,15 @@ function focusStop() {
   F.out.gain.setTargetAtTime(0.0001, now, 0.8);
   setTimeout(() => { try { F.dr.forEach(d => d.o.stop()); F.lfo.stop(); F.ns.stop(); F.nlfo.stop(); F.out.disconnect(); } catch (e) {} }, 4000);
 }
-const focusOn = () => S.focusMusic !== false;
+const focusOn = () => (typeof readMode === "function" ? readMode() !== "off" : S.focusMusic !== false);
 function readingNow() { const r = $("reader"); return !!(r && !r.hidden); }
 /* ---------- 무엇을 틀지 ---------- */
 function bgmUpdate() {
   if (!audioCtx) return; if (!masterGain && !audioReady()) return;
   const on = musicOn() && !document.hidden;
-  const useFiles = typeof fbReady === "function" && fbReady();           // 사용자가 넣은 음악 파일이 있으면 그걸로
+  const reading = readingNow(), rm = typeof readMode === "function" ? readMode() : (focusOn() ? "auto" : "off");
+  if (sfxGain) { const tgt = reading ? 0 : 0.9 * sndVol("s"); if (Math.abs(sfxGain.gain.value - tgt) > 0.01) sfxGain.gain.setTargetAtTime(tgt, audioCtx.currentTime, 0.25); }   // 읽는 동안 공격·효과음 끔
+  const useFiles = typeof fbReady === "function" && fbReady() && !(reading && rm === "synth");   // 사용자가 넣은 음악 파일이 있으면 그걸로 (읽을 때 '집중곡'을 고르면 합성)
   if (typeof fbUpdate === "function") { try { fbUpdate(on && useFiles); } catch (e) {} }
   const wantFocus = on && !useFiles && readingNow() && focusOn();
   if (wantFocus) { if (!focus) focusStart(); } else if (focus) focusStop();

@@ -413,6 +413,11 @@ for b, chs in add3.items():
 json.dump(sorted(XB), open(f'{APP}/bible/xbooks.json', 'w'))
 print('13~66 new cards', len(N3), 'underlines', n3)
 
+# ---------- 11c) 링크 원어 검증 (11-03 사용자: 만나(음식) 카드가 "그를 만나"에 붙는 식의 엉뚱한 링크 → 카드 원어가 그 절에 없으면 뺌) ----------
+sys.path.insert(0, f'{R0}/tools')
+import linkaudit
+linkaudit.run(write=True, report=f'{R0}/notes3/linkaudit.json')
+
 # ---------- 12) 설교 카드(10-25, 사용자 설교 원고집 → 요약 카드, 원고 전문은 싣지 않음) ----------
 SM = []
 for f in sorted(glob.glob('/home/claude/sermons/out/*.json')):

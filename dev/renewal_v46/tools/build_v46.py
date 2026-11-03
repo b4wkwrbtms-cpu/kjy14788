@@ -329,6 +329,40 @@ STUDY_WORDS = [
 ]
 for o, n in STUDY_WORDS: s = s.replace(o, n)
 
+# ---------- v47h 밸런스 (11-03 시뮬 리뷰: 말씀·설교·암송 도장을 퇴사 도장에 연동 · 후반 시간표 · 등급 간격 · 일일 상한 비탈) ----------
+# 1) 활동 도장: 역대 최고층 기준 퇴사 도장(actScale)의 비율로, 하루 합계는 15%까지. 50층 전엔 예전 그대로.
+rep('const retireGain = () => S.maxFloor < 50 ? 0 : Math.floor(Math.pow(S.maxFloor / 10, 1.6) * stampMult());',
+    'const retireGain = () => S.maxFloor < 50 ? 0 : Math.floor(Math.pow(S.maxFloor / 10, 1.6) * stampMult());\n'
+    'function actScale() { const f = Math.max(+S.bestFloor || 0, +S.maxFloor || 0); return f < 50 ? 0 : Math.floor(Math.pow(f / 10, 1.6) * stampMult()); }\n'
+    'function actStamp(base, frac) {   // 말씀·설교·암송 도장: 역대 최고층 퇴사 도장의 frac 배, 하루 합계 15% 상한(상한 뒤엔 예전 기본값)\n'
+    '  const sc = actScale(); if (!sc) return base;\n'
+    '  rollDay(); const cap = Math.floor(sc * 0.15), used = +S.day.actSt || 0;\n'
+    '  const give = Math.max(base, Math.min(Math.floor(sc * frac), Math.max(0, cap - used)));\n'
+    '  S.day.actSt = used + give; S.actTot = (+S.actTot || 0) + give; return give;\n'
+    '}')
+rep('  else if (B.rewarded < READ_CAP) { const m = Math.max(1, Math.round(10 * readMult() * devWgt())); e.rw = { manna: m, stamp: 1 }; S.manna += m; S.stamp += 1; B.rewarded++; msg += ` · 만나 +${m}, 도장 +1`; }\n'
+    '  else msg += " · 오늘 선물은 다 받았고, 기록은 계속 쌓여요";',
+    '  else if (B.rewarded < READ_CAP) { const m = Math.max(1, Math.round(10 * readMult() * devWgt())), st = actStamp(1, 0.01); e.rw = { manna: m, stamp: st }; S.manna += m; S.stamp += st; B.rewarded++; msg += ` · 만나 +${m}, 도장 +${fmtR(st)}`; }\n'
+    '  else if (B.rewarded < READ_CAP * 2) { const m = Math.max(1, Math.round(3 * readMult() * devWgt())), st = actStamp(0, 0.003); e.rw = { manna: m, stamp: st }; S.manna += m; S.stamp += st; B.rewarded++; msg += ` · 만나 +${m}${st ? `, 도장 +${fmtR(st)}` : ""} (${READ_CAP}장 넘어서 조금만)`; }\n'
+    '  else msg += " · 오늘 선물은 다 받았고, 기록은 계속 쌓여요";')
+rep('function memReward(s) { return { manna: Math.round(4 * (s + 1) * memMult()), stamp: s >= 2 ? 1 + Math.floor(s / 3) : 0,',
+    'function memReward(s) { return { manna: Math.round(4 * (s + 1) * memMult()), stamp: s >= 2 ? actStamp(1 + Math.floor(s / 3), 0.005 * (s + 1)) : 0,')
+rep('function retireRatio() { const g = retireGain(); return g > 0 ? g / Math.max(30, (S.stamp || 0) + stampInvested()) : 0; }',
+    'function retireRatio() { const g = retireGain(); if (g <= 0) return 0; const h = (S.stamp || 0) + stampInvested(); return g / Math.max(30, h - (+S.actTot || 0), 0.3 * h); }   // 말씀·설교·암송으로 받은 도장은 퇴사 게이지 분모에서 뺌(퇴사 권유가 묻히지 않게)')
+# 2) 후반 시간표: 전무 850→800, 사장 1000→900 · 700층 위 체력 기울기 완화
+rep('{ n: "전무", req: { floor: 850, chap: 850, study: 80, retire: 20 } },', '{ n: "전무", req: { floor: 800, chap: 850, study: 80, retire: 20 } },')
+rep('{ n: "사장", req: { floor: 1000, chap: 1189, study: 100, retire: 25 }, job: true },', '{ n: "사장", req: { floor: 900, chap: 1189, study: 100, retire: 25 }, job: true },')
+rep('grow: [[100, 1.15], [200, 1.10], [300, 1.08], [350, 1.07], [600, 1.08], [750, 1.065], [1e9, 1.055]],', 'grow: [[100, 1.15], [200, 1.10], [300, 1.08], [350, 1.07], [600, 1.08], [700, 1.065], [850, 1.055], [1e9, 1.05]],')
+# 3) 등급 간격: 에픽 조금 올리고 전설·신화 무기 재료 내려서 전설 ~20일 · 신화 ~70일
+rep('{ gate: { silver: 8, ame: 1 }, a: { silver: 4, ame: 1 }, b: { silver: 13, ame: 3 } },      // 에픽', '{ gate: { silver: 14, ame: 3 }, a: { silver: 6, ame: 1 }, b: { silver: 18, ame: 4 } },      // 에픽')
+rep('{ gate: { silver: 120, ame: 38 }, a: { silver: 55, ame: 16 }, b: { silver: 175, ame: 52 } }, // 전설', '{ gate: { silver: 120, ame: 38 }, a: { silver: 40, ame: 12 }, b: { silver: 120, ame: 36 } }, // 전설')
+rep('{ gate: { silver: 450, ame: 165 }, a: { silver: 240, ame: 86 }, b: { silver: 430, ame: 158 } }, // 신화', '{ gate: { silver: 330, ame: 120 }, a: { silver: 180, ame: 65 }, b: { silver: 330, ame: 120 } }, // 신화')
+# 4) 오프라인 12시간 넘는 시간은 25%로 48시간까지
+rep('function awaySettle(t0, simOK) {\n  const real = Math.max(0, (Date.now() - t0) / 1000), sec = Math.min(real, OFF_CAP);',
+    'function awaySettle(t0, simOK) {\n  const real = Math.max(0, (Date.now() - t0) / 1000), sec = Math.min(real, OFF_CAP) + 0.25 * Math.max(0, Math.min(real, OFF_CAP * 4) - OFF_CAP);   // 12시간 넘는 시간은 25%로 48시간까지')
+rep('`${OFF_CAP / 3600}시간이 넘어서 ${OFF_CAP / 3600}시간까지만 계산했어요`', '`${OFF_CAP / 3600}시간이 넘은 시간은 4분의 1로 쳐서 더했어요(48시간까지) · 쉬어 가도 괜찮아요`')
+rep('자리 비운 동안은 ${OFF_CAP / 3600}시간까지 일해요`', '자리 비운 동안은 ${OFF_CAP / 3600}시간까지 일하고, 그 뒤는 4분의 1로 48시간까지`', 2)
+
 rep('.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }', '.rd-vers { display: flex; flex-wrap: wrap; gap: 6px; }\n' + V45_CSS + V46_CSS)
 mk = '/* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */'
 assert s.count(mk) == 1
@@ -342,7 +376,7 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v69";')
+sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v70";')
 assert 'url.pathname.includes("/bible/")' in sw
 sw = sw.replace('url.pathname.includes("/bible/")', '(url.pathname.includes("/bible/") || url.pathname.includes("/fonts/"))')  # 글꼴도 한 번 받으면 오프라인
 open(f'{APP}/sw.js', 'w').write(sw)

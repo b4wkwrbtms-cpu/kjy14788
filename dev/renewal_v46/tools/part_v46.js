@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47g";
+var X_VER = "47h";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -408,8 +408,8 @@ function smReadDone(sid) {
   if (r.last === today) return;
   r.n++; r.last = today; S.smDone[sid] = r;
   if (roffOn()) { toast("설교를 끝까지 읽었어요 · 보상 끄기 주간이라 기록만"); return; }
-  const ore = Math.round((first ? 60 : 15) * oreMult() * devWgt()); S.ore += ore; if (first) S.stamp += 1;
-  toast(first ? `설교를 끝까지 읽었어요 · 광석 +${ore}, 도장 +1` : `설교를 다시 읽었어요 · 광석 +${ore}`);
+  const ore = Math.round((first ? 60 : 15) * oreMult() * devWgt()), st = typeof actStamp === "function" ? (first ? actStamp(1, 0.15) : actStamp(0, 0.03)) : (first ? 1 : 0); S.ore += ore; S.stamp += st;
+  toast(first ? `설교를 끝까지 읽었어요 · 광석 +${ore}, 도장 +${fmtR(st)}` : `설교를 다시 읽었어요 · 광석 +${ore}${st ? `, 도장 +${fmtR(st)}` : ""}`);
   try { addFloat(320, 60, `광석 +${ore}`, "#6fd3ff", 20); } catch (e) {}
   save();
 }

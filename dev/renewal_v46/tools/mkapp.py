@@ -64,6 +64,28 @@ for (b, c, v), (base, t) in fixes.items():
     json.dump(j, open(p, 'w'), ensure_ascii=False)
 print('applied', applied, 'skipped(changed since)', skipped)
 
+# ---------- 2c) 11-03 전면 검토 교정 (rev/out/*.jsonl: 틀린 낱말·원어·문맥·줄 나눔·소제목) — 검토 당시 본문(was)이 그대로일 때만 덮음 ----------
+rv_applied = rv_skipped = rv_h = 0
+for f in sorted(glob.glob(f'{R0}/rev/out/*.jsonl')):
+    for l in open(f):
+        l = l.strip()
+        if not l: continue
+        try: o = json.loads(l)
+        except Exception: rv_skipped += 1; continue
+        b, c = int(o.get('b', 0)), int(o.get('c', 0)); p = f'{B46}/{b:02d}/{c:03d}.json'
+        if not os.path.exists(p): rv_skipped += 1; continue
+        j = json.load(open(p))
+        if o.get('h') is not None and isinstance(o['h'], list) and not o.get('v'):
+            j['h'] = [[int(x[0]), str(x[1])] for x in o['h'] if x and str(x[1]).strip()]; rv_h += 1
+        else:
+            v = int(o.get('v', 0)); t = o.get('fix')
+            if not (1 <= v <= len(j['v'])) or not isinstance(t, str) or not t.strip() or '"' in t: rv_skipped += 1; continue
+            if o.get('was') is not None and j['v'][v - 1] != o['was']: rv_skipped += 1; continue
+            if j['v'][v - 1] == t: continue
+            j['v'][v - 1] = t; rv_applied += 1
+        json.dump(j, open(p, 'w'), ensure_ascii=False)
+print('review fixes applied', rv_applied, 'headings', rv_h, 'skipped', rv_skipped)
+
 # ---------- 3) 앱 폴더 + mz + lin ----------
 os.makedirs(f'{APP}/bible/mz', exist_ok=True)
 MZ = {}

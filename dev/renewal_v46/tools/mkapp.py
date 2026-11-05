@@ -495,3 +495,8 @@ for f in sorted(glob.glob('/home/claude/sermons/full/*.json')):
     json.dump({'sid': sid, 'book': d.get('book', ''), 'notes': f'{pre}-notes' if os.path.exists(f'/home/claude/sermons/full/{pre}-notes.json') else '', 'paras': paras, 'rest': rest},
               open(f'{APP}/bible/smt/{sid}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 print('sermon full texts placed', pl_ok, '/', pl_tot, '(나머지는 전문 끝 목록)')
+
+# ---------- 13) 11-05 사용자: 해설·메모의 원어 발음 이름 → 개역한글 이름(발음은 괄호로) ----------
+sys.path.insert(0, f'{R0}/names')
+import namefix
+namefix.run()

@@ -25,17 +25,19 @@ def omap(b,K):
             M[(c,v)]=(pc,pv) if pc<=noc else None
             pv+=1
     return M
-start=int(sys.argv[1]) if len(sys.argv)>1 else 1
-for ch in plan[start-1:]:
-    out=[]; last=None
-    for b,c in ch['chs']:
-        K=json.load(open(f'{KRV}/{b:02d}.json'))
-        if last!=b: M=omap(b,K); last=b
-        j=json.load(open(f'{B46}/{b:02d}/{c:03d}.json'))
-        out.append(f"\n## {BN[b-1]} {c}장  (b={b}, c={c})\n소제목 h: {json.dumps(j.get('h',[]), ensure_ascii=False)}")
-        for v,(mv,kv) in enumerate(zip(j['v'],K[c-1]),1):
-            fl=F.get(f'{b}:{c}:{v}',''); m=M.get((c,v))
-            ot=otxt(b,*m) if m else ''; tag='' if (not m or m==(c,v)) else f' (원어 {m[0]}:{m[1]})'
-            out.append(f"[{c}:{v}]{(' ⚠'+fl) if fl else ''}\n개역: {kv}\n원어{tag}: {ot}\n지금: {mv.replace(chr(10),'⏎')}")
-    open(f"{R0}/rev/in/{ch['id']}.txt",'w').write('\n'.join(out))
-print('chunks written from', start)
+def _main():
+    start=int(sys.argv[1]) if len(sys.argv)>1 else 1
+    for ch in plan[start-1:]:
+        out=[]; last=None
+        for b,c in ch['chs']:
+            K=json.load(open(f'{KRV}/{b:02d}.json'))
+            if last!=b: M=omap(b,K); last=b
+            j=json.load(open(f'{B46}/{b:02d}/{c:03d}.json'))
+            out.append(f"\n## {BN[b-1]} {c}장  (b={b}, c={c})\n소제목 h: {json.dumps(j.get('h',[]), ensure_ascii=False)}")
+            for v,(mv,kv) in enumerate(zip(j['v'],K[c-1]),1):
+                fl=F.get(f'{b}:{c}:{v}',''); m=M.get((c,v))
+                ot=otxt(b,*m) if m else ''; tag='' if (not m or m==(c,v)) else f' (원어 {m[0]}:{m[1]})'
+                out.append(f"[{c}:{v}]{(' ⚠'+fl) if fl else ''}\n개역: {kv}\n원어{tag}: {ot}\n지금: {mv.replace(chr(10),'⏎')}")
+        open(f"{R0}/rev/in/{ch['id']}.txt",'w').write('\n'.join(out))
+    print('chunks written from', start)
+if __name__=='__main__': _main()

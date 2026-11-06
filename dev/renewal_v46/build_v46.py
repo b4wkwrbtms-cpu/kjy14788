@@ -66,6 +66,15 @@ V46_CSS = '''/* v46 읽기 창 */
 .fx-row b { display: inline-block; min-width: 6.2em; font-size: 12px; color: var(--muted); font-weight: 600; }
 .fxm mark { background: rgba(255,180,84,.2); color: inherit; border-radius: 3px; padding: 0 2px; }
 .fxm s { opacity: .7; }
+.fx-alt { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.04); font-size: 14px; line-height: 1.6; }
+.fx-alt-h { margin: 0 0 6px; font-size: 12px; color: #ffb454; font-weight: 700; }
+.fx-alt ul { margin: 0; padding-left: 18px; }
+.fx-alt li { margin: 0 0 8px; }
+.fx-alt li span { color: var(--muted); }
+.fx-alt li small { color: var(--muted); font-size: 12px; }
+.fx-pick { margin: 6px 0 0; }
+.fx-pick b { font-size: 12px; color: var(--muted); margin-right: 4px; }
+.vm.ixm { border-left-color: #7fb8ff; }
 .rd-body.rd-wide { line-height: 2.25; }
 .rd-fold { border: 1px dashed #3a4870; border-radius: 12px; padding: 12px; margin: 6px 0 18px; background: #121a2c; font-size: 14px; line-height: 1.6; }
 .rd-fold-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
@@ -383,7 +392,7 @@ s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v79";')
+sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v80";')
 assert 'url.pathname.includes("/bible/")' in sw
 sw = sw.replace('url.pathname.includes("/bible/")', '(url.pathname.includes("/bible/") || url.pathname.includes("/fonts/"))')  # 글꼴도 한 번 받으면 오프라인
 open(f'{APP}/sw.js', 'w').write(sw)

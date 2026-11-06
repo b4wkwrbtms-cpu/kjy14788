@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47q";
+var X_VER = "47r";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -469,6 +469,11 @@ function openNote(id, from) {
   const b = rd.b, show = () => { const n = ntOf(b, id); if (n) rdSheet(noteHtml(Object.assign({ id }, n), from), from); else rdSheet(`<p class="muted">해설을 불러오지 못했어요. 인터넷에 연결된 상태로 한 번 열면 그다음부터는 없어도 볼 수 있어요.</p>`, from); };
   if (bibleNt.has(b)) show(); else { rdSheet(`<p class="muted">해설을 불러오는 중…</p>`, from); loadNt(b).then(show); }
 }
+function altHtml(m, always) {
+  const al = (m.alt || []).filter(x => x && x.r);
+  if (!al.length && !m.pick) return "";
+  return `<div class="fx-alt">${al.length ? `<p class="fx-alt-h">원어로 가능한 다른 해석</p><ul>${al.map(x => `<li><b>${escapeHtml(x.r)}</b>${x.g ? `<br><span>${refHtml(x.g)}</span>` : ""}${x.by ? `<small> · ${escapeHtml(x.by)}</small>` : ""}</li>`).join("")}</ul>` : ""}${m.pick ? `<p class="fx-pick"><b>${always ? "지금 본문이 고른 읽기" : "이 읽기를 고른 이유"}</b> ${refHtml(m.pick)}</p>` : ""}</div>`;
+}
 function openVerse(n) {
   if (!rd) return;
   const b = rd.b, c = rd.c, ref = `${BOOKS[b][0]} ${c + 1}:${n}`;
@@ -477,8 +482,9 @@ function openVerse(n) {
     const ot = b <= 11;
     let h = `<div class="nt-head"><span class="nt-badge k-hebrew">${ot ? "원어로 보기" : "본문 메모"}</span><small>${escapeHtml(ref)}</small></div>`;
     if (heV) h += `<p class="he-verse" dir="rtl" lang="he">${escapeHtml(heV)}</p><p class="nt-cap">히브리어 본문: 레닌그라드 사본(WLC). 오른쪽에서 왼쪽으로 읽어요.</p>`;
-    const ms0 = x && x.vn && x.vn[n] || [], fx = ms0.filter(m => m.fx), ms = ms0.filter(m => !m.fx);
-    if (fx.length) h += `<h4>원어 기준으로 고친 곳</h4>` + fx.map(m => `<div class="vm fxm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.was && m.was !== m.now ? `<p class="fx-row"><b>고치기 전</b> <s>${escapeHtml(m.was)}</s></p>` : ""}<p class="fx-row"><b>원어대로 고침</b> <mark>${escapeHtml(m.now)}</mark></p><p>${refHtml(m.t)}</p></div>`).join("") + `<p class="nt-cap">개역한글과 원어(${b <= 39 ? "히브리어" : "헬라어"})를 맞대어 보고, 원어 뜻에 더 가깝게 고친 표현이에요.</p>`;
+    const ms0 = x && x.vn && x.vn[n] || [], fx = ms0.filter(m => m.fx), ix = ms0.filter(m => m.ix), ms = ms0.filter(m => !m.fx && !m.ix);
+    if (fx.length) h += `<h4>원어 기준으로 고친 곳</h4>` + fx.map(m => `<div class="vm fxm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.was && m.was !== m.now ? `<p class="fx-row"><b>고치기 전</b> <s>${escapeHtml(m.was)}</s></p>` : ""}<p class="fx-row"><b>원어대로 고침</b> <mark>${escapeHtml(m.now)}</mark></p><p>${refHtml(m.t)}</p>${altHtml(m)}</div>`).join("") + `<p class="nt-cap">개역한글과 원어(${b <= 39 ? "히브리어·아람어" : "헬라어"})를 맞대어 보고, 원어 뜻에 더 가깝게 고친 표현이에요.</p>`;
+    if (ix.length) h += `<h4>원어로 읽으면 가능한 해석</h4>` + ix.map(m => `<div class="vm fxm ixm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.now ? `<p class="fx-row"><b>우리 본문</b> ${escapeHtml(m.now)}</p>` : ""}${altHtml(m, true)}</div>`).join("");
     if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${refHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
     else if (ot) h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
     const ln = x && x.ln && x.ln[n] || [];

@@ -61,3 +61,12 @@ defer 줄: `{"card":"…","k":0,"act":"defer","why":"…","plan":"<통일안: �
 입력의 제안마다 판정 줄이 적어도 한 줄은 있어야 해. 마지막 답변에는 다음만 숫자로 짧게 적어.
 - fix / done / keep / defer 개수
 - 판단이 특히 어려웠던 것 3개 이내
+
+## 11-06 추가: 원어로 가능한 해석까지 연구
+사용자 요청: "원어로 해석했을 때 이런 해석도 가능하다"까지 연구해서 써 줘.
+- fix·done 줄에 두 필드를 더 넣어.
+  - `"alt":[{"r":"…","g":"…","by":"…"}]`
+  - `"pick":"…"`
+  - 쓰는 법은 `/home/claude/renewal/tqfix/ALT_BRIEF.md`의 fix 항목과 같아. 그 파일을 끝까지 읽어.
+- keep 중에서 해석이 갈려 그대로 둔 것은 note 줄도 써. 형식은 ALT_BRIEF.md의 note 형식이고, 위치는 `/home/claude/renewal/tqfix/alt_out/a9.jsonl`이야.
+- WebSearch·WebFetch는 이 절과 위 지침을 합쳐 20회 이하로 써.

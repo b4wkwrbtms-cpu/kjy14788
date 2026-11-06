@@ -6,7 +6,7 @@
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47p";
+var X_VER = "47q";
 const XB = new Set(/*XB*/[]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -102,8 +102,8 @@ function rdChapterHtml(b, c, mz, krvVerses, lin) {
       if (!op[fi]) { if (n === folds[fi][0]) html += foldCard(folds[fi], fi, fi > 0 && folds[fi - 1][3] === folds[fi][3]); continue; }
       if (n === folds[fi][0]) html += `<button type="button" class="rd-fold-close" data-r="fold-close" data-i="${fi}">▲ ${escapeHtml(folds[fi][3])} · 다시 접기</button>`;
     }
-    const sv = smvOf(b, c), hasS = !!(sv && sv.v && sv.v[n]), hasM = !!(x && x.vn && x.vn[n]), canTap = b <= 11 || hasM || hasS;
-    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasS ? " sm" : ""}"${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
+    const sv = smvOf(b, c), hasS = !!(sv && sv.v && sv.v[n]), hasM = !!(x && x.vn && x.vn[n]), hasF = hasM && x.vn[n].some(m => m.fx), canTap = b <= 11 || hasM || hasS;
+    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasF ? " fx" : ""}${hasS ? " sm" : ""}"${hasF ? ' title="원어 기준으로 고친 절"' : ""}${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
     if (mz) {
       const labs = {}; if (o.sp && x && x.sp && x.sp[n]) x.sp[n].forEach(l => { if (!labs[l[0]]) labs[l[0]] = l; });
       const links = o.ln && x && x.ln ? x.ln[n] : null;
@@ -477,7 +477,8 @@ function openVerse(n) {
     const ot = b <= 11;
     let h = `<div class="nt-head"><span class="nt-badge k-hebrew">${ot ? "원어로 보기" : "본문 메모"}</span><small>${escapeHtml(ref)}</small></div>`;
     if (heV) h += `<p class="he-verse" dir="rtl" lang="he">${escapeHtml(heV)}</p><p class="nt-cap">히브리어 본문: 레닌그라드 사본(WLC). 오른쪽에서 왼쪽으로 읽어요.</p>`;
-    const ms = x && x.vn && x.vn[n] || [];
+    const ms0 = x && x.vn && x.vn[n] || [], fx = ms0.filter(m => m.fx), ms = ms0.filter(m => !m.fx);
+    if (fx.length) h += `<h4>원어 기준으로 고친 곳</h4>` + fx.map(m => `<div class="vm fxm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.was && m.was !== m.now ? `<p class="fx-row"><b>고치기 전</b> <s>${escapeHtml(m.was)}</s></p>` : ""}<p class="fx-row"><b>원어대로 고침</b> <mark>${escapeHtml(m.now)}</mark></p><p>${refHtml(m.t)}</p></div>`).join("") + `<p class="nt-cap">개역한글과 원어(${b <= 39 ? "히브리어" : "헬라어"})를 맞대어 보고, 원어 뜻에 더 가깝게 고친 표현이에요.</p>`;
     if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${refHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
     else if (ot) h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
     const ln = x && x.ln && x.ln[n] || [];

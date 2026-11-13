@@ -388,7 +388,14 @@ XBN = [x - 1 for x in json.load(open(f'{APP}/bible/xbooks.json')) if x > 12]
 assert p46.count('/*XB*/[]') == 1
 p46 = p46.replace('/*XB*/[]', json.dumps(XBN))
 p47m = open(f'{R0}/music_v47.js', encoding='utf-8').read() + '\n' + open(f'{R0}/music_files_v47.js', encoding='utf-8').read()
-s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + mk)
+# v48 (11-13) 영웅서기5식 연출 레이어: 타격·스킬·몬스터·보스·빛 번짐 (combat_v48.js) + 부서진 몸은 원래 그림을 빨리 지움 + 설정 카드 글씨
+import os as _os
+_c48 = f'{R0}/combat_v48.js' if _os.path.exists(f'{R0}/combat_v48.js') else f'{R0}/tools/combat_v48.js'
+p48 = open(_c48, encoding='utf-8').read()
+rep('const so = { flip: true, pretty }, baseA = (1 - mon.dying * 0.85) * eo.a;',
+    'const so = { flip: true, pretty }, baseA = (1 - mon.dying * 0.85) * eo.a * (mon.shat ? Math.max(0, 1 - mon.dying * 5) : 1);   // v48 부서진 몸')
+s = s.replace('</style>', '.fx48-t { font-weight: 700; margin: 0 0 8px; } .fx48-t small { font-weight: 400; color: var(--muted); margin-left: 6px; font-size: 12px; }\n</style>', 1)
+s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + p48 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw

@@ -387,7 +387,11 @@ p49 = open(_c49, encoding='utf-8').read()
 assert p49.count('"__HL5X_WASM_B64__"') == 1
 p49 = p49.replace('__HL5X_WASM_B64__', _b64.b64encode(open(_w49, 'rb').read()).decode())
 s = s.replace('</style>', '.hl5-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 6px 0 12px; } .hl5-pick { cursor: pointer; display: inline-flex; align-items: center; }\n</style>', 1)
-s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + p48 + '\n' + p49 + '\n' + mk)
+# v50 (11-14) 팀 켈러 원고 몰입 읽기: 읽는 코드와 CSS만 (원고·덧붙임은 사용자가 폰에서 keller_pack.json을 골라야 생김)
+_c50 = f'{R0}/keller_v50.js' if _os.path.exists(f'{R0}/keller_v50.js') else f'{R0}/tools/keller_v50.js'
+p50 = open(_c50, encoding='utf-8').read()
+s = s.replace('</style>', open(_c50.replace('.js', '.css'), encoding='utf-8').read() + '</style>', 1)
+s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + p48 + '\n' + p49 + '\n' + p50 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw

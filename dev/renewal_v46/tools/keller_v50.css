@@ -1,0 +1,47 @@
+/* v50 켈러 몰입 읽기 */
+.rd-sheet { --ked: #9cc0ff; --kedbg: rgba(156, 192, 255, .08); }
+.rd-sheet.paper, .rd-sheet.cream { --ked: #2f5d9c; --kedbg: rgba(47, 93, 156, .06); }
+.rd-sheet.night { --ked: #8daee6; --kedbg: rgba(141, 174, 230, .07); }
+.kl-root .kl-sub { margin: -.4em 0 .2em; font-size: .9em; color: var(--rfg); opacity: .85; }
+.kl-root .kl-en { margin: 0 0 .5em; font-size: .74em; letter-spacing: .02em; color: var(--rmut); font-style: italic; }
+.kl-tools { display: flex; gap: 6px; flex-wrap: wrap; margin: -.6em 0 1.2em; }
+.kl-tb { font: inherit; font-size: .72em; padding: 6px 11px; border-radius: 99px; border: 1px solid var(--rline); background: transparent; color: var(--rmut); }
+.kl-tb.on { border-color: var(--ked); color: var(--ked); }
+.kl-toc { list-style: none; margin: 0 0 1.2em; padding: 6px; border: 1px solid var(--rline); border-radius: 12px; }
+.kl-toc button { display: block; width: 100%; text-align: left; font: inherit; font-size: .82em; padding: 8px 8px; background: none; border: 0; color: var(--rfg); border-radius: 8px; }
+.kl-toc button small { display: block; color: var(--ked); font-size: .86em; margin-top: 2px; }
+.kl-map { position: sticky; top: -1px; z-index: 3; display: flex; gap: 4px; margin: 0 -2px 1.2em; padding: 8px 2px; background: var(--rbg); border-bottom: 1px solid var(--rline); }
+.kl-map button { flex: 1; min-width: 0; font: inherit; font-size: .66em; padding: 0; background: none; border: 0; color: var(--rmut); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kl-map button i { display: block; height: 3px; border-radius: 2px; background: var(--rline); margin-bottom: 5px; transition: background .3s; }
+.kl-map button.past i { background: color-mix(in srgb, var(--ked) 45%, transparent); }
+.kl-map button.on { color: var(--ked); font-weight: 700; }
+.kl-map button.on i { background: var(--ked); }
+.kl-ed { display: inline-block; font-size: .64em; letter-spacing: .04em; color: var(--ked); border: 1px solid var(--ked); border-radius: 99px; padding: 1px 8px; margin-bottom: .5em; }
+.kl-open, .kl-one { margin: 0 0 2em; padding: 14px 16px; border-radius: 14px; background: var(--kedbg); }
+.kl-open p, .kl-one p { margin: 0; color: var(--ked); font-size: 1.04em; line-height: 1.7; font-weight: 600; }
+.kl-sec { margin: 0 0 1.4em; scroll-margin-top: 54px; }
+.kl-sh { margin: 2.2em 0 .7em; }
+.kl-sh .kl-n { display: block; font-size: .66em; color: var(--rmut); letter-spacing: .06em; margin-bottom: .35em; }
+.kl-sh h4 { margin: 0; font-size: 1.12em; line-height: 1.45; color: var(--rhi); }
+.kl-hook { margin: 0 0 1.3em; color: var(--ked); font-size: .95em; line-height: 1.6; padding-left: 10px; border-left: 2px solid var(--ked); }
+.kl-root .kl-em { margin: 1.4em 0 1.4em; font-size: 1.1em; line-height: 1.6; font-weight: 700; color: var(--rhi); }
+.kl-root .kl-em0 { font-size: 1.02em; }
+.kl-root .kl-q { margin: 0 0 .6em; }
+.kl-root .sm-qb p { margin: 0 0 .5em; } .kl-root .sm-qb p:last-child { margin: 0; }
+.kl-sp { margin: 1.4em 0 .35em; font-size: .72em; font-weight: 800; letter-spacing: .06em; color: var(--rq); }
+.kl-qq { margin: 0 0 1em; padding: 10px 12px; border-radius: 10px; background: var(--rqbg); font-weight: 600; line-height: 1.65; }
+.kl-h2 { margin: 1.6em 0 .6em; font-size: .98em; color: var(--rhi); }
+.kl-note { margin: 0 0 1em; padding: 8px 12px; font-size: .82em; color: var(--rmut); border: 1px dashed var(--rline); border-radius: 10px; line-height: 1.6; }
+.kl-li { padding-left: 1em; text-indent: -.6em; }
+.kl-key { margin: 1.8em 0 .6em; padding: 16px 4px 4px; border-top: 1px solid var(--rline); font-size: 1.06em; line-height: 1.6; font-weight: 700; color: var(--rhi); text-align: center; }
+.kl-key span { display: block; font-size: .6em; font-weight: 600; letter-spacing: .08em; color: var(--ked); margin-bottom: .6em; }
+.kl-next { display: block; width: 100%; text-align: left; font: inherit; margin: 1.6em 0 0; padding: 12px 14px; border: 1px solid var(--rline); border-radius: 12px; background: transparent; color: var(--rfg); font-size: .86em; line-height: 1.5; }
+.kl-next small { display: block; font-size: .78em; color: var(--rmut); margin-bottom: 2px; }
+.kl-next em { display: block; font-style: normal; color: var(--ked); font-size: .92em; margin-top: 3px; }
+.kl-fn { font: inherit; font-size: .62em; vertical-align: super; line-height: 1; padding: 1px 5px; margin: 0 1px; border-radius: 6px; border: 1px solid var(--rline); background: var(--rbtn); color: var(--rmut); }
+.kl-src { font-size: .62em; color: var(--rmut); vertical-align: super; }
+.kl-fnt { margin: -.4em 0 1.2em; padding: 10px 12px; border-radius: 10px; background: var(--rqbg); font-size: .84em; line-height: 1.65; }
+.kl-fnt b { display: block; font-size: .9em; margin-bottom: 4px; color: var(--rq); } .kl-fnt p { margin: 0; }
+.kl-lnk { font: inherit; background: none; border: 0; padding: 0; color: var(--ked); text-decoration: underline; text-underline-offset: 3px; }
+.kl-anat summary { color: var(--ked); }
+.kl-imp .kl-pick { cursor: pointer; display: inline-flex; margin-top: 6px; }

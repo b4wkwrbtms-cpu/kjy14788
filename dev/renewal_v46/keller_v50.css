@@ -45,3 +45,6 @@
 .kl-lnk { font: inherit; background: none; border: 0; padding: 0; color: var(--ked); text-decoration: underline; text-underline-offset: 3px; }
 .kl-anat summary { color: var(--ked); }
 .kl-imp .kl-pick { cursor: pointer; display: inline-flex; margin-top: 6px; }
+.kl-fx { font: inherit; font-size: .66em; margin: -.6em 0 1em; padding: 2px 8px; border: 0; border-radius: 6px; background: var(--rqbg); color: var(--rq); }
+.kl-fxo { margin: -.4em 0 1.2em; padding: 10px 12px; border-left: 2px solid var(--rq); font-size: .82em; line-height: 1.6; color: var(--rmut); }
+.kl-fxo b { display: block; color: var(--rq); font-size: .9em; } .kl-fxo p { margin: 4px 0; } .kl-was { text-decoration: line-through; opacity: .7; }

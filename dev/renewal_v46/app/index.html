@@ -74,6 +74,9 @@ button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .kl-lnk { font: inherit; background: none; border: 0; padding: 0; color: var(--ked); text-decoration: underline; text-underline-offset: 3px; }
 .kl-anat summary { color: var(--ked); }
 .kl-imp .kl-pick { cursor: pointer; display: inline-flex; margin-top: 6px; }
+.kl-fx { font: inherit; font-size: .66em; margin: -.6em 0 1em; padding: 2px 8px; border: 0; border-radius: 6px; background: var(--rqbg); color: var(--rq); }
+.kl-fxo { margin: -.4em 0 1.2em; padding: 10px 12px; border-left: 2px solid var(--rq); font-size: .82em; line-height: 1.6; color: var(--rmut); }
+.kl-fxo b { display: block; color: var(--rq); font-size: .9em; } .kl-fxo p { margin: 4px 0; } .kl-was { text-decoration: line-through; opacity: .7; }
 </style>
 <title>곽준영 키우기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17426,6 +17429,7 @@ function kelHtml(s) {
     if (o && o.hook && !o.rest) h += `<p class="kl-hook">${escapeHtml(o.hook)}</p>`;
     (x.b || []).forEach(b => {
       const t = b.t || "";
+      if (b.k === "del") return;   // 검사에서 지운 중복 문단(원래 글은 '원고에서 고친 곳'에 있음)
       if (b.k === "h2") h += `<h5 class="kl-h2">${escapeHtml(t)}</h5>`;
       else if (b.k === "sp") h += `<p class="kl-sp">${escapeHtml(t)}</p>`;
       else if (b.k === "qq") h += `<p class="kl-qq">${kelInline(t, s.id)}</p>`;
@@ -17433,6 +17437,7 @@ function kelHtml(s) {
       else if (b.k === "note") h += `<p class="kl-note">${kelInline(t, s.id)}</p>`;
       else if (b.k === "li") h += `<p class="sm-p kl-li">${kelInline(t, s.id)}</p>`;
       else { if (b.sp) h += `<p class="kl-sp">${escapeHtml(b.sp)}</p>`; h += kelParaHtml(t, s.id, o && o.em, b.k, s.ov && s.ov.join); }
+      if (b.orig) h += `<button type="button" class="kl-fx" data-kfx="1">✎ 원고에서 고친 곳</button><div class="kl-fxo" hidden><b>원래 원고</b><p>${escapeHtml(b.orig)}</p><small>${escapeHtml((b.why || []).join(" · "))}</small></div>`;
     });
     if (o && o.key && !o.rest) h += `<p class="kl-key"><span>이 장의 한 줄</span>${kelInline(o.key, s.id)}</p>`;
     if (i < N - 1 && secs[i + 1].h) h += `<button type="button" class="kl-next" data-kjump="${i + 1}"><small>다음</small>${escapeHtml(secs[i + 1].h)}</button>`;
@@ -17451,6 +17456,8 @@ function kelHtml(s) {
     if (A.watch && A.watch.length) h += `<h4>읽을 때 조심할 점</h4>` + A.watch.map(w => `<p>· ${escapeHtml(w)}</p>`).join("");
     h += `<p class="nt-cap">해부는 사용자의 설교 스킬(팀켈러 ver2)과 몰입 연구를 기준으로 편집자가 정리했어요. 인용은 원고 그대로예요.</p></details>`;
   }
+  const fx = []; secs.forEach((x, i) => { if (x.h_orig) fx.push([i, x.h_orig, x.h, "소제목 맞춤법"]); (x.b || []).forEach(b => { if (b.orig) fx.push([i, b.orig, b.k === "del" ? "(중복이라 뺌)" : b.t, (b.why || []).join(" · ")]); }); });
+  if (fx.length) h += `<details class="nt-bl"><summary>원고에서 고친 곳 ${fx.length}개</summary><p class="nt-cap">흐름 검사에서 확실한 오타·띄어쓰기·끊김만 사용자 승인으로 고쳤어요(11-14).</p>${fx.map(([i, a, b, w]) => `<div class="vm"><p class="nt-form"><button type="button" class="kl-lnk" data-kjump="${i}">${escapeHtml(kelH(secs[i].h, i))}</button> · ${escapeHtml(w)}</p><p class="kl-was">${escapeHtml(a)}</p><p>→ ${escapeHtml(b)}</p></div>`).join("")}</details>`;
   const notes = Object.keys(s.notes || {}).sort((a, b) => a - b);
   if (notes.length) h += `<details class="nt-bl"><summary>주석 ${notes.length}개</summary>${notes.map(n => `<div class="vm" id="kln-${n}"><p class="nt-form">주${n}${s.notes[n].h ? ` · ${escapeHtml(s.notes[n].h)}` : ""}</p><p>${kelInline(s.notes[n].t || "", s.id)}</p></div>`).join("")}</details>`;
   if (s.guide && s.guide.length) h += `<details class="nt-bl"><summary>원고 읽기 안내</summary>${s.guide.map(p => `<p>${kelInline(p, s.id)}</p>`).join("")}</details>`;
@@ -17547,6 +17554,7 @@ function kelListHtml() {
     const fn = t.closest("[data-kn]"); if (fn) { e.preventDefault(); kelNote(fn); return; }
     const j = t.closest("[data-kjump]"); if (j) { e.preventDefault(); const toc = document.querySelector(".kl-toc"); if (toc && !toc.hidden && j.closest(".kl-toc")) toc.hidden = true; kelJump(j.dataset.kjump); return; }
     const sg = t.closest("[data-kstage]"); if (sg) { const sec = document.querySelector(`.kl-sec[data-kst="${sg.dataset.kstage}"]`); if (sec) kelJump(sec.dataset.ki); return; }
+    const fxb = t.closest("[data-kfx]"); if (fxb) { const o = fxb.nextElementSibling; if (o) o.hidden = !o.hidden; return; }
     if (t.closest("[data-ktoc]")) { const toc = document.querySelector(".kl-toc"); if (toc) toc.hidden = !toc.hidden; return; }
     if (t.closest("[data-kov]")) { S.kelOv = !kelOvOn(); save(); const bd = $("rdShBody"); if (kel.openId) kelOpen(kel.openId, bd ? bd.scrollTop : 0); return; }
   }, true);

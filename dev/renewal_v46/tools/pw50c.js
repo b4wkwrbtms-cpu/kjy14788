@@ -14,7 +14,7 @@ const PACK = process.argv[2];
     await ev(`rdSheetClose(); smOpenFromTab("${id}"); 0`); await p.waitForTimeout(700);
     const r = JSON.parse(await ev(`JSON.stringify((() => { const s = kel.by["${id}"], root = document.querySelector(".kl-root"); if (!root) return { err: "no root" };
       const strip = t => t.replace(/\\[주\\s?\\d+\\]|\\[자료[^\\]]{0,20}\\]/g, "").replace(/\\s/g, "");
-      const want = strip(s.secs.map(x => x.b.map(b => (b.sp || "") + b.t).join("")).join(""));
+      const want = strip(s.secs.map(x => x.b.filter(b => b.k !== "del").map(b => (b.sp || "") + b.t).join("")).join(""));
       const secs = [...root.querySelectorAll(".kl-sec")]; const got = strip(secs.map(x => [...x.querySelectorAll("p:not(.kl-hook):not(.kl-key):not(.kl-fnt p), h5, blockquote")].map(e => e.closest(".kl-fnt") ? "" : e.textContent.replace(/주\\d+/g, "")).join("")).join(""));
       return { n: secs.length, want: s.secs.length, chars: [want.length, got.length], hs: document.documentElement.scrollWidth };
     })())`));

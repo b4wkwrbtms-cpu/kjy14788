@@ -32,21 +32,35 @@ function kelSentences(t) {
     if (c === "“" || c === "‘" || c === "「" || c === "『" || c === "(") depth++;
     else if ((c === "”" || c === "’" || c === "」" || c === "』" || c === ")") && depth > 0) depth--;
     if (depth === 0 && (c === "." || c === "?" || c === "!" || c === "…")) {
+      if (c === "." && i > 0 && /[A-Za-z0-9]/.test(t[i - 1]) && (i < 2 || !/[A-Za-z0-9]/.test(t[i - 2]))) continue;   // J. I. 패커 · 1. 같은 머리글자
       let j = i + 1; while (j < t.length && /[”’」』)\].?!…]/.test(t[j])) j++;
+      const mk = /^\[(주\s?\d+|자료[^\]]{0,20})\]/.exec(t.slice(j)); if (mk) j += mk[0].length;
       if (j >= t.length || t[j] === " ") { out.push(t.slice(st, j)); st = j + 1; i = j; }
     }
   }
   if (st < t.length) out.push(t.slice(st));
   return out.map(x => x.trim()).filter(Boolean);
 }
-function kelChunks(t) {
-  if (t.length < 170) return [t];
+function kelDep(prev, s) {   // s가 앞 문장에 기대면 true → 같은 덩어리
+  if (s.length < 28) return true;
+  if (/^(그렇지요|그렇죠|맞습니다|아닙니다|네[,.]|예[,.]|왜냐하면|그러니까요|즉|곧|다시 말해|바로|그것은|그것이|이것은|이것이|그래서요)/.test(s)) return true;
+  if (/(때문입니다|때문이지요|때문이에요|때문이다)[.”’」』)]*$/.test(s)) return true;
+  if (/^[“‘「『]/.test(s) && /(말합니다|말했습니다|물었습니다|묻습니다|이렇습니다|이렇게|같습니다|합니다)[.:]?\s*$/.test(prev)) return true;
+  if (/[:：]$/.test(prev) || /(이렇습니다|다음과 같습니다|이렇게 말합니다|이렇게 물었습니다|이렇게 말했습니다)\.$/.test(prev)) return true;
+  if (/^(둘째|셋째|넷째|다섯째|그다음|마지막으로)/.test(s) && /^(첫째|둘째|셋째|넷째)/.test(prev)) return false;
+  return false;
+}
+function kelChunks(t, join) {
+  return [t];   // 11-14 검사 결과: 원고 문단(최대 437자)은 번역 때 이미 읽기 좋게 나뉘어 있고, 더 자르면 켈러의 말 흐름이 끊김 → 원고 문단 그대로
+  if (t.length < 300) return [t];
   const ss = kelSentences(t), out = []; let cur = [], len = 0;
   ss.forEach(s => {
-    if (cur.length && (cur.length >= 3 || (len >= 120 && cur.length >= 2) || len + s.length > 260)) { out.push(cur.join(" ")); cur = []; len = 0; }
+    const prev = cur.length ? cur[cur.length - 1] : "";
+    if (cur.length && !kelDep(prev, s) && (len >= 140 && (len + s.length > 260 || cur.length >= 3))) { out.push(cur.join(" ")); cur = []; len = 0; }
     cur.push(s); len += s.length;
   });
-  if (cur.length) { if (out.length && len < 40) out[out.length - 1] += " " + cur.join(" "); else out.push(cur.join(" ")); }
+  if (cur.length) { if (out.length && len < 90) out[out.length - 1] += " " + cur.join(" "); else out.push(cur.join(" ")); }
+  if (join && join.length) for (let i = out.length - 1; i > 0; i--) if (join.some(j => j && out[i].startsWith(j))) { out[i - 1] += " " + out[i]; out.splice(i, 1); }
   return out;
 }
 /* 글자 → 화면: 성경 주소 링크 + 주석 표시(누르면 그 자리에서 펼침) + 자료 표시는 작게 */
@@ -54,14 +68,22 @@ function kelInline(t, sid) {
   return refHtml(t).replace(/\[주\s?(\d+)\]/g, (a, n) => `<button type="button" class="kl-fn" data-kn="${sid}|${n}" aria-label="주석 ${n}">주${n}</button>`)
     .replace(/\[자료[^\]]{0,20}\]/g, m => `<span class="kl-src">${m}</span>`);
 }
-function kelParaHtml(t, sid, em, k) {
+function kelParaHtml(t, sid, em, k, join) {
   const cls = k === "q" ? "kl-q" : "sm-p";
   const pieces = [];
-  kelChunks(t).forEach(ch => {
+  (k === "q" ? [t] : kelChunks(t, join)).forEach(ch => {   // 봉독·인용 상자는 나누지 않음
     let rest = ch; const hits = (em || []).filter(e => e && rest.includes(e));
     if (!hits.length) { pieces.push([cls, rest]); return; }
     hits.sort((a, b) => rest.indexOf(a) - rest.indexOf(b));
-    hits.forEach(e => { const i = rest.indexOf(e); if (i < 0) return; const pre = rest.slice(0, i).trim(); if (pre) pieces.push([cls, pre]); pieces.push(["kl-em", e]); rest = rest.slice(i + e.length).trim(); });
+    const BIT = /^[\s“”‘’"'「」『』()\[\].,!?…·]*(\[(주\s?\d+|자료[^\]]{0,20})\][\s”’」』).,!?]*)?$/;   // 따옴표·문장부호·주석 표시만 남는 조각
+    hits.forEach(e => {
+      const i = rest.indexOf(e); if (i < 0) return;
+      let pre = rest.slice(0, i).trim(), em = e; rest = rest.slice(i + e.length).trim();
+      if (pre && BIT.test(pre)) { em = pre + em; pre = ""; } else if (pre && /[“‘「『]$/.test(pre)) { em = pre.slice(-1) + em; pre = pre.slice(0, -1).trim(); }
+      const tail = /^[”’」』)\].,!?…]*(\[(주\s?\d+|자료[^\]]{0,20})\])?[”’」』).,!?]*/.exec(rest); if (tail && tail[0]) { em += tail[0]; rest = rest.slice(tail[0].length).trim(); }
+      if (rest && BIT.test(rest)) { em += rest; rest = ""; }
+      if (pre) pieces.push([cls, pre]); pieces.push(["kl-em", em]);
+    });
     if (rest) pieces.push([cls, rest]);
   });
   if (k === "q") return `<blockquote class="sm-qb">${pieces.map(([c, x]) => `<p>${kelInline(x, sid)}</p>`).join("")}</blockquote>`;
@@ -91,10 +113,10 @@ function kelHtml(s) {
       else if (b.k === "em") h += `<p class="kl-em kl-em0">${kelInline(t, s.id)}</p>`;
       else if (b.k === "note") h += `<p class="kl-note">${kelInline(t, s.id)}</p>`;
       else if (b.k === "li") h += `<p class="sm-p kl-li">${kelInline(t, s.id)}</p>`;
-      else { if (b.sp) h += `<p class="kl-sp">${escapeHtml(b.sp)}</p>`; h += kelParaHtml(t, s.id, o && o.em, b.k); }
+      else { if (b.sp) h += `<p class="kl-sp">${escapeHtml(b.sp)}</p>`; h += kelParaHtml(t, s.id, o && o.em, b.k, s.ov && s.ov.join); }
     });
     if (o && o.key && !o.rest) h += `<p class="kl-key"><span>이 장의 한 줄</span>${kelInline(o.key, s.id)}</p>`;
-    if (i < N - 1 && secs[i + 1].h) h += `<button type="button" class="kl-next" data-kjump="${i + 1}"><small>다음</small>${escapeHtml(secs[i + 1].h)}${ov && ov.secs && ov.secs[i + 1] && ov.secs[i + 1].hook && !ov.secs[i + 1].rest ? `<em>${escapeHtml(ov.secs[i + 1].hook)}</em>` : ""}</button>`;
+    if (i < N - 1 && secs[i + 1].h) h += `<button type="button" class="kl-next" data-kjump="${i + 1}"><small>다음</small>${escapeHtml(secs[i + 1].h)}</button>`;
     h += `</section>`;
   });
   if (ov && ov.one) h += `<div class="kl-one"><span class="kl-ed">다 읽었다면, 한 문장으로</span><p>${escapeHtml(ov.one)}</p></div>`;

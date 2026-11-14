@@ -301,17 +301,17 @@ function fx48Bloom() {
   };
   const dr0 = draw;
   draw = function (t) { const r = dr0.apply(this, arguments); fx48Bloom(); return r; };
-  const fc0 = buildFxCard;
-  buildFxCard = function () { const r = fc0.apply(this, arguments); fx48Card(); return r; };
+  const fc0 = buildScrCard;   // 설정 › 화면 카드 바로 아래에 붙임
+  buildScrCard = function () { const r = fc0.apply(this, arguments); fx48Card(); return r; };
 })();
 function fx48Card() {
-  const card = el("div", "card fxset fx48");
+  const card = el("div", "card stg fxset fx48");
   const seg = (id, lbl, opts) => `<div class="fx-row"><span>${lbl}</span><div class="seg" role="group" aria-label="${lbl}">${opts.map(([v, n]) => `<button type="button" data-fx48="${id}" data-v="${v}" aria-pressed="false">${n}</button>`).join("")}</div></div>`;
   card.innerHTML = `<div class="fx48-t">타격 연출 <small>영웅서기5 방식</small></div>`
     + seg("hl", "타격·스킬·보스 효과", [[1.4, "강하게"], [1, "보통"], [0, "끄기"]])
     + seg("bloom", "빛 번짐", [[1, "보통"], [0.5, "약하게"], [0, "끄기"]])
     + `<p class="muted">맞은 자리 픽셀 불꽃·별·고리, 처치하면 몸이 픽셀로 부서짐, 스킬 모으기, 보스 격노·연쇄 폭발. 빛 번짐은 불·마법처럼 밝고 색 있는 부분만 은은하게 번져요.</p>`;
-  addCustom("info", card, () => {
+  addCustom("set", card, () => {
     const f = fxSet(), cur = { hl: fx48K(), bloom: fx48BloomK() };
     card.querySelectorAll("button").forEach(b => { const ds = b.dataset || {}; b.setAttribute("aria-pressed", String(+ds.v === +cur[ds.fx48])); });
   });

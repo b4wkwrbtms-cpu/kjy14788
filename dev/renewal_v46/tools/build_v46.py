@@ -379,7 +379,15 @@ p48 = open(_c48, encoding='utf-8').read()
 rep('const so = { flip: true, pretty }, baseA = (1 - mon.dying * 0.85) * eo.a;',
     'const so = { flip: true, pretty }, baseA = (1 - mon.dying * 0.85) * eo.a * (mon.shat ? Math.max(0, 1 - mon.dying * 5) : 1);   // v48 부서진 몸')
 s = s.replace('</style>', '.fx48-t { font-weight: 700; margin: 0 0 8px; } .fx48-t small { font-weight: 400; color: var(--muted); margin-left: 6px; font-size: 12px; }\n</style>', 1)
-s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + p48 + '\n' + mk)
+# v49 (11-14) 영웅서기5 자료 불러오기: 폰에 있는 zip을 골라 폰 안에서만 꺼내 씀 (hl5_v49.js + 우리 에뮬레이터 hl5x.wasm을 base64로 넣음. 게임 자료는 넣지 않음)
+import base64 as _b64
+_c49 = f'{R0}/hl5_v49.js' if _os.path.exists(f'{R0}/hl5_v49.js') else f'{R0}/tools/hl5_v49.js'
+_w49 = f'{R0}/hl5x.wasm' if _os.path.exists(f'{R0}/hl5x.wasm') else f'{R0}/tools/hl5x.wasm'
+p49 = open(_c49, encoding='utf-8').read()
+assert p49.count('"__HL5X_WASM_B64__"') == 1
+p49 = p49.replace('__HL5X_WASM_B64__', _b64.b64encode(open(_w49, 'rb').read()).decode())
+s = s.replace('</style>', '.hl5-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 6px 0 12px; } .hl5-pick { cursor: pointer; display: inline-flex; align-items: center; }\n</style>', 1)
+s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + p48 + '\n' + p49 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw

@@ -25,6 +25,8 @@ body { margin: 0; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+.fx48-t { font-weight: 700; margin: 0 0 8px; } .fx48-t small { font-weight: 400; color: var(--muted); margin-left: 6px; font-size: 12px; }
+.hl5-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 6px 0 12px; } .hl5-pick { cursor: pointer; display: inline-flex; align-items: center; }
 </style>
 <title>곽준영 키우기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -349,6 +351,22 @@ textarea, input[type=text] { width: 100%; font-family: var(--body); font-size: 1
 .rd-body sup.vn-t { cursor: pointer; padding: 0 2px; border-radius: 4px; }
 .rd-body sup.vn-t.has { color: #c9a8ff; }
 .rd-body sup.vn-t.has::after { content: "·"; margin-left: 1px; }
+.rd-body sup.vn-t.fx, .reader .rd-body sup.vn-t.fx { color: #ffb454; opacity: 1; }
+.rd-body sup.vn-t.fx::after { content: "✎"; font-size: .85em; margin-left: 1px; }
+.vm.fxm { border-left: 3px solid #ffb454; padding-left: 10px; margin-bottom: 12px; }
+.fx-row { margin: 4px 0; }
+.fx-row b { display: inline-block; min-width: 6.2em; font-size: 12px; color: var(--muted); font-weight: 600; }
+.fxm mark { background: rgba(255,180,84,.2); color: inherit; border-radius: 3px; padding: 0 2px; }
+.fxm s { opacity: .7; }
+.fx-alt { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.04); font-size: 14px; line-height: 1.6; }
+.fx-alt-h { margin: 0 0 6px; font-size: 12px; color: #ffb454; font-weight: 700; }
+.fx-alt ul { margin: 0; padding-left: 18px; }
+.fx-alt li { margin: 0 0 8px; }
+.fx-alt li span { color: var(--muted); }
+.fx-alt li small { color: var(--muted); font-size: 12px; }
+.fx-pick { margin: 6px 0 0; }
+.fx-pick b { font-size: 12px; color: var(--muted); margin-right: 4px; }
+.vm.ixm { border-left-color: #7fb8ff; }
 .rd-body.rd-wide { line-height: 2.25; }
 .rd-fold { border: 1px dashed #3a4870; border-radius: 12px; padding: 12px; margin: 6px 0 18px; background: #121a2c; font-size: 14px; line-height: 1.6; }
 .rd-fold-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
@@ -5427,7 +5445,7 @@ function draw(t) {
     const sx = 1 + mon.squash * 0.22, sy = 1 - mon.squash * 0.18 + breathe;
     const eo = enterOffset();
     const mxp = MON_X + ox + mon.kb * 26 + mon.fx + eo.dx + feelMonDX(), myp = GROUND + eo.dy + mon.fy;
-    const so = { flip: true, pretty }, baseA = (1 - mon.dying * 0.85) * eo.a;
+    const so = { flip: true, pretty }, baseA = (1 - mon.dying * 0.85) * eo.a * (mon.shat ? Math.max(0, 1 - mon.dying * 5) : 1);   // v48 부서진 몸
     ctx.save();
     ctx.globalAlpha = baseA;
     if (mon.kind >= 1 && !mon.dying && !reduceMotion && eo.a > 0) {
@@ -15524,7 +15542,7 @@ renderReader = function () {
    ③ bible/he/NN.json: 히브리어 본문 (절 번호를 눌렀을 때만 불러옴)
    ④ 보기 설정 S.rdo { sp 이름표, ln 해설 밑줄, col 색 구분, flow 이야기 흐름(족보·율법 접기), wide 줄 간격, nonum 절 번호 숨김 }
    ⑤ 이야기 흐름에서 접힌 본문은 펼쳐 읽어야 '읽음'으로 체크됨(그쪽 원칙: 접은 곳을 읽은 것으로 치지 않음). */
-var X_VER = "47p";
+var X_VER = "47r";
 const XB = new Set([12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 64, 65]);   // 1~12권 밖에서 x 파일(신약 사본 차이 메모)이 있는 권 (0부터)
 var bibleX = new Map(), bibleNt = new Map(), bibleHe = new Map();
 const NK = { person: ["인물", "k-person"], place: ["지명", "k-place"], hebrew: ["원어", "k-hebrew"], culture: ["생활·단위", "k-culture"] };
@@ -15620,8 +15638,8 @@ function rdChapterHtml(b, c, mz, krvVerses, lin) {
       if (!op[fi]) { if (n === folds[fi][0]) html += foldCard(folds[fi], fi, fi > 0 && folds[fi - 1][3] === folds[fi][3]); continue; }
       if (n === folds[fi][0]) html += `<button type="button" class="rd-fold-close" data-r="fold-close" data-i="${fi}">▲ ${escapeHtml(folds[fi][3])} · 다시 접기</button>`;
     }
-    const sv = smvOf(b, c), hasS = !!(sv && sv.v && sv.v[n]), hasM = !!(x && x.vn && x.vn[n]), canTap = b <= 11 || hasM || hasS;
-    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasS ? " sm" : ""}"${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
+    const sv = smvOf(b, c), hasS = !!(sv && sv.v && sv.v[n]), hasM = !!(x && x.vn && x.vn[n]), hasF = hasM && x.vn[n].some(m => m.fx), canTap = b <= 11 || hasM || hasS;
+    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasF ? " fx" : ""}${hasS ? " sm" : ""}"${hasF ? ' title="원어 기준으로 고친 절"' : ""}${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
     if (mz) {
       const labs = {}; if (o.sp && x && x.sp && x.sp[n]) x.sp[n].forEach(l => { if (!labs[l[0]]) labs[l[0]] = l; });
       const links = o.ln && x && x.ln ? x.ln[n] : null;
@@ -15987,6 +16005,11 @@ function openNote(id, from) {
   const b = rd.b, show = () => { const n = ntOf(b, id); if (n) rdSheet(noteHtml(Object.assign({ id }, n), from), from); else rdSheet(`<p class="muted">해설을 불러오지 못했어요. 인터넷에 연결된 상태로 한 번 열면 그다음부터는 없어도 볼 수 있어요.</p>`, from); };
   if (bibleNt.has(b)) show(); else { rdSheet(`<p class="muted">해설을 불러오는 중…</p>`, from); loadNt(b).then(show); }
 }
+function altHtml(m, always) {
+  const al = (m.alt || []).filter(x => x && x.r);
+  if (!al.length && !m.pick) return "";
+  return `<div class="fx-alt">${al.length ? `<p class="fx-alt-h">원어로 가능한 다른 해석</p><ul>${al.map(x => `<li><b>${escapeHtml(x.r)}</b>${x.g ? `<br><span>${refHtml(x.g)}</span>` : ""}${x.by ? `<small> · ${escapeHtml(x.by)}</small>` : ""}</li>`).join("")}</ul>` : ""}${m.pick ? `<p class="fx-pick"><b>${always ? "지금 본문이 고른 읽기" : "이 읽기를 고른 이유"}</b> ${refHtml(m.pick)}</p>` : ""}</div>`;
+}
 function openVerse(n) {
   if (!rd) return;
   const b = rd.b, c = rd.c, ref = `${BOOKS[b][0]} ${c + 1}:${n}`;
@@ -15995,7 +16018,9 @@ function openVerse(n) {
     const ot = b <= 11;
     let h = `<div class="nt-head"><span class="nt-badge k-hebrew">${ot ? "원어로 보기" : "본문 메모"}</span><small>${escapeHtml(ref)}</small></div>`;
     if (heV) h += `<p class="he-verse" dir="rtl" lang="he">${escapeHtml(heV)}</p><p class="nt-cap">히브리어 본문: 레닌그라드 사본(WLC). 오른쪽에서 왼쪽으로 읽어요.</p>`;
-    const ms = x && x.vn && x.vn[n] || [];
+    const ms0 = x && x.vn && x.vn[n] || [], fx = ms0.filter(m => m.fx), ix = ms0.filter(m => m.ix), ms = ms0.filter(m => !m.fx && !m.ix);
+    if (fx.length) h += `<h4>원어 기준으로 고친 곳</h4>` + fx.map(m => `<div class="vm fxm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.was && m.was !== m.now ? `<p class="fx-row"><b>고치기 전</b> <s>${escapeHtml(m.was)}</s></p>` : ""}<p class="fx-row"><b>원어대로 고침</b> <mark>${escapeHtml(m.now)}</mark></p><p>${refHtml(m.t)}</p>${altHtml(m)}</div>`).join("") + `<p class="nt-cap">개역한글과 원어(${b <= 39 ? "히브리어·아람어" : "헬라어"})를 맞대어 보고, 원어 뜻에 더 가깝게 고친 표현이에요.</p>`;
+    if (ix.length) h += `<h4>원어로 읽으면 가능한 해석</h4>` + ix.map(m => `<div class="vm fxm ixm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.now ? `<p class="fx-row"><b>우리 본문</b> ${escapeHtml(m.now)}</p>` : ""}${altHtml(m, true)}</div>`).join("");
     if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${refHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
     else if (ot) h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
     const ln = x && x.ln && x.ln[n] || [];
@@ -16435,6 +16460,815 @@ try { buildFbCard(); } catch (e) {}
 fbLoad();
 /* 음량 설정이 바뀌면 지금 곡에도 반영 */
 setInterval(() => { try { if (fb.cur && audioCtx && !fb.pending) { const v = fbVol(fb.scene); if (Math.abs(fb.cur.g.gain.value - v) > 0.02 && audioCtx.currentTime - (fb.cur.t0 || 0) > 6) { const now = fbHold(fb.cur.g); fb.cur.g.gain.setTargetAtTime(v, now, 0.5); } } } catch (e) {} }, 1000);
+
+/* ===================== v48 영웅서기5식 연출 레이어: 타격 · 스킬 · 몬스터 · 보스 · 빛 번짐 =====================
+   사용자(11-13): "영웅서기5에 들어간 캐릭터·스킬·타격·이펙트·몬스터·보스 연출 양식 코드를 곽준영키우기에 가져와서 고도화" ·
+   "이미 모든 자료가 다 있는데 그거 토대로" · 범위: 타격 이펙트, 스킬 연출, 몬스터 반응, 보스 연출 전부.
+   토대: 영웅서기5 아이폰 플레이어(b4wkwrbtms-cpu/heroes-lore-3-web · wie-web/public/hl5/hl5.js, 우리가 만든 코드)의
+     Fx 클래스(게임 픽셀 격자에 맞춘 불꽃·빛·베기 선·치명타 별·고리, 한 방향 흔들림)와 빛 번짐 셰이더(FS_BRIGHT: 밝고 색 있는 부분만).
+   그 값(크기·속도·감쇠)을 곽준영키우기 픽셀 층 격자(PXS=3, 640x360 → 213x120)에 그대로 옮기고, 스킬·몬스터·보스로 넓힘.
+   ① 타격: 픽셀 불꽃(밝은 머리 + 2칸 꼬리) · 둥근 빛 · 픽셀 베기 선 · 치명타 8갈래 별 · 납작한 픽셀 고리 · 몬스터 몸 색 파편
+   ② 흔들림: 한 방향으로 흔들렸다 잦아드는 흔들림 — 기존 트라우마 흔들림 위에 더함 (설정 '화면 흔들림'·동작 줄이기 따름)
+   ③ 몬스터: 처치하면 몸이 그림 칸 그대로 픽셀 조각으로 부서져 흩어짐(맞은 쪽부터) + 고리 두 겹 + 솟는 불씨
+   ④ 스킬: 손으로 모이는 빛 알갱이 + 줄어드는 고리 + 화면 가장자리 어둡게 → 맞는 순간 큰 별 · 고리 세 겹 · 빛 번짐 순간 강하게
+   ⑤ 보스: 착지 충격파 · 체력 절반에서 격노(붉은 고리 · 울림 · 몸에서 불씨) · 처치 때 몸 곳곳 연쇄 폭발 + 큰 부서짐
+   ⑥ 빛 번짐: 장면을 1/5로 줄여 밝고 색 있는 곳만 남기고(흰 글자·회색 판 제외) 흐리게 키워 더함 — 캔버스 합성만 써서 픽셀을 읽지 않음, 두 프레임에 한 번 계산
+   번쩍임은 새로 만들지 않음(기존 1초 3번 안전 장치 그대로). 설정 › 화면 설정 아래 '타격 연출' 카드. */
+function fx48K() { const f = fxSet(), v = f.hl == null ? 1 : +f.hl; return v >= 0 && v <= 1.4 ? v : 1; }
+function fx48BloomK() { const f = fxSet(), v = f.bloom == null ? 1 : +f.bloom; return v >= 0 && v <= 1 ? v : 1; }
+var fx48 = { parts: [], glows: [], cuts: [], stars: [], rings: [], chips: [], shards: [], motes: [], embers: [], chain: [],
+  vig: 0, vigCol: "0,0,0", spike: 0, sway: 0, swayT: 0, swayAng: 0, last: 0, hitT: 0, petT: 0, emberT: 0 };
+const FX48_CAP = 420;
+function fx48Pal() { try { const p = feelFxPal(performance.now()); return [p[0] || "#ffb13b", p[1] || "#fff7c2"]; } catch (e) { return ["#ffb13b", "#fff7c2"]; } }
+function fx48Push(arr, o) { arr.push(o); if (arr.length > FX48_CAP) arr.shift(); }
+/* 한 방향 흔들림 (hl5 Fx.kick): 더 센 요청만 받음 */
+function fx48Kick(px) {
+  if (reduceMotion) px *= 0.3;
+  if (!(px > fx48.sway)) return;
+  fx48.sway = px; fx48.swayT = 0; fx48.swayAng = Math.random() * Math.PI * 2;
+}
+/* 몬스터 몸 색 */
+function fx48MonCols(m) {
+  const p = (m && m.pal) || {}, out = [];
+  for (const k in p) { const c = p[k]; if (typeof c === "string" && /^#[0-9a-f]{6}$/i.test(c) && k !== "k") out.push(c); }
+  return out.length ? out : ["#c9cfe0"];
+}
+function fx48Chips(x, y, n, k) {
+  if (!mon) return;
+  const cols = fx48MonCols(mon), G = PXS;
+  for (let i = 0; i < n; i++) fx48Push(fx48.chips, { x, y, vx: (1 + Math.random() * 2.4) * G * k * 0.6, vy: (-1.6 - Math.random() * 1.8) * G * 0.6, life: 1, decay: 0.022 + Math.random() * 0.02, w: Math.random() < 0.3 ? 2 : 1, c: cols[Math.floor(Math.random() * cols.length)] });
+}
+/* 맞은 자리: hl5 Fx.hit 값 그대로 (게임 픽셀 = 우리 격자 한 칸) */
+function fx48Hit(x, y, crit, big, small) {
+  const k = fx48K(); if (!k || x == null || y == null) return;
+  const now = performance.now(), G = PXS, red = reduceMotion ? 0.5 : 1;
+  if (small) { if (now - fx48.petT < 80) return; fx48.petT = now; }
+  else if (!crit && !big && now - fx48.hitT < 45) return;
+  if (!small) fx48.hitT = now;
+  const [c0, c1] = fx48Pal(), hot = crit || big;
+  const n = Math.round((small ? 4 : big ? 26 : crit ? 18 : 10) * k * red);
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, sp = (hot ? 2.6 : 2) * (0.5 + Math.random()) * Math.min(k, 1.2);
+    fx48Push(fx48.parts, { x, y, vx: Math.cos(a) * sp * G * 0.5, vy: (Math.sin(a) * sp - 0.6) * G * 0.5, life: 1, decay: 0.04 + Math.random() * 0.035, w: hot && i % 3 === 0 ? 2 : 1, c: hot ? (i % 2 ? "#ffd54a" : c1) : (i % 2 ? c0 : c1) });
+  }
+  if (small) return;
+  fx48Push(fx48.glows, { x, y, r: (big ? 34 : crit ? 24 : 16) * k * G, life: 1, decay: hot ? 0.075 : 0.11, c: hot ? "#ffd54a" : c0 });
+  const ang = -0.6 + Math.random() * 1.2 + (Math.random() < 0.5 ? 0 : Math.PI / 2);
+  fx48Push(fx48.cuts, { x, y, ang, len: (big ? 40 : crit ? 30 : 22) * k * G, life: 1, decay: crit ? 0.1 : 0.14, c: hot ? "#ffd54a" : c0 });
+  if (hot) {
+    fx48Push(fx48.stars, { x, y, len: (big ? 21 : 13) * k * G, life: 1, decay: big ? 0.06 : 0.085 });
+    fx48Push(fx48.rings, { x, y, r: 5 * G, vr: 2.8 * k * G, life: 1, decay: 0.065, c: "#ffd54a", sq: 0.6 });
+    if (big) {
+      fx48Push(fx48.rings, { x, y, r: 3 * G, vr: 2 * k * G, life: 1, decay: 0.05, c: c0, sq: 0.6 });
+      fx48Push(fx48.rings, { x, y, r: 8 * G, vr: 3.6 * k * G, life: 1, decay: 0.075, c: "#ffffff", sq: 0.6 });
+      fx48.spike = 1;
+    }
+  }
+  fx48Chips(x, y, hot ? 7 : 3, k);
+  fx48Kick((big ? 4.2 : crit ? 3.6 : 1.5) * k);
+}
+/* 처치: hl5 Fx.kill (고리 두 겹 + 솟는 알갱이) */
+function fx48KillAt(x, y, big) {
+  const k = fx48K(); if (!k) return; const G = PXS;
+  fx48Push(fx48.rings, { x, y, r: 4 * G, vr: 2.4 * k * G * (big ? 1.6 : 1), life: 1, decay: 0.05, c: "#ff8a3a", sq: 0.6 });
+  fx48Push(fx48.rings, { x, y, r: 2 * G, vr: 1.6 * k * G * (big ? 1.6 : 1), life: 1, decay: 0.045, c: "#ffd54a", sq: 0.6 });
+  for (let i = 0; i < 14 * k * (big ? 2 : 1); i++) {
+    const a = Math.random() * Math.PI * 2, sp = 1.2 * (0.4 + Math.random()) * k;
+    fx48Push(fx48.parts, { x, y, vx: Math.cos(a) * sp * G * 0.5, vy: (Math.sin(a) * sp - 0.9) * G * 0.5, life: 1, decay: 0.03 + Math.random() * 0.03, w: 1, c: i % 2 ? "#ffb13b" : "#ff6a3a" });
+  }
+  fx48Kick((big ? 5 : 2.7) * k);
+}
+/* 몸이 그림 칸 그대로 부서짐: 맞은 쪽(왼쪽)부터 */
+function fx48Shatter(m, big) {
+  if (!m || !SPR[m.sprite] || fx48K() <= 0) return;
+  const map = SPR[m.sprite], pal = m.pal || {}, sc = m.scale, rows = map.length, cols = map[0].length, w = cols * sc, h = rows * sc;
+  const cx = MON_X + monOX() + (m.kb || 0) * 26 + (m.fx || 0), by = GROUND + (m.fy || 0), midY = by - h * 0.5;
+  let cells = 0; map.forEach(r => { for (let i = 0; i < r.length; i++) if (r[i] !== "." && pal[r[i]]) cells++; });
+  const cap = (big ? 460 : 260) * (reduceMotion ? 0.5 : 1), step = Math.max(1, Math.ceil(Math.sqrt(cells / cap))), pw = big ? 1.35 : 1;
+  for (let r = 0; r < rows; r += step) for (let c = 0; c < cols; c += step) {
+    const ch = map[r][c]; if (ch === "." || !pal[ch]) continue;
+    const x = cx - w / 2 + (cols - 1 - c + 0.5) * sc, y = by - h + (r + 0.5) * sc;
+    const dx = x - cx, dy = y - midY, L = Math.hypot(dx, dy) || 1, sp = (1.2 + Math.random() * 2.6) * pw;
+    fx48.shards.push({ x, y, vx: dx / L * sp + 1.6 + Math.random() * 2.4, vy: dy / L * sp - 2.2 - Math.random() * 3.2, s: sc * step, c: pal[ch], life: 1,
+      wait: ((x - (cx - w / 2)) / w) * (big ? 260 : 140) + Math.random() * 60 });
+  }
+  if (fx48.shards.length > 900) fx48.shards.splice(0, fx48.shards.length - 900);
+  m.shat = true;
+}
+/* 스킬 쓰는 순간: 손으로 모이는 알갱이 + 줄어드는 고리 + 가장자리 어둡게 */
+const FX48_SKCOL = { stamp: "#ff5d5d", rush: "#ffb13b", night: "#9b8cff", party: "#ffd54a", resign: "#bfe3ff" };
+function fx48Cast(s) {
+  const k = fx48K(); if (!k) return;
+  const col = FX48_SKCOL[s && s.id] || fx48Pal()[0], hx = (typeof heroHand !== "undefined" && heroHand.x) || HERO_X + 40, hy = (typeof heroHand !== "undefined" && heroHand.y) || GROUND - 60;
+  for (let i = 0; i < Math.round(26 * Math.min(1, k)); i++) { const a = Math.random() * Math.PI * 2, R = 70 + Math.random() * 50; fx48.motes.push({ x0: hx + Math.cos(a) * R, y0: hy + Math.sin(a) * R * 0.7, x1: hx, y1: hy, t: -Math.random() * 120, dur: 300, c: i % 3 ? col : "#ffffff" }); }
+  fx48Push(fx48.rings, { x: hx, y: hy, r: 22 * PXS, vr: -1.3 * PXS, life: 1, decay: 0.06, c: col, sq: 0.8 });
+  fx48.vig = 1; fx48.vigCol = s && s.id === "night" ? "20,8,48" : s && s.id === "stamp" ? "40,4,8" : "0,0,0";
+  fx48Kick(1.2 * k);
+}
+/* 보스 착지 충격파 */
+function fx48Land() {
+  const k = fx48K(); if (!k || !mon) return; const G = PXS, x = MON_X + monOX(), y = GROUND - 4;
+  [[3, 3.4, "#ffffff"], [2, 2.4, "#ffd54a"], [5, 4.4, "#c9cfe0"]].forEach(([r, vr, c]) => fx48Push(fx48.rings, { x, y, r: r * G, vr: vr * k * G, life: 1, decay: 0.045, c, sq: 0.3 }));
+  for (let i = 0; i < 18 * k; i++) fx48Push(fx48.chips, { x: x + (Math.random() - .5) * 90, y, vx: (Math.random() - .5) * 7, vy: -2 - Math.random() * 5, life: 1, decay: 0.025, w: 1, c: i % 2 ? "#8a90a8" : "#c9cfe0" });
+  fx48Kick(5.5 * k);
+}
+/* 보스 체력 절반: 격노 */
+function fx48Rage(m) {
+  const k = fx48K(); if (!k) return; const G = PXS, { h } = monSize(m), x = MON_X + monOX(), y = GROUND - h * 0.5;
+  m.red = 1; fx48.spike = Math.max(fx48.spike, 0.7);
+  [[4, 3.2, "#ff3b3b"], [2, 2.2, "#ff9a3a"]].forEach(([r, vr, c]) => fx48Push(fx48.rings, { x, y, r: r * G, vr: vr * k * G, life: 1, decay: 0.04, c, sq: 0.6 }));
+  if (!reduceMotion) shakeAmt = Math.max(shakeAmt, 12);
+  fx48Kick(4.5 * k);
+  tone(72, 0.55, "sawtooth", 0.07, 0, 44); tone(54, 0.7, "square", 0.04, 0.05, 36);
+  say(m.kind >= 3 ? "드래곤이 분노했다... 버텨야 해!" : `${m.name}님 표정이 바뀌었다... 조심!`, 2.4);
+}
+/* 보스 처치: 몸 곳곳 연쇄 폭발 */
+function fx48BossChain(m) {
+  const { w, h } = monSize(m), x0 = MON_X + monOX();
+  for (let i = 0; i < 5; i++) fx48.chain.push({ at: performance.now() + 70 + i * 110, x: x0 + (Math.random() - .5) * w * 0.7, y: GROUND - h * (0.2 + Math.random() * 0.65), last: i === 4 });
+}
+/* ---------- 물리 (실제 시간, 히트스톱 중에도 흐름 — hl5와 같음) ---------- */
+function fx48Step(now) {
+  const dt = fx48.last ? Math.min(100, Math.max(0, now - fx48.last)) : 16.7; fx48.last = now;
+  const f = Math.min(dt / 16.7, 3);
+  for (const p of fx48.parts) { p.x += p.vx * f; p.y += p.vy * f; p.vy += 0.24 * f; p.vx *= Math.pow(0.96, f); p.life -= p.decay * f; }
+  for (const r of fx48.rings) { r.r = Math.max(0, r.r + r.vr * f); r.vr *= Math.pow(0.93, f); r.life -= r.decay * f; }
+  for (const g of fx48.glows) g.life -= g.decay * f;
+  for (const c of fx48.cuts) c.life -= c.decay * f;
+  for (const b of fx48.stars) b.life -= b.decay * f;
+  for (const c of fx48.chips) { c.x += c.vx * f; c.y += c.vy * f; c.vy += 0.42 * f; c.vx *= Math.pow(0.97, f); if (c.y > GROUND - 2) { c.y = GROUND - 2; c.vy *= -0.35; c.vx *= 0.6; } c.life -= c.decay * f; }
+  for (const e of fx48.embers) { e.x += e.vx * f; e.y += e.vy * f; e.vy -= 0.02 * f; e.life -= e.decay * f; }
+  for (const m of fx48.motes) m.t += dt;
+  for (const s of fx48.shards) {
+    if (s.wait > 0) { s.wait -= dt; continue; }
+    s.x += s.vx * f; s.y += s.vy * f; s.vy += 0.45 * f; s.vx *= Math.pow(0.985, f);
+    if (s.y > GROUND - s.s / 2) { s.y = GROUND - s.s / 2; s.vy *= -0.32; s.vx *= 0.7; }
+    s.life -= 0.019 * f;
+  }
+  const alive = o => o.life > 0;
+  fx48.parts = fx48.parts.filter(alive); fx48.rings = fx48.rings.filter(r => r.life > 0 && r.r > 0.5); fx48.glows = fx48.glows.filter(alive); fx48.cuts = fx48.cuts.filter(alive);
+  fx48.stars = fx48.stars.filter(alive); fx48.chips = fx48.chips.filter(alive); fx48.embers = fx48.embers.filter(alive); fx48.shards = fx48.shards.filter(alive);
+  fx48.motes = fx48.motes.filter(m => m.t < m.dur);
+  fx48.vig = Math.max(0, fx48.vig - dt / 620); fx48.spike = Math.max(0, fx48.spike - dt / 420);
+  fx48.swayT += dt; fx48.sway = fx48.sway < 0.15 ? 0 : fx48.sway * Math.pow(0.84, f);
+  // 보스 연쇄 폭발
+  if (fx48.chain.length) {
+    const due = fx48.chain.filter(c => now >= c.at); fx48.chain = fx48.chain.filter(c => now < c.at);
+    due.forEach(c => { fx48Hit(c.x, c.y, true, c.last, false); fx48KillAt(c.x, c.y, c.last); if (!reduceMotion) shakeAmt = Math.max(shakeAmt, c.last ? 16 : 8); hitSound(c.last ? 1.5 : 1); });
+  }
+  // 보스 격노 + 불씨
+  if (mon && mon.kind >= 2 && !mon.dying && mon.max > 0 && fx48K() > 0) {
+    if (!mon.rage48 && mon.hp <= mon.max * 0.5 && !(intro && !intro.light && intro.t < intro.dur)) { mon.rage48 = 1; fx48Rage(mon); }
+    if (mon.rage48 && now - fx48.emberT > (reduceMotion ? 260 : 110)) {
+      fx48.emberT = now; const { w, h } = monSize();
+      fx48Push(fx48.embers, { x: MON_X + monOX() + (Math.random() - .5) * w * 0.6, y: GROUND - h * (0.15 + Math.random() * 0.7), vx: (Math.random() - .5) * 0.5, vy: -0.6 - Math.random() * 0.8, life: 1, decay: 0.012 + Math.random() * 0.01, c: Math.random() < 0.5 ? "#ff5a1f" : "#ffb13b" });
+    }
+  }
+}
+/* ---------- 그리기: 픽셀 층(격자 한 칸 = PXS) ---------- */
+function fx48DrawPx(g) {
+  const F = fx48, busy = F.parts.length || F.rings.length || F.glows.length || F.cuts.length || F.stars.length || F.chips.length || F.embers.length || F.motes.length;
+  if (!busy) return false;
+  const G = PXS;
+  const dot = (x, y, size) => g.fillRect(Math.round(x / G - size / 2) * G, Math.round(y / G - size / 2) * G, size * G, size * G);
+  const line = (x0, y0, x1, y1, size) => { const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / G)); for (let i = 0; i <= n; i++) dot(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n, size); };
+  g.save(); g.globalCompositeOperation = "lighter";
+  for (const o of F.glows) {
+    const r = o.r * (1.2 - o.life * 0.4), gr = g.createRadialGradient(o.x, o.y, 0, o.x, o.y, r);
+    gr.addColorStop(0, hexA(mixHex(o.c, "#ffffff", 0.55), 0.8 * o.life)); gr.addColorStop(0.35, hexA(o.c, 0.4 * o.life)); gr.addColorStop(1, hexA(o.c, 0));
+    g.fillStyle = gr; g.fillRect(o.x - r, o.y - r, r * 2, r * 2);
+  }
+  for (const s of F.cuts) {
+    const grow = 1.25 - s.life * 0.25, half = s.len * grow / 2, dx = Math.cos(s.ang) * half, dy = Math.sin(s.ang) * half * 0.8;
+    g.fillStyle = hexA(s.c, 0.5 * s.life); line(s.x - dx, s.y - dy, s.x + dx, s.y + dy, s.life > 0.5 ? 3 : 2);
+    g.fillStyle = `rgba(255,255,240,${s.life})`; line(s.x - dx * 0.85, s.y - dy * 0.85, s.x + dx * 0.85, s.y + dy * 0.85, 1);
+  }
+  for (const b of F.stars) {   // 4갈래 긴 빛 + 4갈래 짧은 빛
+    const len = b.len * (1.35 - b.life * 0.35);
+    g.fillStyle = `rgba(255,250,215,${b.life})`;
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, l = i % 2 ? len * 0.55 : len, r0 = len * 0.18 * (1 - b.life); line(b.x + Math.cos(a) * r0, b.y + Math.sin(a) * r0 * 0.8, b.x + Math.cos(a) * l, b.y + Math.sin(a) * l * 0.8, 1); }
+    g.fillStyle = `rgba(255,220,120,${0.8 * b.life})`; dot(b.x, b.y, 3);
+  }
+  for (const p of F.parts) {   // 밝은 머리 + 흐려지는 꼬리 두 칸
+    g.fillStyle = hexA(mixHex(p.c, "#ffffff", 0.25 + 0.5 * p.life), p.life); dot(p.x, p.y, p.w);
+    g.fillStyle = hexA(p.c, 0.45 * p.life); dot(p.x - p.vx * 0.9, p.y - p.vy * 0.9, 1); dot(p.x - p.vx * 1.8, p.y - p.vy * 1.8, 1);
+  }
+  for (const r of F.rings) {
+    g.fillStyle = hexA(mixHex(r.c, "#ffffff", 0.3), 0.8 * r.life);
+    const n = Math.max(12, Math.ceil(r.r / G * 4.2));
+    for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2; dot(r.x + Math.cos(a) * r.r, r.y + Math.sin(a) * r.r * (r.sq || 0.6), 1); }
+  }
+  for (const e of F.embers) { g.fillStyle = hexA(e.c, Math.min(1, e.life * 1.6)); dot(e.x, e.y, 1); g.fillStyle = hexA(e.c, 0.35 * e.life); dot(e.x - e.vx * 2, e.y - e.vy * 2, 1); }
+  for (const m of F.motes) {
+    const k = Math.max(0, Math.min(1, m.t / m.dur)); if (m.t < 0) continue; const e = k * k;
+    g.fillStyle = hexA(m.c, 0.4 + 0.6 * k); dot(m.x0 + (m.x1 - m.x0) * e, m.y0 + (m.y1 - m.y0) * e, k > 0.7 ? 2 : 1);
+  }
+  g.globalCompositeOperation = "source-over";
+  for (const c of F.chips) { g.fillStyle = hexA(c.c, Math.min(1, c.life * 1.5)); dot(c.x, c.y, c.w); }
+  g.restore();
+  return true;
+}
+/* 몸 조각과 스킬 어둠은 큰 화면(월드) 위에 */
+function fx48DrawWorld() {
+  const F = fx48;
+  if (F.vig > 0 && !reduceMotion) {
+    const a = 0.42 * Math.min(1, F.vig * 1.6) * Math.min(1, fx48K()), cx = (HERO_X + MON_X) / 2, cy = GROUND - 80;
+    const gr = ctx.createRadialGradient(cx, cy, 80, cx, cy, 420);
+    gr.addColorStop(0, `rgba(${F.vigCol},0)`); gr.addColorStop(0.55, `rgba(${F.vigCol},${a * 0.55})`); gr.addColorStop(1, `rgba(${F.vigCol},${a})`);
+    ctx.fillStyle = gr; ctx.fillRect(cx - 700, cy - 500, 1400, 1000);
+  }
+  if (F.shards.length) {
+    ctx.save();
+    for (const s of F.shards) { ctx.globalAlpha = Math.max(0, Math.min(1, s.life * 1.8)); ctx.fillStyle = s.c; ctx.fillRect(Math.round(s.x - s.s / 2), Math.round(s.y - s.s / 2), Math.ceil(s.s), Math.ceil(s.s)); }
+    ctx.restore();
+  }
+}
+/* ---------- 빛 번짐 (hl5 FS_BRIGHT + 흐림): 밝고 색 있는 부분만 ----------
+   셰이더 대신 캔버스 합성으로(픽셀을 CPU로 읽지 않아 아이폰에서 멈칫하지 않음):
+   작은 장면 A → 회색 판에 A의 밝기만(luminosity) = 무채색 D → |A − D|(difference) = 색이 진한 정도 →
+   A³(multiply 두 번) = 밝은 정도 → 둘을 곱함(multiply): 흰 글자·회색 판은 0, 불·마법·불꽃만 남음 → 네 배로 키우고 반으로 줄였다 늘려 흐림 */
+var fx48Bl = { n: 0, ok: true, w: 0, h: 0 };
+function fx48BlCan(w, h) { const c = document.createElement("canvas"); c.width = w; c.height = h; return [c, c.getContext("2d")]; }
+function fx48Bloom() {
+  const v = fx48BloomK(); if (!v || !fx48Bl.ok) return;
+  const cv = ctx.canvas; if (!cv || !cv.width) return;
+  const B = fx48Bl, w = Math.max(32, Math.round(cv.width / 5)), h = Math.max(18, Math.round(cv.height / 5));
+  if (B.w !== w || B.h !== h) {
+    [B.a, B.ax] = fx48BlCan(w, h); [B.d, B.dx] = fx48BlCan(w, h); [B.m, B.mx] = fx48BlCan(w, h); [B.o, B.ox] = fx48BlCan(w, h); [B.s, B.sx] = fx48BlCan(Math.ceil(w / 2), Math.ceil(h / 2));
+    B.w = w; B.h = h; B.n = 0;
+    if (!B.ax || !B.dx || !B.mx || !B.ox || !B.sx) { B.ok = false; return; }
+  }
+  if (B.n++ % 2 === 0) {
+    try {
+      const op = (g, mode, src, alpha) => { g.globalCompositeOperation = mode; g.globalAlpha = alpha == null ? 1 : alpha; g.drawImage(src, 0, 0, g.canvas.width, g.canvas.height); };
+      B.ax.imageSmoothingEnabled = true; op(B.ax, "copy", cv);                                      // A
+      B.dx.globalCompositeOperation = "copy"; B.dx.fillStyle = "#808080"; B.dx.fillRect(0, 0, w, h); op(B.dx, "luminosity", B.a);   // D = A의 밝기만
+      op(B.dx, "difference", B.a);                                                                  // |A − D|
+      op(B.mx, "copy", B.a); op(B.mx, "multiply", B.a); op(B.mx, "multiply", B.a);                // A³
+      op(B.mx, "multiply", B.d);                                                                    // A³ · |A − D|
+      op(B.ox, "copy", B.m); op(B.ox, "lighter", B.m); op(B.ox, "lighter", B.ox);                  // 네 배
+      B.sx.imageSmoothingEnabled = true; op(B.sx, "copy", B.o);                                     // 흐림(반으로)
+      [B.ax, B.dx, B.mx, B.ox, B.sx].forEach(g => { g.globalCompositeOperation = "source-over"; g.globalAlpha = 1; });
+    } catch (e) { B.ok = false; return; }
+  }
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalCompositeOperation = "lighter"; ctx.imageSmoothingEnabled = true;
+  ctx.globalAlpha = Math.min(1, 0.6 * v + 0.45 * fx48.spike); ctx.drawImage(B.s, 0, 0, cv.width, cv.height);
+  ctx.globalAlpha = Math.min(1, 0.3 * v + 0.3 * fx48.spike); ctx.drawImage(B.o, 0, 0, cv.width, cv.height);
+  ctx.restore();
+}
+/* ---------- 이어 붙이기 ---------- */
+(function () {
+  const hit0 = hit;
+  hit = function (amount, crit, src, px, py) {
+    const alive = !!(mon && !mon.dying);
+    const r = hit0.apply(this, arguments);
+    if (alive && fx48K() > 0) {
+      const heavy = src === "hero" || src === "tap" || src === "jhero" || src === "skill", small = src === "pet" || src === "clone";
+      if (heavy || small) {
+        let x = px, y = py; if (x == null || y == null) { try { [x, y] = monHitPoint(); } catch (e) { x = MON_X - 14; y = GROUND - 80; } }
+        fx48Hit(x, y, !!crit, src === "skill", small);
+      }
+    }
+    return r;
+  };
+  const kill0 = kill;
+  kill = function () {
+    const m = mon, was = !!(m && !m.dying);
+    const r = kill0.apply(this, arguments);
+    if (was && m && m.dying && fx48K() > 0) {
+      const { h } = monSize(m), big = m.kind >= 2;
+      fx48KillAt(MON_X + monOX(), GROUND - h * 0.45, big);
+      fx48Shatter(m, big);
+      if (big) fx48BossChain(m);
+    }
+    return r;
+  };
+  const cs0 = castSkill;
+  castSkill = function (s, auto) { const ok = cs0.apply(this, arguments); if (ok) fx48Cast(s); return ok; };
+  const bl0 = bossLand;
+  bossLand = function () { const r = bl0.apply(this, arguments); fx48Land(); return r; };
+  const px0 = drawPixelFx;
+  drawPixelFx = function (now, hx) {
+    const r = px0.apply(this, arguments);
+    fx48Step(performance.now());
+    fx48DrawWorld();
+    pixelPass(g => fx48DrawPx(g), true);
+    return r;
+  };
+  const fv0 = feelView;
+  feelView = function (now) {
+    const r = fv0.apply(this, arguments);
+    if (fx48.sway > 0) { const k = shakeK(), v = Math.sin(fx48.swayT * 0.09) * fx48.sway * k; bgShx += Math.cos(fx48.swayAng) * v; bgShy += Math.sin(fx48.swayAng) * v * 0.7; }
+    return r;
+  };
+  const dr0 = draw;
+  draw = function (t) { const r = dr0.apply(this, arguments); fx48Bloom(); return r; };
+  const fc0 = buildScrCard;   // 설정 › 화면 카드 바로 아래에 붙임
+  buildScrCard = function () { const r = fc0.apply(this, arguments); fx48Card(); return r; };
+})();
+function fx48Card() {
+  const card = el("div", "card stg fxset fx48");
+  const seg = (id, lbl, opts) => `<div class="fx-row"><span>${lbl}</span><div class="seg" role="group" aria-label="${lbl}">${opts.map(([v, n]) => `<button type="button" data-fx48="${id}" data-v="${v}" aria-pressed="false">${n}</button>`).join("")}</div></div>`;
+  card.innerHTML = `<div class="fx48-t">타격 연출 <small>영웅서기5 방식</small></div>`
+    + seg("hl", "타격·스킬·보스 효과", [[1.4, "강하게"], [1, "보통"], [0, "끄기"]])
+    + seg("bloom", "빛 번짐", [[1, "보통"], [0.5, "약하게"], [0, "끄기"]])
+    + `<p class="muted">맞은 자리 픽셀 불꽃·별·고리, 처치하면 몸이 픽셀로 부서짐, 스킬 모으기, 보스 격노·연쇄 폭발. 빛 번짐은 불·마법처럼 밝고 색 있는 부분만 은은하게 번져요.</p>`;
+  addCustom("set", card, () => {
+    const f = fxSet(), cur = { hl: fx48K(), bloom: fx48BloomK() };
+    card.querySelectorAll("button").forEach(b => { const ds = b.dataset || {}; b.setAttribute("aria-pressed", String(+ds.v === +cur[ds.fx48])); });
+  });
+  card.addEventListener("click", e => {
+    const b = hbBtn(e, card); if (!b || !b.dataset || !b.dataset.fx48) return;
+    fxSet()[b.dataset.fx48] = +b.dataset.v; sfx("tick"); updateUI(true); save();
+  });
+}
+
+/* ================= v49: 영웅서기5 자료 불러오기 =================
+   내 폰에 있는 영웅서기5 zip(또는 apk)을 한 번 고르면, 폰 안에서 캐릭터·몬스터·보스·이펙트 그림과 동작을 꺼내
+   이 폰(IndexedDB)에만 두고 씀. 게임 자료는 저장소·사이트·서버 어디에도 올라가지 않음 — 여기 있는 건 읽는 코드뿐.
+   · 꺼내기: 우리 에뮬레이터(hl5x.wasm)로 게임 자체의 자료 읽기 함수를 불러 씀
+   · 그리기: 조각 가운데 기준 · 뒤집기 · 크기 · 시계 방향 회전 · 투명도 · 합성 방식 (게임의 그리기와 대조해 맞춘 규칙)
+   · 화면 다듬기: 영웅서기5 플레이어에서 쓰던 가장자리 방향 확대(선명하게) + 프레임 사이 이어 그리기(부드럽게) */
+var HL5_WASM_B64 = "AGFzbQEAAAABjgEVYAF/AX9gAABgAn9/AGAEf39/fwBgA3x/fwF/YAR/f39/AX9gBX98fHx/AX9gAnx8AXxgAAF8YAABf2ABfwBgAn9/AX9gA39/fwBgA39/fwF/YAZ/f39/f38Bf2AMf35/f39/f39/f39/AGACf3wAYAN/fn8BfmAGf39/f31/AX9gAXwAYAZ/f39/f38AApIBCANlbnYIaG9zdF9sb2cAAgNlbnYPaG9zdF9maWxlX3NhdmVkAAMDZW52DWhvc3RfdmZzX3JlYWQABANlbnYRaG9zdF9maWxlX2RlbGV0ZWQAAgNlbnYKaG9zdF9ldmVudAAFA2Vudgpob3N0X2F1ZGlvAAYDZW52CGhvc3RfcG93AAcDZW52CGhvc3Rfbm93AAgDwQG/AQkCCgsLDAENDQ0NDQALAQALAg4KAgAKAAIJCQkAAAUPBQkCDAIKEAALAA0NEQALAAALCwkCAQAACQAADAAACgEKCgEACwAMCwoBAQEBAQEBARITCQMCAAoJCQAKCAkJCgkJAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAKDQ0AAQEBAQEBAQEBAQEKDRQABAUBcAFfXwUEAQCoCwYJAX8BQZDMni0LB8sDIQZtZW1vcnkCAAp0cmFjZV9pbmZvAAgGZnNfcHV0ACsRZnNfbW91bnRfZXh0ZXJuYWwALhFkdW1wX2ltcG9ydF9jYWxscwBHEXNldF90cmFjZV9pbXBvcnRzAEgLZmluZF9zeW1ib2wASwxsb2FkX2xpYnJhcnkATAx3YXRjaF9zeW1ib2wATxBzZXRfbmF0aXZlX2hvb2tzAFAJYXBwX3N0YXJ0AFkMc2V0X3Zmc19zaXplAFoIYXBwX2xvb3AAWwlhcHBfdG91Y2gAXAdhcHBfa2V5AF0IYXBwX2NhbGwAXg5hcHBfbXR4X3Jlc3VsdABfCmZyYW1lX2luZm8AYApndWVzdF9iYXNlAGEKaG9zdF9hbGxvYwBiCWhvc3RfZnJlZQBjCmluc25fY291bnQAZAtoZWFwX2luX3VzZQBlCGhlYXBfdG9wAGYLc2V0X2xvZ2dpbmcAZwljcHVfc3RhdGUAaAlpc19oYWx0ZWQAaQlzbmFw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9LqQgABFDQFBAEH4/wc2AvC6kIAACw8LQQAoAvC6kIAAIgAgAUcNAUEAQQAoAui6kIAAQX5xIgA2AvC6kIAADAELQQAgAUEIajYC7LqQgABBACABQQRqIgA2AvC6kIAAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkAgAUH///8fcUGQu5CAAGooAAAiAkEcdg4OAAECAwQFBgcICQoLDA0PC0EAKAL8upCAACEBDA0LQQAoAvy6kIAARSEBDAwLQQAoAoC7kIAAIQEMCwtBACgCgLuQgABFIQEMCgtBACgC+LqQgAAhAQwJC0EAKAL4upCAAEUhAQwIC0EAKAKEu5CAACEBDAcLQQAoAoS7kIAARSEBDAYLQQAoAoC7kIAAQQBHQQAoAvy6kIAARXEhAQwFC0EAKAKAu5CAAEVBACgC/LqQgABBAEdyIQEMBAtBACgC+LqQgABBACgChLuQgABGIQEMAwtBACgC+LqQgABBACgChLuQgABHIQEMAgtBACgC/LqQgABFQQAoAvi6kIAAQQAoAoS7kIAARnEhAQwBC0EAKAL8upCAAEEAR0EAKAL4upCAAEEAKAKEu5CAAEdyIQELIAFFDQELIAIQioCAgABBACgC8LqQgAAhAAwACwuGBQEGfyOAgICAAEHQAGsiAySAgICAACADQRBqQbC6kIAAQcAAEJCAgIAAGkFQIAFBAnRrQUAgAUEEShtBACgC5LqQgABqQXhxIQQCQCABQQFIDQBBACACKAIANgKwupCAACABQQFGDQBBACACKAIENgK0upCAACABQQJGDQBBACACKAIINgK4upCAACABQQNGDQBBACACKAIMNgK8upCAAEEEIQUgAUEERg0AIAFBAXEhBgJAIAFBBUYNACACQRRqIQcgBEGEgIAgaiEIIAFB/v///wdxIQFBBCEFA0AgCEF8akH4//8fcUGQu5CAAGogB0F8aigCADYCACAIQfz//x9xQZC7kIAAaiAHKAIANgIAIAdBCGohByAIQQhqIQggASAFQQJqIgVHDQALCyAGRQ0AIARB8P//H2ogBUECdCIBakH8//8fcUGQu5CAAGogAiABaigCADYCAAtBACgC8LqQgAAhAUEAKAKIu5CAACEHQQAoAoS7kIAAIQhBACgCgLuQgAAhAkEAKAL8upCAACEFQQAoAvi6kIAAIQZBAEH8/wc2Aui6kIAAQQAgBDYC5LqQgABBACAANgLwupCAAAJAAkAgAEEBcUUNACADIAA2AgBB24qAgAAgAxCZgICAAEEAQQE2AvS6kIAADAELEI6AgIAAC0EAQQAoArS6kIAANgKMu5CAAEEAKAKwupCAACEAQbC6kIAAIANBEGpBwAAQkICAgAAaQQAgBTYC/LqQgABBACAGNgL4upCAAEEAIAI2AoC7kIAAQQAgCDYChLuQgABBACAHNgKIu5CAAEEAQfj/ByABQQAoAvS6kIAAGzYC8LqQgAAgA0HQAGokgICAgAAgAAsOACAAIAEgAvwKAAAgAAsOACAAIAEgAvwKAAAgAAsNACAAIAEgAvwLACAAC0oBA39BACEDAkAgAkUNAAJAA0AgAC0AACIEIAEtAAAiBUcNASAAQQFqIQAgAUEBaiEBIAJBf2oiAkUNAgwACwsgBCAFayEDCyADCycBA39BACEBA0AgACABaiECIAFBAWoiAyEBIAItAAANAAsgA0F/agthAQF/AkACQCAALQAAIgINAEEAIQIMAQsgAEEBaiEAAkADQCACQf8BcSABLQAARw0BIAFBAWohASAALQAAIQIgAEEBaiEAIAINAAtBACECCyACQf8BcSECCyACIAEtAABrC4cBAQF/QQBCADcCiMCQoABBAEGAgPweNgLku5CgAEEAQoCAgIKAgIAgNwLcu5CgAEEAQZC7kIAANgLYu5CgAEHgeyEAA0AgAEGgwJCgAGpCADcCACAAQZjAkKAAakIANwIAIABBkMCQoABqQgA3AgAgAEGIwJCgAGpCADcCACAAQSBqIgANAAsL7wEBAn8jgICAgABBEGsiASSAgICAAAJAQQAoApzAkKAADQBBAEIANwLAxJCgAEEAQYCAgAw2ApzAkKAAQQBCkICAgIACNwKUwJCgAEEAQdDEkKAANgKQwJCgAEHgeyECA0AgAkHYxJCgAGpCADcCACACQdDEkKAAakIANwIAIAJByMSQoABqQgA3AgAgAkHAxJCgAGpCADcCACACQSBqIgINAAsLAkACQEGQwJCgACAAEJiAgIAAIgINACABIAA2AgBBo6qAgAAgARCZgICAAEEAIQIMAQsgAkHQxJCgAGohAgsgAUEQaiSAgICAACACC7IFAQZ/IAFBD2pBeHEiAUEYIAFBGEsbIQICQAJA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RQ0AIBJBf2ohDSAGKAJMIQAMAQsgEkF+aiENIAYoAkwhACASQQJIDQAgBigCSEF/aiEKIAYoAkQhEQJAAkAgEkF/akEDcSILDQAgDSEUDAELIBIgC2tBfmohFANAAkAgACAKTg0AIBEgAGpBIDoAAAsgAEEBaiEAIAtBf2oiCw0ACwsgDUEDSSELQX8hDSALDQAgFEEEaiEUA0ACQCAAIgsgCk4NACARIAtqQSA6AAALAkAgC0EBaiIAIApODQAgESALakEBakEgOgAACwJAIABBAWoiACAKTg0AIBEgC2pBAmpBIDoAAAsCQCAAQQFqIgAgCk4NACARIAtqQQNqQSA6AAALIABBAWohACAUQXxqIhRBA0oNAAsgC0EEaiEACwJAIAAgBigCSEF/aiILTg0AIAYoAkQgAGogDjoAAAsgBiAAQQFqIgo2AkwgFSEAIBBFDQUCQCANQQFIDQAgBigCRCERAkACQCANQQNxIgANACANIRQMAQsgDUF8cSEUA0ACQCAKIAtODQAgESAKakEgOgAACyAKQQFqIQogAEF/aiIADQALCyANQQRJDQAgFEF/aiEUA0ACQCAKIgAgC04NACARIABqQSA6AAALAkAgAEEBaiIKIAtODQAgESAAakEBakEgOgAACwJAIApBAWoiCiALTg0AIBEgAGpBAmpBIDoAAAsCQCAKQQFqIgogC04NACARIABqQQNqQSA6AAALIApBAWohCiAUQXxqIhRBfkkNAAsgAEEEaiEKCyAGIAo2AkwgFSEADAULAkACQCAFKAIAIgAgAnJFDQACQCAARQ0AQZC7kIAAIAUoAgQiAEH///8fcWooAAAhFCAFIABBBGo2AgRBACEADAILIAUoAggiACAAKAIAIgBBBGo2AgAgACgCACEUQQAhAAwBCyAFKAIIIgAgACgCACIAQQRqNgIAIAAoAgAhAEEAIRQLAkACQCAAQf2qgIAAIBQgAHIbIgtFDQBBACEAAkADQCAAQQFqIQogCyAAai0AAEUNASATIABLIREgCiEAIBENAAsLIApBf2ohDwwBC0EAIQACQANAIABBAWohCkGQu5CAACAUIABqQf///x9xai0AAEUNASATIABLIREgCiEAIBENAAsLIApBf2ohDwsgEiAPayEMIAYoAkwhCgJAIBANACAMQX9qIRECQCAMQQFODQAgESEM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AyAAQbDUlqwAaigCAEUNBCAEQQRqIQQgA0EEaiEDIABBgAZqIgANAAtBkpKAgABBABCZgICAAAALIANBwAFsQfDPkKwAaiEDIARBfWohBAwDCyADQQFyQcABbEHwz5CsAGohAyAEQX5qIQQMAgsgA0ECckHAAWxB8M+QrABqIQMgBEF/aiEEDAELIABBsNSWrABqIQMLIARBwAFsIgRB0M6QrABqIgBBAEHAARCSgICAABogBEH0z5CsAGpBADYCACADQQE2AgAgACACIAIQlICAgABBAWoQkICAgAAaDAELIABB0M6QrABqIQALIAAgATkDuAEgAEEBNgKoASACQaABaiSAgICAAAv2AgEEfyOAgICAAEGgAWsiASSAgICAACAAIAEQrICAgABBACEAAkADQAJAIABB8M+QrABqKAIARQ0AIABB0M6QrABqIAEQlYCAgAANACAAQdDOkKwAaiECQQMhA0HQdiEAQQYhBAJAAkACQANAAkAgAEG8zpCsAGooAgANACAAQbzOkKwAaiEADAQLAkAgAA0AQX8hAwwHCyAAQdDOkKwAaigCAEUNAiAAQeTOkKwAaigCAEUNAQJAIABB+M6QrABqKAIARQ0AIARBBGohBCAAQdAAaiEAIANBBGohAwwBCwsgAEH4zpCsAGohACAEIQMMAgsgA0ECaiEDIABB5M6QrABqIQAMAQsgA0EBaiEDIABB0M6QrABqIQALIABBATYCACADQRRsIgBB4MSQrABqQQA2AgAgAEHYxJCsAGpCADcCACAAQdTEkKwAaiACNgIADAILIABBwAFqIgBBgIAGRw0AC0F/IQMLIAFBoAFqJICAgIAAIAMLowkBBX8jgICAgABBwAJrIgIkgICAgABBAiEDAkACQAJAA0AgAkGgAWogA2oiBEF+akGQu5CAACAAIANqIgVBfmpB////H3FqLQAAIgY6AAAgBkUNAiAEQX9qQZC7kIAAIAVBf2pB////H3FqLQAAIgY6AAAgBkUNASAEQZC7kIAAIAVB////H3FqLQAAIgU6AAAgBUUNAyADQQNqIgNBoQFHDQALQZ8BIQMMAgsgA0F/aiEDDAELIANBfmohAwtBACEEIAJBoAFqIANqQQA6AAAgAkGgAWogAhCsgICAAAJAAkACQAJAAkACQAJAA0ACQCAEQfDPkKwAaigCAEUNACAE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/x9xai0AACIGOgAAIAZFDQEgBEGQu5CAACAFQf///x9xai0AACIFOgAAIAVFDQMgA0EDaiIDQaEBRw0AC0GfASEDDAILIANBf2ohAwwBCyADQX5qIQMLQQAhBCACQaABaiADakEAOgAAIAJBoAFqIAIQrICAgAACQAJAAkADQAJAIARB8M+QrABqKAIARQ0AIARB0M6QrABqIAIQlYCAgABFDQILIARBwAFqIgRBgIAGRw0AC0EAIQQgAhCUgICAACEDAkADQAJAIARB8M+QrABqKAIARQ0AIARB0M6QrABqIAIgAxCTgICAAA0AIAMgBGpB0M6QrABqLQAAQS9HDQBBACEFQQMhA0GAgHohBAJAAkACQAJAAkADQCAEQfDPlqwAaigCAEUNASAEQbDRlqwAaigCAEUNAiAEQfDSlqwAaigCAEUNAyAEQbDUlqwAaigCAEUNBCADQQRqIQMgBUEEaiEFIARBgAZqIgQNAAtBkpKAgABBABCZgICAAAwHCyAFQcABbEHwz5CsAGohBSADQX1qIQMMAwsgBUEBckHAAWxB8M+QrABqIQUgA0F+aiEDDAILIAVBAnJBwAFsQfDPkKwAaiEFIANBf2ohAwwBCyAEQbDUlqwAaiEFCyADQcABbCIDQdDOkKwAaiIEQQBBwAEQkoCAgAAaIANB9M+QrABqQQE2AgAgBUEBNgIAIAQgAiACEJSAgIAAQQFqEJCAgIAAGgwECyAEQcABaiIEQYCABkcNAAsLQQAoAtDOlqwAIQRBfyEDQQIhBQwCCyAEQdDOkKwAaiEEC0GQu5CAACABQf///x9xakEAQegAEJKAgIAAGkGQu5CAACABQRBqQf///x9xakH/gwFBtoMCIAQoAqQBGzYAAEGQu5CAACABQRRqQf///x9xakEBNgAAAkACQCAEKAKoAUUNACAEKwO4AfwDIQUMAQsgBCgCsAEhBQtBkLuQgAAgAUEwakH///8fcWogBTYAAEEAIQNBkLuQgAAgAUE0akH///8fcWpBADYAAEGQu5CAACABQThqQf///x9xakGAIDYAACABQcAAaiEEIAVB/wNqQQl2IQULQZC7kIAAIARB////H3FqIAU2AAAgAkHAAmokgICAgAAgAwvLAgEFfyOAgICAAEHAAmsiASSAgICAAEECIQICQAJAAkADQCABQaABaiACaiIDQX5qQZC7kIAAIAAgAmoiBEF+akH///8fcWotAAAiBToAACAFRQ0CIANBf2pBkLuQgAAgBEF/akH///8fcWotAAAiBToAACAFRQ0BIANBkLuQgAAgBEH///8fcWotAAAiBDoAACAERQ0DIAJBA2oiAkGhAUcNAAtBnwEhAgwCCyACQX9qIQIMAQsgAkF+aiECC0EAIQMgAUGgAWogAmpBADoAACABQaABaiABEKyAgIAAAkADQAJAIANB8M+QrABqKAIARQ0AIANB0M6QrABqIAEQlYCAgAANAEEAIQMMAgsgA0HAAWoiA0GAgAZHDQALQZC7kIAAQQAoAtDOlqwAQf///x9xakECNgAAQX8hAwsgAUHAAmokgICAgAAgAwuABQEFfyOAgICAAEHAAmsiASSAgICAAEECIQICQAJAAkADQCABQaABaiACaiIDQX5qQZC7kIAAIAAgAmoiBEF+akH///8fcWotAAAiBToAACAFRQ0CIANBf2pBkLuQgAAgBEF/akH///8fcWotAAAiBToAACAFRQ0BIANBkLuQgAAgBEH///8fcWotAAAiBDoAACAERQ0DIAJBA2oiAkGhAUcNAAtBnwEhAgwCCyACQX9qIQIMAQsgAkF+aiECC0EAIQMgAUGgAWogAmpBADoAACABQaABaiABEKyAgIAAAkACQANAAkAgA0Hwz5CsAGooAgBFDQAgA0HQzpCsAGogARCVgICAAEUNAgsgA0HAAWoiA0GAgAZHDQALIAEQrYCAgABBACEEQQMhAkGAgHohAwJAAkACQAJAAkADQCADQfDPlqwAaigCAEUNASADQbDRlqwAaigCAEUNAiADQfDSlqwAaigCAEUNAyADQbDUlqwAaigCAEUNBCACQQRqIQIgBEEEaiEEIANBgAZqIgMNAAtBACEDQZKSgIAAQQAQmYCAgAAMBgsgBEHAAWxB8M+QrABqIQQgAkF9aiECDAMLIARBAXJBwAFsQfDPkKwAaiEEIAJBfmohAgwCCyAEQQJyQcABbEHwz5CsAGohBCACQX9qIQIMAQsgA0Gw1JasAGohBAtBACEDIAJBwAFsIgJB0M6QrABqIgVBAEHAARCSgICAABogAkH0z5CsAGpBATYCACAEQQE2AgAgBSABIAEQlICAgABBAWoQkICAgAAaDAELQZC7kIAAQQAoAtDOlqwAQf///x9xakERNgAAQX8hAwsgAUHAAmokgICAgAAgAwuzAwEFfyOAgICAAEHAAmsiAiSAgICAAEECIQMCQAJAAkADQCACQaABaiADaiIEQX5qQZC7kIAAIAAgA2oiBUF+akH///8fcWotAAAiBjoAACAGRQ0CIARBf2pBkLuQgAAgBUF/akH///8fcWotAAAiBjoAACAGRQ0BIARBkLuQgAAgBUH///8fcWotAAAiBToAACAFRQ0DIANBA2oiA0GhAUcNAAtBnwEhAwwCCyADQX9qIQMMAQsgA0F+aiEDC0EAIQQgAkGgAWogA2pBADoAACACQaABaiACEKyAgIAAAkACQAJAAkADQAJAIARB8M+QrABqKAIARQ0AIARB0M6QrABqIAIQlYCAgABFDQILIARBwAFqIgRBgIAGRw0AC0ECIQQMAQsgBEH0z5CsAGooAgAgAUYNAUEUQRUgARshBAtBkLuQgABBACgC0M6WrABB////H3FqIAQ2AABBfyEDDAELAkAgBEH8z5CsAGooAgAiA0UNACADEJuAgIAAC0EAIQMgBEHwz5CsAGpBADYCACABDQAgAiACEJSAgIAAEIOAgIAACyACQcACaiSAgICAACADC6UGAQV/I4CAgIAAQeADayICJICAgIAAQQIhAwJAAkACQANAIAJBwAJqIANqIgRBfmpBkLuQgAAgACADaiIFQX5qQf///x9xai0AACIGOgAAIAZFDQIgBEF/akGQu5CAACAFQX9qQf///x9xai0AACIGOgAAIAZFDQEgBEGQu5CAACAFQf///x9xai0AACIFOgAAIAVFDQMgA0EDaiIDQaEBRw0AC0GfASEDDAILIANBf2ohAwwBCyADQX5qIQMLIAJBwAJqIANqQQA6AAAgAkHAAmogAkGgAWoQrICAgABBAiEDAkACQAJAA0AgAkHAAmogA2oiBEF+akGQu5CAACABIANqIgVBfmpB////H3FqLQAAIgY6AAAgBkUNAiAEQX9qQZC7kIAAIAVBf2pB////H3FqLQAAIgY6AAAgBkUNASAEQZC7kIAAIAVB////H3FqLQAAIgU6AAAgBUUNAyADQQNqIgNBoQFHDQALQZ8BIQMMAgsgA0F/aiEDDAELIANBfmohAwtBACEEIAJBwAJqIANqQQA6AAAgAkHAAmogAhCsgICAAEGAgHohAwJAAkACQANAAkAgA0Hwz5asAGooAgBFDQAgA0HQzpasAGogAkGgAWoQlYCAgAANACADQdDOlqwAaiEBQQAhBkHQzpCsACEFA0ACQCAFQaABaigCAEUNACAFIAIQlYCAgABFDQQLIAVBwAFqIQUgBkEBaiIGQYAERw0ADAQLCyAEQQFqIQQgA0HAAWoiAw0AC0GQu5CAAEEAKALQzpasAEH///8fcWpBAjYAAEF/IQQMAgsgBCAGRg0AAkAgBUGsAWooAgAiBEUNACAEEJuAgIAACyAFQaABakEANgIACyACEK2AgIAAIAEgAiACEJSAgIAAQQFqEJCAgIAAGkEAIQQgA0H0z5asAGooAgANACACQaABaiACQaABahCUgICAABCDgICAACADQfjPlqwAaigCAA0AIANB9M+WrABqKAIADQAgASABEJSAgIAAIANB/M+WrABqKAIAIANBgNCWrABqKAIAEIGAgIAACyACQeADaiSAgICAACAECwYAQYSAFAteAQF/IABBgIAUaiECAkAgAUUNACAAQeDOlqwAQYCAFBCQgICAABogAkGQuoCAAEEEEJCAgIAAGg8LQeDOlqwAIABBgIAUEJCAgIAAGkGQuoCAACACQQQQkICAgAAaC3ABA39B0IBsIQADQAJAIABB4M6qrABqIgEtAAAiAkUNACAAQeHOqqwAai0AAA0AIABB4s6qrABqLQAADQACQCACQf4BcUECRw0AIABB5M6qrABqKAIAEJ6AgIAACyABQQA6AAALIABB0ABqIgANAAsLkQIBBX9BACEBQQAoApC6gIAAIQICQANAAkAgAiABaiIDQYAgbyIERQ0AIARB0ABsQeDOlqwAaiIFLQAARQ0CCwJAIANBAWpBgCBvIgRFDQAgBEHQAGxB4M6WrABqIgUtAABFDQILIAFBAmoiAUGAIEcNAAtB95GAgABBABCZgICAAEEADwtBACEBIAVBAEHQABCSgICAABpBACAEQQFqNgKQuoCAACAFQQI6AAACQCAEQQN0IgNB//8BSw0AIARB/////wFxIgRB0ABsQeDOlqwAai0AAEUNACADQYAgaiEBIARB0ABsIgRB6M6WrABqIAAQlICAgAA2AgAgBEHkzpasAGogABClgICAADYCAAsgAQuxAQEFf0EAIQFBACgCkLqAgAAhAgJAA0ACQCACIAFqIgNBgCBvIgRFDQAgBEHQAGxB4M6WrABqIgUtAABFDQILAkAgA0EBakGAIG8iBEUNACAEQdAAbEHgzpasAGoiBS0AAEUNAgsgAUECaiIBQYAgRw0AC0H3kYCAAEEAEJmAgIAAQQAPCyAFQQBB0AAQkoCAgAAaQQAgBEEBajYCkLqAgAAgBSAAOgAAIARBA3RBgCBqC+8BAQV/QQAhAAJAQQAoAuDOqqwAIgENAEEAKAKQuoCAACECAkADQAJAIAIgAGoiAUGAIG8iA0UNACADQdAAbEHgzpasAGoiBC0AAEUNAgsCQCABQQFqQYAgbyIDRQ0AIANB0ABsQeDOlqwAaiIELQAARQ0CCyAAQQJqIgBBgCBHDQALQfeRgIAAQQAQmYCAgAAACyAEQQBB0AAQkoCAgAAaIARBBToAAEEAIANBAWo2ApC6gIAAQQAgA0EDdEGAIGoiATYC4M6qrAAgA0H/////AXFB0ABsQeDOlqwAaiIDQQAgAy0AABtBAToAAgsgAQvbAQEFf0EAIQFBACgCkLqAgAAhAgJAA0ACQCACIAFqIgNBgCBvIgRFDQAgBEHQAGxB4M6WrABqIgUtAABFDQILAkAgA0EBakGAIG8iBEUNACAEQdAAbEHgzpasAGoiBS0AAEUNAgsgAUECaiIBQYAgRw0AC0H3kYCAAEEAEJmAgIAAAAsgBUEAQdAAEJKAgIAAGiAFQQQ6AABBACAEQQFqNgKQuoCAACAEQf////8BcUHQAGxB4M6WrABqIgFBACABLQAAGyIBIAA2AgwgAUEBOgACIARBA3RBgCBqC8Q2BAl/An4BfAJ+I4CAgIAAQaAEayIBJICAgIAAAkACQAJAIABBgGBqIgJB6AFLDQAgAEGOX2ohAwJAAkAgAEHeX2pBPEkNACADQR1LDQELAkACQAJAAkACQCACQfEASw0AQbC6kIAAKAIMIQRBsLqQgAAoAgghBUFeQUAgAEGiX2pBYkkiBhsgAmoiA0EDcCIHDQIgBSAEIAYbIQBBDEEQIAYbIQIMAQtBDCECQbC6kIAAKAIIIQACQCADQf8BcUEDcCIHRQ0AQbC6kIAAQQxqIQIMAwtBsLqQgAAoAgwhBCAAIQULQZC7kIAAQbC6kIAAKAI0IgdBcGoiBkH///8fcWpBACgCsLqQgAA2AABBkLuQgAAgB0H0//8fakH///8fcWpBsLqQgAAoAgQ2AABBkLuQgAAgB0H4//8fakH///8fcWogBTYAAEGQu5CAACAHQfz//x9qQf///x9xaiAENgAAIAYgAmohBUEBIQgMAgsCQCAGRQ0AQbC6kIAAQQxqIQIgBSEADAELQZC7kIAAQbC6kIAAKAI0Qf///x9xaiECIAQhAAsgB0EBRiEIIAIoAAAhBQsCQAJAAkAgAEF/aiIHQQAoAvDOqqwASQ0AIAEgADYCgAFBw42AgAAgAUGAAWoQmYCAgAAMAQsgAUHAA2pBAEHgAPwLAAJAAkAgB0HEAGwiCUGFz6qsAGoiAi0AACIADQBCACEKDAELQQAhBAJAA0AgAEH/AXEiBkEpRg0BIARBC0sNASACIQcCQAJAAkACQAJAIAZBtH9qDhAABAQEBAQEBAQEBAQEBAQBBAsgAiEHA0AgAEH/AXEiAEUNAiAAQTtGDQIgBy0AASEAIAdBAWohBwwACwsCQANAIABB/wFxIgdB2wBHDQEgAi0AASEAIAJBAWohAgwACwsgB0HMAEcNASACIQcDQCAAQf8BcSIARQ0BIABBO0YNASAHLQABIQAgB0EBaiEHDAALC0HMACEADAELQcwAIQAgAiEHCwJAAkAgCA0AIAVBCGohAkGQu5CAACAFQf///x9xaigAACEGAkACQAJAIABB/wFxQbx/ag4HAAIBAgICAAILQZC7kIAAIAVBBGpB////H3FqNQAAQiCGIAathCELIAIhBQwDCyAGvru9IQsgAiEFDAILIAatIQsgAiEFDAELAkAgAEH/AXFBvH9qIgBBBksNAEEBIAB0QcUAcUUNACAFQQdqIgBBeHFBCGohBUGQu5CAACAAQfj//x9xaikAACELDAELQZC7kIAAIAVB////H3FqNQAAIQsgBUEEaiEFCyABQcADaiAEQQN0aiALNwMAIAdBAWohAiAEQQFqIQQgBy0AASIADQALCyABKQPAAyEKCyAJQYTPqqwAaiEHIAlBgM+qrABqIQACQEEAKALszqqsAEUNACAAKAIAIQIgAUHwAGogASkD0AM+AgAgAUH0AGogASkD2AM+AgAgASAHNgJkIAEgCj4CaCABIAEpA8gDPgJsIAEgAkECdEGQq4CAAGooAgA2AmBBiKqAgAAgAUHgAGoQmYCAgAALIAq6IQxCCCELAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAIAAoAgAiAEF/ag42LSIjJBwdHhYXGB8gIRkaGy0MBg8JCSUDBAECACouBSsICBEQKS0tLQotEg0NFRQTDicoJgcLLAtB6aeAgAAQvoCAgACtIQsMLQtBg6iAgAAQvoCAgACtIQsMLAtBw6mAgAAQvoCAgACtIQsMKwtBs6mAgAAQvoCAgACtIQsMKgtBo6mAgAAQvoCAgACtIQsMKQtB7amAgAAQvoCAgACtIQsMKAtCgICADCELDCcLQoCAgBghCwwmC0KAgICABCELDCULQoCAgIACIQsMJAtBBEEAQQBBABCEgICAAKwhCwwjC0EBIAqnIAEoAsgDQQAQhICAgAAaDCELQQJBAEEAQQAQhICAgAAaDCALQn8hCwwgC0EAIQdBACEAAkAgCqciAkGAIEkNAEEAIQAgAkGAYGoiAkH//wFLDQAgAkEDdkHQAGxB4M6WrABqIgBBACAALQAAGyEACyAAIAFBwAFqQcAAEMOAgIAAAkAgASgCyAMiAEGAIEkNACAAQYBgaiIAQf//AUsNACAAQQN2QdAAbEHgzpasAGoiAEEAIAAtAAAbIQcLIAcgAUGAA2pBwAAQw4CAgABBACEAAkAgASgC0AMiB0GAIEkNAEEAIQAgB0GAYGoiB0H//wFLDQAgB0EDdkHQAGxB4M6WrABqIgBBACAALQAAGyEACyAAIAFBwAJqQcAAEMOAgIAAIAEgAUHAAmo2AhggASABQYADajYCFCABIAFBwAFqNgIQQfiSgIAAIAFBEGoQmYCAgABBA0EAQQBBABCEgICAAKwhCwwfC0EAIQACQCAKpyIHQYAgSQ0AIAdBgGBqIgdB//8BSw0AIAdBA3ZB0ABsQeDOlqwAaiIAQQAgAC0AABshAAsgACABQcABakHgABDDgICAACABIAFBwAFqNgIgQYyTgIAAIAFBIGoQmYCAgABCfyELDB4LQQAhAAJAIAqnIgdBgCBJDQBBACEAIAdBgGBqIgdB//8BSw0AIAdBA3ZB0ABsQeDOlqwAaiIAQQAgAC0AABshAAsgACABQcABakGAARDDgICAAAJAQQAoAoCTq6wAQQFIDQBBkJOrrAAhAEIBIQtBACEHA0AgACgCACABQcABahCVgICAAEUNHyAAQQRqIQAgC0IBfCELIAdBAWoiB0EAKAKAk6usACICSA0AC0IAIQsgAkH/H0oNHgsgAUHAAWoQlICAgABBAWoiBxCXgICAACEAQQAoAoCTq6wAQQJ0QZCTq6wAaiAANgIAIAAgAUHAAWogBxCQgICAABpBAEEAKAKAk6usAEEBaiIANgKAk6usACAArCELDB0LQgAhCyAKpyIAQQFIDRxBACgCgJOrrAAgAEgNHCAAQQJ0QYyTq6wAaigCABC+gICAAK0hCwwcC0J/IQsMGwtBBiAMIAEpA8gDuiABKQPQA7ogASgC2AMQhYCAgACsIQsMGgtBBSAMIAEpA8gDuiABKQPQA7pBABCFgICAAKwhCwwZCwJAAkACQCABKALYAyIAQYAgSQ0AIABBgGBqIgBB//8BSw0AIABBA3ZB0ABsIgBB4M6WrABqIgItAAANAQtBACECQQEhACABKQPQAyELIAEpA8gDIQ1BACEHDAELIABB6M6WrABqKAIAIQdBACEAIAEpA9ADIQsgASkDyAMhDQsgAUHAAGogASgC4AMiBDYCACABQcQAaiABKQPoAyIOPgIAIAFByABqIAEpA/ADPgIAIAFBzABqIAEpA/gDPgIAIAFB0ABqIAEpA4AEPgIAIAEgCj4CMCABIAs+AjggASAHNgI8IAEgDaciBzYCNEGgpYCAACABQTBqEJmAgIAAQn8hCyAADRhBKCAMIAIoAgQgBGq4IA66IAcQhYCAgACsIQsMGAtBCCAMIAExAMgDukQAAAAAAAAAAEEAEIWAgIAArCELDBcLQQkgDCABMQDIA7pEAAAAAAAAAABBABCFgICAAKwhCwwWC0EKIAwgATEAyAO6RAAAAAAAAAAAQQAQhYCAgACsIQsMFQtBDCAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMFAtBDSAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMEwtBDiAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMEgtBECAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMEQtBESAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMEAtBEiAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMDwtBFCAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMDgtBFSAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMDQtBFiAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMDAtBGCAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMCwtBGSAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMCgtBGiAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMCQtBHCAMRAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMCAtBIEQAAAAAAAAAACAKp7dEAAAAAAAAAABBABCFgICAABoMBgtBIUQAAAAAAAAAACAKp7dEAAAAAAAAAABBABCFgICAABoMBQtBIkQAAAAAAAAAACAKp7dEAAAAAAAAAABBABCFgICAABoMBAtBJEQAAAAAAAAAAEQAAAAAAAAAAEQAAAAAAAAAAEEAEIWAgIAArCELDAQLQSVEAAAAAAAAAABEAAAAAAAAAABEAAAAAAAAAABBABCFgICAAKwhCwwDC0EmRAAAAAAAAAAARAAAAAAAAAAARAAAAAAAAAAAQQAQhYCAgACsIQsMAgsgASAHNgIEIAEgAEECdEGQq4CAAGooAgA2AgBBvJKAgAAgARCZgICAAAtCACELCwJAIANBGksNAEEBIQdBASADdEGAgPA4cUUNAEEAIAs3A7C6kIAADAQLQQAgCz4CsLqQgAAMAgtBASEHAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkAgAEH8X2oO4QEAHgEeHh4eHh4CAgMhIQQFBgcICQoLDB4eHh4NDg8eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4QHh4eHh4RHh4eHh4eHh4eHh4eDx4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHhAeHh4eHh4eHh4eHh4eHh4eHh4SEx4eFBMVIRYeHh4eFx4eHh4eHh4YHh4eHh4eHiEeHh4eHh4eGR4eHh4eHh4aHh4eHh4eHh4bGxweHhghHh4eHh0eC0EAQYSABDYCsLqQgAAMIAtBsLqQgAAoAgQhBkECIQACQAJAAkADQEGQu5CAACAGIABqIgJBfmpB////H3FqLQAAIgVFDQIgAUHAAWogAGoiBEF+aiAFOgAAQZC7kIAAIAJBf2pB////H3FqLQAAIgVFDQEgBEF/aiAFOgAAQZC7kIAAIAJB////H3FqLQAAIgJFDQMgBCACOgAAIABBA2oiAEHBAEcNAAtBPyEADAILIABBf2ohAAwBCyAAQX5qIQALIAFBwAFqIABqQQA6AABBACABQcABahDEgICAADYCsLqQgAAMHwtBAEEANgKwupCAAAweC0EAQQA2ArC6kIAADB0LQZqUgIAAQQAQmYCAgABBASEHQQBBATYC9LqQgAAMHAtBAEEANgKwupCAAAwbC0EAQbC6kIAAKAIENgKwupCAAAwaCwJAQbC6kIAAKAIEIgBBgCBJDQAgAEGAYGoiAkH//wFLDQAgAkEDdkHQAGwiAkHgzpasAGotAABFDQAgAkHhzpasAGpBAToAAAtBACAANgKwupCAAAwZC0GwupCAACgCBCIAQYAgSQ0YIABBgGBqIgBB//8BSw0YIABBA3ZB0ABsIgBB4M6WrABqLQAARQ0YIABB4c6WrABqQQA6AAAMGAtBsLqQgAAoAgQiAEGAIEkNFyAAQYBgaiIAQf//AUsNFyAAQQN2IgJB0ABsIgBB4M6WrABqIgQtAAAiBUUNFyAAQeHOlqwAai0AAA0XIAJB0ABsQeLOlqwAai0AAA0XAkAgBUH+AXFBAkcNACACQdAAbEHkzpasAGooAgAQnoCAgAALIARBADoAAAwXC0EAQbC6kIAAKAIEQbC6kIAAKAIIRjYCsLqQgAAMFgtBAEGwupCAACgCBDYCsLqQgAAMFQtBAEEANgKwupCAAAwUC0GsiICAACEAAkBBsLqQgAAoAgQiAkGAIEkNACACQYBgaiICQf//AUsNAAJAAkAgAkEDdkHQAGxB4M6WrABqLQAAIgIOBQIAAAABAAtBgZ2AgABBrIiAgAAgAkECRhshAAwBC0Hwk4CAACEAC0EAIAAQxICAgAA2ArC6kIAADBMLQQEhB0EAQQE2ArC6kIAADBILQbC6kIAAKAIMIQVBsLqQgAAoAgghBkECIQACQAJAAkADQEGQu5CAACAGIABqIgdBfmpB////H3FqLQAAIgRFDQIgAUHAAWogAGoiAkF+aiAEOgAAQZC7kIAAIAdBf2pB////H3FqLQAAIgRFDQEgAkF/aiAEOgAAQZC7kIAAIAdB////H3FqLQAAIgdFDQMgAiAHOgAAIABBA2oiAEHBAEcNAAtBPyEADAILIABBf2ohAAwBCyAAQX5qIQALIAFBwAFqIABqQQA6AABBAiEAAkACQAJAA0BBkLuQgAAgBSAAaiIHQX5qQf///x9xai0AACIERQ0CIAFBwANqIABqIgJBfmogBDoAAEGQu5CAACAHQX9qQf///x9xai0AACIERQ0BIAJBf2ogBDoAAEGQu5CAACAHQf///x9xai0AACIHRQ0DIAIgBzoAACAAQQNqIgBBwQBHDQALQT8hAAwCCyAAQX9qIQAMAQsgAEF+aiEACyABQcADaiAAakEAOgAAQZSrgIAAIQBBASEHAkADQCAAKAIAIAFBwAFqEJWAgIAARQ0BIABBBGohACAHQQFqIgdBN0cNAAsgASABQcADajYCpAEgASABQcABajYCoAFBo5KAgAAgAUGgAWoQmYCAgABBACEHC0EAIQACQEEAKALwzqqsACICQf8ASg0AIAJBxABsIgBBgM+qrABqIAc2AgAgAEGEz6qsAGogAUHAA2pBwAAQkICAgAAaQQBBACgC8M6qrABBAWoiADYC8M6qrAALQQAgADYCsLqQgAAMEAtBsLqQgAAoAgghBUEBIQACQAJAA0BBkLuQgAAgBSAAaiICQX9qQf///x9xai0AACIHRQ0BIAFBwAFqIABqIgRBf2ogBzoAAEEfIQcgAEEfRg0CAkBBkLuQgAAgAkH///8fcWotAAAiBw0AIAAhBwwDCyAEIAc6AAAgAEECaiEADAALCyAAQX9qIQcLIAFBwAFqIAdqQQA6AABBASEHQQBBAkEBIAFBwAFqQeWTgIAAEJWAgIAAIgAbNgKwupCAACAARQ0QIAEgAUHAAWo2ArABQa6TgIAAIAFBsAFqEJmAgIAADBALQQAhAAJAQbC6kIAAKAIEIgJBgCBJDQBBACEAIAJBgGBqIgJB//8BSw0AQQAhACACQQN2IgRB0ABsQeDOlqwAai0AACICRQ0AQQAhACACQQRHDQBBACEAQbC6kIAAKAIIQQFHDQAgBEHQAGxB7M6WrABqKAIAIQALQQAgADYCsLqQgAAMDwtBAEGDq4CAABC+gICAADYCsLqQgAAMDgtBACEAAkBBsLqQgAAoAgQiAkGAIEkNAEEAIQAgAkGAYGoiAkH//wFLDQBBACEAIAJBA3ZB0ABsIgJB4M6WrABqLQAARQ0AIAJB6M6WrABqKAIAIQALQQAgADYCsLqQgAAMDQtBACEAAkBBsLqQgAAoAgQiAkUNACACEMWAgIAAIQALQQAgADYCsLqQgAAMDAtBACEAAkBBsLqQgAAoAgQiAkGAIEkNACACQYBgaiICQf//AUsNACACQQN2QdAAbEHgzpasAGoiAEEAIAAtAAAbIQALAkBBsLqQgAAoAggiAkUNAEGQu5CAACACQf///x9xakEAOgAAC0EAIQICQCAARQ0AIAAoAgQhAgtBACACNgKwupCAAAwLC0EAIQACQEGwupCAACgCBCICQYAgSQ0AQQAhACACQYBgaiICQf//AUsNAEEAIQAgAkEDdkHQAGwiAkHgzpasAGotAABFDQAgAkHozpasAGooAgAhAAtBACAANgKwupCAAAwKC0EAIQACQEEDEL+AgIAAIgRBgCBJDQBBACEAIARBgGBqIgdB//8BSw0AIAdBA3ZB0ABsQeDOlqwAaiIAQQAgAC0AABshAAsgAEGwupCAACgCBCICNgIIQQEhByACQQEgAkEBSxsQn4CAgAAhAkEAIAQ2ArC6kIAAIAAgAjYCBAwJC0EAIQACQEGwupCAACgCBCICQYAgSQ0AIAJBgGBqIgJB//8BSw0AIAJBA3ZB0ABsQeDOlqwAaiIAQQAgAC0AABshAAsCQEGwupCAACgCCCICRQ0AQZC7kIAAIAJB////H3FqQQA6AAALQQAhAgJAIABFDQAgACgCBCECC0EAIAI2ArC6kIAADAgLQbC6kIAAKAIEIgBBgCBJDQcgAEGAYGoiAEH//wFLDQcgAEEDdkHQAGwiAEHgzpasAGotAABFDQdBkLuQgABBkLuQgABBsLqQgAAoAjRB////H3FqKAAAQf///x9xakGQu5CAAEGwupCAACgCCCAAQeTOlqwAaigCAGpB////H3FqQbC6kIAAKAIMEJGAgIAAGgwHC0GwupCAACgCBCIAQYAgSQ0GIABBgGBqIgBB//8BSw0GIABBA3ZB0ABsIgBB4M6WrABqLQAARQ0GQZC7kIAAQbC6kIAAKAIIIABB5M6WrABqKAIAakH///8fcWpBkLuQgABBkLuQgABBsLqQgAAoAjRB////H3FqKAAAQf///x9xakGwupCAACgCDBCRgICAABoMBgtBAEEANgKwupCAAAwFC0GwupCAACgCBCEAQQBBADYCsLqQgABBkLuQgAAgAEH///8fcWpBACgC6M6qrAA2AAAMBAtBAEEANgKwupCAAAwDC0GhqYCAACEAAkAgAkEhSw0AIAJBAnRB8KyAgABqKAIAIQALIAEgAjYClAEgASAANgKQAUG8qoCAACABQZABahCZgICAAEEAQQA2ArC6kIAADAILQQAhByAAQXhxQYAkRw0BQQAhBwJAAkACQAJAIABB/VtqDgUDAAMBAAILQQAhB0GQu5CAAEGwupCAACgCBEH///8fcWpBACgC5M6qrAA2AAAMAgtBACEHQZC7kIAAQbC6kIAAKAIEQf///x9xakEAKALkzqqsADYAAAwBC0F/IQcLQQAgBzYCsLqQgAALQQEhBwsgAUGgBGokgICAgAAgBwt7AQF/QQAhAwJAIABFDQBBACEDIAAtAABBAkcNAEEAIQMgAkECSA0AIAJBf2ohAkEAIQMDQCADIAAoAghODQEgASADakGQu5CAACADIAAoAgRqQf///x9xai0AADoAACACIANBAWoiA0cNAAsgAiEDCyABIANqQQA6AAAL6QIBBX9BiCAhAUGwz5asACECAkADQAJAIAItAABBAUcNACACQRBqIAAQlYCAgABFDQILIAJB0ABqIQIgAUEIaiIBQYCgAkcNAAtBACEBQQAoApC6gIAAIQMCQAJAA0ACQCADIAFqIgRBgCBvIgJFDQAgAkHQAGxB4M6WrABqIgUtAABFDQILAkAgBEEBakGAIG8iAkUNACACQdAAbEHgzpasAGoiBS0AAEUNAgsgAUECaiIBQYAgRw0AC0EAIQFB95GAgABBABCZgICAAEEAIQQMAQtBACEEIAVBAEHQABCSgICAABpBACACQQFqNgKQuoCAACAFQQE6AAAgAkEDdCIFQYAgaiEBIAVB//8BSw0AIAJB/////wFxQdAAbEHgzpasAGoiAkEAIAItAAAbIQQLIARBAToAAiAEQRBqIgIgACAAEJSAgIAAIgRBPyAEQT9IGyIEEJCAgIAAGiACIARqQQA6AAALIAELxwIBBX9BACEBQQAoApC6gIAAIQICQANAAkAgAiABaiIDQYAgbyIERQ0AIARB0ABsQeDOlqwAaiIFLQAARQ0CCwJAIANBAWpBgCBvIgRFDQAgBEHQAGxB4M6WrABqIgUtAABFDQILIAFBAmoiAUGAIEcNAAtB95GAgABBABCZgICAAEEADwtBACEBIAVBAEHQABCSgICAABpBACAEQQFqNgKQuoCAACAFQQI6AAACQCAEQQN0IgNB//8BSw0AIARB/////wFxIgRB0ABsQeDOlqwAai0AAEUNACADQYAgaiEBIARB0ABsIgRB6M6WrABqIgMgABCkgICAACIFNgIAIARB5M6WrABqIAVBAWoQnYCAgAAiBDYCAEGQu5CAACAEQf///x9xakGQu5CAACAAQf///x9xaiADKAIAQQFqEJCAgIAAGgsgAQvDAwEDf0EAIQFBpAcgABGAgICAAAAhAgJAA0BBkLuQgAAgAiABaiIDQf///x9xaiABQYCABWo2AAAgAUGgB0YNAUGQu5CAACADQQRqQf///x9xaiABQYSABWo2AABBkLuQgAAgA0EIakH///8fcWogAUGIgAVyNgAAQZC7kIAAIANBDGpB////H3FqIAFBjIAFcjYAACABQRBqIQEMAAsLQQBBBCAAEYCAgIAAACIBNgLkzqqsAEGQu5CAACABQf///x9xaiACNgAAQZC7kIAAQSAgABGAgICAAAAiAUH///8fcWpBgJAFNgAAQZC7kIAAIAFBBGpB////H3FqQYSQBTYAAEGQu5CAACABQQhqQf///x9xakGIkAU2AABBkLuQgAAgAUEMakH///8fcWpBjJAFNgAAQZC7kIAAIAFBEGpB////H3FqQZCQBTYAAEGQu5CAACABQRRqQf///x9xakGUkAU2AABBkLuQgAAgAUEYakH///8fcWpBmJAFNgAAQZC7kIAAIAFBHGpB////H3FqQZyQBTYAAEEAQQQgABGAgICAAAAiAzYC6M6qrABBkLuQgAAgA0H///8fcWogATYAAAujAQEGfyOAgICAAEEQayIAJICAgIAAAkBBACgCkJOsrAAiAUEBSA0AQQAhAkEAIQMDQAJAIAJBoJOsrABqIgQoAgAiBUUNACACQaCjrKwAaigCACEBIAAgBTYCBCAAIAE2AgBB2Y2AgAAgABCZgICAACAEQQA2AgBBACgCkJOsrAAhAQsgAkEEaiECIANBAWoiAyABSA0ACwsgAEEQaiSAgICAAAsNAEEAIAA2AqCzrKwAC6YCAQN/I4CAgIAAQTBrIgEkgICAgAACQAJAQQAoApCTrKwAIABNDQAgAEECdCICQaCTrKwAaiIDIAMoAgBBAWo2AgACQEEAKAKgs6ysAEUNACACQaCjrKwAaigCACEDIAFBFGpBsLqQgAAoAjg2AgAgASADNgIAIAFBACkDsLqQgAA3AgQgAUGwupCAACkDCDcCDEH4iYCAACABEJmAgIAACwJAIAJBsLOsrABqKAIAIgJBgYCAgABHDQBBACAAQQJ0QaCjrKwAaigCADYCsMOsrAALIAIRgYCAgAAADAELIAAQwoCAgAANACABIAA2AiAgAUGwupCAACgCODYCJEH5ioCAACABQSBqEJmAgIAAQQBBATYC9LqQgAALIAFBMGokgICAgAALYAECfyOAgICAAEEQayIAJICAgIAAIABBsLqQgAAoAjg2AgQgAEEAKAKww6ysACIBQaGpgIAAIAEbNgIAQY+LgIAAIAAQmYCAgABBAEEANgKwupCAACAAQRBqJICAgIAAC/QCAQh/I4CAgIAAQYABayIBJICAgIAAQQAhAgJAQQAoArTDrKwAIgNBAkkNAEEAKAK4w6ysACECQQEhBAJAA0ACQEGQu5CAACACIARBBHQiBWoiBkEOakH///8fcWovAABFDQBBkLuQgAAgBkH///8fcWooAABBACgCzMOsrABqIQdBASECAkACQANAIAEgAmoiBkF/akGQu5CAACAHIAJqIghBf2pB////H3FqLQAAIgM6AAAgA0UNAUH/ACEDIAJB/wBGDQIgBkGQu5CAACAIQf///x9xai0AACIDOgAAAkAgAw0AIAIhAwwDCyACQQJqIQIMAAsLIAJBf2ohAwsgASADakEAOgAAIAEgABCVgICAACEDQQAoArjDrKwAIQIgA0UNAkEAKAK0w6ysACEDCyAEQQFqIgQgA0kNAAtBACECDAELQZC7kIAAIAIgBWpBBGpB////H3FqKAAAQYCAwABqIQILIAFBgAFqJICAgIAAIAILvRABC38jgICAgABBwAFrIgIkgICAgAAQloCAgABBAEEAKAKYuoCAAEEHaiIDQXhxIgRBBHI2Api6gIAAQZC7kIAAIANB+P//H3FqQQBBBBCSgICAABpBACAENgLQzpasAEEA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ADYCACACQQAoApCTrKwANgIEIAJBACgC1MOsrABBAnY2AgxB7IyAgAAgAhCZgICAAAJAQQAoAtTDrKwAIgVBBEkNAEEAKALQw6ysACEIQQAhA0EAIQQDQAJAQZC7kIAAIAggA2pB////H3FqKAAAIglBf2pBfUsNACAJQQBBABCPgICAABpBACgC1MOsrAAhBUEAKALQw6ysACEICyADQQRqIQMgBEEBaiIEIAVBAnZJDQALC0EAKAL0upCAACEDIAJBwAFqJICAgIAAQX9BACADGws/AQJ/QQBBACgCmLqAgABBB2oiAUF4cSICIABqNgKYuoCAAEGQu5CAACABQfj//x9xakEAIAAQkoCAgAAaIAILcwEBfwJAQQAoApCTrKwAIgNB/wNKDQBBACADQQFqNgKQk6ysACADQQJ0IgNBsLOsrABqIAE2AgAgA0Ggo6ysAGogAjYCAEGQu5CAACAAQf///x9xaiADIABrQfj/A2pBAnZB////B3FBgICA0H5yNgAACwumAgEFfyOAgICAAEEQayICJICAgIAAAkACQAJAIAAQy4CAgAAiA0UNAEEAKALYw6ysACIEQQ9KDQBBACgCkJOsrAAiBUGABEgNAQsgAiAANgIAQZCjgIAAIAIQmYCAgABBfyEADAELQQAhAEEAIARBAWo2AtjDrKwAQQAgBUEBajYCkJOsrAAgBEEMbCIGQeDDrKwAaiADNgIAIAZB6MOsrABqIAE2AgAgBUECdCIFQaCjrKwAakHdnICAADYCACAGQeTDrKwAakGQu5CAACADQf///x9xaiIBKAAANgIAIAVBsLOsrABqIARBAnRBoLSAgABqKAIANgIAIAEgBSADa0H4/wNqQQJ2Qf///wdxQYCAgNB+cjYAAAsgAkEQaiSAgICAACAAC8QJAQJ/I4CAgIAAQSBrIgEkgICAgAACQCAARQ0AAkACQAJAQd+bgIAAEMuAgIAAIgBFDQBBACgCkJOsrAAiAkGABEgNAQsgAUHfm4CAADYCEEH9ooCAACABQRBqEJmAgIAADAELQQAgAkEBajYCkJOsrAAgAkECdCICQbCzrKwAakGDgICAADYCACACQaCjrKwAakHfm4CAADYCAEGQu5CAACAAQf///x9xaiACIABrQfj/A2pBAnZB////B3FBgICA0H5yNgAACwJAAkACQEG5j4CAABDLgICAACIARQ0AQQAoApCTrKwAIgJBgARIDQELIAFBuY+AgAA2AgBB/aKAgAAgARCZgICAAAwBC0EAIAJBAWo2ApCTrKwAIAJBAnQiAkGws6ysAGpBhICAgAA2AgAgAkGgo6ysAGpBuY+AgAA2AgBBkLuQgAAgAEH///8fcWogAiAAa0H4/wNqQQJ2Qf///wdxQYCAgNB+cjYAAAtBxpqAgAAQy4CAgABBiMPWAEcNAEGDm4CAABDLgICAAEHoldcARw0AAkBBkLuQgAAoALzHVkG04PSsfkcNAEEAKAKQk6ysACIAQf8DSg0AQQAgAEEBajYCkJOsrAAgAEECdCICQbCzrKwAakGFgICAADYCACACQaCjrKwAakH1lYCAADYCAEGQu5CAACAAQY+u6wdqQf///wdxQYCAgNB+cjYAvMdWCwJAQZC7kIAAKACEpFdBvKD1rH5HDQBBACgCkJOsrAAiAEH/A0oNAEEAIABBAWo2ApCTrKwAIABBAnQiAkGws6ysAGpBhoCAgAA2AgAgAkGgo6ysAGpBqJaAgAA2AgBBkLuQgAAgAEH9lusHakH///8HcUGAgIDQfnI2AISkVwsCQEGQu5CAACgAiLJXQeig9Kx+Rw0AQQAoApCTrKwAIgBB/wNKDQBBACAAQQFqNgKQk6ysACAAQQJ0IgJBsLOsrABqQYeAgIAANgIAIAJBoKOsrABqQeWVgIAANgIAQZC7kIAAIABBvJPrB2pB////B3FBgICA0H5yNgCIslcLAkBBjpqAgAAQy4CAgABBmNzVAEcNAAJAQZC7kIAAKAC85VVBgYCJhH5HDQBBACgCkJOsrAAiAEH/A0oNAEEAIABBAWo2ApCTrKwAIABBAnQiAkGws6ysAGpBiICAgAA2AgAgAkGgo6ysAGpB1JWAgAA2AgBBkLuQgAAgAEHPxusHakH///8HcUGAgIDQfnI2ALzlVQtBkLuQgAAoAOjoVUGKwIyEfkcNAEEAKAKQk6ysACIAQf8DSg0AQQAgAEEBajYCkJOsrAAgAEECdCICQbCzrKwAakGJgICAADYCACACQaCjrKwAakGXloCAADYCAEGQu5CAACAAQeTF6wdqQf///wdxQYCAgNB+cjYA6OhVC0HrmYCAABDLgICAAEGkxNQARw0AQZC7kIAAKACUx1RBs8HUjH5HDQBBACgCkJOsrAAiAEH/A0oNAEEAIABBAWo2ApCTrKwAIABBAnQiAkGws6ysAGpBioCAgAA2AgAgAkGgo6ysAGpBhZaAgAA2AgBBkLuQgAAgAEGZ7usHakH///8HcUGAgIDQfnI2AJTHVAsgAUEgaiSAgICAAAvbDAEkfyOAgICAAEEQayIAJICAgIAAAkBBkLuQgABBACgCsLqQgAAiAUEEakH///8fcWooAAAiAkGwupCAACgCCCIDa0GQu5CAAEGwupCAACgCNCIEQf///x9xaigAACIFIAUgA2ogAkobIgZBAUgNAAJAQZC7kIAAIAFBDGpB////H3FqKAAAIgdBcGoOEQABAQEBAQEBAQEBAQEBAQEAAQtBsLqQgAAoAgQiCEEfdUEAIAhrcSIJQZC7kIAAQZC7kIAAIARBEGpB////H3FqKAAAIgVBBGpB////H3FqKAAAIAhrIgogCSAKShsiC0GQu5CAACAFQQxqQf///x9xaigAACAIayIKQZC7kIAAIAFB////H3FqKAAAIgwgCGsiCSAKIAlIGyINIAlBkLuQgAAgBEEIakH///8fcWooAAAiDkEfdSAOcUGwupCAACgCDGpBkLuQgAAgBEEMakH///8fcWooAAAiD0EfdSAPcWoiECAQIAhqIAxKGyIMIA0gDEgbIg1BkLuQgABBkLuQgAAgBEEEakH///8fcWooAAAiEEH///8fcWooAAAgDkEAIA5BAEobIhFrIg4gDSAOSBtrIRIgDCAOIAwgDkgbIg4gCSAOIAlIGyIJIAogCSAKSBsiDCALa0EBdCETQZC7kIAAIARBFGpB////H3FqLQAAIglBkLuQgAAgBUEsakH///8fcWooAAAiCnJBAEdBkLuQgAAgBUEgakH///8fcWooAAAiDkH/AUhyIAwgC0wiFHJBkLuQgAAgEEEQakH///8fcWooAAAiFUGQu5CAACABQRBqQf///x9xaigAACIWRnIhFyAVQZC7kIAAIBBBCGpB////H3FqKAAAIhggD0EAIA9BAEobIg1saiIEIAsgEWoiD0EBdCIZaiEaIBZBkLuQgAAgAUEIakH///8fcWooAAAiGyADbGoiASALIAhqIghBAXQiHGohHSAEIA9BAnRqIR4gASAIQQJ0aiEfQf8BIA5rIQtBkLuQgAAgBUEwakH///8fcWooAAAhIEGQu5CAACAFQRxqQf///x9xaigAACEPQZC7kIAAIAVBEGpB////H3FqKAAAISFBkLuQgAAgBUEIakH///8fcWooAAAhIkGQu5CAACAQQQRqQf///x9xaigAACEjIA5B/gFKIRBBACERA0ACQCANICNODQAgESADaiIFQQBIDQAgBSACTg0AIAUgIkgNACAFICFODQACQCAHQRBGDQAgHiEEIBIhASAfIQggFA0BA0BBkLuQgAAgBEH///8fcWooAAAhBQJAAkAgCUUNACAFIA9GDQELAkAgEA0AQZC7kIAAIAhB////H3FqKAAAIgxB4A9xIAtsIAVB4A9xIA5sakEIdkHgD3EgDEGA8ANxIAtsIAVBgPADcSAObGpBCHZBgPADcXIgDEEfcSALbCAFQR9xIA5sakEIdkEfcXIhBQsCQAJAIAoNACAIQf///x9xIQwMAQsgACAgNgIMIAAgBTYCCCAAQZC7kIAAIAhB////H3EiDGooAAA2AgQgCkEDIABBBGoQj4CAgAAhBQtBkLuQgAAgDGogBTYAAAsgBEEEaiEEIAhBBGohCCABQQFqIgENAAwCCwsCQCAXRQ0AIBohBCASIQEgHSEIIBQNAQNAQZC7kIAAIARB////H3FqLwAAIQUCQAJAIAlFDQAgDyAFRg0BCwJAIBANAEGQu5CAACAIQf///x9xai8AACIMQeAPcSALbCAFQeAPcSAObGpBCHZB4A9xIAxBgPADcSALbCAFQYDwA3EgDmxqQQh2QYDwA3FyIAxBH3EgC2wgBUEfcSAObGpBCHZBH3FyIQULAkACQCAKDQAgCEH///8fcSEMDAELIAAgIDYCDCAAIAU2AgggAEGQu5CAACAIQf///x9xIgxqLwAANgIEIApBAyAAQQRqEI+AgIAAIQULQZC7kIAAIAxqIAU7AAALIARBAmohBCAIQQJqIQggAUEBaiIBDQAMAgsLQZC7kIAAIAUgG2wgFmogHGpB////H3FqQZC7kIAAIA0gGGwgFWogGWpB////H3FqIBMQkYCAgAAaCyAaIBhqIRogHSAbaiEdIB4gGGohHiAfIBtqIR8gDUEBaiENIBFBAWoiESAGRw0ACwsgAEEQaiSAgICAAAuCCwEafyOAgICAAEEQayIAJICAgIAAAkACQEGQu5CAAEEAKAKwupCAACIBQQxqQf///x9xaigAACICQXBqDhEAAQEBAQEBAQEBAQEBAQEBAAELQbC6kIAAKAIEQbC6kIAAKAIMIgNBH3UiBCADcWoiBUEAIAVBAEobIgZBkLuQgABBkLuQgABBsLqQgAAoAjQiB0EEakH///8fcWooAAAiCEEEakH///8fcWooAAAiCSAGIAlKGyIJIAVBH3UgBXEgAyAEcyAEa2ogBmoiBUGQu5CAACABQf///x9xaigAACIDIAUgA0gbIgVBkLuQgAAgCEEMakH///8fcWooAAAiAyAFIANIGyIKTg0AQbC6kIAAKAIIQZC7kIAAIAdB////H3FqKAAAIgVBH3UiBiAFcWoiA0EAIANBAEobIgRBkLuQgAAgCEEIakH///8fcWooAAAiByAEIAdKGyILIANBH3UgA3EiDCAFIAZzIAZraiAEaiIGQZC7kIAAIAFBBGpB////H3FqKAAAIgMgBiADSBsiB0GQu5CAACAIQRBqQf///x9xaigAACIGIAcgBkgbTg0AIAMgBiADIAZIGyIDIAwgBSAFQR91IgZzIAZraiAEaiIFIAMgBUgbIQ1BkLuQgAAgCEEgakH///8fcWooAAAiBkH/AUhBkLuQgAAgCEEsakH///8fcWooAAAiA0EAR3IhDkGQu5CAACAIQRRqQf///x9xaigAACIFQR9xIAZsIQ8gBUGA8ANxIAZsIRAgBUHgD3EgBmwhEUGQu5CAACABQRBqQf///x9xaigAAEGQu5CAACABQQhqQf///x9xaigAACISIAtsaiIBIAlBAXRqIRMgASAJQQJ0aiEUIAEgCSAKIAlrQQNxIhVqIgRBAXRqQQZqIRYgFUEBdCEXIAogBGshGEH/ASAGayEEQZC7kIAAIAhBMGpB////H3FqKAAAIQwgBkH+AUohByAJIAprIgpBfEshGQNAIBQhASAKIQkCQAJAIAJBEEcNACATIQEgCiEJAkAgDg0AAkAgFUUNACAXIQEgEyEIA0BBkLuQgAAgCEH///8fcWogBTsAACAIQQJqIQggAUF+aiIBDQALCyAZDQIgGCEBIBYhCANAQZC7kIAAIAhBempB////H3FqIAU7AABBkLuQgAAgCEF8akH///8fcWogBTsAAEGQu5CAACAIQX5qQf///x9xaiAFOwAAQZC7kIAAIAhB////H3FqIAU7AAAgCEEIaiEIIAFBfGoiAQ0ADAMLCwNAIAUhCAJAIAcNAEGQu5CAACABQf///x9xai8AACIIQeAPcSAEbCARakEIdkHgD3EgCEGA8ANxIARsIBBqQQh2QYDwA3FyIAhBH3EgBGwgD2pBCHZBH3FyIQgLAkACQCADDQAgAUH///8fcSEGDAELIAAgDDYCDCAAIAg2AgggAEGQu5CAACABQf///x9xIgZqLwAANgIEIANBAyAAQQRqEI+AgIAAIQgLQZC7kIAAIAZqIAg7AAAgAUECaiEBIAlBAWoiCQ0ADAILCwNAIAUhCAJAIAcNAEGQu5CAACABQf///x9xaigAACIIQeAPcSAEbCARakEIdkHgD3EgCEGA8ANxIARsIBBqQQh2QYDwA3FyIAhBH3EgBGwgD2pBCHZBH3FyIQgLAkACQCADDQAgAUH///8fcSEGDAELIAAgDDYCDCAAIAg2AgggAEGQu5CAACABQf///x9xIgZqKAAANgIEIANBAyAAQQRqEI+AgIAAIQgLQZC7kIAAIAZqIAg2AAAgAUEEaiEBIAlBAWoiCQ0ACwsgFiASaiEWIBMgEmohEyAUIBJqIRQgC0EBaiILIA1HDQALCyAAQRBqJICAgIAAC+EJATB/QbC6kIAAKAIUIgBB7QBqIQFBIEGQu5CAAEGwupCAACgCNCICQcYBakH///8fcWotAAAiA2shBEHAAEGQu5CAACACQcUBakH///8fcWotAAAiBWshBkEgQZC7kIAAIAJBxAFqQf///x9xai0AACIHayEIQZC7kIAAIAJBiAFqQf///x9xaigAAEEFdCEJQZC7kIAAIABB7IEBakH///8fcWooAAAhCkGQu5CAACAAQeiBAWpB////H3FqKAAAIQtBkLuQgAAgAEHkgQFqQf///x9xaigAACEMQZC7kIAAIABB4IEBakH///8fcWooAAAhDUGQu5CAACACQewAakH///8fcWooAAAhDkGQu5CAACACQfwAakH///8fcWooAAAhD0GQu5CAACACQYABakH///8fcWooAAAhEEGQu5CAACACQSBqQf///x9xaigAACERQZC7kIAAIAJBKGpB////H3FqKAAAIRJBkLuQgAAgAkEsakH///8fcWooAAAhE0GQu5CAACACQYwBakH///8fcWooAAAhFEGQu5CAACACQeQAakH///8fcWooAAAhFUGQu5CAACACQYQBakH///8fcWooAAAhFkGQu5CAACACQcQAakH///8fcSIXaigAACEYQZC7kIAAIAJBwABqQf///x9xIhlqKAAAIRpBkLuQgAAgAkH0AGpB////H3FqKAAAIRtBkLuQgAAgAkE0akH///8fcSIcaigAACEdQbC6kIAAKAIoIR5BsLqQgAAoAiAhH0GwupCAACgCHCEgQbC6kIAAKAIQIgJBfGohIUGwupCAACgCGCIiQQFIISMgAkF4aiEkQbC6kIAAKAIkQQRHISUDQCAaQQp1IQICQAJAICEOCQABAQEBAQEBAAELIBQgAmshAgsCQCAjDQAgHSAbaiIAIAxIDQAgACAKTg0AIAIgFWwgFmogEmohJkEAIQAgICECICIhJyAYISgDQAJAIAIgDUgNACACIAtODQAgAEEKdSEpAkACQCAkDgUAAQEBAAELIBMgKWshKQsCQAJAICUNAEGQu5CAACAmIClBAXZqQf///x9xai0AACIqQQ9xICpBBHYgKUEBcRshKQwBC0GQu5CAACAmIClqQf///x9xai0AACEpCyAeQZC7kIAAIClBAXQgEWpB////H3FqLwAAIilGDQBBkLuQgAAgKUEfcSAJckEFdCABakGQu5CAACAoQf///x9xaiIrLwAAIipBH3EiLGpB////H3FqLQAAIS1BkLuQgAAgKUELdiAJckEFdCABaiAqQQt2Ii5qQf///x9xai0AACEvQZC7kIAAIClBBnZBH3EgCXJBBXQgAWogKkEGdkEfcSIqakH///8fcWotAAAhKQJAAkAgB0EgSQ0AIClBAXQhKQwBCyAtIANsICwgBGxqQQV1IS0gKiAGbCApIAVsakEFdSEpIC8gB2wgLiAIbGpBBXYhLwsgKyAtQR9xIC9BC3RyIClBBXRB4A9xcjsAAAsgAkEBaiECIChBAmohKCAAIB9qIQAgJ0F/aiInDQALCyAYIA9qIRggGiAQaiEaIB1BAWoiHSAORw0AC0GQu5CAACAcaiAONgAAQZC7kIAAIBlqIBo2AABBAEHUzdYANgLwupCAAEGQu5CAACAXaiAYNgAAC5YHARd/QQAoArC6kIAAIQBBsLqQgAAoAgQhAQJAQZC7kIAAQbC6kIAAKAI0IgJBNGpB////H3FqKAAAIgNFDQBBsLqQgAAoAhBB7QBqIQRBsLqQgAAoAiAhBUGwupCAACgCGCEGQbC6kIAAKAIMIQdBkLuQgAAgAkE8akH///8fcWooAABBkLuQgAAgAkE4akH///8fcWooAABqIQhBIEGQu5CAACACQa4BakH///8fcWotAAAiCWshCkHAAEGQu5CAACACQa0BakH///8fcWotAAAiC2shDEEgQZC7kIAAIAJBrAFqQf///x9xai0AACINayEOIAMhDwNAQZC7kIAAQZC7kIAAIAhB////H3FqLQAAIhBBAXRBHnEgBmpB////H3FqLwAAIQICQCAFQZC7kIAAIBBBA3ZBHnEgBmpB////H3FqLwAAIhBGDQBBkLuQgAAgEEEfcSAHakEFdCAEakGQu5CAACABQf///x9xaiIRLwAAIhJBH3EiE2pB////H3FqLQAAIRRBkLuQgAAgEEELdiAHakEFdCAEaiASQQt2IhVqQf///x9xai0AACEWQZC7kIAAIBBBBnZBH3EgB2pBBXQgBGogEkEGdkEfcSISakH///8fcWotAAAhEAJAAkAgDUEgSQ0AIBBBAXQhEAwBCyAUIAlsIBMgCmxqQQV1IRQgEiAMbCAQIAtsakEFdSEQIBYgDWwgFSAObGpBBXYhFgsgESAUQR9xIBZBC3RyIBBBBXRB4A9xcjsAAAsCQCAFIAJGDQBBkLuQgAAgAkEfcSAHakEFdCAEakGQu5CAACAAQf///x9xaiIWLwAAIhBBH3EiEWpB////H3FqLQAAIRJBkLuQgAAgAkELdiAHakEFdCAEaiAQQQt2IhNqQf///x9xai0AACEUQZC7kIAAIAJBBnZBH3EgB2pBBXQgBGogEEEGdkEfcSIQakH///8fcWotAAAhAgJAAkAgDUEgSQ0AIAJBAXQhAgwBCyASIAlsIBEgCmxqQQV1IRIgECAMbCACIAtsakEFdSECIBQgDWwgEyAObGpBBXYhFAsgFiASQR9xIBRBC3RyIAJBBXRB4A9xcjsAAAsgCEEBaiEIIABBBGohACABQQRqIQEgD0F/aiIPDQALC0GwupCAACADNgIsQbC6kIAAIAM2AghBsLqQgAAgATYCBEEAIAA2ArC6kIAAQQBByKjXADYC8LqQgAAL8gQBFX9BsLqQgAAoAgghAAJAQbC6kIAAKAIsIgFFDQBBsLqQgAAoAhBB7QBqIQJBkLuQgABBsLqQgAAoAjQiA0E4akH///8fcWooAAAhBEGQu5CAACADQTRqQf///x9xaigAACEFQQAoArC6kIAAIQZBkLuQgAAgA0E8akH///8fcWooAABBkLuQgAAgA0HoAGpB////H3FqKAAAaiEHQSBBkLuQgAAgA0GuAWpB////H3FqLQAAIghrIQlBwABBkLuQgAAgA0GtAWpB////H3FqLQAAIgprIQtBIEGQu5CAACADQawBakH///8fcWotAAAiDGshDSABIQ4DQAJAIARBkLuQgABBkLuQgAAgB0H///8fcWotAABBAXQgBWpB////H3FqLwAAIgNGDQBBkLuQgAAgA0EfcSAGakEFdCACakGQu5CAACAAQf///x9xaiIPLwAAIhBBH3EiEWpB////H3FqLQAAIRJBkLuQgAAgA0ELdiAGakEFdCACaiAQQQt2IhNqQf///x9xai0AACEUQZC7kIAAIANBBnZBH3EgBmpBBXQgAmogEEEGdkEfcSIQakH///8fcWotAAAhAwJAAkAgDEEgSQ0AIANBAXQhAwwBCyASIAhsIBEgCWxqQQV1IRIgECALbCADIApsakEFdSEDIBQgDGwgEyANbGpBBXYhFAsgDyASQR9xIBRBC3RyIANBBXRB4A9xcjsAAAsgB0EBaiEHIABBAmohACAOQX9qIg4NAAsLQbC6kIAAIAE2AgxBsLqQgAAgADYCCEEAQaS01wA2AvC6kIAAQbC6kIAAQbC6kIAAKAIwIAFqNgIwC9MBAQd/QQAoArC6kIAAIQACQEGwupCAACgCMCIBRQ0AQbC6kIAAKAIsIQJBsLqQgAAoAhwhA0GwupCAACgCKEGwupCAACgCBGohBCABIQUDQAJAIAJBkLuQgABBkLuQgAAgBEH///8fcWotAABBAXQgA2pB////H3FqLwAAIgZGDQBBkLuQgAAgAEH///8fcWogBjsAAAsgBEEBaiEEIABBAmohACAFQX9qIgUNAAsLQbC6kIAAIAE2AghBACAANgKwupCAAEEAQeTl1QA2AvC6kIAAC7ACAQl/QQAoArC6kIAAIQBBsLqQgAAoAgQhAQJAQbC6kIAAKAIQIgJFDQBBsLqQgAAoAjAhA0GwupCAACgCHCEEQbC6kIAAKAIgQbC6kIAAKAIoaiEFIAIhBgNAQZC7kIAAQZC7kIAAIAVB////H3FqLQAAIgdBAXRBHnEgBGpB////H3FqLwAA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A2oQy4CAgAAiBw0AIAYgBkHAA2o2AgBBnJOAgAAgBhCZgICAAAtBACAHNgLwxqysAEEAQQA2AuzOqqwAQQAoAvS6kIAAIQcgBkHABGokgICAgABBf0EAIAcbCxsAQQAgADkD4MasrABB25CAgAAgABCugICAAAt6AQJ/I4CAgIAAQRBrIgAkgICAgABBfyEBAkBBACgC9LqQgAANACAAQQAoAuTOqqwANgIIIAAQwICAgAA2AgxBACgC6MasrABBAiAAQQhqEI+AgIAAGhC9gICAAEF/QQBBACgC9LqQgAAbIQELIABBEGokgICAgAAgAQuBAQECfyOAgICAAEEgayIEJICAgIAAAkBBACgC9LqQgAANACAEQQAoAuTOqqwANgIAEMCAgIAAIQUgBCADNgIUIAQgAjYCECAEIAE2AgwgBCAANgIIIAQgBTYCBEEAKALsxqysAEEGIAQQj4CAgAAaEL2AgIAACyAEQSBqJICAgIAAC3oBAn8jgICAgABBIGsiAiSAgICAAAJAQQAoAvS6kIAADQAgAkEAKALkzqqsADYCABDAgICAACEDIAJBADYCECACIAE2AgwgAiAANgIIIAIgAzYCBEEAKALwxqysAEEFIAIQj4CAgAAaEL2AgIAACyACQSBqJICAgIAAC74BAQF/I4CAgIAAQaABayIBJICAgIAAIAFBACgC5M6qrAA2AhggARDAgICAADYCHCABIAA2AhAgAUEgakGAAUHXkoCAACABQRBqEKiAgIAAGgJAAkAgAUEgahDLgICAACIADQAgASABQSBqNgIAQZyTgIAAIAEQmYCAgAAMAQtBACgC9LqQgAANACAAQQIgAUEYahCPgICAABoQvYCAgAALQQAoAvS6kIAAIQAgAUGgAWokgICAgABBf0EAIAAbCwIACwgAQfTGrKwACwgAQZC7kIAACwoAIAAQl4CAgAALCgAgABCbgICAAAsMAEEAKQPQu5CgALoLCAAQooCAgAALCAAQo4CAgAALDQBBACAANgKUuoCAAAsIAEGwupCAAAsLAEEAKAL0upCAAAsaAEEAQQAoArC6kIAAEJ2AgIAANgKwupCAAAskAEEAQbC6kIAAKAIEQQAoArC6kIAAbBCfgICAADYCsLqQgAALEQBBACgCsLqQgAAQnoCAgAALPgBBkLuQgABBACgCsLqQgABB////H3FqQZC7kIAAQbC6kIAAKAIEQf///x9xakGwupCAACgCCBCRgICAABoLPgBBkLuQgABBACgCsLqQgABB////H3FqQZC7kIAAQbC6kIAAKAIEQf///x9xakGwupCAACgCCBCRgICAABoLMQBBkLuQgABBACgCsLqQgABB////H3FqQbC6kIAAKAIEQbC6kIAAKAIIEJKAgIAAGgsaAEEAQQAoArC6kIAAEKSAgIAANgKwupCAAAtuAQR/QbC6kIAAKAIEIQBBACgCsLqQgAAhAQJAA0BBkLuQgAAgAEH///8fcWotAAAhAkGQu5CAACABQf///x9xai0AACIDRQ0BIABBAWohACABQQFqIQEgAyACRg0ACwtBACADIAJrNgKwupCAAAucAQEFf0EAIQACQEGwupCAACgCCCIBRQ0AQbC6kIAAKAIEIQBBACgCsLqQgAAhAgJAA0BBkLuQgAAgAEH///8fcWotAAAhA0GQu5CAACACQf///x9xai0AACIERQ0BIAQgA0cNASACQQFqIQIgAEEBaiEAIAFBf2oiAQ0AC0EAQQA2ArC6kIAADwsgBCADayEAC0EAIAA2ArC6kIAAC1UBA39BsLqQgAAoAgQhAEEAKAKwupCAACEBA0BBkLuQgAAgAUH///8fcWpBkLuQgAAgAEH///8fcWotAAAiAjoAACABQQFqIQEgAEEBaiEAIAINAAsLxQIBBX9BACEAQQAoArC6kIAAIQECQAJAQbC6kIAAKAIIIgJFDQBBsLqQgAAoAgQhA0EAIQADQEGQu5CAACABIABqQf///x9xakGQu5CAACADIABqQf///x9xai0AACIEOgAAIARFDQEgAiAAQQFqIgBHDQAMAgsLIAAgAk8NACAAIQQCQCACIABrQQNxIgNFDQAgACEEA0BBkLuQgAAgASAEakH///8fcWpBADoAACAEQQFqIQQgA0F/aiIDDQALCyAAIAJrQXxLDQAgBCABaiEAIAIgBGshBANAQZC7kIAAIABB////H3FqQQA6AABBkLuQgAAgAEEBakH///8fcWpBADoAAEGQu5CAACAAQQJqQf///x9xakEAOgAAQZC7kIAAIABBA2pB////H3FqQQA6AAAgAEEEaiEAIARBfGoiBA0ACwsLYgEDf0EAKAKwupCAACEAIAAgABCkgICAAGohAEGwupCAACgCBCEBA0BBkLuQgAAgAEH///8fcWpBkLuQgAAgAUH///8fcWotAAAiAjoAACAAQQFqIQAgAUEBaiEBIAINAAsL0wEBBX9BACEAQQAoArC6kIAAIQECQEGwupCAACgCBCICEKSAgIAAIgNFDQACQEGQu5CAACABQf///x9xai0AAEUNACADQQFIIQQDQEEAIQACQCAEDQADQEGQu5CAACABIABqQf///x9xai0AAEGQu5CAACACIABqQf///x9xai0AAEcNASADIABBAWoiAEcNAAsgASEADAILAkAgACADRw0AIAEhAAwCC0GQu5CAACABQQFqIgFB////H3FqLQAADQALQQAhAAtBACAANgKwupCAAAsLVwECf0GQu5CAAEEAKAKwupCAABCkgICAAEEBaiIAEJ2AgIAAIgFB////H3FqQZC7kIAAQQAoArC6kIAAQf///x9xaiAAEJCAgIAAGkEAIAE2ArC6kIAACxQAQQBBACgCwMOsrAA2ArC6kIAACxQAQQBBACgC0M6WrAA2ArC6kIAAC0cBAX8jgICAgABBEGsiACSAgICAACAAQbC6kIAAKAI4NgIAQZaKgIAAIAAQmYCAgABBAEEBNgL0upCAACAAQRBqJICAgIAAC0cBAX8jgICAgABBEGsiACSAgICAACAAQbC6kIAAKAI4NgIAQd2JgIAAIAAQmYCAgABBAEEBNgL0upCAACAAQRBqJICAgIAAC7cBAQN/I4CAgIAAQYAgayIAJICAgIAAIABBgCBBsLqQgAAoAghBsLqQgAAoAgwQpoCAgAAhAQJAQbC6kIAAKAIEIgJFDQBBkLuQgABBACgCsLqQgABB////H3FqIAAgASACQX9qIgIgASACSRsiAkH/HyACQf8fSRsiAhCQgICAABpBkLuQgABBACgCsLqQgAAgAmpB////H3FqQQA6AAALQQAgATYCsLqQgAAgAEGAIGokgICAgAALsQIBA38jgICAgABBgAhrIgAkgICAgABBkLuQgABBsLqQgAAoAjQiAUHw//8fakH///8fcWpBACgCsLqQgAA2AABBkLuQgAAgAUH0//8fakH///8fcWpBsLqQgAAoAgQ2AABBkLuQgAAgAUH4//8fakH///8fcWpBsLqQgAAoAggiAjYAAEGQu5CAACABQfz//x9qQf///x9xakGwupCAACgCDDYAAAJAQQAoApS6gIAARQ0AIABBgAggAiABQXxqEKaAgIAAIgJB/wcgAkH/B0gbIQECQCACQQFIDQAgAEF/aiECA0ACQCACIAFqLQAAQXZqDgQAAgIAAgsgAUF/aiIBQQFqQQFKDQALQQAhAQsgACABEICAgIAAC0EAQQE2ArC6kIAAIABBgAhqJICAgIAACxUAQQBBACsDsLqQgACbOQOwupCAAAsVAEEAQQArA7C6kIAAnDkDsLqQgAALIwBBAEEAKwOwupCAAEGwupCAACsDCBCGgICAADkDsLqQgAALkAEDAXwBfwJ+EIeAgIAAIQBBkLuQgABBACgCsLqQgAAiAUH///8fcWogAPwHIgJC6AeAIgM+AABBkLuQgAAgAUEEakH///8fcWogAiADQugHfn09AABBkLuQgAAgAUEGakH///8fcWpB5PsDOwAAQZC7kIAAIAFBCGpB////H3FqQQA7AABBAEEANgKwupCAAAsNAEEAQQA2ArC6kIAACykAQQBBfzYCsLqQgABBkLuQgABBACgC0M6WrABB////H3FqQeUANgAAC4gBAQV/QQAhAEEAKAKwupCAACEBQQAhAgNAQQAhAwJAA0BBkLuQgAAgAUH///8fcWotAAAiBEFQakH/AXFBCUsNASABQQFqIQEgA0EKbCAEakFQaiEDDAALCyABQQFqIQEgA0H/AXEgAnQgAHIhACACQQhqIQIgBEEuRg0AC0EAIAA2ArC6kIAACyMAQQBBACgCsLqQgABBsLqQgAAoAgQQsICAgAA2ArC6kIAACxoAQQBBACgCsLqQgAAQsYCAgAA2ArC6kIAACywAQQBBACgCsLqQgABBsLqQgAAoAgRBsLqQgAAoAggQsoCAgAA2ArC6kIAACywAQQBBACgCsLqQgABBsLqQgAAoAgRBsLqQgAAoAggQs4CAgAA2ArC6kIAACywAQQBBACgCsLqQgABBsLqQgAA0AgRBsLqQgAAoAggQtICAgAA+ArC6kIAACxoAQQBBACgCsLqQgAAQtYCAgAA2ArC6kIAACyMAQQBBACgCsLqQgABBsLqQgAAoAgQQtoCAgAA2ArC6kIAACxoAQQBBACgCsLqQgAAQt4CAgAA2ArC6kIAACxoAQQBBACgCsLqQgAAQuICAgAA2ArC6kIAACxwAQQBBACgCsLqQgABBARC5gICAADYCsLqQgAALHABBAEEAKAKwupCAAEEAELmAgIAANgKwupCAAAsjAEEAQQAoArC6kIAAQbC6kIAAKAIEELqAgIAANgKwupCAAAtRAQJ/QQAoArC6kIAAIQBBkLuQgABBEBCfgICAACIBQf///x9xakHGkrGqBDYAAEEAIAE2ArC6kIAAQZC7kIAAIAFBBGpB////H3FqIAA2AAALsgEBBH8CQAJAQbC6kIAAKAIEIgBFDQBBsLqQgAAoAggiAQ0BC0EAQQA2ArC6kIAADwtBACECAkBBkLuQgABBsLqQgAAoAgxBBGpB////H3FqKAAAQQAoArC6kIAAIAEgAGwiAxCygICAACIBQQFIDQAgASAAbiECC0EAIAI2ArC6kIAAAkAgAUEASA0AIAEgA08NAEGQu5CAAEGwupCAACgCDEEIakH///8fcWpBATYAAAsLbAIBfgF/QZC7kIAAQQAoArC6kIAAQQRqQf///x9xaigAAEGwupCAADQCBEGwupCAACgCCBC0gICAACEAQQAoArC6kIAAIQFBACAAQj+HPgKwupCAAEGQu5CAACABQQhqQf///x9xakEANgAACz0BAn9BkLuQgABBACgCsLqQgAAiAEEEakH///8fcWooAAAhASAAEJ6AgIAAQQAgARCxgICAADYCsLqQgAALtAMBD38jgICAgABBEGsiACSAgICAAAJAQbC6kIAAKAIEIgFBAkkNAEGwupCAACgCCCICRQ0AQbC6kIAAKAIMIQNBACgCsLqQgAAhBCACEJeAgIAAIQVBACEGA0ACQCAGQQJ0QcC5gIAAaigCACIHIAFPDQAgAiAHbCEIIAQhCSAHIQoDQCAFQZC7kIAAIAogAmwgBGpB////H3EiC2ogAhCQgICAABpBkLuQgAAgAhCdgICAACIMQf///x9xaiAFIAIQkICAgAAaAkAgCiAHSQ0AIAkhDSAKIQ4DQCAAIAw2AgwgACANNgIIIANBAiAAQQhqEI+AgIAAIQsCQAJAQQAoAvS6kIAADQAgC0EASg0BCyAIIA1qQf///x9xIQsMAgtBkLuQgAAgCCANakH///8fcWpBkLuQgAAgDUH///8fcSILaiACEJCAgIAAGiANIAhrIQ0gDiAHayIOIAdPDQALC0GQu5CAACALaiAFIAIQkICAgAAaIAwQnoCAgAAgCSACaiEJIApBAWoiCiABRw0ACwsgBkEBaiIGQQhHDQALIAUQm4CAgAALIABBEGokgICAgAALNgBBAEEAKALEw6ysADYCsLqQgABBkLuQgABBsLqQgAAoAgRB////H3FqQQAoAsjDrKwANgAAC0cBAX8jgICAgABBEGsiACSAgICAACAAQbC6kIAAKAI4NgIAQbiJgIAAIAAQmYCAgABBAEEBNgL0upCAACAAQRBqJICAgIAAC5QDAQR/AkBBACgCsLqQgAAiAEUNAEEAKALcx6ysACEBQbC6kIAAKAIEIQIDQEEBIQMCQAJAIAFFDQACQEEAKAL4x6ysAA0AQQIhAwwBCwJAQQAoApTIrKwADQBBAyEDDAELAkBBACgCsMisrAANAEEEIQMMAQsCQEEAKALMyKysAA0AQQUhAwwBCwJAQQAoAujIrKwADQBBBiEDDAELAkBBACgChMmsrAANAEEHIQMMAQsCQEEAKAKgyaysAA0AQQghAwwBCwJAQQAoArzJrKwADQBBCSEDDAELAkBBACgC2MmsrAANAEEKIQMMAQsCQEEAKAL0yaysAA0AQQshAwwBCwJAQQAoApDKrKwADQBBDCEDDAELAkBBACgCrMqsrAANAEENIQMMAQsCQEEAKALIyqysAA0AQQ4hAwwBC0EAIQNBACgC5MqsrAANAUEPIQMLIANBHGxBwMesrABqQQE2AgBBACgC3MesrAAhAQtBkLuQgAAgAkH///8fcWogAzYAACACQQRqIQIgAEF/aiIADQALCwuvAQEFfwJAQQAoArC6kIAAIgBFDQBBsLqQgAAoAgQhAUEAIQJBACEDA0ACQEGQu5CAACABIAJqQf///x9xaigAACIEQX9qQQ5LDQAgBEEcbCIAQcDHrKwAaiEBAkAgAEHYx6ysAGooAgAiAEUNACAAEJuAgIAACyABQQBBHBCSgICAABpBACgCsLqQgAAhAEGwupCAACgCBCEBCyACQQRqIQIgA0EBaiIDIABJDQALCwsUAEEAQbC6kIAAKAIENgKAy6ysAAupBAELfyOAgICAAEEgayIAJICAgIAAAkBBsLqQgAAoAgQNAEEAKAKAy6ysACIBQXBqQXFJDQBBkLuQgABBsLqQgAAoAjQiAkH///8fcWohA0GQu5CAACACQRBqQf///x9xaiEEQZC7kIAAIAJBCGpB////H3FqKAAAIQVBAiEGAkBBkLuQgAAgAkEMakH///8fcWooAAAiB0HN/31qQQJJDQAgB0HjhgJGDQBBA0EEQQEgBUGIMkYbIAVBhzJGGyEGCyADKAAAIQMgBCgAACEIQbC6kIAAKAIMIQICQAJAIAFBHGwiCUHYx6ysAGoiCigCACIERQ0AAkAgCUHEx6ysAGooAgAgAkcNACABQRxsIglByMesrABqKAIAIANHDQAgCUHMx6ysAGooAgAgBkYNAgsgBBCbgICAACAKQQA2AgALIAogAyACbCAGbBCXgICAACIENgIACyABQRxsIgFB1MesrABqIAc2AgAgAUHQx6ysAGogBTYCACABQczHrKwAaiAGNgIAIAFByMesrABqIAM2AgAgAUHEx6ysAGogAjYCAAJAAkAgCEUNACAEQZC7kIAAIAhB////H3FqIAMgAmwgBmwQkICAgAAaDAELIARBACADIAJsIAZsEJKAgIAAGgsgAEEQaiAHNgIAIAAgAjYCBCAAIAM2AgggACAFNgIMIABBACgCgMusrAA2AgBBuIuAgAAgABCZgICAAAsgAEEgaiSAgICAAAvHAgEMfwJAQQAoAoDLrKwAIgBBcGpBcUkNACAAQRxsQdjHrKwAaiIBKAIARQ0AQZC7kIAAQbC6kIAAKAI0IgJBEGpB////H3FqKAAAIgNFDQACQEGQu5CAACACQQRqQf///x9xaigAACIERQ0AQbC6kIAAKAIMIQUgAEEcbCIAQczHrKwAaigCACIGQZC7kIAAIAJB////H3FqKAAAIgdsQQNqQfz//x9xIQggB0GwupCAACgCCCICaiEJIABBxMesrABqIQogAEHIx6ysAGohCwNAIAUgCygCAE8NASABKAIAIAooAgAiACAFbCACaiAGbGpBkLuQgAAgA0H///8fcWogACACayAHIAkgAEsbIAZsEJCAgIAAGiAFQQFqIQUgAyAIaiEDIARBf2oiBA0ACwtBAEEAKAK0x6ysAEEBajYCtMesrAALC9cIBgZ/CH0GfwJ9AX8CfQJAQQAoAoDLrKwAIgBBcGpBcUkNACAAQRxsIgBB2MesrABqKAIAIgFFDQBBsLqQgAAoAgQhAkGwupCAACgCCCEDQQAgATYC9MasrABBAEEAKAKQx6ysAEEBajYCkMesrABBACAAQcTHrKwAaigCADYC+MasrABBACAAQcjHrKwAaigCADYC/MasrABBACAAQczHrKwAaigCADYCgMesrABBACAAQdDHrKwAaigCADYChMesrABBACAAQdTHrKwAaigCADYCiMesrAACQCADQQRJDQBBACgChMusrAAiBEUNAEEAKAKIy6ysACIFRQ0AAkACQCACIAIgA2pJDQBDKGtuziEGQyhrbk4hB0Moa25OIQhDKGtuziEJQyhrbk4hCkMoa25OIQtDKGtuziEMQyhrbs4hDQwBC0EAKAKQy6ysACIAQQJ0IQ4gAEEBdCEPQQAoApjLrKwAIgFBAnQhECABQQF0IREgAiABbCISQQJ0IQEgEkEBdCESIAQgAiAAbCICQQJ0aiEAIAQgAkEBdGohAkMoa25OIQtDKGtuziENQQAoAozLrKwAQfpXaiEEQQAoApTLrKwAQfpXaiETQyhrbs4hDEMoa25OIQpDKGtuziEJQyhrbs4hBkMoa25OIQhDKGtuTiEHA0ACQAJAAkACQCAEDgcAAgICAgIBAgtBkLuQgAAgAEH///8fcWoqAAAhFEGQu5CAACAAQQRqQf///x9xaioAACEVDAILQZC7kIAAIABB////H3FqKAAAskMAAIA3lCEUQZC7kIAAIABBBGpB////H3FqKAAAskMAAIA3lCEVDAELQZC7kIAAIAJB////H3FqLgAAsiEUQZC7kIAAIAJBAmpB////H3FqLgAAsiEVCwJAAkACQAJAIBMOBwACAgICAgECC0GQu5CAACAFIAFqIhZB////H3FqKgAAIRdBkLuQgAAgFkEEakH///8fcWoqAAAhGAwCC0GQu5CAACAFIAFqIhZB////H3FqKAAAskMAAIA3lCEXQZC7kIAAIBZBBGpB////H3FqKAAAskMAAIA3lCEYDAELQZC7kIAAIAUgEmoiFkH///8fcWouAACyIRdBkLuQgAAgFkECakH///8fcWouAACyIRgLIBggDSAYIA1eGyENIBggCyAYIAtdGyELIBcgDCAXIAxeGyEMIBcgCiAXIApdGyEKIBUgCSAVIAleGyEJIBUgCCAVIAhdGyEIIBQgBiAUIAZeGyEGIBQgByAUIAddGyEHIAAgDmohACACIA9qIQIgASAQaiEBIBIgEWohEiADQX9qIgMNAAsLQQAgCTgCsMesrABBACAGOAKsx6ysAEEAIAg4AqjHrKwAQQAgBzgCpMesrABBACANOAKgx6ysAEEAIAw4ApzHrKwAQQAgCzgCmMesrABBACAKOAKUx6ysAAtBAEEAKAKMx6ysAEEBajYCjMesrAALCzgAQQBBACgCsLqQgAA2ApDLrKwAQQBBsLqQgAAoAgQ2AozLrKwAQQBBsLqQgAAoAgw2AoTLrKwACzgAQQBBACgCsLqQgAA2ApjLrKwAQQBBsLqQgAAoAgQ2ApTLrKwAQQBBsLqQgAAoAgw2AojLrKwAC0oBAX8jgICAgABBEGsiACSAgICAACAAQQApA7C6kIAANwMAIABBsLqQgAApAwg3AwhB9KSAgAAgABCZgICAACAAQRBqJICAgIAAC24BAX8jgICAgABBEGsiACSAgICAACAAQQAqArC6kIAA/AA2AgAgAEGwupCAACoCBPwANgIEIABBsLqQgAAqAgj8ADYCCCAAQbC6kIAAKgIM/AA2AgxBi6WAgAAgABCZgICAACAAQRBqJICAgIAACwIAC0kAQQAoAujDrKwAQeQAakEAKAKwupCAAEGwupCAACgCBEGwupCAACgCCBCEgICAABpBACgC5MOsrABBACgC4MOsrAAQiYCAgAALSQBBACgC9MOsrABB5ABqQQAoArC6kIAAQbC6kIAAKAIEQbC6kIAAKAIIEISAgIAAGkEAKALww6ysAEEAKALsw6ysABCJgICAAAtJAEEAKAKAxKysAEHkAGpBACgCsLqQgABBsLqQgAAoAgRBsLqQgAAoAggQhICAgAAaQQAoAvzDrKwAQQAoAvjDrKwAEImAgIAAC0kAQQAoAozErKwAQeQAakEAKAKwupCAAEGwupCAACgCBEGwupCAACgCCBCEgICAABpBACgCiMSsrABBACgChMSsrAAQiYCAgAALSQBBACgCmMSsrABB5ABqQQAoArC6kIAAQbC6kIAAKAIEQbC6kIAAKAIIEISAgIAAGkEAKAKUxKysAEEAKAKQxKysABCJgICAAAtJAEEAKAKkxKysAEHkAGpBACgCsLqQgABBsLqQgAAoAgRBsLqQgAAoAggQhICAgAAaQQAoAqDErKwAQQAoApzErKwAEImAgIAAC0kAQQAoArDErKwAQeQAakEAKAKwupCAAEGwupCAACgCBEGwupCAACgCCBCEgICAABpBACgCrMSsrABBACgCqMSsrAAQiYCAgAALSQBBACgCvMSsrABB5ABqQQAoArC6kIAAQbC6kIAAKAIEQbC6kIAAKAIIEISAgIAAGkEAKAK4xKysAEEAKAK0xKysABCJgICAAAtJAEEAKALIxKysAEHkAGpBACgCsLqQgABBsLqQgAAoAgRBsLqQgAAoAggQhICAgAAaQQAoAsTErKwAQQAoAsDErKwAEImAgIAAC0kAQQAoAtTErKwAQeQAakEAKAKwupCAAEGwupCAACgCBEGwupCAACgCCBCEgICAABpBACgC0MSsrABBACgCzMSsrAAQiYCAgAALSQBBACgC4MSsrABB5ABqQQAoArC6kIAAQbC6kIAAKAIEQbC6kIAAKAIIEISAgIAAGkEAKALcxKysAEEAKALYxKysABCJgICAAAtJAEEAKALsxKysAEHkAGpBACgCsLqQgABBsLqQgAAoAgRBsLqQgAAoAggQhICAgAAaQQAoAujErKwAQQAoAuTErKwAEImAgIAAC0kAQQAoAvjErKwAQeQAakEAKAKwupCAAEGwupCAACgCBEGwupCAACgCCBCEgICAABpBACgC9MSsrABBACgC8MSsrAAQiYCAgAALSQBBACgChMWsrABB5ABqQQAoArC6kIAAQbC6kIAAKAIEQbC6kIAAKAIIEISAgIAAGkEAKAKAxaysAEEAKAL8xKysABCJgICAAAtJAEEAKAKQxaysAEHkAGpBACgCsLqQgABBsLqQgAAoAgRBsLqQgAAoAggQhICAgAAaQQAoAozFrKwAQQAoAojFrKwAEImAgIAAC0kAQQAoApzFrKwAQeQAakEAKAKwupCAAEGwupCAACgCBEGwupCAACgCCBCEgICAABpBACgCmMWsrABBACgClMWsrAAQiYCAgAAL1wIBBX8CQCAAQQFNDQBBfw8LQX4hAQJAEKGAgIAAELuAgIAAahCpgICAAGpBgIAZSw0AIABBjIAZbCIBQaDLrKwAaiECAkACQBCjgICAACIDQYCguX5qIAFBpMusrABqIgQoAgBLDQAgAigCACEFDAELAkAgA0H/nz1qQRB2QAAiBUEATg0AQX8PC0F/IQEgBUEQdCIFRQ0BIAIgBTYCACAEIANBgKA5ajYCAAsgBUGQu5CAAEGAwJgBakGAoAUQkICAgAAaIAVBgKAFakGQu5CAAEGAgAxqQYCANBCQgICAABogBUGAoDlqQZC7kIAAQYCAgAJqIANBgICAfmoQkICAgAAaIABBjIAZbCIAQajLrKwAaiADNgIAIABBrMusrABqIgBBARCggICAACAAEKGAgIAAaiIAQQEQvICAgAAgABC7gICAAGpBARCqgICAAEEAIQELIAELvwEBAX8CQCAAQQFLDQAgAEGMgBlsIgFBoMusrABqKAIAIgBFDQBBkLuQgABBgMCYAWogAEGAoAUQkICAgAAaQZC7kIAAQYCADGogAEGAoAVqQYCANBCQgICAABpBkLuQgABBgICAAmogAEGAoDlqIAFBqMusrABqKAIAQYCAgH5qEJCAgIAAGiABQazLrKwAaiIAQQAQoICAgAAgABChgICAAGoiAEEAELyAgIAAIAAQu4CAgABqQQAQqoCAgAALC6wDAQV/I4CAgIAAQRBrIgMkgICAgAACQAJAQQAoArjL3qwAIgRFDQBBACgCvMverAAhBQwBC0EAQfSLgIAAEMuAgIAANgK4y96sAEEAQdiMgIAAEMuAgIAAIgU2ArzL3qwAQQAoArjL3qwAIQQLQX8hBgJAIARFDQAgBUUNAEEAKAL0upCAAA0AIARBAEEAEI+AgIAAGiADQZC7kIAAKADI+ZsBNgIMQQAoArzL3qwAQQEgA0EMahCPgICAACEHQX8hBkEAKAL0upCAAA0AIAdFDQBBkLuQgAAgB0EMakH///8fcWooAABBEEcNAEEAIQZBkLuQgAAgB0EEakH///8fcWooAAAiBCACIAQgAkkbIgVFDQBBkLuQgAAgB0EQakH///8fcWooAAAhBEGQu5CAACAHQQhqQf///x9xaigAACECQZC7kIAAIAdB////H3FqKAAAIgcgASAHIAFJG0EBdCEHIAFBAXQhAQNAIABBkLuQgAAgBEH///8fcWogBxCQgICAABogACABaiEAIAQgAmohBCAFQX9qIgUNAAsLIANBEGokgICAgAAgBgstAQF/QQAhAwJAIAFBDEsNAEEAKAL0upCAAA0AIAAgASACEI+AgIAAIQMLIAMLoRABAn9BACEBQQAgAEEBcjYCwMverABBfyEAAkBBvYyAgAAQy4CAgABBkJLvAEcNAAJAQZC7kIAAKAD0/mVBgcCIFEcNAEGQu5CAAEGDwIgUNgD0/mVBASEBC0EAIQBBACECAkBBkLuQgAAoAPCNcEGAwIKNfkcNAEGQu5CAAEGA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QZC7kIAAKACsknBqQaSN8ABqQf///x9xaigAADYC+MverAALQQAoAujL3qwARQ0AQQAoAuzL3qwARQ0AQQAoAvDL3qwARQ0AIAFFDQBBACgC+MverABFDQBBkLuQgAAoAJjTZUH86PysfkcNAEEAQQE6APzL3qwAQZjT5QBB3oCAgABB1I6AgAAQzoCAgAAgAEEBaiEACyAACyUAQQBBACgCsLqQgAA2AoDM3qwAQfCftcl+QZiZ6AAQiYCAgAALjwQBC39BACEAQQAoAoDM3qwAIQEDQAJAQZC7kIAAIAEgAGoiAkHUAWpB////H3FqIgMuAAAiBEHgeWpB4XlJDQBBkLuQgAAgAkHaAWpB////H3FqIgUvAABB//8DcUHoB0cNAEGQu5CAACACQdgBakH///8fcWoiBi4AACEHQZC7kIAAIAJB1gFqQf///x9xaiIILgAAIQlBkLuQgAAgAkHSAWpB////H3FqIgogCi4AAEGgBmwgBG07AAAgA0GgBjsAACAIIAkgBGtByAFsQegHIARrIgNtQaAGajsAACAGIAcgBGtByAFsIANtQaAGajsAACAFQegHOwAACwJAQZC7kIAAIAJBuAJqQf///x9xaiIDLgAAIgRB4HlqQeF5SQ0AQZC7kIAAIAJBvgJqQf///x9xaiIFLwAAQf//A3FB6AdHDQBBkLuQgAAgAkG8AmpB////H3FqIgYuAAAhB0GQu5CAACACQboCakH///8fcWoiCC4AACEJQZC7kIAAIAJBtgJqQf///x9xaiICIAIuAABBoAZsIARtOwAAIANBoAY7AAAgCCAJIARrQcgBbEHoByAEayICbUGgBmo7AAAgBiAHIARrQcgBbCACbUGgBmo7AAAgBUHoBzsAAAsgAEEKaiIAQeQARw0AC0EAQeyf6AA2AvC6kIAAQbC6kIAAQbC6kIAAKAI0QQxqNgI0C2wBAX8CQEGQu5CAAEEAKAKwupCAACIAQfABakH///8fcWooAABBAUgNAEGQu5CAACAAQcgEakH///8fcWpBkLuQgAAgAEHmBWpB////H3FqLwAAOwAAC0EAQbC6kIAAKAI4QX5xNgLwupCAAAtyAQF/AkBBkLuQgABBACgCsLqQgAAiAEGqA2pB////H3FqLgAAQZC7kIAAIABBmgJqQf///x9xaiwAAGoiAEGwupCAACgC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RQ0AQZC7kIAAIAZBFGpB////H3FqLQAAQQpHDQBBkLuQgABBACgC+MverABB////H3FqKAAAIQdBkLuQgABBGTsA8IScAUGQu5CAAEEmOgDuhJwBQZC7kIAAIAAoAhAiBkGmA2pB////H3FqIgggAy8AADsAACAAIAc2AiAgAEEANgI0IABCADcCLCAAIAY2AiggAEGQu5CAACwAl4+cATYCJEEAKALoy96sAEEGIABBIGoQj4CAgAAhCSAAIAY2AhQgACAJNgIcIABBkLuQgAAsAJSPnAE2AhhBACgC7MverABBAyAAQRRqEI+AgIAAGiAIIAQvAAA7AAAgACAHNgIgIABBADYCNCAAQgA3AiwgACAGNgIoIABBkLuQgAAsAJiPnAE2AiRBACgC6MverABBBiAAQSBqEI+AgIAAIQkgACAGNgIUIAAgCTYCHCAAQZC7kIAALACVj5wBNgIYQQAoAuzL3qwAQQMgAEEUahCPgICAABogCCAFLwAAOwAAIAAgBzYCICAAQQA2AjQgAEIANwIsIAAgBjYCKCAAQZC7kIAALACZj5wBNgIkQQAoAujL3qwAQQYgAEEgahCPgICAACEHIAAgBjYCFCAAIAc2AhwgAEGQu5CAACwAlo+cATYCGEEAKALsy96sAEEDIABBFGoQj4CAgAAaCyABQQdJDQALC0H86PysfkEAQQAtAPzL3qwAG0GY0+UAEImAgIAAIABBwABqJICAgIAAC+QQAR9/I4CAgIAAQfAAayIBJICAgIAAAkBBkLuQgAAoAOSinAEiAkUNAEGQu5CAAEGwupCAACgCGCIDQRRqQf///x9xaigAACIERQ0AQZC7kIAAIANBD2pB////H3FqLAAAIgNBAEgNAEGQu5CAACAEQQJqQf///x9xai4AACADQf8BcUwNAEEBIQVBkLuQgABBkLuQgAAgBEEEakH///8fcWooAAAgA0EYbGoiBkEJakH///8fcWotAAAiA0EBIANBAUobIQcCQAJAAkACQAJAQZC7kIAAIAZBCGpB////H3FqLQAAIgNBemoOHQECAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMAAwsgASAHNgIMIAFCi4CAgIABNwIEIAFBkLuQgAAoALSinAE2AgAgAUEANgIQQQAoAtTL3qwAQQUgARCPgICAAEEARyEFDAMLIAdBBWwhA0EBIQUDQEEAQQAoAsDL3qwAIgRBDXQgBHMiBEERdiAEcyIEQQV0IARzIgQ2AsDL3qwAIAFCATcCDCABIARBDXBBAWo2AgggAUEMNgIEIAFBkLuQgAAoALSinAE2AgAgBUEAQQAoAtTL3qwAQQUgARCPgICAABshBSADQX9qIgMNAAwDCwsDQEEAQQAoAsDL3qwAIgNBDXQgA3MiA0ERdiADcyIDQQV0IANzIgM2AsDL3qwAIAFCATcCDCABIANBDXBBKGo2AgggAUEMNgIEIAFBkLuQgAAoALSinAE2AgAgBUEAQQAoAtTL3qwAQQUgARCPgICAABshBSAHQX9qIgcNAAwCCwtBkLuQgAAgAkGsBGpB////H3FqLAAAIQgCQCADwCIEQXFqQQNLDQBBkLuQgAAgAkGtBGpB////H3FqLQAAIQkgAUKIgICAkAE3AhQgAUKGgICA8AA3AgwgAUKKgICA0AA3AgQgASAINgIAIARBcmohCkEGQQUgCEEDRhsiC0EBaiEMIAEgC0ECdGoiDUFsaiEOIAEgC0F8aiIPQQJ0ciEQIAEgC0F9aiIRQQJ0aiESIAEgC0F+aiITQQJ0aiEUIAEgC0F/aiIVQQJ0aiEWIBVBAUshFyATQQJJIRggEUECSSEZIA9BAkkhGkEAIRtBASEFA0AgDSgCACEEIA0gAUEAKALAy96sACIDQQ10IANzIgNBEXYgA3MiA0EFdCADcyIDIAxwQQJ0aiIcKAIANgIAIBwgBDYCACAWKAIAIQQgFiABIANBDXQgA3MiA0ERdiADcyIDQQV0IANzIgMgC3BBAnRqIhwoAgA2AgAgHCAENgIAAkAgF0UNACAUKAIAIQQgFCABIANBDXQgA3MiA0ERdiADcyIDQQV0IANzIgMgFXBBAnRqIhwoAgA2AgAgHCAENgIAIBgNACASKAIAIQQgEiABIANBDXQgA3MiA0ERdiADcyIDQQV0IANzIgMgE3BBAnRqIhwoAgA2AgAgHCAENgIAIBkNACAQKAIAIQQgECABIANBDXQgA3MiA0ERdiADcyIDQQV0IANzIgMgEXBBAnRqIhwoAgA2AgAgHCAENgIAIBoNACAOKAIAIQQgDiABIANBDXQgA3MiA0ERdiADcyIDQQV0IANzIgMgD3BBAnRyIhwoAgA2AgAgHCAENgIAC0EAIAM2AsDL3qwAIAEhBCAKIR0DQEEAIRwCQCAEKAIAIgMgCCAJEMSBgIAAIh5BAEgNAEGQu5CAACgAtKKcASEfIAFBkLuQgAAoAOSinAE2AmwgASAeNgJoIAEgAzYCZCABIB82AmBBACEcQQAoAsTL3qwAQQMgAUHgAGoQj4CAgAAiA0UNACADIAggCSABQdwAaiABQdAAaiABQcQAahDFgYCAAAJAIAEoAlwiHEEASA0AQZC7kIAAIANB3AJqQf///x9xaiAcOgAAC0GQu5CAACADQd8CakH///8fcWogASgCUDoAAEGQu5CAACADQeICakH///8fcWogASgCRDoAAEGQu5CAACADQeACakH///8fcWogASgCVDoAAEGQu5CAACADQeMCakH///8fcWogASgCSDoAAEGQu5CAACADQeECakH///8fcWogASgCWDoAAEGQu5CAACADQeQCakH///8fcWogASgCTDoAACABIAM2AkAgASAfNgI8QQAoAtDL3qwAQQIgAUE8ahCPgICAABpBACgC2MverABBASABQewAahCPgICAACEcIAFBADYCOCABIAM2AjQgASAcNgIwQQAoAsjL3qwAQQMgAUEwahCPgICAACEcIAEgAzYCLCABIB82AihBACgCzMverABBAiABQShqEI+AgIAAGiAcQQBHIRwLIARBBGohBCAcIAVxIQUgHUF/aiIdDQALIBtBAWoiGyAHRw0ADAILCwJAIANBK0cNACABIAc2AgwgAUKKgICAkAI3AgQgAUGQu5CAACgAtKKcATYCACABQQA2AhBBACgC1MverABBBSABEI+AgIAAQQBHIQUMAQsCQCAEQVRqQQRLDQAgCEEASA0AIAhBA0oNACABIAc2AgwgASAINgIEIAEgBEElajYCCCABQZC7kIAAKAC0opwBNgIAIAFBADYCEEEAKALUy96sAEEFIAEQj4CAgABBAEchBQwBCyABIAc2AgwgASAENgIIIAFBEjYCBCABQZC7kIAAKAC0opwBNgIAIAFBADYCEEEAKALUy96sAEEFIAEQj4CAgABBAEchBQsgASACNgIAIAFBkLuQgAAsAOCsnAE2AgRBACgC3MverABBAiABEI+AgIAAGkEFIAVBkLuQgAAgBkEEakH///8fcWooAABBABCEgICAABoLQQAgAEGEgMAAajYC8LqQgAAgAUHwAGokgICAgAALqwMBC38CQAJAQZC7kIAAQZC7kIAAKAC0opwBIgMgAEEBdGpB////H3FqLgAAIgRBAU4NAEF/IQUMAQsgAEEFSCAAQQlGciEGQX8hBSAEQX9qQf//A3EiBEH/ACAEQf8ASRtBAWohB0GQu5CAACAAQQJ0IANqQShqQf///x9xaigAAEHVAmohAEEAKALAy96sACEIIAFBf2pBAkkhCUF/IQpBACELQQAhAwNAAkBBkLuQgAAgAEEHakH///8fcWotAAAiBEEESw0AQZC7kIAAIABBCGpB////H3FqLQAAIgwgAkoNAEGQu5CAACAAQf///x9xai0AACENAkACQCAGRQ0AIA0gAUYNAQwCCyANQQVGIA1Be2pB/wFxQQJJIAkbQQFHDQELAkACQCAEwCIEQQMgBEEDShtBA3RB+AFxIAxqIgQgCkwNAEEBIQsgBCEKDAELIAQgCkcNAUEAIAhBDXQgCHMiBEERdiAEcyIEQQV0IARzIgg2AsDL3qwAIAtBAWoiC0UNACAIIAtwDQELIAMhBQsgAEH4AmohACAHIANBAWoiA0cNAAsLIAUL4QUBB39BkLuQgAAgAEHcAmpB////H3FqLAAAIQZBkLuQgAAgAEHdAmpB////H3FqLQAAIQcgBEKmgICA0AU3AgQgBEEdQRwgAUECRhsiATYCACAAQeICaiEIIAcgAiAHIAJKGyIJQQpuQfgAbEHkAG4iAkEFIAJBBUobIgIhBwJAIAFBkLuQgAAgAEHfAmpB////H3EiCmotAABHDQAgAkGQu5CAACAIQf///x9xaiwAACIHIAIgB0obIQcLAkAgAUGQu5CAACAAQeACakH///8fcSILai0AAEcNACAHQZC7kIAAIABB4wJqQf///x9xaiwAACIMIAcgDEobIQcLAkAgAUGQu5CAACAAQeECakH///8fcSIMai0AAEcNACAHQZC7kIAAIABB5AJqQf///x9xaiwAACIBIAcgAUobIQcLIAUgB0HkACAHQeQASBs2AgACQCAEKAIEIgdBkLuQgAAgCmotAABHDQAgAkGQu5CAACAIQf///x9xaiwAACIBIAIgAUobIQILAkAgB0GQu5CAACALai0AAEcNACACQZC7kIAAIABB4wJqQf///x9xaiwAACIBIAIgAUobIQILAkAgB0GQu5CAACAMai0AAEcNACACQZC7kIAAIABB5AJqQf///x9xaiwAACIHIAIgB0obIQILIAUgAkHkACACQeQASBs2AgQgCUECdkH4AGxB5ABuIgJBBSACQQVKGyECAkAgBCgCCCIHQZC7kIAAIApqLQAARw0AIAJBkLuQgAAgCEH///8fcWosAAAiBCACIARKGyECCwJAIAdBkLuQgAAgC2otAABHDQAgAkGQu5CAACAAQeMCakH///8fcWosAAAiBCACIARKGyECCwJAIAdBkLuQgAAgDGotAABHDQAgAkGQu5CAACAAQeQCakH///8fcWosAAAiACACIABKGyECCyAFIAJB5AAgAkHkAEgbNgIIIANBA0F/IAZBA0gbNgIACwoAIAAQnYCAgAALC6oyAgBBgAgLkDJzaG9wX2J1eQBnbExvYWRJZGVudGl0eQBFbnN1cmVMb2NhbENhcGFjaXR5AGNvL2tyL2VhbW9iaWxlL0NsZXRFbnRyeQB0b3RhbE1lbW9yeQBmcmVlTWVtb3J5AHN0cmNweQBzdHJuY3B5AG1lbWNweQB1bmRlZmluZWQgbXVsdGlwbHkAbmF0aXZlSW5pdERpc3BsYXkAY2xpcFBsYXkAX19nbnVfVW53aW5kX0ZpbmRfZXhpZHgAQysrIGV4Y2VwdGlvbiBydW50aW1lIGNhbGxlZCBscj0lMDh4AHN0YWNrIGNoZWNrIGZhaWxlZCBscj0lMDh4AC0+ICVzKCV4LCAleCwgJXgsICV4KSBscj0lMDh4AGd1ZXN0IGFib3J0KCkgbHI9JTA4eABDUFUgaGFsdDogJXMgYXQgJTA4eCBpbnNuICUwOHggbHI9JTA4eCBzcD0lMDh4AGNhbGxfZ3Vlc3Q6IHRodW1iIHRhcmdldCAlMDh4AGJhZCB0cmFwICV1IGZyb20gJTA4eAB1bmltcGxlbWVudGVkIGltcG9ydCAlcyBjYWxsZWQgZnJvbSAlMDh4AGdsVGV4SW1hZ2UyRCB0ZXg9JXUgJXV4JXUgZm10PSV4IHR5cGU9JXgAVGhyb3cAcG93AFRocm93TmV3AF9aOW1haW5QYWludHYAcmVjdgBfWk40SEVSTzE1R2V0RXF1aXBJdGVtUHRyRXYAX1pONEhFUk8xM0dldEJhZ0l0ZW1QdHJFdgBfWk43TW9uc3RlcjExU2V0RHJvcEl0ZW1FdgBfWk43R3JhcGhpYzVHZXRGQkV2AGxvYWRlZDogJXUgc3ltYm9scywgJWQgaW1wb3J0cywgJWQgdW5yZXNvbHZlZCwgaW5pdF9hcnJheSAldQB1bnN1cHBvcnRlZCByZWxvY2F0aW9uICV1AGpuaTogYmFkIG1ldGhvZCBpZCAldQAgICVzOiAldQBxc29ydABnbFZpZXdwb3J0AGFib3J0AHNldHNvY2tvcHQAZ2V0c29ja29wdABia3B0AF9fYW5kcm9pZF9sb2dfcHJpbnQAbmF0aXZlS2V5SGFuZGxlRXZlbnQAbmF0aXZlVG91Y2hIYW5kbGVFdmVudABhY2Nlc3NvcnlfY3JpdABxdWVzdF90cmFpdABsb2FkQXNzZXQAbWVtc2V0AHNvY2tldABjb25uZWN0AHNlbGVjdABOZXdPYmplY3QASXNTYW1lT2JqZWN0AEFsbG9jT2JqZWN0AE1DX2dycEZpbGxSZWN0AHN0YXQAc3RyY2F0AGdsRHJhd0FycmF5cwBnZXRDbGlwU3RhdHVzAGFjY2VzcwBHZXRTdXBlcmNsYXNzAEdldE9iamVjdENsYXNzAERlZmluZUNsYXNzAEZpbmRDbGFzcwBidWZmX3RpbWVycwBib3NzX2Ryb3BzAGdldFVuaXF1ZU51bWJlckZyb21TdHJpbmdzAC9hcGsvZGF0YS52ZnMAcmVmaW5lX3JhdGVzAGdsR2VuVGV4dHVyZXMAZ2xEZWxldGVUZXh0dXJlcwAvc2RjYXJkL0FuZHJvaWQvZGF0YS9jby5rci5lYW1vYmlsZS5IZXJvZXNMb3JlNS9maWxlcwAvZGF0YS9kYXRhL2NvLmtyLmVhbW9iaWxlLkhlcm9lc0xvcmU1L2ZpbGVzAGpuaTogb3V0IG9mIG9iamVjdCBoYW5kbGVzAGZzOiBvdXQgb2Ygbm9kZXMAam5pOiB1bmtub3duIG1ldGhvZCAlcyVzAGpuaTogdW5oYW5kbGVkIG1ldGhvZCAlcyVzAEphdmFfY29fa3JfZWFtb2JpbGVfQ2xldEVudHJ5XyVzAHJlcXVlc3RNVFggJXMgJXMgJXMAZ2V0QXNzZXRTaXplICVzAG1pc3NpbmcgbmF0aXZlICVzAGpuaTogZmllbGQgJXMAaW1wb3J0IHdpdGhvdXQgaW1wbGVtZW50YXRpb246ICVzAHN0cnN0cgBkZXNjcmlwdG9yAGphdmEvaW8vRmlsZURlc2NyaXB0b3IAc3RyZXJyb3IASS9PIGVycm9yAEpOSSBGYXRhbEVycm9yAGZsb29yAHJtZGlyAG1rZGlyAGNoZGlyAGdsVmVydGV4UG9pbnRlcgBnbFRleENvb3JkUG9pbnRlcgBnZXRNYW51ZmFjdHVyZXIAaW5ldF9hZGRyAEV4Y2VwdGlvbkNsZWFyAF9fY3hhX2JlZ2luX2NsZWFudXAAc3RyZHVwAHVubGltaXRlZF9zcABuYXRpdmVTdGFydEFwcABleGl0QXBwAGNsaXBTdG9wAG1pcnJvcjU2NV84X2xvb3AAYmxlbmQ1NjVfOF9sb29wAHN0cmV0Y2g1NjVfbG9vcABmaWxsYWxwaGE1NjVfbG9vcABtaXJyb3I1NjVfNF9sb29wAGJsZW5kNTY1XzRfbG9vcABuYXRpdmVMb29wAHN0cmNtcABzdHJuY21wAHB1dENsaXAAcHV0U291bmRDbGlwAHB1dE11c2ljQ2xpcABfX2Vycm5vAF9aTjlJdGVtVGFibGUxME1ha2VTb2NrZXRFUDhJdGVtSW5mbwBfWk45SXRlbVRhYmxlMTBEZWxldGVJdGVtRVA4SXRlbUluZm8Ac2h1dGRvd24AbWVkaWEgaW5zdHJ1Y3Rpb24AbmF0aXZlSW5pdEF1ZGlvQ29uZmlndXJhdGlvbgB2aWJyYXRpb24AR2V0VmVyc2lvbgBnZXRPU1ZlcnNpb24AZ2V0T3BlbkdMRVNWZXJzaW9uAGdldE1pbgBmZG9wZW4Ac3RybGVuAGlzQWlycGxhbmVNb2RlT24ASXNBc3NpZ25hYmxlRnJvbQBmY250bABjZWlsAF9fc3RhY2tfY2hrX2ZhaWwAbmF0aXZlSW5pdEtlcm5lbABnZXRNb2RlbAB1bmxpbmsAbHNlZWsAZnNlZWsAcHRocmVhZF9tdXRleF91bmxvY2sAcHRocmVhZF9tdXRleF9sb2NrAGNvcHJvY2Vzc29yL3N3aQBfWk43R3JhcGhpYzEzRmlsbFJlY3RBbHBoYUVpaWlpaWhpAF9aTjdHcmFwaGljMjJEcmF3SW1hZ2VNaXJyb3JDbGlwNTY1RWlpaWlpUDhHYm1JbWFnZWlpaGkAX1pON0dyYXBoaWMyM0RyYXdJbWFnZVN0cmV0Y2hDbGlwNTY1RWlpaWlpUDhHYm1JbWFnZWlpaGlpaGhpAF9aTjdHcmFwaGljMjREcmF3SW1hZ2VCbGVuZGluZ0NsaXA1NjVFaWlpaWlQOEdibUltYWdlaWloaGhpAF9aTjRIRVJPMThBcHBseUJ1aWxkdXBFZmZlY3RFYWkAX1oyNmludGVybmFsR3JwQ29weUZyYW1lQnVmZmVyaWlpaWlpaWlQMTRfTUNfR3JwQ29udGV4dGgAX1pOOUl0ZW1UYWJsZTEyTmV3SXRlbVRvQmFnRWFhc2gAX1pON0JhZ0l0ZW0xME5ld0JhZ0l0ZW1FUDhJdGVtSW5mb2gAd2F0Y2gAX19jeGFfdHlwZV9tYXRjaAB0aHVtYiBicmFuY2gAamF2YS9sYW5nL1N0cmluZwBpc05ldHdvcmtSb2FtaW5nAHZzbnByaW50ZgBnbFRleFBhcmFtZXRlcmYAZ2xPcnRob2YAMDEyMzQ1Njc4OWFiY2RlZgBOZXdMb2NhbFJlZgBEZWxldGVMb2NhbFJlZgBOZXdHbG9iYWxSZWYARGVsZXRlR2xvYmFsUmVmAElzSW5zdGFuY2VPZgBnbENvbG9yNGYAZ2V0VG90YWxFeHRlcm5hbE1lbW9yeVNpemUAZ2V0QXZhaWxhYmxlRXh0ZXJuYWxNZW1vcnlTaXplAGdldFRvdGFsSW50ZXJuYWxNZW1vcnlTaXplAGdldEF2YWlsYWJsZUludGVybmFsTWVtb3J5U2l6ZQBnZXRBc3NldFNpemUAbWVtbW92ZQB3cml0ZQBnbERpc2FibGVDbGllbnRTdGF0ZQBnbEVuYWJsZUNsaWVudFN0YXRlAGNsaXBQYXVzZQBmY2xvc2UAX1pON0Zvcm11bGE0Y2FsY0VpUDRDSEFSUzFfUDEzSGVyb1NraWxsSW5mb1A4SXRlbUJhc2UAZ2xCaW5kVGV4dHVyZQBjbGlwUmVzdW1lAHNldFZvbHVtZQBnZXRWb2x1bWUAc2V0U291bmRWb2x1bWUAZ2V0U291bmRWb2x1bWUAc2V0TXVzaWNWb2x1bWUAZ2V0TXVzaWNWb2x1bWUAZnRpbWUAUG9wTG9jYWxGcmFtZQBQdXNoTG9jYWxGcmFtZQByZW5hbWUAZ2xEaXNhYmxlAGdsRW5hYmxlAGlzTmV0d29ya0F2YWlsYWJsZQBuYXRpdmVJbml0RmlsZVN0b3JhZ2UAbG9hZFdlYnBhZ2UAZnJlZQBjbGlwRnJlZQBnbE1hdHJpeE1vZGUAcGhuQ2FsbFBsYWNlAGdsQ3VsbEZhY2UARXhjZXB0aW9uRGVzY3JpYmUAX19zdGFja19jaGtfZ3VhcmQAVG9SZWZsZWN0ZWRNZXRob2QARnJvbVJlZmxlY3RlZE1ldGhvZABob29rOiAlcyBub3QgZm91bmQAd2F0Y2g6ICVzIG5vdCBmb3VuZABjbGlwUGxheVNvdW5kAGNsaXBTdG9wU291bmQAY2xpcFBhdXNlU291bmQAY2xpcFJlc3VtZVNvdW5kAGNsaXBGcmVlU291bmQAVG9SZWZsZWN0ZWRGaWVsZABGcm9tUmVmbGVjdGVkRmllbGQAaXNGQk9TdXBwb3J0ZWQAX19jeGFfY2FsbF91bmV4cGVjdGVkAEV4Y2VwdGlvbk9jY3VycmVkAHVuZGVmaW5lZABrbmlnaHRfc3BlZWQAZ2VvY2hhbmdfc3BlZWQAZnJlYWQAZ2xWaWV3cG9ydCAlZCAlZCAlZCAlZABnbE9ydGhvZiAlZCAlZCAlZCAlZABwdXRDbGlwIGtleT0ldSAlZCAlZCBsZW49JXUgJWQgJWQgJWQgJWQgJWQAbmF0aXZlSW5pdERpc3BsYXkgLT4gJWQAdW5kZWZpbmVkIG1pc2MAbWFsbG9jAGNhbGxvYwBjbGlwUGxheU11c2ljAGNsaXBTdG9wTXVzaWMAY2xpcFBhdXNlTXVzaWMAY2xpcFJlc3VtZU11c2ljAGNsaXBGcmVlTXVzaWMAX1pON01hcEl0ZW0xMU5ld0Ryb3BJdGVtRWlpYWFhYWFhYWFhAF9aTjlJdGVtVGFibGU3TmV3SXRlbUVhYQBfWk45RXF1aXBJdGVtMTJHZXRFcXVpcEl0ZW1FYQBfWk40SEVSTzExU2F2ZUJhZ0RhdGFFYQByZXF1ZXN0TVRYAGluaXRNVFgATmV3T2JqZWN0VgBuYXRpdmVJbml0VkZTAFNIVy1NMTEwUwBnZXRJTVNJAGdldElNRUkAU0FNU1VORwAwMTIzNDU2Nzg5QUJDREVGAGdldFVuaXF1ZUFzc2V0TmFtZUZyb21JRABhdHRhY2hCdWZmZXJJRHRvUmVzb3VyY2VJRABkZXRhY2hCdWZmZXJJRGZyb21SZXNvdXJj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";
+var HL5_K = 4;                                    // 그림 다듬기 배율
+var HL5_BLEND = { 1: "darken", 2: "lighten", 3: "multiply", 4: "screen", 5: "color-dodge", 6: "color-burn", 7: "lighter", 8: "multiply", 11: "hard-light", 14: "difference" };
+var HL5_CLS = {                                   // 직업별 동작 번호 (옆모습 = 방향 1)
+  knight: { cif: "001", idle: 2, atk: [9, 10, 11], sk: [16, 17, 23, 14] },
+  rogue: { cif: "002", idle: 2, atk: [9, 10, 11, 12], sk: [16, 15, 22, 27] },
+  gunner: { cif: "003", idle: 2, atk: [9, 10, 13], sk: [11, 18, 20, 22] },
+  axe: { cif: "004", idle: 2, atk: [9, 10, 11, 12], sk: [13, 21, 22, 26] },
+};
+var HL5_CLS_ORDER = ["knight", "rogue", "gunner", "axe"];
+var HL5_JOB = { sales: "knight", dev: "rogue", plan: "gunner", hr: "axe", audit: "gunner" };   // 직무 → 영웅서기5 직업
+var HL5_BIG = ["악몽의 잔해", "불완전 강림자", "죽은자의 왕", "극의 주인", "악몽의 감시자", "크레이지 머신", "빙의된 루퍼스", "알테나"];   // 100층마다 나오는 큰 보스
+var hl5 = { ready: false, busy: false, msg: "", files: null, banks: {}, cifs: {}, types: {}, heroT: {}, lists: null, effB: null, fx: [], fxT: 0, tmp: null, h: { seq: 0, sk: -1, skT: -1e9, skI: 0 } };
+
+function hl5Use() { try { return fxSet().hl5 !== 0; } catch (e) { return false; } }
+function hl5On() { return hl5.ready && hl5Use(); }
+function hl5Hd() { try { return fxSet().hl5hd !== 0; } catch (e) { return true; } }
+function hl5Pad3(n) { return String(n).padStart(3, "0"); }
+
+/* ---------- 폰 안 저장소 ---------- */
+function hl5Db() { return new Promise((res, rej) => { const r = indexedDB.open("kjy_hl5", 1); r.onupgradeneeded = () => r.result.createObjectStore("pack"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function hl5DbDo(mode, fn) { const db = await hl5Db(); return new Promise((res, rej) => { const q = fn(db.transaction("pack", mode).objectStore("pack")); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); }
+
+/* ---------- zip 읽기 (zip 안의 apk 안의 파일까지) ---------- */
+function hl5ZipList(u8) {
+  if (u8.length < 22) return null;
+  const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength); let e = -1;
+  for (let i = u8.length - 22, lo = Math.max(0, u8.length - 66000); i >= lo; i--) if (dv.getUint32(i, true) === 0x06054b50) { e = i; break; }
+  if (e < 0) return null;
+  const n = dv.getUint16(e + 10, true), out = [], td = new TextDecoder(); let o = dv.getUint32(e + 16, true);
+  for (let i = 0; i < n && o + 46 <= u8.length; i++) {
+    if (dv.getUint32(o, true) !== 0x02014b50) break;
+    const nl = dv.getUint16(o + 28, true), xl = dv.getUint16(o + 30, true), cl = dv.getUint16(o + 32, true);
+    out.push({ name: td.decode(u8.subarray(o + 46, o + 46 + nl)), method: dv.getUint16(o + 10, true), cs: dv.getUint32(o + 20, true), lo: dv.getUint32(o + 42, true) });
+    o += 46 + nl + xl + cl;
+  }
+  return out;
+}
+async function hl5ZipData(u8, en) {
+  const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength), o = en.lo, st = o + 30 + dv.getUint16(o + 26, true) + dv.getUint16(o + 28, true), raw = u8.subarray(st, st + en.cs);
+  if (en.method === 0) return raw;
+  if (en.method !== 8 || typeof DecompressionStream !== "function") throw new Error("이 zip은 풀 수 없어요");
+  return new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer());
+}
+async function hl5FindGame(u8, depth) {
+  const list = hl5ZipList(u8); if (!list) return null;
+  const so = list.find(e => /(^|\/)lib\/armeabi[^/]*\/libHeroesLore5\.so$/.test(e.name)), vfs = list.find(e => /(^|\/)assets\/data\.vfs\.mp3$/.test(e.name));
+  if (so && vfs) return { so: await hl5ZipData(u8, so), vfs: await hl5ZipData(u8, vfs) };
+  if ((depth | 0) >= 2) return null;
+  for (const e of list) if (/\.(apk|zip)$/i.test(e.name)) { const r = await hl5FindGame(await hl5ZipData(u8, e), (depth | 0) + 1); if (r) return r; }
+  return null;
+}
+
+/* ---------- 꺼내기: 게임의 자료 읽기 함수(StaticUtil::LoadRes)를 에뮬레이터에서 부름 ---------- */
+async function hl5Extract(so, vfs, onp) {
+  const bin = Uint8Array.from(atob(HL5_WASM_B64), c => c.charCodeAt(0)); let mem;
+  const env = {
+    host_log() {}, host_now: () => Date.now(), host_pow: Math.pow, host_audio: () => 0, host_file_saved() {}, host_file_deleted() {},
+    host_vfs_read: (off, dst, len) => { const s = vfs.subarray(off, off + len); new Uint8Array(mem.buffer, dst, s.length).set(s); return s.length; },
+    host_event: k => (k === 4 ? 1 : 0),
+  };
+  const ex = (await WebAssembly.instantiate(bin, { env })).instance.exports; mem = ex.memory;
+  const put = b => { const p = ex.host_alloc(b.length); new Uint8Array(mem.buffer, p, b.length).set(b); return p; };
+  const enc = s => { const b = new Uint8Array(s.length + 1); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i) & 255; return b; };
+  const sp = put(so);
+  if (ex.load_library(sp, so.length) !== 0) throw new Error("게임 파일을 읽지 못했어요");
+  ex.set_native_hooks(1); ex.set_vfs_size(vfs.length); ex.app_start(800, 480, 400, 240, 2.0, 1);
+  const LR = ex.find_symbol(put(enc("_ZN10StaticUtil7LoadResEPcPi")));
+  if (!LR) throw new Error("이 파일은 영웅서기5가 아니에요");
+  const G = a => ex.guest_base() + (a & 0x3ffffff), sz = ex.guest_malloc(4), pbuf = ex.guest_malloc(256), ap = ex.host_alloc(8);
+  const paths = [];
+  for (let d = 0; d <= 6; d++) for (let i = 0; i < 160; i++) paths.push(`/c/sp/img${d}/${hl5Pad3(i)}.mgr`);
+  for (let i = 0; i < 200; i++) paths.push(`/c/sp/cif/${hl5Pad3(i)}.cif`);
+  for (let i = 0; i < 640; i++) paths.push(`/c/sp/pal/${hl5Pad3(i)}.pal`);
+  ["eff", "imo"].forEach(n => { paths.push(`/c/sp/imgcom/${n}.mgr`); paths.push(`/c/sp/cif/${n}.cif`); });
+  paths.push("/c/csv/enemy_0.dat", "/c/csv/enemy_g.dat");
+  const got = []; let total = 0;
+  for (let i = 0; i < paths.length; i++) {
+    const b = enc(paths[i]); new Uint8Array(mem.buffer, G(pbuf), b.length).set(b); new DataView(mem.buffer).setInt32(G(sz), 0, true);
+    const av = new Uint32Array(mem.buffer, ap, 2); av[0] = pbuf; av[1] = sz;
+    const r = ex.guest_call(LR, 2, ap) >>> 0, len = new DataView(mem.buffer).getInt32(G(sz), true);
+    if (ex.is_halted()) break;
+    if (r && len > 0 && len < (8 << 20)) { got.push([paths[i], new Uint8Array(mem.buffer, G(r), len).slice()]); total += len; }
+    if (i % 50 === 49) { if (onp) onp(i + 1, paths.length); await new Promise(z => setTimeout(z, 0)); }
+  }
+  const buf = new Uint8Array(total), idx = []; let o = 0;
+  got.forEach(([p, d]) => { buf.set(d, o); idx.push([p, o, d.length]); o += d.length; });
+  return { v: 1, idx, buf };
+}
+
+/* ---------- 묶음 읽기: 몬스터 목록 · 그림 묶음(.mgr) · 색 바꿈(.pal) · 동작(.cif) ---------- */
+function hl5Recs(b) {
+  const dv = new DataView(b.buffer, b.byteOffset, b.byteLength), n = dv.getUint16(0, true), out = []; let o = 2;
+  for (let i = 0; i < n && o + 2 <= b.length; i++) { const L = dv.getUint16(o, true); out.push(b.subarray(o + 2, o + 2 + L)); o += 2 + L; }
+  return out;
+}
+function hl5Load(pack) {
+  const files = new Map(); pack.idx.forEach(([p, o, n]) => files.set(p, pack.buf.subarray(o, o + n)));
+  hl5.files = files; hl5.banks = {}; hl5.cifs = {}; hl5.types = {}; hl5.heroT = {}; hl5.effB = null; hl5.fx.length = 0; hl5.ready = false; hl5.lists = null;
+  const E = files.get("/c/csv/enemy_0.dat"), Gd = files.get("/c/csv/enemy_g.dat"); if (!E || !Gd) return false;
+  const er = hl5Recs(E), gr = hl5Recs(Gd), s8 = v => (v > 127 ? v - 256 : v), all = []; let td; try { td = new TextDecoder("euc-kr"); } catch (e) { td = new TextDecoder(); }
+  for (let i = 0; i < er.length && i < gr.length; i++) {
+    const e = er[i], g = gr[i], nl = e[0], raw = td.decode(e.subarray(1, 1 + nl)), dv = new DataView(g.buffer, g.byteOffset, g.byteLength), banks = [], pals = [];
+    if (g.length < 24) continue;
+    for (let k = 0; k < 9; k++) banks.push(s8(g[3 + k]));
+    for (let k = 0; k < 6; k++) pals.push(dv.getInt16(12 + 2 * k, true));
+    all.push({ i, raw, name: raw.replace(/^[\^'\[]+/, "").replace(/\{+$/, "").trim(), grade: e[1 + nl], cif: s8(g[0]), banks, pals });
+  }
+  const seen = new Set(), uniq = a => a.filter(e => { const k = e.cif + "|" + e.banks.join(",") + "|" + e.pals.join(","); if (seen.has(k) || e.cif < 0 || !files.has(`/c/sp/cif/${hl5Pad3(e.cif)}.cif`)) return false; seen.add(k); return true; });
+  const boss = uniq(all.filter(e => e.grade === 3)), named = uniq(all.filter(e => e.grade === 1));
+  const norm = uniq(all.filter(e => e.grade === 0 && e.raw[0] !== "[" && e.name !== "소환물" && e.name !== "지뢰"));
+  const big = HL5_BIG.map(n => boss.find(e => e.name === n)).filter(Boolean);
+  const box = all.find(e => e.cif === 97) || null;
+  if (!norm.length) return false;
+  hl5.lists = { all, norm, named: named.length ? named : norm, boss: boss.length ? boss : norm, big: big.length ? big : (boss.length ? boss : norm), box };
+  hl5.ready = true; return true;
+}
+function hl5PalMap(pid) {
+  const b = pid >= 0 ? hl5.files.get(`/c/sp/pal/${hl5Pad3(pid)}.pal`) : null; if (!b) return null;
+  const m = new Map(), n = b[0]; for (let k = 0; k < n && 4 + 4 * k < b.length + 1; k++) m.set(b[1 + 4 * k] | (b[2 + 4 * k] << 8), b[3 + 4 * k] | (b[4 + 4 * k] << 8));
+  return m;
+}
+function hl5Bank(slot, bank, pid) {
+  const key = slot + ":" + bank + ":" + pid; if (hl5.banks[key] !== undefined) return hl5.banks[key];
+  const path = typeof slot === "string" ? `/c/sp/imgcom/${slot}.mgr` : `/c/sp/img${slot > 6 ? 5 : slot}/${hl5Pad3(bank)}.mgr`, b = hl5.files.get(path);
+  if (!b || b.length < 4) return (hl5.banks[key] = null);
+  const dv = new DataView(b.buffer, b.byteOffset, b.byteLength), n = dv.getUint32(0, true), out = [], remap = hl5PalMap(pid); let o = 4;
+  for (let i = 0; i < n && o + 4 <= b.length; i++) { const size = dv.getUint32(o, true), rec = b.subarray(o + 4, o + 4 + size); o += 4 + size; out.push({ rec, remap, w: rec.length >= 6 ? rec[2] | (rec[3] << 8) : 0, h: rec.length >= 6 ? rec[4] | (rec[5] << 8) : 0, c: null }); }
+  return (hl5.banks[key] = out);
+}
+function hl5Canvas(px, w, h) { const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").putImageData(new ImageData(px, w, h), 0, 0); return c; }
+/* 그림 한 장: [형식][색 수][w][h][팔레트 RGB565][픽셀 색 번호], 투명색 0xf81f. 처음 쓸 때 풀고(선명하게면 4배로 다듬어) 캔버스로 둠 */
+function hl5Img(im) {
+  if (im.c !== null) return im.c;
+  const rec = im.rec, w = im.w, h = im.h; if (w < 1 || h < 1 || (w <= 1 && h <= 1) || w > 1024 || h > 1024) return (im.c = false);
+  const nc = rec[1] || 256, bits = nc <= 16 ? 4 : 8, base = 6 + 2 * nc, stride = bits === 4 ? (w + 1) >> 1 : w, px = new Uint8ClampedArray(w * h * 4), pal = new Int32Array(nc);
+  for (let k = 0; k < nc; k++) { let c = rec[6 + 2 * k] | (rec[7 + 2 * k] << 8); if (c === 0xf81f) { pal[k] = -1; continue; } if (im.remap && im.remap.has(c)) c = im.remap.get(c); pal[k] = c === 0xf81f ? -1 : c; }
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    let ci;
+    if (bits === 4) { const k = base + y * stride + (x >> 1); if (k >= rec.length) continue; ci = x & 1 ? rec[k] & 15 : rec[k] >> 4; }
+    else { const k = base + y * w + x; if (k >= rec.length) continue; ci = rec[k]; }
+    const c = ci < nc ? pal[ci] : -1; if (c < 0) continue;
+    const o = (y * w + x) * 4; px[o] = ((c >> 11) & 31) * 255 / 31 | 0; px[o + 1] = ((c >> 5) & 63) * 255 / 63 | 0; px[o + 2] = (c & 31) * 255 / 31 | 0; px[o + 3] = 255;
+  }
+  if (hl5Hd() && w * h <= 40000) { try { return (im.c = hl5Canvas(hl5Xbr(px, w, h, HL5_K), w * HL5_K, h * HL5_K)); } catch (e) {} }
+  return (im.c = hl5Canvas(px, w, h));
+}
+function hl5ClearImg() { Object.keys(hl5.banks).forEach(k => { const b = hl5.banks[k]; if (b) b.forEach(im => { im.c = null; }); }); }
+/* 가장자리 방향 확대 (영웅서기5 플레이어의 화면 다듬기를 그림 한 장 단위로 옮김):
+   ① 픽셀의 네 모서리마다 '가장자리 건너편인지'를 두 대각선 방향의 이웃이 얼마나 잘 이어지는지로 정하고(45°·2:1 기울기 구분)
+   ② 확대한 자리에서 그 모서리 쪽만 이웃 색으로, 가장자리 선을 따라 좁게 부드럽게 넘김. 투명한 곳도 하나의 색처럼 다뤄 윤곽이 매끈해짐 */
+function hl5Xbr(src, w, h, K) {
+  const N = w * h, Y = new Float32Array(N), U = new Float32Array(N), V = new Float32Array(N);
+  for (let i = 0; i < N; i++) { const r = src[i * 4] / 255, g = src[i * 4 + 1] / 255, b = src[i * 4 + 2] / 255; Y[i] = 0.299 * r + 0.587 * g + 0.114 * b; U[i] = -0.169 * r - 0.331 * g + 0.5 * b; V[i] = 0.5 * r - 0.419 * g - 0.081 * b; }
+  const at = (x, y) => (x < 0 || y < 0 || x >= w || y >= h || !src[(y * w + x) * 4 + 3] ? -1 : y * w + x);
+  const wd = (i, j) => (i < 0 ? (j < 0 ? 0 : 64) : j < 0 ? 64 : 48 * Math.abs(Y[i] - Y[j]) + 7 * Math.abs(U[i] - U[j]) + 6 * Math.abs(V[i] - V[j]));
+  const eq = (i, j) => wd(i, j) < 2.4;
+  const corner = (E, B, D, F, H, C, G, I, F4, H5, I4, I5) => {
+    if (eq(E, F) || eq(E, H)) return 0;
+    if (!((!eq(F, B) && !eq(H, D)) || (eq(E, I) && !eq(F, I4) && !eq(H, I5)) || eq(E, G) || eq(E, C))) return 0;
+    if (wd(E, C) + wd(E, G) + wd(I, F4) + wd(I, H5) + 4 * wd(H, F) >= wd(H, D) + wd(H, I5) + wd(F, I4) + wd(F, B) + 4 * wd(E, I)) return 0;
+    let v = 1; const fg = wd(F, G), hc = wd(H, C);
+    if (2 * fg <= hc && !eq(E, G) && !eq(D, G)) v += 2;
+    if (fg >= 2 * hc && !eq(E, C) && !eq(B, C)) v += 4;
+    if (wd(E, F) > wd(E, H)) v += 8;
+    return v;
+  };
+  const W2 = w * K, out = new Uint8ClampedArray(W2 * h * K * 4), d = 0.5 / K, a1 = 0.5 - d * 1.414, b1 = 0.5 + d * 1.414, a2 = 0.25 - d * 1.118, b2 = 0.25 + d * 1.118;
+  const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  let best = 0, col = -1;
+  const apply = (v, s, t, F, H) => {
+    if (!v) return;
+    let m = ss(a1, b1, s + t);
+    if (v & 2) m = Math.max(m, ss(a2, b2, t + 0.5 * s));
+    if (v & 4) m = Math.max(m, ss(a2, b2, s + 0.5 * t));
+    if (m > best) { best = m; col = v >= 8 ? H : F; }
+  };
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const A1 = at(x - 1, y - 2), B1 = at(x, y - 2), C1 = at(x + 1, y - 2), A0 = at(x - 2, y - 1), A = at(x - 1, y - 1), B = at(x, y - 1), C = at(x + 1, y - 1), C4 = at(x + 2, y - 1);
+    const D0 = at(x - 2, y), D = at(x - 1, y), E = at(x, y), F = at(x + 1, y), F4 = at(x + 2, y), G0 = at(x - 2, y + 1), G = at(x - 1, y + 1), H = at(x, y + 1), I = at(x + 1, y + 1), I4 = at(x + 2, y + 1);
+    const G5 = at(x - 1, y + 2), H5 = at(x, y + 2), I5 = at(x + 1, y + 2);
+    if (E < 0 && D < 0 && F < 0 && B < 0 && H < 0) continue;
+    const c0 = corner(E, B, D, F, H, C, G, I, F4, H5, I4, I5), c1 = corner(E, D, H, B, F, A, I, C, B1, F4, C1, C4), c2 = corner(E, H, F, D, B, G, C, A, D0, B1, A0, A1), c3 = corner(E, F, B, H, D, I, A, G, H5, D0, G5, G0);
+    const any = c0 | c1 | c2 | c3, e4 = E * 4;
+    if (!any && E < 0) continue;
+    for (let sy = 0; sy < K; sy++) for (let sx = 0; sx < K; sx++) {
+      const o = ((y * K + sy) * W2 + x * K + sx) * 4;
+      if (!any) { out[o] = src[e4]; out[o + 1] = src[e4 + 1]; out[o + 2] = src[e4 + 2]; out[o + 3] = 255; continue; }
+      const fx = (sx + 0.5) / K - 0.5, fy = (sy + 0.5) / K - 0.5; best = 0; col = E;
+      apply(c0, fx, fy, F, H); apply(c1, -fy, fx, B, F); apply(c2, -fx, -fy, D, B); apply(c3, fy, -fx, H, D);
+      const ea = E < 0 ? 0 : 1 - best, ca = col < 0 ? 0 : best, a = ea + ca; if (a <= 0.003) continue;
+      const c4 = col * 4;
+      out[o] = ((E < 0 ? 0 : src[e4] * ea) + (col < 0 ? 0 : src[c4] * ca)) / a; out[o + 1] = ((E < 0 ? 0 : src[e4 + 1] * ea) + (col < 0 ? 0 : src[c4 + 1] * ca)) / a;
+      out[o + 2] = ((E < 0 ? 0 : src[e4 + 2] * ea) + (col < 0 ? 0 : src[c4 + 2] * ca)) / a; out[o + 3] = a * 255;
+    }
+  }
+  return out;
+}
+/* 동작 파일: [묶음 수][묶음 번호…][동작 수] 동작마다 [방향 수] 방향마다 [프레임 수] 프레임마다 [조각 수] 조각 4/9바이트(영웅 형식은 5/10) */
+function hl5CifParse(b, flag) {
+  const s8 = v => (v > 127 ? v - 256 : v); let o = 0;
+  const n0 = s8(b[o++]), imgs = []; for (let i = 0; i < n0; i++) imgs.push(b[o++]);
+  const M = b[o++], motions = [];
+  for (let m = 0; m < M; m++) {
+    const D = s8(b[o++]), dirs = [];
+    for (let d = 0; d < D; d++) {
+      const L = b[o++], frames = [];
+      for (let l = 0; l < L; l++) {
+        const P = s8(b[o++]), parts = [];
+        for (let p = 0; p < P; p++) {
+          if (o >= b.length) throw new Error("cif");
+          const fl = b[o], big = fl & 0x80, q = { slot: fl & 15, idx: b[o + 1], x: 0, y: 0, sx: 1, sy: 1, rot: 0, a: 1, bl: 0, hf: !!(fl & 0x20), vf: !!(fl & 0x40) }; let e;
+          if (flag) { const v1 = (b[o + 2] << 4) | (b[o + 3] >> 4), v2 = ((b[o + 3] & 15) << 8) | b[o + 4]; q.x = v1 >= 2048 ? v1 - 4096 : v1; q.y = v2 >= 2048 ? v2 - 4096 : v2; e = o + 5; }
+          else { q.x = s8(b[o + 2]); q.y = s8(b[o + 3]); e = o + 4; }
+          if (big) { const md = b[e + 4]; q.sx = b[e] / 25; q.sy = b[e + 1] / 25; q.rot = b[e + 2] * 2; q.a = b[e + 3] / 255; q.bl = md >> 2; if ((md & 3) === 1) q.hf = true; else if (md & 3) q.vf = true; e += 5; }
+          parts.push(q); o = e;
+        }
+        frames.push(parts);
+      }
+      dirs.push(frames);
+    }
+    motions.push(dirs);
+  }
+  return { imgs, motions, used: o };
+}
+function hl5Cif(name) {
+  if (hl5.cifs[name] !== undefined) return hl5.cifs[name];
+  const b = hl5.files.get(`/c/sp/cif/${name}.cif`); let r = null;
+  if (b) for (const flag of [0, 1]) { try { const c = hl5CifParse(b, flag); if (c.used === b.length) { r = c; break; } } catch (e) {} }
+  return (hl5.cifs[name] = r);
+}
+function hl5Frames(cif, mi, dir) { const m = cif.motions[mi]; return m && m.length ? m[Math.min(dir, m.length - 1)] : null; }
+
+/* ---------- 조립해 그리기: 조각 그림의 가운데가 (x, y). 다음 프레임과 같은 조각은 자리·각도·크기·투명도를 이어 그림(부드럽게) ---------- */
+function hl5Layer(g, parts, next, u, banks, plain) {
+  const sm = g.imageSmoothingEnabled; g.imageSmoothingEnabled = hl5Hd();
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i]; if (plain && p.bl) continue;
+    const bk = banks[p.slot], im = bk && bk[p.idx]; if (!im) continue; const c = hl5Img(im); if (!c) continue;
+    let x = p.x, y = p.y, sx = p.sx, sy = p.sy, rot = p.rot, a = p.a;
+    if (next && u > 0.002) {
+      let q = next[i];
+      if (!q || q.slot !== p.slot || q.idx !== p.idx || q.hf !== p.hf || q.vf !== p.vf || q.bl !== p.bl) { q = null; for (let j = 0; j < next.length; j++) { const n = next[j]; if (n.slot === p.slot && n.idx === p.idx && n.hf === p.hf && n.vf === p.vf && n.bl === p.bl) { q = n; break; } } }
+      if (q) { if (Math.abs(q.x - x) + Math.abs(q.y - y) < 48) { x += (q.x - x) * u; y += (q.y - y) * u; sx += (q.sx - sx) * u; sy += (q.sy - sy) * u; rot += (((q.rot - rot + 540) % 360) - 180) * u; a += (q.a - a) * u; } }
+      else if (p.bl) a *= 1 - u * 0.5;
+    }
+    if (a <= 0.004 || !sx || !sy) continue;
+    g.save(); g.translate(x, y); if (rot) g.rotate(rot * Math.PI / 180); g.scale(p.hf ? -sx : sx, p.vf ? -sy : sy);
+    if (a < 1) g.globalAlpha *= a; if (p.bl) g.globalCompositeOperation = HL5_BLEND[p.bl] || "source-over";
+    g.drawImage(c, p.hf ? -(im.w - (im.w >> 1)) : -(im.w >> 1), p.vf ? -(im.h - (im.h >> 1)) : -(im.h >> 1), im.w, im.h);
+    g.restore();
+  }
+  g.imageSmoothingEnabled = sm;
+}
+function hl5Anim(g, frames, pos, loop, banks, ox, oy, sc, flip, tint) {
+  const n = frames.length; if (!n) return;
+  let f0 = Math.floor(pos), u = pos - f0, f1;
+  if (loop) { f0 = ((f0 % n) + n) % n; f1 = (f0 + 1) % n; } else { if (f0 >= n - 1) { f0 = n - 1; u = 0; } if (f0 < 0) { f0 = 0; u = 0; } f1 = Math.min(n - 1, f0 + 1); }
+  if (typeof reduceMotion !== "undefined" && reduceMotion) u = 0;
+  if (!tint) { g.save(); g.translate(ox, oy); g.scale(flip ? -sc : sc, sc); hl5Layer(g, frames[f0], f1 !== f0 ? frames[f1] : null, u, banks, false); g.restore(); return; }
+  /* 흰 번쩍임·빨간 물듦: 몸만 따로 그려 한 색으로 채움 */
+  const SZ = 360, R = 2, T = hl5.tmp || (hl5.tmp = document.createElement("canvas")); if (T.width !== SZ * R) { T.width = SZ * R; T.height = SZ * R; }
+  const tg = T.getContext("2d"); tg.setTransform(1, 0, 0, 1, 0, 0); tg.globalCompositeOperation = "source-over"; tg.globalAlpha = 1; tg.clearRect(0, 0, T.width, T.height);
+  tg.setTransform(R, 0, 0, R, SZ * R / 2, SZ * R * 0.8); hl5Layer(tg, frames[f0], f1 !== f0 ? frames[f1] : null, u, banks, true);
+  tg.setTransform(1, 0, 0, 1, 0, 0); tg.globalCompositeOperation = "source-in"; tg.fillStyle = tint; tg.fillRect(0, 0, T.width, T.height);
+  g.save(); g.translate(ox, oy); g.scale(flip ? -sc : sc, sc); g.drawImage(T, -SZ / 2, -SZ * 0.8, SZ, SZ); g.restore();
+}
+
+/* ---------- 곽준영: 직무에 따라 영웅서기5 직업 모습 ---------- */
+function hl5HeroCls() {
+  const f = fxSet().hl5c | 0; if (f >= 1 && f <= 4) return HL5_CLS[HL5_CLS_ORDER[f - 1]];
+  const pv = typeof jobPreviewId === "function" ? jobPreviewId() : "", j = pv || (typeof curJob === "function" && curJob() ? curJob().id : "");
+  return HL5_CLS[HL5_JOB[j] || "knight"];
+}
+function hl5HeroT(cls) {
+  if (hl5.heroT[cls.cif] !== undefined) return hl5.heroT[cls.cif];
+  const cif = hl5Cif(cls.cif); if (!cif || !hl5Frames(cif, cls.idle, 1)) return (hl5.heroT[cls.cif] = null);
+  const banks = {}; cif.imgs.forEach((n, k) => { const b = hl5Bank(k, n, -1); if (b) banks[k] = b; });
+  return (hl5.heroT[cls.cif] = { cif, banks });
+}
+function hl5DrawHero(hx, hy, hs) {
+  const cls = hl5HeroCls(), T = hl5HeroT(cls); if (!T) return false;
+  const now = performance.now(), H = hl5.h, cx = hx + 10 * hs, fy = hy + 24 * hs, HS = 2.3;
+  let fr = hl5Frames(T.cif, cls.idle, 1), pos = now / 1000 * 9, loop = true;
+  const skF = H.sk >= 0 ? hl5Frames(T.cif, H.sk, 1) : null;
+  if (skF && now - H.skT < skF.length / 15 * 1000) { fr = skF; pos = (now - H.skT) / 1000 * 15; loop = false; }
+  else if (fHero.mv && fHero.fd) {
+    const af = hl5Frames(T.cif, cls.atk[H.seq % cls.atk.length], 1);
+    if (af && af.length > 1) {
+      const n = af.length, hf = Math.max(1, Math.round((n - 1) * 0.4)), ff = feelFrame(), fd = fHero.fd;
+      fr = af; loop = false; pos = ff <= fd.startup ? ff / Math.max(1, fd.startup) * hf : hf + (ff - fd.startup) / Math.max(1, fd.total - fd.startup) * (n - 1 - hf);
+    }
+  }
+  ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(cx - 24, GROUND - 3, 48, 6);
+  reflect(() => hl5Anim(ctx, fr, pos, loop, T.banks, cx, fy, HS, false, null));
+  hl5Anim(ctx, fr, pos, loop, T.banks, cx, fy, HS, false, null);
+  heroHand.x = cx + 34; heroHand.y = fy - 46; fHero.sh.x = cx + 6; fHero.sh.y = fy - 52;
+  return true;
+}
+
+/* ---------- 몬스터·보스: 층에 따라 영웅서기5 몬스터를 고름 ---------- */
+function hl5Pick(m) {
+  const L = hl5.lists, f = S.floor | 0, k = S.k | 0;
+  if (mode === "vault") return L.box;
+  if (mode !== "tower") return null;
+  if (m.kind >= 3) return L.big[Math.max(0, Math.round(f / 100) - 1) % L.big.length];
+  if (m.kind === 2) return L.boss[Math.max(0, Math.floor(f / 10) - 1) % L.boss.length];
+  const zn = typeof zoneNo === "function" ? zoneNo(f) | 0 : Math.floor(f / 50);
+  if (m.kind === 1) return L.named[(zn * 2 + (f & 1)) % L.named.length];
+  return L.norm[(Math.floor(Math.max(0, f - 1) / 10) * 2 + (f + k) % 4) % L.norm.length];   // 10층마다 두 종씩 새 몬스터
+}
+function hl5MonType(e, kind) {
+  const key = e.i + "_" + kind; if (hl5.types[key] !== undefined) return hl5.types[key];
+  const cif = hl5Cif(hl5Pad3(e.cif)); if (!cif || !cif.motions.length || !cif.motions[0].length) return (hl5.types[key] = null);
+  const banks = {}; e.banks.forEach((b, k) => { if (b >= 0) { const bk = hl5Bank(k, b, k < 6 ? e.pals[k] : -1); if (bk) banks[k] = bk; } });
+  const nd = cif.motions[0].length, dir = nd >= 2 ? 1 : 0, flip = nd >= 3, fr0 = hl5Frames(cif, 0, dir)[0] || [];
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9;
+  fr0.forEach(p => { if (p.bl) return; const bk = banks[p.slot], im = bk && bk[p.idx]; if (!im || (im.w <= 1 && im.h <= 1)) return; const hw = im.w * p.sx / 2, hh = im.h * p.sy / 2; x0 = Math.min(x0, p.x - hw); x1 = Math.max(x1, p.x + hw); y0 = Math.min(y0, p.y - hh); });
+  if (x1 <= x0) return (hl5.types[key] = null);
+  const pw = Math.max(8, Math.max(-x0, x1) * 2), ph = Math.max(8, -y0);
+  let ms = [2.4, 3, 3.2, 3.8][Math.max(0, Math.min(3, kind))]; ms = Math.min(ms, 215 / ph, 300 / pw); if (ph * ms < 60) ms = Math.min(5, 60 / ph);
+  const T = { key, e, cif, banks, dir, flip, ms, w: pw * ms, h: ph * ms };
+  /* 칸 그림: 크기 계산과 '부서지는 몸'에 쓰는 굵은 실루엣 (원래 게임 그림 형식에 맞춤) */
+  const CELL = 4, cols = Math.max(2, Math.ceil(T.w / CELL)), rows = Math.max(2, Math.ceil(T.h / CELL)), c = document.createElement("canvas"); c.width = cols; c.height = rows;
+  const g = c.getContext("2d"); g.setTransform(cols / pw, 0, 0, rows / ph, cols / 2, rows); if (flip) g.scale(-1, 1); hl5Layer(g, fr0, null, 0, banks, true);
+  const d = g.getImageData(0, 0, cols, rows).data, cnt = new Map();
+  for (let i = 0; i < cols * rows; i++) if (d[i * 4 + 3] >= 110) { const kk = ((d[i * 4] >> 5) << 6) | ((d[i * 4 + 1] >> 5) << 3) | (d[i * 4 + 2] >> 5); cnt.set(kk, (cnt.get(kk) || 0) + 1); }
+  const AB = "gabcdfhijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", keys = [...cnt.keys()].sort((a, b) => cnt.get(b) - cnt.get(a)), chOf = new Map(), pal = {};
+  keys.forEach((kk, i) => { const ch = AB[Math.min(i, AB.length - 1)]; chOf.set(kk, ch); if (i < AB.length) pal[ch] = "#" + [(kk >> 6) & 7, (kk >> 3) & 7, kk & 7].map(v => ((v << 5) + 16).toString(16).padStart(2, "0")).join(""); });
+  if (!pal.g) pal.g = "#c9cfe0";
+  const map = [];
+  for (let r = 0; r < rows; r++) { let row = ""; for (let cc = 0; cc < cols; cc++) { const i = r * cols + (cols - 1 - cc); row += d[i * 4 + 3] >= 110 ? chOf.get(((d[i * 4] >> 5) << 6) | ((d[i * 4 + 1] >> 5) << 3) | (d[i * 4 + 2] >> 5)) : "."; } map.push(row); }
+  map.hl5 = T; T.spr = "hl5m" + key; T.pal = pal; SPR[T.spr] = map;
+  return (hl5.types[key] = T);
+}
+function hl5Assign(m) {
+  if (!hl5On() || !m || !hl5.lists || m.hl5) return false;
+  let e = null, T = null; try { e = hl5Pick(m); T = e ? hl5MonType(e, m.kind | 0) : null; } catch (err) { T = null; }
+  if (!T) return false;
+  m.hl5 = { T, hitT: -1e9, atkT: performance.now() + 2200 + Math.random() * 3000, atkT0: 0, atkEnd: 0, atkF: null };
+  m.sprite = T.spr; m.scale = 4; m.pal = T.pal;
+  if (mode === "tower") {
+    const f = S.floor | 0, pre = typeof cycleOf === "function" ? cycleOf(f) : "";
+    m.name = (m.golden ? "황금 " : "") + pre + (m.kind === 2 && f % 50 === 0 ? "구역장 " : m.kind === 1 ? "우두머리 " : "") + e.name;
+  }
+  return true;
+}
+function hl5DrawMon(g, T, ox, oy, opts) {
+  const now = performance.now(), st = mon && mon.hl5 && mon.hl5.T === T ? mon.hl5 : null, cif = T.cif;
+  let fr = hl5Frames(cif, 0, T.dir), pos = now / 1000 * 8, loop = true;
+  if (st) {
+    const dieF = hl5Frames(cif, 3, T.dir) || hl5Frames(cif, 5, T.dir), hitF = hl5Frames(cif, 2, T.dir);
+    if (mon.dying > 0) { if (dieF && dieF.length > 1) { fr = dieF; pos = Math.min(dieF.length - 1, mon.dying * 1.6 * (dieF.length - 1)); loop = false; } }
+    else {
+      if (now > st.atkT && cif.motions.length > 6 && !(typeof introBlocking === "function" && introBlocking())) {
+        const cand = []; for (let i = 6; i < Math.min(cif.motions.length, 10); i++) { const a = hl5Frames(cif, i, T.dir); if (a && a.length >= 4) cand.push(a); }
+        st.atkF = cand.length ? cand[Math.floor(Math.random() * cand.length)] : null; st.atkT0 = now; st.atkEnd = st.atkF ? now + st.atkF.length / 13 * 1000 : 0;
+        st.atkT = now + (mon.kind >= 2 ? 2600 : 3600) + Math.random() * 3200 + (st.atkF ? st.atkF.length * 77 : 0);
+      }
+      if (st.atkF && now < st.atkEnd) { fr = st.atkF; pos = (now - st.atkT0) / 1000 * 13; loop = false; }
+      else if (hitF && hitF.length && now - st.hitT < 240) { fr = hitF; pos = (now - st.hitT) / 240 * hitF.length; loop = false; }
+      else { let dx = 0; try { dx = enterOffset().dx; } catch (e) {} const wf = Math.abs(dx) > 2 ? hl5Frames(cif, 1, T.dir) : null; if (wf && wf.length > 1) { fr = wf; pos = now / 1000 * 10; } }
+    }
+  }
+  if (!fr || !fr.length) return;
+  hl5Anim(g, fr, pos, loop, T.banks, ox, oy, T.ms, T.flip, opts.white ? "#ffffff" : opts.solid || null);
+}
+
+/* ---------- 공통 이펙트 (맞음·치명타·연기·먼지 고리) ---------- */
+function hl5Fx(mi, x, y, sc, fps) { if (!hl5On() || hl5.fx.length > 28 || (typeof fx48K === "function" && fx48K() <= 0)) return; hl5.fx.push({ mi, x, y, sc: sc || 2.2, fps: fps || 16, t0: performance.now() }); }
+function hl5DrawFx() {
+  if (!hl5.fx.length) return;
+  const cif = hl5On() ? hl5Cif("eff") : null, bank = cif ? hl5Bank("eff", 0, -1) : null; if (!bank) { hl5.fx.length = 0; return; }
+  const B = hl5.effB || (hl5.effB = (() => { const o = {}; for (let k = 0; k < 16; k++) o[k] = bank; return o; })()), now = performance.now();
+  for (let i = hl5.fx.length - 1; i >= 0; i--) {
+    const f = hl5.fx[i], fr = hl5Frames(cif, f.mi, 0), pos = (now - f.t0) / 1000 * f.fps;
+    if (!fr || pos >= fr.length) { hl5.fx.splice(i, 1); continue; }
+    hl5Anim(ctx, fr, pos, false, B, f.x, f.y, f.sc, false, null);
+  }
+}
+
+/* ---------- 불러오기 ---------- */
+function hl5Stat(m) { hl5.msg = m; const n = $("hl5Stat"); if (n) n.textContent = hl5StatText(); }
+function hl5StatText() {
+  if (hl5.msg) return hl5.msg;
+  if (hl5.ready && hl5.lists) return `불러왔어요 · 몬스터 ${hl5.lists.norm.length + hl5.lists.named.length}종 · 보스 ${hl5.lists.boss.length}종 · 파일 ${hl5.files.size}개 (이 폰에만 저장)`;
+  return "아직 불러오지 않았어요. 아래 버튼으로 영웅서기5 zip을 골라 주세요.";
+}
+function hl5Refresh() { try { if (mon && !mon.dying && hl5Assign(mon)) { if (typeof intro !== "undefined" && intro) intro.name = mon.name; renderTop(true); } } catch (e) {} }
+async function hl5Import(file) {
+  if (hl5.busy || !file) return; hl5.busy = true;
+  try {
+    hl5Stat("파일 읽는 중…"); const u8 = new Uint8Array(await file.arrayBuffer());
+    hl5Stat("게임 파일 찾는 중…"); const g = await hl5FindGame(u8, 0);
+    if (!g) throw new Error("영웅서기5 파일을 찾지 못했어요 (영웅서기5 apk 또는 그 apk가 든 zip이어야 해요)");
+    const pack = await hl5Extract(g.so, g.vfs, (i, n) => hl5Stat(`자료 꺼내는 중… ${Math.round(i / n * 100)}%`));
+    if (pack.idx.length < 100) throw new Error("자료를 꺼내지 못했어요");
+    hl5Stat("저장하는 중…"); let kept = true; try { await hl5DbDo("readwrite", s => s.put(pack, "main")); } catch (e) { kept = false; }
+    if (!hl5Load(pack)) throw new Error("자료를 읽지 못했어요");
+    if (fxSet().hl5 === 0) { fxSet().hl5 = 1; save(); }
+    hl5.msg = ""; hl5Stat(""); hl5Refresh(); toast(kept ? "영웅서기5 자료를 불러왔어요" : "불러왔지만 폰에 저장하지 못했어요 (다시 열면 한 번 더 골라야 해요)");
+  } catch (e) { hl5Stat("불러오지 못했어요: " + ((e && e.message) || e)); }
+  hl5.busy = false;
+}
+async function hl5Forget() { try { await hl5DbDo("readwrite", s => s.delete("main")); } catch (e) {} hl5.ready = false; hl5.files = null; hl5.lists = null; hl5.banks = {}; hl5.cifs = {}; hl5.types = {}; hl5.heroT = {}; hl5.fx.length = 0; hl5Stat(""); toast("영웅서기5 자료를 이 폰에서 지웠어요"); }
+function hl5Card() {
+  const card = el("div", "card stg fxset fx48 hl5-card");
+  const seg = (id, lbl, opts) => `<div class="fx-row"><span>${lbl}</span><div class="seg" role="group" aria-label="${lbl}">${opts.map(([v, n]) => `<button type="button" data-hl5="${id}" data-v="${v}" aria-pressed="false">${n}</button>`).join("")}</div></div>`;
+  card.innerHTML = `<div class="fx48-t">영웅서기5 자료 <small>내 폰에서만 꺼내 씀</small></div><p class="muted" id="hl5Stat"></p>`
+    + `<div class="hl5-row"><label class="btn primary hl5-pick">영웅서기5 zip 고르기<input type="file" id="hl5File" accept=".zip,.apk,application/zip,application/vnd.android.package-archive" hidden></label><button type="button" class="btn ghost" data-hl5del="1">지우기</button></div>`
+    + seg("hl5", "영웅서기5 모습", [[1, "켜기"], [0, "끄기"]])
+    + seg("hl5hd", "그림 다듬기", [[1, "선명하게"], [0, "원래 픽셀"]])
+    + seg("hl5c", "주인공", [[0, "자동"], [1, "대검"], [2, "쌍검"], [3, "포"], [4, "도끼"]])
+    + `<p class="muted">폰에 있는 영웅서기5 zip(또는 apk)을 고르면 캐릭터·몬스터·보스·이펙트를 꺼내 이 폰에만 저장해요. 파일은 어디에도 올라가지 않아요. 주인공 '자동'은 직무에 따라 바뀌어요(영업 대검 · 개발 쌍검 · 기획·감사 포 · 인사 도끼). 끄면 다음 몬스터부터 원래 그림으로 돌아와요.</p>`;
+  addCustom("set", card, () => {
+    const cur = { hl5: hl5Use() ? 1 : 0, hl5hd: hl5Hd() ? 1 : 0, hl5c: fxSet().hl5c | 0 };
+    card.querySelectorAll("button[data-hl5]").forEach(b => { const ds = b.dataset || {}; b.setAttribute("aria-pressed", String(+ds.v === +cur[ds.hl5])); });
+    const n = $("hl5Stat"), txt = hl5StatText(); if (n && n.textContent !== txt) n.textContent = txt;
+  });
+  card.addEventListener("click", e => {
+    const b = hbBtn(e, card); if (!b || !b.dataset) return;
+    if (b.dataset.hl5del) { if (hl5.ready && !hl5.busy) hl5Forget(); return; }
+    if (!b.dataset.hl5) return;
+    fxSet()[b.dataset.hl5] = +b.dataset.v; if (b.dataset.hl5 === "hl5hd") hl5ClearImg(); if (b.dataset.hl5 === "hl5" && +b.dataset.v) hl5Refresh();
+    sfx("tick"); updateUI(true); save();
+  });
+  card.addEventListener("change", e => { const t = e.target; if (t && t.id === "hl5File" && t.files && t.files[0]) { hl5Import(t.files[0]); try { t.value = ""; } catch (err) {} } });
+}
+
+/* ---------- 이어 붙이기 ---------- */
+(function () {
+  const rig0 = drawHeroRig;
+  drawHeroRig = function (t, look, pose, hx, hy, hs) {
+    if (hl5On() && (mode === "tower" || mode === "vault")) { try { if (hl5DrawHero(hx, hy, hs)) return; } catch (e) {} }
+    return rig0.apply(this, arguments);
+  };
+  const ds0 = drawSprite;
+  drawSprite = function (g, map, pal, x, y, sc, opts) {
+    if (map && map.hl5 && hl5On()) { try { hl5DrawMon(g, map.hl5, x + map[0].length * sc / 2, y + map.length * sc, opts || {}); return; } catch (e) {} }
+    return ds0.apply(this, arguments);
+  };
+  const en0 = entrance;
+  entrance = function (m) { try { hl5Assign(m); } catch (e) {} return en0.apply(this, arguments); };
+  const fb0 = feelBegin;
+  feelBegin = function (h, mv) { if (h === fHero) hl5.h.seq++; return fb0.apply(this, arguments); };
+  const hit0 = hit;
+  hit = function (amount, crit, src, px, py) {
+    const alive = !!(mon && !mon.dying), r = hit0.apply(this, arguments);
+    if (alive && mon && hl5On()) {
+      const now = performance.now(), st = mon.hl5, heavy = src === "hero" || src === "tap" || src === "jhero" || src === "skill";
+      if (st && heavy && now - st.hitT > 330) st.hitT = now;
+      if (heavy && now - hl5.fxT > 70) {
+        hl5.fxT = now; let x = px, y = py; if (x == null || y == null) { try { [x, y] = monHitPoint(); } catch (e) { x = MON_X - 14; y = GROUND - 80; } }
+        hl5Fx(crit ? 0 : src === "skill" ? 32 : 19, x, y, crit ? 2.3 : 2, 18);
+      }
+    }
+    return r;
+  };
+  const kill0 = kill;
+  kill = function () {
+    const m = mon, was = !!(m && !m.dying), r = kill0.apply(this, arguments);
+    if (was && m && m.dying && m.hl5 && hl5On()) { const { h } = monSize(m), big = m.kind >= 2; hl5Fx(big ? 24 : 23, MON_X + monOX(), GROUND - h * 0.45, big ? 3.6 : 2.4, 12); if (big) hl5Fx(7, MON_X + monOX(), GROUND - h * 0.5, 3.2, 12); }
+    return r;
+  };
+  const cs0 = castSkill;
+  castSkill = function (s, auto) {
+    const ok = cs0.apply(this, arguments);
+    if (ok && hl5On()) { try { const cls = hl5HeroCls(), H = hl5.h; H.sk = cls.sk[H.skI++ % cls.sk.length]; H.skT = performance.now(); hl5Fx(1, HERO_X + 35, GROUND - 44, 2.2, 14); } catch (e) {} }
+    return ok;
+  };
+  const bl0 = bossLand;
+  bossLand = function () { const r = bl0.apply(this, arguments); hl5Fx(27, MON_X, GROUND - 6, 3.4, 12); return r; };
+  const px0 = drawPixelFx;
+  drawPixelFx = function (now, hx) { const r = px0.apply(this, arguments); try { hl5DrawFx(); } catch (e) { hl5.fx.length = 0; } return r; };
+  const fc0 = buildScrCard;
+  buildScrCard = function () { const r = fc0.apply(this, arguments); hl5Card(); return r; };
+  /* 시작할 때: 폰에 저장해 둔 자료가 있으면 바로 씀 */
+  (async () => { try { const p = await hl5DbDo("readonly", s => s.get("main")); if (p && p.v === 1 && p.idx && p.buf && hl5Load(p)) hl5Refresh(); } catch (e) {} })();
+})();
 
 /* 화면 글자 레이어: 스킬 이름 띠 · 무한 루프 화면 지직거림 */
 function drawJobUi(t) {

@@ -115,6 +115,7 @@ function kelHtml(s) {
       else if (b.k === "note") h += `<p class="kl-note">${kelInline(t, s.id)}</p>`;
       else if (b.k === "li") h += `<p class="sm-p kl-li">${kelInline(t, s.id)}</p>`;
       else { if (b.sp) h += `<p class="kl-sp">${escapeHtml(b.sp)}</p>`; h += kelParaHtml(t, s.id, o && o.em, b.k, s.ov && s.ov.join); }
+      if (b.enote && b.enote.length && kelOvOn()) h += b.enote.map(n => `<p class="kl-enote"><span>편집자 메모</span>${escapeHtml(n)}</p>`).join("");
       if (b.orig) h += `<button type="button" class="kl-fx" data-kfx="1">✎ 원고에서 고친 곳</button><div class="kl-fxo" hidden><b>원래 원고</b><p>${escapeHtml(b.orig)}</p><small>${escapeHtml((b.why || []).join(" · "))}</small></div>`;
     });
     if (o && o.key && !o.rest) h += `<p class="kl-key"><span>이 장의 한 줄</span>${kelInline(o.key, s.id)}</p>`;

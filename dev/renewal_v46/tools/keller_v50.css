@@ -48,3 +48,5 @@
 .kl-fx { font: inherit; font-size: .66em; margin: -.6em 0 1em; padding: 2px 8px; border: 0; border-radius: 6px; background: var(--rqbg); color: var(--rq); }
 .kl-fxo { margin: -.4em 0 1.2em; padding: 10px 12px; border-left: 2px solid var(--rq); font-size: .82em; line-height: 1.6; color: var(--rmut); }
 .kl-fxo b { display: block; color: var(--rq); font-size: .9em; } .kl-fxo p { margin: 4px 0; } .kl-was { text-decoration: line-through; opacity: .7; }
+.kl-enote { margin: -.5em 0 1.2em; padding: 6px 10px; font-size: .78em; line-height: 1.55; color: var(--ked); background: var(--kedbg); border-radius: 8px; }
+.kl-enote span { font-weight: 700; margin-right: 6px; font-size: .9em; }

@@ -141,7 +141,7 @@ function kelHtml(s) {
   if (notes.length) h += `<details class="nt-bl"><summary>주석 ${notes.length}개</summary>${notes.map(n => `<div class="vm" id="kln-${n}"><p class="nt-form">주${n}${s.notes[n].h ? ` · ${escapeHtml(s.notes[n].h)}` : ""}</p><p>${kelInline(s.notes[n].t || "", s.id)}</p></div>`).join("")}</details>`;
   if (s.guide && s.guide.length) h += `<details class="nt-bl"><summary>원고 읽기 안내</summary>${s.guide.map(p => `<p>${kelInline(p, s.id)}</p>`).join("")}</details>`;
   if (s.appx && s.appx.length) h += `<details class="nt-bl"><summary>교정 기록·확인한 자료</summary>${s.appx.map(a => `<h4>${escapeHtml(a.h || "")}</h4>` + (a.b || []).map(b => b.k === "h2" ? `<h5 class="kl-h2">${escapeHtml(b.t)}</h5>` : `<p>${kelInline(b.t, s.id)}</p>`).join("")).join("")}</details>`;
-  h += `<p class="nt-cap">개인 학습용 비공식 교정번역본이에요. 켈러의 낱말·문장은 원고 그대로이고, 문단 나눔과 편집자 길잡이(색 글씨)만 더했어요. 이 원고는 이 폰에만 저장돼 있어요.</p>`;
+  h += `<p class="nt-cap">개인 학습용 비공식 교정번역본이에요. 켈러의 낱말·문장은 원고 그대로이고, 문단 나눔과 편집자 길잡이(색 글씨)만 더했어요. 이 원고는 이 폰과 내 계정의 비공개 칸에만 있어요.</p>`;
   return h;
 }
 function kelOpen(sid, keepPos) {

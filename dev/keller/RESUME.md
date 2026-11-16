@@ -39,3 +39,9 @@
 ## 11-14 21시 반 (50d, main 배포 · sw yageun-v85): 사용자 "103건은 문맥에 방해되는 건 없지?" → 아니라고 답하고 셋으로 나눔(A 읽다가 걸림 57 · B 원문 확인 필요 34 · C 말로 한 반복 12), 사용자 "그렇게하자". FIX2.md로 편집자 2명: 고친 블록 76(orig·why, 큰 변경 없음 — 모두 40자 이하 차이), 중복 삭제 3(k=del), 편집자 메모 37(b.enote, 앱에 '편집자 메모'로 표시, 길잡이 끄면 숨김). 순서: kparse → kfix → (FIX2 에이전트 결과는 kel/json에만 있음 — 다시 만들 때 주의) → kpack.
 
 ## 11-14 21:36 결정: kjy_private.players/sessions RLS는 **그대로 둠**(사용자 "그대로둬"). 확인 결과 anon·authenticated에 스키마·SELECT 권한 없음 → 외부에서 못 읽음. 보고에서 더 이상 묻지 않음.
+
+## 11-16 22시 반 (51a, main 배포 · sw yageun-v86)
+- 사용자 "앱 자체가 옛날 그대로" + 켈러는 "로그인하면 자동".
+- Supabase: kjy_private.packs(owner,key,part,total,ver,data, RLS on·anon 권한 없음) + RPC kjy_pack_put/kjy_pack_get(세션 확인, 올린 계정만). 마이그레이션 kjy_private_packs.
+- 앱 packsync_v51.js: 켈러·영웅서기5 불러오면 800KB씩 올림(hl5는 buf base64), 로그인한 앱이 자료 없으면 받아 IndexedDB에 저장, 이미 폰에 있고 서버에 없으면 올림. 이 작업 공간에서는 Supabase에 못 닿아(curl 000) 처음 한 번은 폰에서 골라야 함.
+- 새 버전: sw.js 화면 요청 cache:no-store, register updateViaCache:none, 열 때·다시 볼 때 update(), controllerchange 때 save 후 한 번 새로고침 + "새 버전으로 바꿨어요" 알림, 설정 맨 아래 앱 버전(APP_VER).

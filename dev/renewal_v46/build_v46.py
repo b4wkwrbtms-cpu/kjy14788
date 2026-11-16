@@ -407,11 +407,15 @@ s = s.replace('</style>', '.hl5-row { display: flex; gap: 8px; align-items: cent
 _c50 = f'{R0}/keller_v50.js' if _os.path.exists(f'{R0}/keller_v50.js') else f'{R0}/tools/keller_v50.js'
 p50 = open(_c50, encoding='utf-8').read()
 s = s.replace('</style>', open(_c50.replace('.js', '.css'), encoding='utf-8').read() + '</style>', 1)
-s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + p48 + '\n' + p49 + '\n' + p50 + '\n' + mk)
+# v51 (11-16) 내 자료 자동 받기(kjy_pack_put/get) + 새 버전 자동 적용
+_c51 = f'{R0}/packsync_v51.js' if _os.path.exists(f'{R0}/packsync_v51.js') else f'{R0}/tools/packsync_v51.js'
+p51 = open(_c51, encoding='utf-8').read()
+s = s.replace('navigator.serviceWorker.register("sw.js")', 'navigator.serviceWorker.register("sw.js", { updateViaCache: "none" })')
+s = s.replace(mk, p45 + '\n' + p46 + '\n' + p47m + '\n' + p48 + '\n' + p49 + '\n' + p50 + '\n' + p51 + '\n' + mk)
 open(f'{APP}/index.html', 'w', encoding='utf-8').write(s)
 sw = subprocess.run(['git', '-C', '/home/claude/b4wkwrbtms-cpu/kjy14788', 'show', 'f1e42e3:sw.js'], capture_output=True, text=True, check=True).stdout
 assert 'const CACHE = "yageun-v44";' in sw
-sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v80";')
+sw = sw.replace('const CACHE = "yageun-v44";', 'const CACHE = "yageun-v86";')
 assert 'url.pathname.includes("/bible/")' in sw
 sw = sw.replace('url.pathname.includes("/bible/")', '(url.pathname.includes("/bible/") || url.pathname.includes("/fonts/"))')  # 글꼴도 한 번 받으면 오프라인
 open(f'{APP}/sw.js', 'w').write(sw)

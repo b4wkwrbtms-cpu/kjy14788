@@ -7,7 +7,8 @@
 var HL5_WASM_B64 = "__HL5X_WASM_B64__";
 var HL5_K = 4;                                    // 그림 다듬기 배율
 var HL5_BLEND = { 1: "darken", 2: "lighten", 3: "multiply", 4: "screen", 5: "color-dodge", 6: "color-burn", 7: "lighter", 8: "multiply", 11: "hard-light", 14: "difference" };
-var HL5_CLS = {                                   // 직업별 동작 번호 (옆모습 = 방향 1)
+var HL5_HDIR = 2;                                 // 방향: 0 뒷모습 · 1 앞모습 · 2 오른쪽 옆모습 (왼쪽은 좌우 뒤집기)
+var HL5_CLS = {                                   // 직업별 동작 번호
   knight: { cif: "001", idle: 2, atk: [9, 10, 11], sk: [16, 17, 23, 14] },
   rogue: { cif: "002", idle: 2, atk: [9, 10, 11, 12], sk: [16, 15, 22, 27] },
   gunner: { cif: "003", idle: 2, atk: [9, 10, 13], sk: [11, 18, 20, 22] },
@@ -317,7 +318,7 @@ function hl5HeroCls() {
 }
 function hl5HeroT(cls) {
   if (hl5.heroT[cls.cif] !== undefined) return hl5.heroT[cls.cif];
-  const cif = hl5Cif(cls.cif); if (!cif || !hl5Frames(cif, cls.idle, 1)) return (hl5.heroT[cls.cif] = null);
+  const cif = hl5Cif(cls.cif); if (!cif || !hl5Frames(cif, cls.idle, HL5_HDIR)) return (hl5.heroT[cls.cif] = null);
   const banks = {}; cif.imgs.forEach((n, k) => { const b = hl5Bank(k, n, -1); if (b) banks[k] = b; });
   return (hl5.heroT[cls.cif] = { cif, banks });
 }
@@ -328,17 +329,17 @@ function hl5HeroAtk() {
 }
 function hl5DrawHero(hx, hy, hs) {
   const cls = hl5HeroCls(), T = hl5HeroT(cls); if (!T) return false;
-  if (T.warmed !== true) { T.warmed = true; hl5Prewarm(T.cif, T.banks, 1); }
+  if (T.warmed !== true) { T.warmed = true; hl5Prewarm(T.cif, T.banks, HL5_HDIR); }
   const now = performance.now(), H = hl5.h, cx = hx + 10 * hs, fy = hy + 24 * hs, HS = 2.3;
   if (H.cls !== cls) { H.cls = cls; H.cur = null; H.from = null; H.last = null; }
-  if (H.skQ) { H.skQ = false; const f = hl5Frames(T.cif, H.sk, 1); if (f) hl5Set(H, "sk" + H.sk, f, 15, false, now); }
+  if (H.skQ) { H.skQ = false; const f = hl5Frames(T.cif, H.sk, HL5_HDIR); if (f) hl5Set(H, "sk" + H.sk, f, 15, false, now); }
   else if (H.atkQ) {
     H.atkQ = false;
     const busySk = H.cur && H.cur.tag.startsWith("sk") && !hl5Done(H, now);
-    const f = hl5Frames(T.cif, cls.atk[H.seq % cls.atk.length], 1);
+    const f = hl5Frames(T.cif, cls.atk[H.seq % cls.atk.length], HL5_HDIR);
     if (f && !busySk) hl5Set(H, "atk" + H.seq, f, Math.max(14, Math.min(30, f.length / (Math.max(120, H.gap) / 1000 * 0.92))), false, now);
   }
-  if (hl5Done(H, now)) hl5Set(H, "idle", hl5Frames(T.cif, cls.idle, 1), 10, true, now);
+  if (hl5Done(H, now)) hl5Set(H, "idle", hl5Frames(T.cif, cls.idle, HL5_HDIR), 10, true, now);
   ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(cx - 24, GROUND - 3, 48, 6);
   const keep = { from: H.from, fromT: H.fromT, last: H.last };
   reflect(() => hl5Play(H, ctx, T.banks, cx, fy, HS, false, null, now));
@@ -363,7 +364,7 @@ function hl5MonType(e, kind) {
   const key = e.i + "_" + kind; if (hl5.types[key] !== undefined) return hl5.types[key];
   const cif = hl5Cif(hl5Pad3(e.cif)); if (!cif || !cif.motions.length || !cif.motions[0].length) return (hl5.types[key] = null);
   const banks = {}; e.banks.forEach((b, k) => { if (b >= 0) { const bk = hl5Bank(k, b, k < 6 ? e.pals[k] : -1); if (bk) banks[k] = bk; } });
-  const nd = cif.motions[0].length, dir = nd >= 2 ? 1 : 0, flip = nd >= 3, fr0 = hl5Frames(cif, 0, dir)[0] || [];
+  const nd = cif.motions[0].length, dir = nd >= 3 ? 2 : nd === 2 ? 1 : 0, flip = nd >= 3, fr0 = hl5Frames(cif, 0, dir)[0] || [];
   let x0 = 1e9, x1 = -1e9, y0 = 1e9;
   fr0.forEach(p => { if (p.bl) return; const bk = banks[p.slot], im = bk && bk[p.idx]; if (!im || (im.w <= 1 && im.h <= 1)) return; const hw = im.w * p.sx / 2, hh = im.h * p.sy / 2; x0 = Math.min(x0, p.x - hw); x1 = Math.max(x1, p.x + hw); y0 = Math.min(y0, p.y - hh); });
   if (x1 <= x0) return (hl5.types[key] = null);

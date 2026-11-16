@@ -121,3 +121,9 @@
 ## 53a (11-16) — 옆모습 (main 9d6ea5b, sw yageun-v88)
 - 방향 번호 확인: 0 뒷모습 · 1 앞모습 · 2 오른쪽 옆모습. 주인공은 방향 2(HL5_HDIR), 방향 3개 몬스터는 방향 2를 좌우 뒤집기, 방향 2개 몬스터는 방향 1(왼쪽 아래를 보는 3/4 모습).
 - 직업: 자동이면 직무 따라 영업→대검, 개발→쌍검, 기획·감사→포, 인사·총무→도끼. 직무가 없으면 대검.
+
+## 54a (11-17) — 융합 1단계: 직업 스킬 (main 5157c13, sw yageun-v89)
+- 사용자 요청: "이 두 앱(곽준영 키우기 + 영웅서기5)을 완벽하게 융합". 스킬 찾기: skills.sh 색인을 검색해 gamedev-skills/awesome-gamedev-agent-skills(rpg·game-feel 등), donchitos/claude-code-game-studios, rehan-remade/universal-modder(mashup-mods·reverse-engineering), patch-gg/pixelfx를 scratchpad/dlskills에 받음(npm은 막힘, git은 됨). 길: mashup-mods의 Pattern 1+5(원작 자료는 사용자 zip에서 실행 중 변환, 저장소에 안 올림).
+- 불러오기 경로 추가: /c/csv 표 40개, /c/img/*.mgr, /c/par, /c/sp/ext, /c/mon/*_ai (다음 단계용). 옛 묶음이면 '한 번 더 불러와 주세요' 안내.
+- skill_00~03 = 양손무기·쌍검·총기·창. 기록 = [u16 길이][이름][숫자 칸][설명], 숫자 칸 30~32번째 바이트 = 동작 번호 사슬(예: 돌진 14-19-11). 재사용대기 있는 쓰는 스킬만. 스킬을 쓰면 원작 스킬 이름이 뜨고 동작 사슬을 차례로 재생.
+- 다음: 2단계 장비(item_00~18, icon.mgr) → 3단계 몬스터 능력치·드롭 → 4단계 대장간·세트.

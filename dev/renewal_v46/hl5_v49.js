@@ -7,12 +7,13 @@
 var HL5_WASM_B64 = "__HL5X_WASM_B64__";
 var HL5_K = 4;                                    // 그림 다듬기 배율
 var HL5_BLEND = { 1: "darken", 2: "lighten", 3: "multiply", 4: "screen", 5: "color-dodge", 6: "color-burn", 7: "lighter", 8: "multiply", 11: "hard-light", 14: "difference" };
+var HL5_CSV = ["buildup", "class", "collection", "droptable", "enemy_1", "enemy_2", "mission_list", "name", "npc_g", "option", "probability", "set_option", "skill_00", "skill_01", "skill_02", "skill_03", "skill_05", "smith_0", "smith_1", "smith_2", "tips"].concat(Array.from({ length: 19 }, (_, i) => "item_" + String(i).padStart(2, "0")));
 var HL5_HDIR = 2;                                 // 방향: 0 뒷모습 · 1 앞모습 · 2 오른쪽 옆모습 (왼쪽은 좌우 뒤집기)
 var HL5_CLS = {                                   // 직업별 동작 번호
-  knight: { cif: "001", idle: 2, atk: [9, 10, 11], sk: [16, 17, 23, 14] },
-  rogue: { cif: "002", idle: 2, atk: [9, 10, 11, 12], sk: [16, 15, 22, 27] },
-  gunner: { cif: "003", idle: 2, atk: [9, 10, 13], sk: [11, 18, 20, 22] },
-  axe: { cif: "004", idle: 2, atk: [9, 10, 11, 12], sk: [13, 21, 22, 26] },
+  knight: { cif: "001", tbl: "skill_00", idle: 2, atk: [9, 10, 11], sk: [16, 17, 23, 14] },
+  rogue: { cif: "002", tbl: "skill_01", idle: 2, atk: [9, 10, 11, 12], sk: [16, 15, 22, 27] },
+  gunner: { cif: "003", tbl: "skill_02", idle: 2, atk: [9, 10, 13], sk: [11, 18, 20, 22] },
+  axe: { cif: "004", tbl: "skill_03", idle: 2, atk: [9, 10, 11, 12], sk: [13, 21, 22, 26] },
 };
 var HL5_CLS_ORDER = ["knight", "rogue", "gunner", "axe"];
 var HL5_JOB = { sales: "knight", dev: "rogue", plan: "gunner", hr: "axe", audit: "gunner" };   // 직무 → 영웅서기5 직업
@@ -81,6 +82,14 @@ async function hl5Extract(so, vfs, onp) {
   for (let i = 0; i < 640; i++) paths.push(`/c/sp/pal/${hl5Pad3(i)}.pal`);
   ["eff", "imo"].forEach(n => { paths.push(`/c/sp/imgcom/${n}.mgr`); paths.push(`/c/sp/cif/${n}.cif`); });
   paths.push("/c/csv/enemy_0.dat", "/c/csv/enemy_g.dat");
+  /* 54: 융합용 자료 — 직업별 스킬 표·아이템·몬스터·대장간 표, 아이콘·UI 그림, 파티클, 추가 그림, 몬스터 AI */
+  HL5_CSV.forEach(n => paths.push(`/c/csv/${n}.dat`));
+  ["worldmap", "menu", "shadow", "gmenu", "ui", "icon", "touch"].forEach(n => paths.push(`/c/img/${n}.mgr`));
+  for (let i = 0; i < 10; i++) { paths.push(`/c/par/p${hl5Pad3(i)}`); paths.push(`/c/par/pimg${String(i).padStart(2, "0")}.mgr`); }
+  for (let i = 0; i < 20; i++) paths.push(`/c/par/ps${hl5Pad3(i)}`);
+  paths.push("/c/par/pinfo.dat");
+  for (let i = 0; i < 130; i++) paths.push(`/c/sp/ext/${hl5Pad3(i)}.ext`);
+  for (let i = 0; i < 100; i++) paths.push(`/c/mon/${i}_ai`);
   const got = []; let total = 0;
   for (let i = 0; i < paths.length; i++) {
     const b = enc(paths[i]); new Uint8Array(mem.buffer, G(pbuf), b.length).set(b); new DataView(mem.buffer).setInt32(G(sz), 0, true);
@@ -120,7 +129,21 @@ function hl5Load(pack) {
   const box = all.find(e => e.cif === 97) || null;
   if (!norm.length) return false;
   hl5.lists = { all, norm, named: named.length ? named : norm, boss: boss.length ? boss : norm, big: big.length ? big : (boss.length ? boss : norm), box };
+  hl5.skills = {}; try { HL5_CLS_ORDER.forEach(k => { const t = files.get(`/c/csv/${HL5_CLS[k].tbl}.dat`); if (t) hl5.skills[k] = hl5SkillTbl(t, td); }); } catch (e) { hl5.skills = {}; }
   hl5.ready = true; return true;
+}
+/* 직업 스킬 표: 기록마다 [길이 u16][이름][숫자 칸…][설명]. 숫자 칸 30~32번째 바이트가 그 스킬의 동작 번호(0이면 없음) */
+function hl5SkillTbl(b, td) {
+  const dv = new DataView(b.buffer, b.byteOffset, b.byteLength), n = dv.getUint16(0, true), out = []; let o = 2;
+  for (let r = 0; r < n && o + 2 <= b.length; r++) {
+    const ln = dv.getUint16(o, true), body = b.subarray(o + 2, o + 2 + ln); o += 2 + ln;
+    const L = body[0], name = td.decode(body.subarray(1, 1 + L)).trim(), p = 1 + L, num = body.subarray(p, p + 48);
+    let desc = ""; for (let k = p; k < body.length; k++) if (body[k] > 10 && k + 1 + body[k] === body.length) { desc = td.decode(body.subarray(k + 1)); break; }
+    const mo = [num[30], num[31], num[32]].filter(v => v > 0 && v < 80);
+    if (!/재사용대기/.test(desc) || !mo.length) continue;   // 쓰는 스킬만 (패시브·태세 빼고)
+    out.push({ name, mo, desc: desc.replace(/[{}|]|#\d\d/g, "").split(";").slice(1, 3).join(" ") });
+  }
+  return out;
 }
 function hl5PalMap(pid) {
   const b = pid >= 0 ? hl5.files.get(`/c/sp/pal/${hl5Pad3(pid)}.pal`) : null; if (!b) return null;
@@ -333,6 +356,7 @@ function hl5DrawHero(hx, hy, hs) {
   const now = performance.now(), H = hl5.h, cx = hx + 10 * hs, fy = hy + 24 * hs, HS = 2.3;
   if (H.cls !== cls) { H.cls = cls; H.cur = null; H.from = null; H.last = null; }
   if (H.skQ) { H.skQ = false; const f = hl5Frames(T.cif, H.sk, HL5_HDIR); if (f) hl5Set(H, "sk" + H.sk, f, 15, false, now); }
+  else if (H.skChain && H.skChain.length && H.cur && /^sk/.test(H.cur.tag) && hl5Done(H, now)) { H.sk = H.skChain.shift(); const f = hl5Frames(T.cif, H.sk, HL5_HDIR); if (f) hl5Set(H, "sk" + H.sk, f, 15, false, now); }
   else if (H.atkQ) {
     H.atkQ = false;
     const busySk = H.cur && H.cur.tag.startsWith("sk") && !hl5Done(H, now);
@@ -453,7 +477,7 @@ function hl5DrawFx() {
 function hl5Stat(m) { hl5.msg = m; const n = $("hl5Stat"); if (n) n.textContent = hl5StatText(); }
 function hl5StatText() {
   if (hl5.msg) return hl5.msg;
-  if (hl5.ready && hl5.lists) return `불러왔어요 · 몬스터 ${hl5.lists.norm.length + hl5.lists.named.length}종 · 보스 ${hl5.lists.boss.length}종 · 파일 ${hl5.files.size}개 (이 폰에만 저장)`;
+  if (hl5.ready && hl5.lists) return `불러왔어요 · 몬스터 ${hl5.lists.norm.length + hl5.lists.named.length}종 · 보스 ${hl5.lists.boss.length}종 · 파일 ${hl5.files.size}개 (이 폰에만 저장)` + (Object.keys(hl5.skills || {}).length ? ` · 직업 스킬 ${Object.values(hl5.skills).reduce((a, v) => a + v.length, 0)}개` : " · 새 기능(직업 스킬)을 쓰려면 영웅서기5 zip을 한 번 더 불러와 주세요");
   return "아직 불러오지 않았어요. 아래 버튼으로 영웅서기5 zip을 골라 주세요.";
 }
 function hl5Refresh() { try { if (mon && !mon.dying && hl5Assign(mon)) { if (typeof intro !== "undefined" && intro) intro.name = mon.name; renderTop(true); } } catch (e) {} }
@@ -541,7 +565,7 @@ function hl5Card() {
   const cs0 = castSkill;
   castSkill = function (s, auto) {
     const ok = cs0.apply(this, arguments);
-    if (ok && hl5On()) { try { const cls = hl5HeroCls(), H = hl5.h; H.sk = cls.sk[H.skI++ % cls.sk.length]; H.skT = performance.now(); H.skQ = true; hl5Fx(1, HERO_X + 35, GROUND - 44, 2.2, 14); } catch (e) {} }
+    if (ok && hl5On()) { try { const cls = hl5HeroCls(), H = hl5.h; const key = HL5_CLS_ORDER.find(k => HL5_CLS[k] === cls), tb = (hl5.skills && hl5.skills[key]) || []; if (tb.length) { const sk = tb[H.skI++ % tb.length]; H.skChain = sk.mo.slice(1); H.sk = sk.mo[0]; { const fl = floats.slice().reverse().find(f => f.text === s.n + "!"); if (fl) { fl.text = sk.name + "!"; fl.color = "#9fe6ff"; } else addFloat(HERO_X + 30, GROUND - 150, sk.name + "!", "#9fe6ff", 30, true); } } else { H.skChain = []; H.sk = cls.sk[H.skI++ % cls.sk.length]; } H.skT = performance.now(); H.skQ = true; hl5Fx(1, HERO_X + 35, GROUND - 44, 2.2, 14); } catch (e) {} }
     return ok;
   };
   const bl0 = bossLand;

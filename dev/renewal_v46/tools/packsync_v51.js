@@ -2,7 +2,7 @@
    1) 켈러 읽기 팩·영웅서기5 자료를 한 번 불러오면 게임 계정 서버의 '내 계정 전용' 칸(kjy_private.packs)에 올려 둠.
       로그인한 앱이 자료가 없으면 저절로 받아 와서 폰에 저장함. 다른 계정·공개 사이트에서는 볼 수 없음.
    2) 새 버전이 배포되면 앱을 열거나 다시 볼 때 바로 확인해 바꿈(서비스워커 갱신 + 한 번 새로고침). */
-var APP_VER = "53a";
+var APP_VER = "54a";
 var psync = { msg: { keller: "", hl5: "" }, busy: {} };
 function psB64(u8) { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
 function psUnB64(b) { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }

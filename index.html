@@ -16854,7 +16854,7 @@ var HL5_CLS = {                                   // 직업별 동작 번호 (�
 var HL5_CLS_ORDER = ["knight", "rogue", "gunner", "axe"];
 var HL5_JOB = { sales: "knight", dev: "rogue", plan: "gunner", hr: "axe", audit: "gunner" };   // 직무 → 영웅서기5 직업
 var HL5_BIG = ["악몽의 잔해", "불완전 강림자", "죽은자의 왕", "극의 주인", "악몽의 감시자", "크레이지 머신", "빙의된 루퍼스", "알테나"];   // 100층마다 나오는 큰 보스
-var hl5 = { ready: false, busy: false, msg: "", files: null, banks: {}, cifs: {}, types: {}, heroT: {}, lists: null, effB: null, fx: [], fxT: 0, tmp: null, h: { seq: 0, sk: -1, skT: -1e9, skI: 0 } };
+var hl5 = { ready: false, busy: false, msg: "", files: null, banks: {}, cifs: {}, types: {}, heroT: {}, lists: null, effB: null, fx: [], fxT: 0, tmp: null, warm: [], h: { seq: 0, sk: -1, skT: -1e9, skI: 0, cur: null, from: null, fromT: 0, last: null, atkT: 0, gap: 600 } };
 
 function hl5Use() { try { return fxSet().hl5 !== 0; } catch (e) { return false; } }
 function hl5On() { return hl5.ready && hl5Use(); }
@@ -16975,21 +16975,38 @@ function hl5Bank(slot, bank, pid) {
 function hl5Canvas(px, w, h) { const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").putImageData(new ImageData(px, w, h), 0, 0); return c; }
 /* 그림 한 장: [형식][색 수][w][h][팔레트 RGB565][픽셀 색 번호], 투명색 0xf81f. 처음 쓸 때 풀고(선명하게면 4배로 다듬어) 캔버스로 둠 */
 function hl5Img(im) {
-  if (im.c !== null) return im.c;
-  const rec = im.rec, w = im.w, h = im.h; if (w < 1 || h < 1 || (w <= 1 && h <= 1) || w > 1024 || h > 1024) return (im.c = false);
-  const nc = rec[1] || 256, bits = nc <= 16 ? 4 : 8, base = 6 + 2 * nc, stride = bits === 4 ? (w + 1) >> 1 : w, px = new Uint8ClampedArray(w * h * 4), pal = new Int32Array(nc);
-  for (let k = 0; k < nc; k++) { let c = rec[6 + 2 * k] | (rec[7 + 2 * k] << 8); if (c === 0xf81f) { pal[k] = -1; continue; } if (im.remap && im.remap.has(c)) c = im.remap.get(c); pal[k] = c === 0xf81f ? -1 : c; }
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-    let ci;
-    if (bits === 4) { const k = base + y * stride + (x >> 1); if (k >= rec.length) continue; ci = x & 1 ? rec[k] & 15 : rec[k] >> 4; }
-    else { const k = base + y * w + x; if (k >= rec.length) continue; ci = rec[k]; }
-    const c = ci < nc ? pal[ci] : -1; if (c < 0) continue;
-    const o = (y * w + x) * 4; px[o] = ((c >> 11) & 31) * 255 / 31 | 0; px[o + 1] = ((c >> 5) & 63) * 255 / 63 | 0; px[o + 2] = (c & 31) * 255 / 31 | 0; px[o + 3] = 255;
+  if (im.c === false) return false;
+  if (!im.lo) {
+    const rec = im.rec, w = im.w, h = im.h; if (w < 1 || h < 1 || (w <= 1 && h <= 1) || w > 1024 || h > 1024) return (im.c = false);
+    const nc = rec[1] || 256, bits = nc <= 16 ? 4 : 8, base = 6 + 2 * nc, stride = bits === 4 ? (w + 1) >> 1 : w, px = new Uint8ClampedArray(w * h * 4), pal = new Int32Array(nc);
+    for (let k = 0; k < nc; k++) { let c = rec[6 + 2 * k] | (rec[7 + 2 * k] << 8); if (c === 0xf81f) { pal[k] = -1; continue; } if (im.remap && im.remap.has(c)) c = im.remap.get(c); pal[k] = c === 0xf81f ? -1 : c; }
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      let ci;
+      if (bits === 4) { const k = base + y * stride + (x >> 1); if (k >= rec.length) continue; ci = x & 1 ? rec[k] & 15 : rec[k] >> 4; }
+      else { const k = base + y * w + x; if (k >= rec.length) continue; ci = rec[k]; }
+      const c = ci < nc ? pal[ci] : -1; if (c < 0) continue;
+      const o = (y * w + x) * 4; px[o] = ((c >> 11) & 31) * 255 / 31 | 0; px[o + 1] = ((c >> 5) & 63) * 255 / 63 | 0; px[o + 2] = (c & 31) * 255 / 31 | 0; px[o + 3] = 255;
+    }
+    im.lo = hl5Canvas(px, w, h); im.px = px;
   }
-  if (hl5Hd() && w * h <= 40000) { try { return (im.c = hl5Canvas(hl5Xbr(px, w, h, HL5_K), w * HL5_K, h * HL5_K)); } catch (e) {} }
-  return (im.c = hl5Canvas(px, w, h));
+  if (hl5Hd() && im.w * im.h <= 40000) { if (im.hd) return im.hd; if (!im.q) { im.q = 2; hl5.warm.unshift(im); } else if (im.q === 1) { im.q = 2; const i = hl5.warm.indexOf(im); if (i > 0) { hl5.warm.splice(i, 1); hl5.warm.unshift(im); } } }
+  return im.lo;
 }
-function hl5ClearImg() { Object.keys(hl5.banks).forEach(k => { const b = hl5.banks[k]; if (b) b.forEach(im => { im.c = null; }); }); }
+/* 선명하게 다듬기: 한 프레임에 ms만큼만 (화면에 보이는 그림 먼저) */
+function hl5WarmStep(ms) {
+  const t0 = performance.now();
+  while (hl5.warm.length && performance.now() - t0 < ms) {
+    const im = hl5.warm.shift(); if (im.hd || im.c === false) continue;
+    try { if (!im.lo) hl5Img(im); if (im.px && hl5Hd()) im.hd = hl5Canvas(hl5Xbr(im.px, im.w, im.h, HL5_K), im.w * HL5_K, im.h * HL5_K); } catch (e) {}
+    im.px = null;
+  }
+}
+/* 이 캐릭터가 쓸 그림을 미리 줄 세움(아직 다듬지 않음 — 다듬기는 쉬는 틈에) */
+function hl5Prewarm(cif, banks, dir) {
+  if (!hl5Hd()) return; const seen = new Set();
+  cif.motions.forEach(m => { const d = m[Math.min(dir, m.length - 1)]; (d || []).forEach(fr => fr.forEach(p => { const bk = banks[p.slot], im = bk && bk[p.idx]; if (!im || seen.has(im) || im.hd || im.q) return; seen.add(im); im.q = 1; hl5.warm.push(im); })); });
+}
+function hl5ClearImg() { hl5.warm.length = 0; Object.keys(hl5.banks).forEach(k => { const b = hl5.banks[k]; if (b) b.forEach(im => { if (im.c !== false) { im.c = null; im.lo = null; im.hd = null; im.px = null; im.q = 0; } }); }); }
 /* 가장자리 방향 확대 (영웅서기5 플레이어의 화면 다듬기를 그림 한 장 단위로 옮김):
    ① 픽셀의 네 모서리마다 '가장자리 건너편인지'를 두 대각선 방향의 이웃이 얼마나 잘 이어지는지로 정하고(45°·2:1 기울기 구분)
    ② 확대한 자리에서 그 모서리 쪽만 이웃 색으로, 가장자리 선을 따라 좁게 부드럽게 넘김. 투명한 곳도 하나의 색처럼 다뤄 윤곽이 매끈해짐 */
@@ -17096,18 +17113,38 @@ function hl5Layer(g, parts, next, u, banks, plain) {
   }
   g.imageSmoothingEnabled = sm;
 }
-function hl5Anim(g, frames, pos, loop, banks, ox, oy, sc, flip, tint) {
-  const n = frames.length; if (!n) return;
-  let f0 = Math.floor(pos), u = pos - f0, f1;
+function hl5Pose(frames, pos, loop) {
+  const n = frames.length; let f0 = Math.floor(pos), u = pos - f0, f1;
   if (loop) { f0 = ((f0 % n) + n) % n; f1 = (f0 + 1) % n; } else { if (f0 >= n - 1) { f0 = n - 1; u = 0; } if (f0 < 0) { f0 = 0; u = 0; } f1 = Math.min(n - 1, f0 + 1); }
   if (typeof reduceMotion !== "undefined" && reduceMotion) u = 0;
-  if (!tint) { g.save(); g.translate(ox, oy); g.scale(flip ? -sc : sc, sc); hl5Layer(g, frames[f0], f1 !== f0 ? frames[f1] : null, u, banks, false); g.restore(); return; }
+  return [frames[f0], f1 !== f0 ? frames[f1] : null, u];
+}
+function hl5Draw(g, a, b, u, banks, ox, oy, sc, flip, tint) {
+  if (!a) return;
+  if (!tint) { g.save(); g.translate(ox, oy); g.scale(flip ? -sc : sc, sc); hl5Layer(g, a, b, u, banks, false); g.restore(); return; }
   /* 흰 번쩍임·빨간 물듦: 몸만 따로 그려 한 색으로 채움 */
-  const SZ = 360, R = 2, T = hl5.tmp || (hl5.tmp = document.createElement("canvas")); if (T.width !== SZ * R) { T.width = SZ * R; T.height = SZ * R; }
+  const SZ = 360, R = 1.5, T = hl5.tmp || (hl5.tmp = document.createElement("canvas")); if (T.width !== SZ * R) { T.width = SZ * R; T.height = SZ * R; }
   const tg = T.getContext("2d"); tg.setTransform(1, 0, 0, 1, 0, 0); tg.globalCompositeOperation = "source-over"; tg.globalAlpha = 1; tg.clearRect(0, 0, T.width, T.height);
-  tg.setTransform(R, 0, 0, R, SZ * R / 2, SZ * R * 0.8); hl5Layer(tg, frames[f0], f1 !== f0 ? frames[f1] : null, u, banks, true);
+  tg.setTransform(R, 0, 0, R, SZ * R / 2, SZ * R * 0.8); hl5Layer(tg, a, b, u, banks, true);
   tg.setTransform(1, 0, 0, 1, 0, 0); tg.globalCompositeOperation = "source-in"; tg.fillStyle = tint; tg.fillRect(0, 0, T.width, T.height);
   g.save(); g.translate(ox, oy); g.scale(flip ? -sc : sc, sc); g.drawImage(T, -SZ / 2, -SZ * 0.8, SZ, SZ); g.restore();
+}
+function hl5Anim(g, frames, pos, loop, banks, ox, oy, sc, flip, tint) { if (!frames.length) return; const [a, b, u] = hl5Pose(frames, pos, loop); hl5Draw(g, a, b, u, banks, ox, oy, sc, flip, tint); }
+/* 동작 재생기: 원작처럼 일정한 속도로 끝까지 보여 주고, 다음 동작으로 넘어갈 때 앞 자세에서 90ms 동안 이어 감 */
+const HL5_BLEND_MS = 90;
+function hl5Set(st, tag, fr, rate, loop, now) {
+  if (!fr || !fr.length) return;
+  if (st.cur && st.cur.tag === tag && st.cur.fr === fr && (loop || now - st.cur.t0 < 30)) return;
+  if (st.last) { st.from = st.last; st.fromT = now; }
+  st.cur = { tag, fr, rate, loop, t0: now };
+}
+function hl5Done(st, now) { const c = st.cur; return !c || (!c.loop && (now - c.t0) / 1000 * c.rate >= c.fr.length); }
+function hl5Play(st, g, banks, ox, oy, sc, flip, tint, now) {
+  const c = st.cur; if (!c) return;
+  const [a, b, u] = hl5Pose(c.fr, (now - c.t0) / 1000 * c.rate, c.loop);
+  if (st.from && now - st.fromT < HL5_BLEND_MS) { const k = (now - st.fromT) / HL5_BLEND_MS; hl5Draw(g, st.from, a, k * k * (3 - 2 * k), banks, ox, oy, sc, flip, tint); }
+  else { st.from = null; hl5Draw(g, a, b, u, banks, ox, oy, sc, flip, tint); }
+  st.last = a;
 }
 
 /* ---------- 곽준영: 직무에 따라 영웅서기5 직업 모습 ---------- */
@@ -17122,22 +17159,29 @@ function hl5HeroT(cls) {
   const banks = {}; cif.imgs.forEach((n, k) => { const b = hl5Bank(k, n, -1); if (b) banks[k] = b; });
   return (hl5.heroT[cls.cif] = { cif, banks });
 }
+function hl5HeroAtk() {
+  const H = hl5.h, now = performance.now();
+  if (H.atkT) { const g = now - H.atkT; if (g > 60 && g < 3000) H.gap += (g - H.gap) * 0.35; }
+  H.atkT = now; H.seq++; H.atkQ = true;
+}
 function hl5DrawHero(hx, hy, hs) {
   const cls = hl5HeroCls(), T = hl5HeroT(cls); if (!T) return false;
+  if (T.warmed !== true) { T.warmed = true; hl5Prewarm(T.cif, T.banks, 1); }
   const now = performance.now(), H = hl5.h, cx = hx + 10 * hs, fy = hy + 24 * hs, HS = 2.3;
-  let fr = hl5Frames(T.cif, cls.idle, 1), pos = now / 1000 * 9, loop = true;
-  const skF = H.sk >= 0 ? hl5Frames(T.cif, H.sk, 1) : null;
-  if (skF && now - H.skT < skF.length / 15 * 1000) { fr = skF; pos = (now - H.skT) / 1000 * 15; loop = false; }
-  else if (fHero.mv && fHero.fd) {
-    const af = hl5Frames(T.cif, cls.atk[H.seq % cls.atk.length], 1);
-    if (af && af.length > 1) {
-      const n = af.length, hf = Math.max(1, Math.round((n - 1) * 0.4)), ff = feelFrame(), fd = fHero.fd;
-      fr = af; loop = false; pos = ff <= fd.startup ? ff / Math.max(1, fd.startup) * hf : hf + (ff - fd.startup) / Math.max(1, fd.total - fd.startup) * (n - 1 - hf);
-    }
+  if (H.cls !== cls) { H.cls = cls; H.cur = null; H.from = null; H.last = null; }
+  if (H.skQ) { H.skQ = false; const f = hl5Frames(T.cif, H.sk, 1); if (f) hl5Set(H, "sk" + H.sk, f, 15, false, now); }
+  else if (H.atkQ) {
+    H.atkQ = false;
+    const busySk = H.cur && H.cur.tag.startsWith("sk") && !hl5Done(H, now);
+    const f = hl5Frames(T.cif, cls.atk[H.seq % cls.atk.length], 1);
+    if (f && !busySk) hl5Set(H, "atk" + H.seq, f, Math.max(14, Math.min(30, f.length / (Math.max(120, H.gap) / 1000 * 0.92))), false, now);
   }
+  if (hl5Done(H, now)) hl5Set(H, "idle", hl5Frames(T.cif, cls.idle, 1), 10, true, now);
   ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fillRect(cx - 24, GROUND - 3, 48, 6);
-  reflect(() => hl5Anim(ctx, fr, pos, loop, T.banks, cx, fy, HS, false, null));
-  hl5Anim(ctx, fr, pos, loop, T.banks, cx, fy, HS, false, null);
+  const keep = { from: H.from, fromT: H.fromT, last: H.last };
+  reflect(() => hl5Play(H, ctx, T.banks, cx, fy, HS, false, null, now));
+  H.from = keep.from; H.fromT = keep.fromT; H.last = keep.last;
+  hl5Play(H, ctx, T.banks, cx, fy, HS, false, null, now);
   heroHand.x = cx + 34; heroHand.y = fy - 46; fHero.sh.x = cx + 6; fHero.sh.y = fy - 52;
   return true;
 }
@@ -17190,28 +17234,47 @@ function hl5Assign(m) {
   return true;
 }
 function hl5DrawMon(g, T, ox, oy, opts) {
-  const now = performance.now(), st = mon && mon.hl5 && mon.hl5.T === T ? mon.hl5 : null, cif = T.cif;
-  let fr = hl5Frames(cif, 0, T.dir), pos = now / 1000 * 8, loop = true;
-  if (st) {
+  const now = performance.now(), live = mon && mon.hl5 && mon.hl5.T === T ? mon.hl5 : null, cif = T.cif;
+  if (!T.warmed) { T.warmed = true; hl5Prewarm(cif, T.banks, T.dir); }
+  const st = live || T.still || (T.still = {});
+  const idle = hl5Frames(cif, 0, T.dir);
+  if (live) {
     const dieF = hl5Frames(cif, 3, T.dir) || hl5Frames(cif, 5, T.dir), hitF = hl5Frames(cif, 2, T.dir);
-    if (mon.dying > 0) { if (dieF && dieF.length > 1) { fr = dieF; pos = Math.min(dieF.length - 1, mon.dying * 1.6 * (dieF.length - 1)); loop = false; } }
+    if (mon.dying > 0) return;   // 쓰러짐은 hl5.corpses에서 따로 그림
     else {
       if (now > st.atkT && cif.motions.length > 6 && !(typeof introBlocking === "function" && introBlocking())) {
         const cand = []; for (let i = 6; i < Math.min(cif.motions.length, 10); i++) { const a = hl5Frames(cif, i, T.dir); if (a && a.length >= 4) cand.push(a); }
-        st.atkF = cand.length ? cand[Math.floor(Math.random() * cand.length)] : null; st.atkT0 = now; st.atkEnd = st.atkF ? now + st.atkF.length / 13 * 1000 : 0;
-        st.atkT = now + (mon.kind >= 2 ? 2600 : 3600) + Math.random() * 3200 + (st.atkF ? st.atkF.length * 77 : 0);
+        const f = cand.length ? cand[Math.floor(Math.random() * cand.length)] : null;
+        if (f) hl5Set(st, "atk" + now, f, 13, false, now);
+        st.atkT = now + (mon.kind >= 2 ? 2600 : 3600) + Math.random() * 3200 + (f ? f.length * 77 : 0);
       }
-      if (st.atkF && now < st.atkEnd) { fr = st.atkF; pos = (now - st.atkT0) / 1000 * 13; loop = false; }
-      else if (hitF && hitF.length && now - st.hitT < 240) { fr = hitF; pos = (now - st.hitT) / 240 * hitF.length; loop = false; }
-      else { let dx = 0; try { dx = enterOffset().dx; } catch (e) {} const wf = Math.abs(dx) > 2 ? hl5Frames(cif, 1, T.dir) : null; if (wf && wf.length > 1) { fr = wf; pos = now / 1000 * 10; } }
+      const atking = st.cur && st.cur.tag.startsWith("atk") && !hl5Done(st, now);
+      if (!atking && hitF && hitF.length && now - st.hitT < 260) hl5Set(st, "hit" + st.hitT, hitF, Math.max(10, hitF.length / 0.26), false, now);
+      if (hl5Done(st, now) || (st.cur && st.cur.tag === "walk") || (st.cur && st.cur.tag === "idle")) {
+        let dx = 0; try { dx = enterOffset().dx; } catch (e) {} const wf = Math.abs(dx) > 2 ? hl5Frames(cif, 1, T.dir) : null;
+        if (wf && wf.length > 1) hl5Set(st, "walk", wf, 10, true, now); else if (hl5Done(st, now) || (st.cur && st.cur.tag === "walk")) hl5Set(st, "idle", idle, 8, true, now);
+      }
     }
-  }
-  if (!fr || !fr.length) return;
-  hl5Anim(g, fr, pos, loop, T.banks, ox, oy, T.ms, T.flip, opts.white ? "#ffffff" : opts.solid || null);
+  } else if (!st.cur) hl5Set(st, "idle", idle, 8, true, now);
+  if (!st.cur) return;
+  const keep = { from: st.from, fromT: st.fromT, last: st.last };
+  if (live && !opts.white && !opts.solid) { st.mat = g.getTransform(); st.ox = ox; st.oy = oy; }
+  hl5Play(st, g, T.banks, ox, oy, T.ms, T.flip, opts.white ? "#ffffff" : opts.solid || null, now);
+  if (opts.white || opts.solid) { st.from = keep.from; st.fromT = keep.fromT; st.last = keep.last; }
 }
 
 /* ---------- 공통 이펙트 (맞음·치명타·연기·먼지 고리) ---------- */
 function hl5Fx(mi, x, y, sc, fps) { if (!hl5On() || hl5.fx.length > 28 || (typeof fx48K === "function" && fx48K() <= 0)) return; hl5.fx.push({ mi, x, y, sc: sc || 2.2, fps: fps || 16, t0: performance.now() }); }
+function hl5DrawCorpses() {
+  if (!hl5.corpses || !hl5.corpses.length) return; const now = performance.now();
+  for (let i = hl5.corpses.length - 1; i >= 0; i--) {
+    const c = hl5.corpses[i], el = now - c.t0, n = c.fr.length, end = n / 12 * 1000;
+    if (el > end + 500) { hl5.corpses.splice(i, 1); continue; }
+    ctx.save(); ctx.setTransform(c.mat); ctx.globalAlpha = el > end ? Math.max(0, 1 - (el - end) / 500) : 1;
+    hl5Draw(ctx, ...hl5Pose(c.fr, el / 1000 * 12, false), c.T.banks, c.ox, c.oy, c.T.ms, c.T.flip, null);
+    ctx.restore();
+  }
+}
 function hl5DrawFx() {
   if (!hl5.fx.length) return;
   const cif = hl5On() ? hl5Cif("eff") : null, bank = cif ? hl5Bank("eff", 0, -1) : null; if (!bank) { hl5.fx.length = 0; return; }
@@ -17286,13 +17349,14 @@ function hl5Card() {
   const en0 = entrance;
   entrance = function (m) { try { hl5Assign(m); } catch (e) {} return en0.apply(this, arguments); };
   const fb0 = feelBegin;
-  feelBegin = function (h, mv) { if (h === fHero) hl5.h.seq++; return fb0.apply(this, arguments); };
+  feelBegin = function (h, mv) { if (h === fHero) hl5HeroAtk(); return fb0.apply(this, arguments); };
   const hit0 = hit;
   hit = function (amount, crit, src, px, py) {
     const alive = !!(mon && !mon.dying), r = hit0.apply(this, arguments);
     if (alive && mon && hl5On()) {
       const now = performance.now(), st = mon.hl5, heavy = src === "hero" || src === "tap" || src === "jhero" || src === "skill";
       if (st && heavy && now - st.hitT > 330) st.hitT = now;
+      if (heavy) { try { if (typeof fx48Kick === "function") fx48Kick(crit ? 6 : 2.5); } catch (e) {} }
       if (heavy && now - hl5.fxT > 70) {
         hl5.fxT = now; let x = px, y = py; if (x == null || y == null) { try { [x, y] = monHitPoint(); } catch (e) { x = MON_X - 14; y = GROUND - 80; } }
         hl5Fx(crit ? 0 : src === "skill" ? 32 : 19, x, y, crit ? 2.3 : 2, 18);
@@ -17303,19 +17367,45 @@ function hl5Card() {
   const kill0 = kill;
   kill = function () {
     const m = mon, was = !!(m && !m.dying), r = kill0.apply(this, arguments);
-    if (was && m && m.dying && m.hl5 && hl5On()) { const { h } = monSize(m), big = m.kind >= 2; hl5Fx(big ? 24 : 23, MON_X + monOX(), GROUND - h * 0.45, big ? 3.6 : 2.4, 12); if (big) hl5Fx(7, MON_X + monOX(), GROUND - h * 0.5, 3.2, 12); }
+    if (was && m && m.dying && m.hl5 && hl5On()) {
+      const st = m.hl5, T = st.T, cif = T.cif, dieF = hl5Frames(cif, 3, T.dir) || hl5Frames(cif, 5, T.dir);
+      if (dieF && dieF.length > 1 && st.mat) { (hl5.corpses || (hl5.corpses = [])).push({ T, fr: dieF, mat: st.mat, ox: st.ox, oy: st.oy, t0: performance.now() }); if (hl5.corpses.length > 3) hl5.corpses.shift(); }
+      const { h } = monSize(m), big = m.kind >= 2; hl5Fx(big ? 24 : 23, MON_X + monOX(), GROUND - h * 0.45, big ? 3.6 : 2.4, 12); if (big) hl5Fx(7, MON_X + monOX(), GROUND - h * 0.5, 3.2, 12);
+      try { if (typeof fx48Kick === "function") fx48Kick(big ? 9 : 5); } catch (e) {}
+    }
     return r;
   };
   const cs0 = castSkill;
   castSkill = function (s, auto) {
     const ok = cs0.apply(this, arguments);
-    if (ok && hl5On()) { try { const cls = hl5HeroCls(), H = hl5.h; H.sk = cls.sk[H.skI++ % cls.sk.length]; H.skT = performance.now(); hl5Fx(1, HERO_X + 35, GROUND - 44, 2.2, 14); } catch (e) {} }
+    if (ok && hl5On()) { try { const cls = hl5HeroCls(), H = hl5.h; H.sk = cls.sk[H.skI++ % cls.sk.length]; H.skT = performance.now(); H.skQ = true; hl5Fx(1, HERO_X + 35, GROUND - 44, 2.2, 14); } catch (e) {} }
     return ok;
   };
   const bl0 = bossLand;
   bossLand = function () { const r = bl0.apply(this, arguments); hl5Fx(27, MON_X, GROUND - 6, 3.4, 12); return r; };
   const px0 = drawPixelFx;
-  drawPixelFx = function (now, hx) { const r = px0.apply(this, arguments); try { hl5DrawFx(); } catch (e) { hl5.fx.length = 0; } return r; };
+  drawPixelFx = function (now, hx) {
+    if (hl5On()) { try { hl5DrawCorpses(); } catch (e) { hl5.corpses = []; } try { hl5DrawFx(); } catch (e) { hl5.fx.length = 0; } try { hl5WarmStep(5); } catch (e) {} return; }   // 영웅서기5 모습일 때는 원래 게임의 베기·폭발·먼지 효과를 그리지 않음
+    return px0.apply(this, arguments);
+  };
+  /* 영웅서기5 모습일 때 섞이던 효과 끄기: 원래 게임의 스킬 섬광·분출·낙뢰·폭발, 만화식 흑백 반전, 48a 타격층(조각·고리·부서지는 몸) */
+  const ph0 = fx4Phys;
+  fx4Phys = function (dt) { const r = ph0.apply(this, arguments); if (hl5On()) { slashes = []; bursts = []; dusts = []; eruptions = []; gflashes = []; strikes = []; explos = []; rings = []; debris = []; sparks = []; streaks = []; critLines = 0; screenFlash = 0; } return r; };
+  const ti0 = triggerImpactFrame;
+  triggerImpactFrame = function () { if (hl5On()) return; return ti0.apply(this, arguments); };
+  /* 원래 게임의 스킬 그림(도장·사직서)·직업 효과·치명타 방사선도 끔 — 피해 계산은 그대로 */
+  const sf0 = drawSkillFx; drawSkillFx = function () { if (hl5On()) return; return sf0.apply(this, arguments); };
+  const jf0 = drawJobFx; drawJobFx = function () { if (hl5On()) return; return jf0.apply(this, arguments); };
+  const cl0 = drawCritLines; drawCritLines = function () { if (hl5On()) return; return cl0.apply(this, arguments); };
+  const g1 = fx48Hit; fx48Hit = function () { if (hl5On()) return; return g1.apply(this, arguments); };
+  const g2 = fx48KillAt; fx48KillAt = function () { if (hl5On()) return; return g2.apply(this, arguments); };
+  const g3 = fx48Shatter; fx48Shatter = function () { if (hl5On()) return; return g3.apply(this, arguments); };
+  const g4 = fx48Cast; fx48Cast = function () { if (hl5On()) return; return g4.apply(this, arguments); };
+  const g5 = fx48Land; fx48Land = function () { if (hl5On()) return; return g5.apply(this, arguments); };
+  const g6 = fx48Rage; fx48Rage = function () { if (hl5On()) return; return g6.apply(this, arguments); };
+  const g7 = fx48BossChain; fx48BossChain = function () { if (hl5On()) return; return g7.apply(this, arguments); };
+  /* 쉬는 틈에 다듬기 더 */
+  (function idle() { try { if (hl5On() && hl5.warm.length) hl5WarmStep(8); } catch (e) {} if (typeof requestIdleCallback === "function") requestIdleCallback(idle, { timeout: 500 }); else setTimeout(idle, 200); })();
   const fc0 = buildScrCard;
   buildScrCard = function () { const r = fc0.apply(this, arguments); hl5Card(); return r; };
   /* 시작할 때: 폰에 저장해 둔 자료가 있으면 바로 씀 */
@@ -17570,7 +17660,7 @@ function kelListHtml() {
    1) 켈러 읽기 팩·영웅서기5 자료를 한 번 불러오면 게임 계정 서버의 '내 계정 전용' 칸(kjy_private.packs)에 올려 둠.
       로그인한 앱이 자료가 없으면 저절로 받아 와서 폰에 저장함. 다른 계정·공개 사이트에서는 볼 수 없음.
    2) 새 버전이 배포되면 앱을 열거나 다시 볼 때 바로 확인해 바꿈(서비스워커 갱신 + 한 번 새로고침). */
-var APP_VER = "51a";
+var APP_VER = "52a";
 var psync = { msg: { keller: "", hl5: "" }, busy: {} };
 function psB64(u8) { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
 function psUnB64(b) { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }

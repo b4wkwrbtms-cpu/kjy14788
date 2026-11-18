@@ -17655,19 +17655,46 @@ async function kelImport(file) {
 }
 function kelListHtml() {
   const D = S.smDone || {};
-  if (!kel.ready) return `<div class="kl-imp"><div class="sec-title" style="margin:14px 0 6px">팀 켈러 설교 원고 <small>이 폰에서만</small></div><p class="muted">${escapeHtml(kel.msg || "받은 '켈러 읽기 팩'(keller_pack.json)을 한 번 고르면 이 폰에만 저장돼서 바로 읽을 수 있어요. 팩이 여러 개면 하나씩 고르면 묶음별로 더해져요. 원고는 어디에도 올라가지 않아요.")}</p><label class="btn primary kl-pick">켈러 읽기 팩 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label></div>`;
+  if (!kel.ready) return `<div class="kl-imp"><div class="sec-title" style="margin:14px 0 6px">팀 켈러 설교 원고</div><p class="muted">${escapeHtml(kel.msg || "켈러 원고는 설정 › 팀 켈러 읽기 팩에서 불러올 수 있어요.")}</p></div>`;
   let h = "";
   Object.keys(KEL_COL).map(Number).sort((a, b) => a - b).forEach(c => {
     const L = kel.list.filter(s => s.col === c).sort((a, b) => (a.ord || a.no) - (b.ord || b.no)); if (!L.length) return;
     h += `<div class="sec-title" style="margin:14px 0 6px">${escapeHtml(KEL_COL[c])} <small>읽음 ${L.filter(s => D[s.id]).length}</small></div>`;
-    const I = KEL_INFO[c];
-    if (I) h += `<details class="nt-bl kl-book"><summary>${escapeHtml(I.title || "")} · 책 소개 · 일러두기 · 용어 대조표</summary>${I.sub ? `<p class="kl-sub">${escapeHtml(I.sub)}</p>` : ""}${(I.guide || []).map(g => `<p>· ${escapeHtml(g)}</p>`).join("")}${I.gloss && I.gloss.length ? `<h4>용어 대조표</h4><div class="kl-gl">${I.gloss.map(([e, k]) => `<span>${escapeHtml(e)}</span><b>${escapeHtml(k)}</b>`).join("")}</div>` : ""}</details>`;
     let lastPart = "";
     h += L.map(s => { const ph = s.part && s.part !== lastPart ? `<div class="kl-part">${escapeHtml(s.part)}</div>` : ""; lastPart = s.part || ""; return ph + `<button type="button" class="sm-li${D[s.id] ? " done" : ""}" data-smopen="${s.id}"><b>${/^\d+$/.test(String(s.nol || s.no)) ? escapeHtml(String(s.nol || s.no)) + "." : escapeHtml(String(s.nol)) + " ·"} ${escapeHtml(s.title)}</b><small>${s.ov && s.ov.open && kelOvOn() ? escapeHtml(s.ov.open) : escapeHtml(s.ref || s.en || "")}${D[s.id] ? ` · ✓ ${D[s.id].n}번 읽음` : ""}</small></button>`; }).join("");
   });
-  h += `<p class="nt-cap" style="margin-top:8px">켈러 원고는 이 폰에만 저장돼 있어요. 다른 묶음 팩(예: 선집·욥기·계시록 세 권 팩)을 더하려면 <label class="kl-lnk">팩 더하기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label> · <button type="button" class="kl-lnk" data-kdel="1">이 폰에서 지우기</button></p>`;
+  h += `<p class="nt-cap" style="margin-top:8px">팩 더하기·지우기·책 소개·용어 대조표는 설정 › 팀 켈러 읽기 팩에 있어요.</p>`;
   return h;
 }
+
+/* ---------- v55b: 설정 › 팀 켈러 읽기 팩 (불러오기·지우기·묶음 소개·용어 대조표를 한곳에) ---------- */
+function kelStatText() {
+  if (kel.busy || kel.msg) return kel.msg || "읽는 중…";
+  if (!kel.ready) return "아직 불러온 팩이 없어요. 받은 켈러 읽기 팩(.json)을 고르면 이 폰에 저장되고 설교 탭에 목록이 생겨요.";
+  const c = {}; kel.list.forEach(x => { c[x.col] = (c[x.col] || 0) + 1; });
+  return `모두 ${kel.list.length}편 · ` + Object.keys(c).sort((a, b) => a - b).map(k => `${(KEL_COL[k] || ("묶음 " + k)).split(" · ")[0]} ${c[k]}편`).join(" · ");
+}
+function kelCardInfoHtml() {
+  if (!kel.ready) return "";
+  const cols = [...new Set(kel.list.map(x => x.col))].sort((a, b) => a - b);
+  return cols.map(c => { const I = KEL_INFO[c], n = kel.list.filter(x => x.col === c).length;
+    return `<details class="nt-bl kl-book"><summary>${escapeHtml(KEL_COL[c] || ("묶음 " + c))}</summary>${I && I.sub ? `<p class="kl-sub">${escapeHtml(I.sub)}</p>` : `<p class="muted">${n}편</p>`}${I ? (I.guide || []).map(g => `<p>· ${escapeHtml(g)}</p>`).join("") : ""}${I && I.gloss && I.gloss.length ? `<h4>용어 대조표</h4><div class="kl-gl">${I.gloss.map(([e, k]) => `<span>${escapeHtml(e)}</span><b>${escapeHtml(k)}</b>`).join("")}</div>` : ""}</details>`; }).join("");
+}
+function kelCard() {
+  const card = el("div", "card stg fxset fx48 kel-card");
+  card.innerHTML = `<div class="fx48-t">팀 켈러 읽기 팩 <small>이 폰과 내 계정에만</small></div><p class="muted" id="kelStat"></p>`
+    + `<div class="hl5-row"><label class="btn primary hl5-pick">켈러 읽기 팩 더하기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label><button type="button" class="btn ghost" data-kdel="1">지우기</button></div>`
+    + `<div id="kelInfo"></div>`
+    + `<p class="muted">받은 팩 파일(예: keller_pack_3books.json)을 고르면 들어 있는 묶음만 새로 바뀌고, 이 폰에 있던 다른 묶음과 읽은 기록은 그대로 남아요. 로그인해 두면 내 계정의 비공개 칸에도 올라가 다른 폰에서 저절로 받아요. 읽기는 설교 탭에서 해요.</p>`;
+  let infoKey = "";
+  addCustom("set", card, () => {
+    const n = $("kelStat"), txt = kelStatText() + (psync && psync.msg && psync.msg.keller ? " · " + psync.msg.keller : "");
+    if (n && n.textContent !== txt) n.textContent = txt;
+    const k = (kel.ready ? kel.list.length : 0) + "|" + Object.keys(KEL_INFO).join(",");
+    const box = $("kelInfo"); if (box && k !== infoKey) { infoKey = k; box.innerHTML = kelCardInfoHtml(); }
+  });
+}
+(function () { const fc1 = buildScrCard; buildScrCard = function () { const r = fc1.apply(this, arguments); kelCard(); return r; }; })();
 
 /* ---------- 이어 붙이기 ---------- */
 (function () {
@@ -17702,7 +17729,7 @@ function kelListHtml() {
    1) 켈러 읽기 팩·영웅서기5 자료를 한 번 불러오면 게임 계정 서버의 '내 계정 전용' 칸(kjy_private.packs)에 올려 둠.
       로그인한 앱이 자료가 없으면 저절로 받아 와서 폰에 저장함. 다른 계정·공개 사이트에서는 볼 수 없음.
    2) 새 버전이 배포되면 앱을 열거나 다시 볼 때 바로 확인해 바꿈(서비스워커 갱신 + 한 번 새로고침). */
-var APP_VER = "55a";
+var APP_VER = "55b";
 var psync = { msg: { keller: "", hl5: "" }, busy: {} };
 function psB64(u8) { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
 function psUnB64(b) { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }

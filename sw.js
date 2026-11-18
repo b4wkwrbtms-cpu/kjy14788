@@ -7,6 +7,7 @@ self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Pr
 self.addEventListener("fetch", e => {
   const req = e.request; if (req.method !== "GET") return;
   const url = new URL(req.url);
+  if (url.pathname.indexOf("/books/") >= 0) return;   // 설교 서가 앱(books/)은 자기 서비스워커가 맡음
   const isFont = url.host === "fonts.googleapis.com" || url.host === "fonts.gstatic.com";
   if (url.origin === location.origin && (req.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith("/"))) {
     // 앱 화면: 새 버전 먼저, 안 되면 저장본

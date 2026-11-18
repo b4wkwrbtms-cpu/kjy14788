@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#233041" id="themeColor">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="설교 서가">
+<meta name="format-detection" content="telephone=no">
+<title>설교 서가</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preload" href="../fonts/maruburi-r.woff" as="font" type="font/woff" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+@font-face { font-family: "MaruBuri"; font-weight: 400; font-display: swap; src: url(../fonts/maruburi-r.woff) format("woff"); }
+@font-face { font-family: "MaruBuri"; font-weight: 600 700; font-display: swap; src: url(../fonts/maruburi-sb.woff) format("woff"); }
+@font-face { font-family: "NSDonghwa"; font-display: swap; src: url(../fonts/donghwa.woff) format("woff"); }
+@font-face { font-family: "NSKkot"; font-display: swap; src: url(../fonts/kkot.woff) format("woff"); }
+@font-face { font-family: "NSDahaeng"; font-display: swap; src: url(../fonts/dahaeng.woff) format("woff"); }
+@font-face { font-family: "NSSeongsil"; font-display: swap; src: url(../fonts/seongsil.woff) format("woff"); }
+@font-face { font-family: "NSMirae"; font-display: swap; src: url(../fonts/mirae.woff) format("woff"); }
+
+/* ---------- 서재 (책을 고르는 곳) ---------- */
+:root {
+  --room: #233041; --room2: #1a2432; --plank: #5a4535; --plank2: #3c2e24; --gilt: #d6b66a; --lt: #ece6da; --mt: #a6b1bf; --line: #34435a; --focus: #f0d58c;
+  --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px); --sal: env(safe-area-inset-left, 0px); --sar: env(safe-area-inset-right, 0px);
+  --ui: "Apple SD Gothic Neo", "Pretendard", system-ui, sans-serif; --serif: "MaruBuri", "Apple SD Gothic Neo", serif;
+}
+* { box-sizing: border-box; }
+html { color-scheme: dark; background: var(--room); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; min-height: 100vh; min-height: 100dvh; font-family: var(--serif); color: var(--lt); background: linear-gradient(180deg, var(--room) 0, var(--room2) 100%) fixed; word-break: keep-all; overflow-wrap: anywhere; -webkit-tap-highlight-color: transparent; touch-action: manipulation; -webkit-font-smoothing: antialiased; }
+body.reading { overflow: hidden; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 8px; top: -60px; z-index: 50; background: var(--gilt); color: #1a1408; padding: 10px 14px; border-radius: 8px; }
+.skip:focus { top: calc(var(--sat) + 8px); }
+#view { padding: calc(var(--sat) + 10px) calc(var(--sar) + 0px) calc(var(--sab) + 84px) calc(var(--sal) + 0px); max-width: 720px; margin: 0 auto; }
+#view[hidden] { display: none; }
+
+.lib-h { padding: 18px 20px 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.lib-h h1 { margin: 0; font-size: 27px; font-weight: 600; letter-spacing: -.01em; }
+.lib-sum { margin: 0; font: 13px/1.4 var(--ui); color: var(--mt); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.cont { display: flex; gap: 14px; align-items: center; margin: 12px 16px 6px; padding: 14px 16px 14px 14px; border-radius: 12px; background: rgba(255, 255, 255, .045); border: 1px solid var(--line); text-decoration: none; min-height: 72px; }
+.cont:active { background: rgba(255, 255, 255, .08); }
+.cont-sw { flex: none; width: 30px; height: 46px; border-radius: 2px 4px 4px 2px; background: var(--c); box-shadow: inset 3px 0 0 rgba(0, 0, 0, .3), inset -1px 0 0 rgba(255, 255, 255, .08); position: relative; }
+.cont-sw::after { content: ""; position: absolute; right: 6px; top: -4px; width: 7px; height: 20px; background: var(--gilt); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%); }
+.cont-b { flex: 1; min-width: 0; }
+.cont-b small { display: block; font: 12.5px/1.4 var(--ui); color: var(--gilt); }
+.cont-b b { display: block; font-size: 17px; font-weight: 600; line-height: 1.4; margin: 2px 0 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cont-bar { height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.cont-bar i { display: block; height: 100%; background: var(--gilt); }
+.cont-meta { display: block; margin-top: 5px; font: 12px/1.3 var(--ui); color: var(--mt); }
+
+.shelf-wrap { margin: 22px 0 0; }
+.shelf-t { margin: 0 20px 2px; font: 600 14px/1.4 var(--ui); color: var(--mt); }
+.shelf { display: flex; align-items: flex-end; gap: 5px; padding: 18px 20px 0; overflow-x: auto; scrollbar-width: none; scroll-padding: 20px; }
+.shelf::-webkit-scrollbar { display: none; }
+.plank { height: 14px; margin: 0 10px; border-radius: 2px; background: linear-gradient(180deg, #6d5442 0, var(--plank) 30%, var(--plank2) 100%); box-shadow: 0 10px 18px -8px rgba(0, 0, 0, .7); }
+.spine { flex: none; position: relative; width: var(--w); height: var(--h); display: flex; flex-direction: column; align-items: center; padding: 14px 0 12px; border-radius: 3px 3px 1px 1px; text-decoration: none; color: var(--gilt);
+  background: var(--c); background-image: linear-gradient(90deg, rgba(0, 0, 0, .38) 0, rgba(255, 255, 255, .09) 14%, rgba(255, 255, 255, 0) 34%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, .3) 100%), repeating-linear-gradient(0deg, rgba(255, 255, 255, .03) 0 1px, transparent 1px 3px);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .28), 2px 0 3px rgba(0, 0, 0, .25); transition: transform .18s ease-out; }
+.spine:active { transform: translateY(-14px); }
+.sp-band { width: 72%; height: 7px; border-top: 1.5px solid var(--gilt); border-bottom: 1.5px solid var(--gilt); opacity: .9; flex: none; }
+.sp-t { flex: 1; min-height: 0; margin: 16px 0 10px; writing-mode: vertical-rl; font-size: 15px; font-weight: 600; letter-spacing: .1em; line-height: 1.1; white-space: nowrap; overflow: hidden; text-shadow: 0 1px 0 rgba(0, 0, 0, .35); }
+.sp-t small { font-size: .78em; font-weight: 400; letter-spacing: .06em; opacity: .85; margin-top: .6em; }
+.sp-w { writing-mode: vertical-rl; font: 12px/1 var(--ui); letter-spacing: .1em; opacity: .85; margin: 8px 0 10px; flex: none; }
+.sp-rib { position: absolute; top: -10px; right: 22%; width: 7px; height: 28px; background: var(--gilt); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%); }
+.sp-done { flex: none; margin: -2px 0 8px; font: 10.5px/1 var(--ui); color: var(--gilt); opacity: .9; font-variant-numeric: tabular-nums; }
+.spine.slot { background: none; border: 1.5px dashed #4a5a72; box-shadow: none; color: var(--mt); justify-content: center; }
+.spine.slot .sp-t { font: 600 14px/1.1 var(--ui); flex: none; letter-spacing: .1em; }
+
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: flex; justify-content: center; gap: 4px; padding: 6px calc(var(--sar) + 10px) calc(var(--sab) + 6px) calc(var(--sal) + 10px); background: rgba(26, 36, 50, .94); border-top: 1px solid var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.dock a { flex: 1; max-width: 160px; display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 52px; justify-content: center; text-decoration: none; font: 12px/1.2 var(--ui); color: var(--mt); border-radius: 10px; }
+.dock a svg { width: 22px; height: 22px; }
+.dock a[aria-current="page"] { color: var(--gilt); }
+body.reading .dock { display: none; }
+
+/* ---------- 책 (표지와 차례) ---------- */
+.topbar { display: flex; align-items: center; min-height: 48px; padding: 0 8px; }
+.tb-back { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; text-decoration: none; font: 16px/1 var(--ui); color: var(--mt); border-radius: 10px; }
+.cover { position: relative; margin: 6px 18px 0; border-radius: 4px 10px 10px 4px; padding: 22px 20px 24px 32px; color: var(--gilt);
+  background: var(--c); background-image: linear-gradient(90deg, rgba(0, 0, 0, .42) 0, rgba(0, 0, 0, .1) 5%, rgba(255, 255, 255, .06) 6.5%, rgba(255, 255, 255, 0) 22%), repeating-linear-gradient(0deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0, 0, 0, .05) 0 1px, transparent 1px 4px);
+  box-shadow: 0 22px 34px -22px rgba(0, 0, 0, .8), inset 0 0 0 1px rgba(0, 0, 0, .25); }
+.cv-frame { border: 1px solid rgba(214, 182, 106, .6); outline: 1px solid rgba(214, 182, 106, .28); outline-offset: 5px; padding: 30px 14px 26px; text-align: center; }
+.cv-who { margin: 0; font: 13px/1.4 var(--ui); letter-spacing: .12em; opacity: .9; }
+.cv-t { margin: 14px 0 6px; font-size: 25px; font-weight: 600; line-height: 1.38; text-wrap: balance; text-shadow: 0 1px 0 rgba(0, 0, 0, .35); }
+.cv-sub { margin: 0; font-size: 15px; opacity: .9; }
+.cv-orn { display: block; width: 46px; height: 1px; margin: 20px auto 14px; background: var(--gilt); opacity: .7; }
+.cv-meta { margin: 0; font: 13px/1.5 var(--ui); opacity: .85; font-variant-numeric: tabular-nums; }
+.bk-act { display: flex; align-items: center; gap: 14px; margin: 22px 18px 4px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, .05); text-decoration: none; font: 600 15.5px/1 var(--ui); color: var(--lt); cursor: pointer; }
+.btn.pri { background: var(--gilt); border-color: var(--gilt); color: #1d1608; }
+.btn:active { filter: brightness(1.1); }
+.btn.sm { min-height: 44px; padding: 0 14px; font-size: 14px; }
+.btn.warn { color: #f0a08a; border-color: rgba(240, 160, 138, .45); }
+.bk-prog { font: 13.5px/1.4 var(--ui); color: var(--mt); font-variant-numeric: tabular-nums; }
+.sec-h { margin: 30px 20px 8px; font-size: 19px; font-weight: 600; }
+.toc { list-style: none; margin: 0; padding: 0 10px; }
+.toc-part { margin: 18px 10px 6px; font: 600 13px/1.4 var(--ui); color: var(--gilt); }
+.toc a { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 10px; border-radius: 10px; text-decoration: none; }
+.toc a:active { background: rgba(255, 255, 255, .06); }
+.toc-n { flex: none; width: 26px; text-align: right; font: 15px/1 var(--serif); color: var(--mt); font-variant-numeric: tabular-nums; }
+.toc-b { flex: 1; min-width: 0; }
+.toc-b b { display: block; font-size: 16.5px; font-weight: 600; line-height: 1.45; }
+.toc-b small { display: block; margin-top: 3px; font: 12.5px/1.45 var(--ui); color: var(--mt); }
+.toc-s { flex: none; min-width: 40px; text-align: right; font: 12.5px/1 var(--ui); color: var(--mt); font-variant-numeric: tabular-nums; }
+.toc a.done .toc-s { color: var(--gilt); }
+.toc a.cur .toc-n { color: var(--gilt); }
+.bk-note { display: block; margin: 18px 20px 0; font: 14px/1.5 var(--ui); color: var(--mt); }
+.bk-info { margin: 18px 20px 0; border-top: 1px solid var(--line); }
+.bk-info summary { min-height: 48px; display: flex; align-items: center; font-weight: 600; cursor: pointer; }
+.bk-info p { font-size: 15px; line-height: 1.75; color: var(--lt); margin: 0 0 .8em; }
+.gl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font: 14px/1.5 var(--ui); padding-bottom: 12px; }
+.gl span { color: var(--mt); } .gl b { font-weight: 500; }
+
+/* ---------- 찾기 · 모음 · 설정 ---------- */
+.pg-h { margin: 8px 20px 14px; font-size: 25px; font-weight: 600; }
+.field { display: block; margin: 0 20px; }
+.field span { display: block; font: 600 13px/1.4 var(--ui); color: var(--mt); margin-bottom: 6px; }
+.inp { width: 100%; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0, 0, 0, .18); color: var(--lt); font: 17px/1.3 var(--ui); }
+.inp::placeholder { color: #7d8898; }
+.find-f { display: flex; gap: 8px; margin: 0 16px; }
+.find-f .inp { flex: 1; }
+.note { margin: 10px 20px; font: 13.5px/1.6 var(--ui); color: var(--mt); }
+.res { margin: 14px 10px 0; }
+.res-g { margin: 0 0 14px; }
+.res-g h3 { margin: 0 10px 4px; font-size: 16px; font-weight: 600; }
+.res-g h3 small { font: 12px/1.3 var(--ui); color: var(--mt); margin-left: 6px; }
+.res a { display: block; padding: 10px 10px; border-radius: 10px; text-decoration: none; font-size: 15px; line-height: 1.7; color: #cfd6df; }
+.res a:active { background: rgba(255, 255, 255, .06); }
+.res mark { background: rgba(214, 182, 106, .3); color: var(--lt); border-radius: 2px; }
+.tabs { display: flex; gap: 6px; margin: 0 16px 6px; }
+.tabs button { flex: 1; min-height: 44px; border-radius: 10px; border: 1px solid var(--line); background: none; color: var(--mt); font: 600 14.5px/1 var(--ui); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--gilt); border-color: var(--gilt); color: #1d1608; }
+.mk { display: flex; align-items: stretch; gap: 4px; margin: 0 10px 2px; }
+.mk a { flex: 1; min-width: 0; display: block; padding: 11px 10px; border-radius: 10px; text-decoration: none; }
+.mk a:active { background: rgba(255, 255, 255, .06); }
+.mk q { display: block; quotes: "“" "”"; font-size: 15px; line-height: 1.65; color: var(--lt); }
+.mk .mk-note { display: block; margin-top: 4px; font: 13.5px/1.55 var(--ui); color: var(--gilt); }
+.mk small { display: block; margin-top: 4px; font: 12px/1.4 var(--ui); color: var(--mt); }
+.mk button { flex: none; width: 44px; border: 0; background: none; color: var(--mt); cursor: pointer; border-radius: 10px; font: 13px var(--ui); }
+.empty { margin: 30px 24px; font-size: 15.5px; line-height: 1.75; color: var(--mt); }
+.set-s { margin: 26px 0 0; }
+.set-s > h2 { margin: 0 20px 10px; font-size: 18px; font-weight: 600; }
+.set-s > p { margin: 0 20px 10px; font: 14px/1.6 var(--ui); color: var(--mt); }
+.row-btn { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 20px 0; }
+.pv { margin: 0 16px 10px; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font-family: var(--ff); font-size: var(--fs); line-height: var(--lh); }
+.pv p { margin: 0; }
+.pv b { color: var(--hi); font-weight: 600; }
+.set-opts { margin: 0 16px; padding: 2px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0, 0, 0, .14); font-family: var(--ui); }
+.lgf { display: grid; gap: 12px; margin: 6px 0 0; }
+.err { margin: 8px 20px 0; font: 14px/1.5 var(--ui); color: #f0a08a; }
+.ok { color: #9fd3a8; }
+.toast { position: fixed; left: 50%; bottom: calc(var(--sab) + 92px); z-index: 80; transform: translateX(-50%); max-width: calc(100% - 32px); padding: 11px 16px; border-radius: 12px; background: #e9e3d6; color: #1d1a16; font: 14.5px/1.45 var(--ui); box-shadow: 0 10px 28px rgba(0, 0, 0, .35); display: flex; gap: 12px; align-items: center; }
+.toast[hidden] { display: none; }
+.toast button { border: 0; background: none; color: #6b4a10; font: 700 14.5px var(--ui); min-height: 36px; padding: 0 4px; cursor: pointer; }
+body.reading .toast { bottom: calc(var(--sab) + 54px); }
+
+/* ---------- 읽기 화면: 바탕 다섯 가지 (대비 8~11:1, 순백·순흑 글자 없음) ---------- */
+.thm { --bg: #f4eee3; --fg: #36322d; --mut: #77706a; --hi: #1f1c19; --acc: #7f601c; --accbg: rgba(127, 96, 28, .08); --line: #ddd4c4; --btn: #ebe4d6; --mark: rgba(214, 168, 56, .33); --ked: #2f5d9c; --kedbg: rgba(47, 93, 156, .07); --sel: rgba(127, 96, 28, .22); }
+.thm.th-sepia { --bg: #ece0c6; --fg: #3b2f21; --mut: #7a6a52; --hi: #2a2016; --acc: #85561a; --accbg: rgba(133, 86, 26, .09); --line: #d5c5a3; --btn: #e3d4b3; --mark: rgba(196, 140, 40, .32); --ked: #3e5f88; --kedbg: rgba(62, 95, 136, .08); --sel: rgba(133, 86, 26, .22); }
+.thm.th-gray { --bg: #2b2e34; --fg: #d0ccc4; --mut: #8f939b; --hi: #ebe7df; --acc: #d8b86a; --accbg: rgba(216, 184, 106, .08); --line: #3b3f47; --btn: #33373e; --mark: rgba(216, 184, 106, .27); --ked: #9cc0ff; --kedbg: rgba(156, 192, 255, .08); --sel: rgba(216, 184, 106, .25); }
+.thm.th-night { --bg: #000; --fg: #b8b1a5; --mut: #6f6a62; --hi: #d4cdc0; --acc: #b89a58; --accbg: rgba(184, 154, 88, .09); --line: #1d1d1d; --btn: #111; --mark: rgba(184, 154, 88, .25); --ked: #8daee6; --kedbg: rgba(141, 174, 230, .08); --sel: rgba(184, 154, 88, .28); }
+.thm.th-warm { --bg: #100c08; --fg: #c6a378; --mut: #7d6648; --hi: #dcb88a; --acc: #cf9450; --accbg: rgba(207, 148, 80, .1); --line: #2a2017; --btn: #1a140e; --mark: rgba(207, 148, 80, .26); --ked: #d0a46c; --kedbg: rgba(208, 164, 108, .08); --sel: rgba(207, 148, 80, .28); }
+.thm { --ff: "MaruBuri", "Apple SD Gothic Neo", serif; --fk: 1; --lh: 1.85; }
+.thm.f-batang { --ff: "Gowun Batang", "MaruBuri", serif; --fk: 1.04; }
+.thm.f-sans { --ff: "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif; }
+.thm.f-dodum { --ff: "Gowun Dodum", "Apple SD Gothic Neo", sans-serif; --fk: 1.03; }
+.thm.f-donghwa { --ff: "NSDonghwa", "Gowun Dodum", sans-serif; --fk: 1.1; }
+.thm.f-kkot { --ff: "NSKkot", "Gowun Dodum", sans-serif; --fk: 1.1; }
+.thm.f-dahaeng { --ff: "NSDahaeng", "Gowun Dodum", sans-serif; --fk: 1.12; }
+.thm.f-seongsil { --ff: "NSSeongsil", "Gowun Dodum", sans-serif; --fk: 1.06; }
+.thm.f-mirae { --ff: "NSMirae", "Gowun Dodum", sans-serif; --fk: 1.06; }
+.thm.lh-t { --lh: 1.65; } .thm.lh-w { --lh: 2.1; }
+.thm { --fs: calc(var(--fsb, 18px) * var(--fk)); }
+
+.reader { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); }
+.reader[hidden] { display: none; }
+.reader ::selection { background: var(--sel); }
+.r-dim { position: absolute; inset: 0; z-index: 25; background: #000; opacity: 0; pointer-events: none; }
+.r-top { flex: none; position: relative; z-index: 6; display: flex; align-items: center; gap: 2px; min-height: 50px; padding: calc(var(--sat) + 2px) calc(var(--sar) + 4px) 0 calc(var(--sal) + 4px); background: var(--bg); transition: opacity .2s ease-out; }
+.r-ib { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 2px; min-width: 44px; min-height: 44px; padding: 0 10px; border: 0; border-radius: 10px; background: none; color: var(--mut); cursor: pointer; font: 15.5px/1 var(--ui); }
+.r-ib svg { width: 21px; height: 21px; }
+.r-ib[aria-pressed="true"] { color: var(--acc); }
+.r-ib[aria-pressed="true"] svg path { fill: currentColor; }
+.r-aa { font: 600 16px/1 var(--serif); border: 1px solid var(--line); min-width: 46px; min-height: 38px; }
+.r-tt { flex: 1; min-width: 0; text-align: center; font-family: var(--ui); line-height: 1.25; }
+.r-tt b { display: block; font-size: 13.5px; font-weight: 600; color: var(--fg); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.r-tt small { display: block; font-size: 11.5px; color: var(--mut); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-top: 2px; }
+.r-prog { flex: none; height: 2px; margin: 4px 0 0; background: var(--line); position: relative; z-index: 6; }
+.r-prog i { display: block; height: 100%; width: 0; background: var(--acc); }
+.r-body { flex: 1; min-height: 0; position: relative; outline: none; }
+.mode-scroll .r-body { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.mode-page .r-body { overflow: hidden; touch-action: pan-y pinch-zoom; }
+.r-col { font-family: var(--ff); font-size: var(--fs); line-height: var(--lh); color: var(--fg); text-align: left; word-break: keep-all; overflow-wrap: anywhere; font-kerning: normal; text-rendering: optimizeLegibility; hanging-punctuation: first; orphans: 2; widows: 2; }
+.thm.just .r-col .d-p, .thm.just .r-col .sm-p { text-align: justify; }
+.mode-scroll .r-col { max-width: calc(34em + 2 * var(--mg, 24px)); margin: 0 auto; padding: 10px calc(var(--mg, 24px) + var(--sar)) calc(var(--sab) + 48px) calc(var(--mg, 24px) + var(--sal)); }
+.r-foot { flex: none; display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 30px; padding: 2px calc(var(--sar) + 22px) calc(var(--sab) + 4px) calc(var(--sal) + 22px); font: 12px/1.2 var(--ui); color: var(--mut); font-variant-numeric: tabular-nums; transition: opacity .2s ease-out; }
+.mode-scroll .r-foot { display: none; }
+.reader.bare .r-top, .reader.bare .r-foot, .reader.bare .r-prog { opacity: 0; pointer-events: none; }
+.reader.grain::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 24; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0.9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); background-size: 180px 180px; opacity: .05; mix-blend-mode: soft-light; }
+.reader.grain.th-paper::after, .reader.grain.th-sepia::after { opacity: .45; mix-blend-mode: multiply; }
+
+/* 본문 모양 */
+.r-col p { margin: 0 0 .9em; }
+.d-head { margin: .6em 0 1.8em; }
+.d-kick { margin: 0 0 .7em !important; font: .74em/1.5 var(--ui); color: var(--mut); letter-spacing: .02em; }
+.d-t { margin: 0 0 .45em; font-size: 1.42em; font-weight: 600; line-height: 1.42; color: var(--hi); text-wrap: balance; letter-spacing: -.01em; }
+.d-sub { margin: 0 0 .5em !important; font-size: .92em; color: var(--fg); }
+.d-en { margin: 0 0 .5em !important; font-size: .74em; color: var(--mut); font-style: italic; }
+.d-meta { margin: 0 !important; font: .74em/1.6 var(--ui); color: var(--mut); }
+.d-lab { font: .74em/1.5 var(--ui); color: var(--mut); margin: 0 0 .5em !important; }
+.d-ref { font-size: .86em; color: var(--acc); margin: 0 0 1.4em !important; }
+.d-h { margin: 1.9em 0 .7em; font-size: 1.1em; font-weight: 600; line-height: 1.5; color: var(--hi); break-after: avoid; text-wrap: balance; }
+.d-h::before { content: ""; display: block; width: 26px; height: 1.5px; margin: 0 0 .6em; background: var(--acc); opacity: .75; }
+.d-q { -webkit-box-decoration-break: clone; box-decoration-break: clone; margin: .3em 0 1.2em; padding: .5em .9em; border-left: 3px solid var(--acc); background: var(--accbg); border-radius: 0 8px 8px 0; font-size: .94em; line-height: calc(var(--lh) - .02); }
+.d-q p { margin: 0 0 .4em; } .d-q p:last-child { margin: 0; }
+.d-pre { white-space: pre; overflow-x: auto; font: .66em/1.5 ui-monospace, Menlo, monospace; color: var(--mut); background: var(--btn); padding: .7em; border-radius: 8px; margin: 0 0 1.2em; }
+.d-small { font-size: .84em; color: var(--mut); }
+.d-ov { margin: 0 0 1.8em; border: 1px solid var(--line); border-radius: 10px; padding: 0 .9em; font-size: .9em; }
+.d-ov summary { min-height: 44px; display: flex; align-items: center; font: 600 .86em/1.3 var(--ui); color: var(--mut); cursor: pointer; }
+.d-ov ol { margin: 0 0 .9em; padding-left: 1.3em; }
+.d-ov li { margin: .15em 0; }
+.d-ml { display: flex; flex-wrap: wrap; gap: 6px; margin: -.3em 0 1.2em; }
+.d-ml .vref { font: 12.5px/1.2 var(--ui); padding: 8px 10px; min-height: 36px; border-radius: 8px; background: var(--btn); border: 1px solid var(--line); color: var(--mut); text-decoration: none; }
+.vref { font: inherit; color: var(--acc); background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; text-decoration-color: color-mix(in srgb, var(--acc) 55%, transparent); text-align: inherit; }
+.d-more { margin: 2.4em 0 0; padding-top: 1em; border-top: 1px solid var(--line); }
+.d-more h2 { font-size: 1em; color: var(--hi); margin: 0 0 .8em; }
+.d-mn { margin: 0 0 1.1em; font-size: .9em; }
+.d-mn .d-mr { margin: 0 0 .2em; font: .8em/1.5 var(--ui); }
+.d-mn blockquote { margin: .3em 0 0; padding-left: .8em; border-left: 2px solid var(--line); color: var(--mut); font-size: .92em; }
+.d-cap { font: .72em/1.65 var(--ui); color: var(--mut); margin-top: 2em !important; }
+.r-end { text-align: center; padding: 2.4em 0 1em; break-inside: avoid; }
+.r-fin { font-size: .9em; color: var(--mut); letter-spacing: .4em; margin: 0 0 1.6em !important; }
+.r-fin::before, .r-fin::after { content: ""; display: inline-block; width: 30px; height: 1px; background: var(--line); vertical-align: middle; margin: 0 .6em 0 .2em; }
+.r-next { display: block; width: 100%; max-width: 360px; margin: 0 auto .8em; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--btn); color: var(--fg); text-align: left; cursor: pointer; font: inherit; font-size: .92em; line-height: 1.5; }
+.r-next small { display: block; font: 12px/1.4 var(--ui); color: var(--mut); margin-bottom: 2px; }
+.r-toc { font: 14px/1 var(--ui); color: var(--mut); background: none; border: 0; min-height: 44px; padding: 0 12px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+mark.hl { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 1px; -webkit-box-decoration-break: clone; box-decoration-break: clone; cursor: pointer; }
+mark.hl.has-note { border-bottom: 1.5px dotted var(--acc); }
+.flash { animation: flash 1.8s ease-out; }
+@keyframes flash { 0%, 30% { background: var(--mark); } 100% { background: transparent; } }
+
+/* 켈러 원고 (게임 v50~55 몰입 읽기 그대로) */
+.kl-tools { display: flex; gap: 6px; flex-wrap: wrap; margin: -.4em 0 1.4em; }
+.kl-tb { font: 12.5px/1 var(--ui); min-height: 36px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--line); background: transparent; color: var(--mut); cursor: pointer; }
+.kl-tb.on { border-color: var(--ked); color: var(--ked); }
+.kl-toc { list-style: none; margin: 0 0 1.2em; padding: 6px; border: 1px solid var(--line); border-radius: 12px; }
+.kl-toc[hidden] { display: none; }
+.kl-toc button { display: block; width: 100%; text-align: left; font: inherit; font-size: .84em; padding: 9px 8px; min-height: 44px; background: none; border: 0; color: var(--fg); border-radius: 8px; cursor: pointer; }
+.kl-toc button small { display: block; color: var(--ked); font-size: .86em; margin-top: 2px; }
+.kl-map { position: sticky; top: -1px; z-index: 3; display: flex; gap: 4px; margin: 0 -2px 1.2em; padding: 8px 2px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.mode-page .kl-map { position: static; }
+.kl-map button { flex: 1; min-width: 0; min-height: 36px; font: 11px/1.2 var(--ui); padding: 0; background: none; border: 0; color: var(--mut); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.kl-map button i { display: block; height: 3px; border-radius: 2px; background: var(--line); margin-bottom: 5px; }
+.kl-map button.past i { background: color-mix(in srgb, var(--ked) 45%, transparent); }
+.kl-map button.on { color: var(--ked); font-weight: 700; }
+.kl-map button.on i { background: var(--ked); }
+.kl-ed { display: inline-block; font: 10.5px/1.6 var(--ui); color: var(--ked); border: 1px solid var(--ked); border-radius: 99px; padding: 0 8px; margin-bottom: .5em; }
+.kl-open, .kl-one { margin: 0 0 2em; padding: 14px 16px; border-radius: 12px; background: var(--kedbg); }
+.kl-open p, .kl-one p { margin: 0; color: var(--ked); font-size: 1.02em; line-height: 1.7; font-weight: 600; }
+.kl-sec { margin: 0 0 1.4em; }
+.kl-sh { margin: 2.2em 0 .7em; break-after: avoid; }
+.kl-n { display: block; font: 11px/1.4 var(--ui); color: var(--mut); letter-spacing: .04em; margin-bottom: .35em; }
+.kl-sh h2 { margin: 0; font-size: 1.1em; font-weight: 600; line-height: 1.45; color: var(--hi); }
+.kl-hook { margin: 0 0 1.3em; color: var(--ked); font-size: .95em; line-height: 1.6; padding-left: 10px; border-left: 2px solid var(--ked); }
+.r-col .kl-em { margin: 1.4em 0; font-size: 1.08em; line-height: 1.6; font-weight: 700; color: var(--hi); }
+.r-col .kl-em0 { font-size: 1.02em; }
+.kl-sp { margin: 1.4em 0 .35em !important; font: 800 .72em/1.4 var(--ui); letter-spacing: .04em; color: var(--acc); }
+.kl-qq { margin: 0 0 1em; padding: 10px 12px; border-radius: 10px; background: var(--accbg); font-weight: 600; }
+.kl-h2 { margin: 1.6em 0 .6em; font-size: .98em; color: var(--hi); }
+.kl-note { padding: 8px 12px; font-size: .84em; color: var(--mut); border: 1px dashed var(--line); border-radius: 10px; line-height: 1.6; }
+.kl-li { padding-left: 1em; text-indent: -.6em; }
+.kl-key { margin: 1.8em 0 .6em !important; padding: 16px 4px 4px; border-top: 1px solid var(--line); font-size: 1.04em; line-height: 1.6; font-weight: 700; color: var(--hi); }
+.kl-key span { display: block; font: 600 .62em/1.4 var(--ui); color: var(--ked); margin-bottom: .6em; }
+.kl-next { display: block; width: 100%; text-align: left; font: inherit; margin: 1.6em 0 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: transparent; color: var(--fg); cursor: pointer; }
+.kl-next small { display: block; font: 12px/1.4 var(--ui); color: var(--mut); margin-bottom: 2px; }
+.kl-fn { font: 11px/1 var(--ui); vertical-align: super; padding: 3px 5px; margin: 0 1px; border-radius: 6px; border: 1px solid var(--line); background: var(--btn); color: var(--acc); cursor: pointer; }
+.kl-src { font-size: .62em; color: var(--mut); vertical-align: super; }
+.kl-fnt { margin: -.4em 0 1.2em; padding: 10px 12px; border-radius: 10px; background: var(--accbg); font-size: .86em; line-height: 1.65; }
+.kl-fnt b { display: block; font-size: .9em; margin-bottom: 4px; color: var(--acc); } .kl-fnt p { margin: 0; }
+.kl-lnk { font: inherit; background: none; border: 0; padding: 0; color: var(--ked); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.kl-fx { font: 11.5px/1 var(--ui); margin: -.6em 0 1em; padding: 6px 9px; border: 0; border-radius: 6px; background: var(--accbg); color: var(--acc); cursor: pointer; }
+.kl-fxo { margin: -.4em 0 1.2em; padding: 10px 12px; border-left: 2px solid var(--acc); font-size: .84em; line-height: 1.6; color: var(--mut); }
+.kl-fxo[hidden] { display: none; }
+.kl-fxo b { display: block; color: var(--acc); font-size: .9em; } .kl-fxo p { margin: 4px 0; }
+.kl-was { text-decoration: line-through; opacity: .7; }
+.kl-enote { margin: -.5em 0 1.2em; padding: 6px 10px; font: .8em/1.55 var(--ui); color: var(--ked); background: var(--kedbg); border-radius: 8px; }
+.kl-enote span { font-weight: 700; margin-right: 6px; }
+.kl-bl { margin: 1.4em 0 0; border-top: 1px solid var(--line); }
+.kl-bl > summary { min-height: 46px; display: flex; align-items: center; font-weight: 600; color: var(--hi); cursor: pointer; font-size: .95em; }
+.kl-bl .vm { margin: 0 0 1em; font-size: .9em; }
+.kl-bl .vm .nt-form { margin: 0 0 .2em; font: .82em/1.5 var(--ui); color: var(--acc); }
+.kl-bl h3 { font-size: .98em; color: var(--hi); margin: 1.4em 0 .6em; }
+.kl-brief { color: var(--hi); }
+.kl-q { color: var(--mut); border-left: 2px solid var(--acc); padding-left: 10px; font-size: .94em; }
+
+/* 읽기 모양 판 */
+.r-opts { position: absolute; z-index: 30; left: calc(var(--sal) + 8px); right: calc(var(--sar) + 8px); top: calc(var(--sat) + 56px); max-width: 560px; margin: 0 auto; max-height: calc(100% - var(--sat) - 76px); overflow-y: auto; overscroll-behavior: contain; padding: 2px 14px 8px; border: 1px solid var(--line); border-radius: 16px; background: var(--btn); color: var(--fg); font-family: var(--ui); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, .45); }
+.r-opts[hidden] { display: none; }
+.op-r { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 54px; padding: 6px 0; border-top: 1px solid var(--line); }
+.op-r:first-child { border-top: 0; }
+.op-r > span, .op-r > label { font: 14px/1.3 var(--ui); color: var(--mut); flex: none; }
+.op-seg { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.op-seg button { min-height: 40px; min-width: 44px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 14.5px/1 var(--ui); cursor: pointer; }
+.op-seg button[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--bg); font-weight: 700; }
+.op-seg b { min-width: 34px; text-align: center; font-size: 15px; font-variant-numeric: tabular-nums; align-self: center; }
+.op-fonts { max-width: 74%; }
+.op-r.fonts { align-items: flex-start; }
+.op-r.fonts > span { padding-top: 12px; }
+.op-th button { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 52px; padding: 6px 4px; height: auto; font-size: 11.5px; }
+.op-th .sw { display: block; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(128, 128, 128, .5); font: 600 14px/30px var(--serif); text-align: center; }
+.op-th button[aria-pressed="true"] { background: transparent; color: var(--fg); border-color: var(--acc); box-shadow: inset 0 0 0 1px var(--acc); }
+.op-range { width: 150px; accent-color: var(--acc); min-height: 40px; }
+.op-hint { margin: 2px 0 8px; font-size: 12.5px; line-height: 1.5; color: var(--mut); }
+.set-opts .op-seg button[aria-pressed="true"] { background: var(--gilt); border-color: var(--gilt); color: #1d1608; }
+.set-opts .op-r { border-top-color: var(--line); }
+.set-opts .op-range { accent-color: var(--gilt); }
+.set-opts .op-r > span, .set-opts .op-r > label, .set-opts .op-hint { color: var(--mt); }
+.set-opts .op-seg button { color: var(--lt); border-color: var(--line); }
+.set-opts .op-th button[aria-pressed="true"] { background: transparent; color: var(--lt); border-color: var(--gilt); box-shadow: inset 0 0 0 1px var(--gilt); }
+
+/* 아래 창 (구절 · 밑줄 · 메모) */
+.sheet { position: absolute; inset: 0; z-index: 40; display: flex; flex-direction: column; justify-content: flex-end; }
+.sheet[hidden] { display: none; }
+.sh-bg { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
+.sh-card { position: relative; max-height: 80%; outline: 1px solid color-mix(in srgb, var(--fg) 12%, transparent); display: flex; flex-direction: column; background: var(--bg); color: var(--fg); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; padding: 0 0 calc(var(--sab) + 8px); box-shadow: 0 -16px 40px rgba(0, 0, 0, .35); max-width: 680px; width: 100%; margin: 0 auto; }
+.sh-top { display: flex; align-items: center; gap: 8px; min-height: 54px; padding: 4px 8px 0 20px; }
+.sh-top b { flex: 1; min-width: 0; font: 600 15px/1.35 var(--ui); color: var(--hi); }
+.sh-x { min-width: 52px; min-height: 44px; border: 0; background: none; color: var(--mut); font: 15px var(--ui); cursor: pointer; border-radius: 10px; }
+.sh-body { overflow-y: auto; overscroll-behavior: contain; padding: 0 20px 14px; font-family: var(--ff); font-size: calc(var(--fs) * .94); line-height: var(--lh); }
+.sh-seg { display: flex; gap: 6px; margin: 0 0 12px; font-family: var(--ui); }
+.sh-seg button { min-height: 38px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--line); background: none; color: var(--mut); font: 13.5px var(--ui); cursor: pointer; }
+.sh-seg button[aria-pressed="true"] { border-color: var(--acc); color: var(--acc); font-weight: 700; }
+.vs-v { margin: 0 0 .55em; }
+.vs-v sup { font: 600 .62em/1 var(--ui); color: var(--acc); margin-right: .25em; }
+.vs-h { font: 600 .74em/1.4 var(--ui); color: var(--mut); margin: 1em 0 .3em; }
+.sh-more { font: 13.5px/1.5 var(--ui); color: var(--mut); }
+.sh-link { display: block; width: 100%; text-align: left; padding: 11px 0; min-height: 44px; border: 0; border-top: 1px solid var(--line); background: none; color: var(--fg); font: 15px/1.5 var(--ui); cursor: pointer; }
+.sh-link small { display: block; color: var(--mut); font-size: 12.5px; }
+.sh-ta { width: 100%; min-height: 120px; padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--btn); color: var(--fg); font: 16px/1.6 var(--ui); resize: vertical; }
+.sh-q { margin: 0 0 12px; padding-left: 10px; border-left: 3px solid var(--acc); color: var(--fg); }
+.sh-acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; font-family: var(--ui); }
+.sh-acts button { min-height: 46px; padding: 0 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--btn); color: var(--fg); font: 600 15px var(--ui); cursor: pointer; }
+.sh-acts .pri { background: var(--acc); border-color: var(--acc); color: var(--bg); }
+.sh-acts .del { color: #c0563c; }
+.selbar { position: absolute; z-index: 35; left: 50%; bottom: calc(var(--sab) + 40px); transform: translateX(-50%); display: flex; gap: 2px; padding: 4px; border-radius: 14px; background: var(--hi); box-shadow: 0 10px 26px rgba(0, 0, 0, .35); }
+.selbar[hidden] { display: none; }
+.selbar button { min-height: 44px; min-width: 64px; padding: 0 14px; border: 0; border-radius: 10px; background: none; color: var(--bg); font: 600 15px var(--ui); cursor: pointer; }
+.selbar button + button { border-left: 1px solid color-mix(in srgb, var(--bg) 25%, transparent); border-radius: 0 10px 10px 0; }
+
+@media (prefers-reduced-motion: reduce) { .spine, .r-top, .r-foot { transition: none; } .spine:active { transform: none; } .flash { animation: none; background: var(--mark); } }
+@media (min-width: 700px) { .shelf { justify-content: center; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#view">본문으로 건너뛰기</a>
+<main id="view" tabindex="-1"></main>
+<nav class="dock" id="dock" aria-label="메뉴">
+  <a href="#/" data-nav="home"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4v16H4zM10 6h4v14h-4zM16.2 6.6l3.6-1 3.4 13.6-3.6 1z"/></svg>서가</a>
+  <a href="#/find" data-nav="find"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg>찾기</a>
+  <a href="#/marks" data-nav="marks"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3h10v18l-5-4-5 4z"/></svg>밑줄·책갈피</a>
+  <a href="#/set" data-nav="set"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>설정</a>
+</nav>
+
+<section class="reader thm" id="reader" hidden aria-label="설교 읽기">
+  <header class="r-top" id="rTop">
+    <button type="button" class="r-ib" id="rBack" aria-label="차례로 돌아가기"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>차례</button>
+    <div class="r-tt"><b id="rTitle"></b><small id="rSub"></small></div>
+    <button type="button" class="r-ib" id="rMark" aria-label="책갈피" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v18l-5-4-5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></button>
+    <button type="button" class="r-ib r-aa" id="rAa" aria-label="읽기 모양" aria-expanded="false" aria-controls="rOpts">가</button>
+  </header>
+  <div class="r-prog" aria-hidden="true"><i id="rProg"></i></div>
+  <div class="r-opts" id="rOpts" hidden role="dialog" aria-label="읽기 모양"></div>
+  <div class="r-body" id="rb" tabindex="-1"><article class="r-col" id="pgc"></article><i id="pgEnd" aria-hidden="true" style="position:absolute;top:0;left:0;width:1px;height:1px"></i></div>
+  <footer class="r-foot" id="rFoot"><span id="rPage"></span><span id="rLeft"></span></footer>
+  <div class="selbar" id="selBar" hidden role="toolbar" aria-label="고른 글"><button type="button" data-sel="hl">밑줄</button><button type="button" data-sel="note">메모</button><button type="button" data-sel="copy">복사</button></div>
+  <div class="sheet" id="sheet" hidden><div class="sh-bg" data-shx></div><div class="sh-card" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="sh-top"><b id="shT"></b><button type="button" class="sh-x" data-shx>닫기</button></div><div class="sh-body" id="shB"></div></div></div>
+  <div class="r-dim" id="rDim" aria-hidden="true"></div>
+</section>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   설교 서가 — 곽준영키우기의 설교 원고집을 종이책처럼 읽는 앱 (books/)
+   데이터: ../bible/sm.json · ../bible/smt/*.json · ../bible/smv.json · ../bible/krv · ../bible/mz
+   켈러 원고는 저장소에 없음 → 고른 팩 파일 또는 곽준영키우기 계정에서 받아 이 폰에만 둠
+   ===================================================================== */
+const VER = "1.0";
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const RM = matchMedia("(prefers-reduced-motion: reduce)");
+const mins = len => Math.max(1, Math.round((len || 0) / 500));
+const fmtMin = m => m >= 60 ? `${Math.floor(m / 60)}시간${m % 60 ? ` ${m % 60}분` : ""}` : `${m}분`;
+const getJ = u => fetch(u).then(r => r.ok ? r.json() : null).catch(() => null);
+
+/* ---------- 저장 ---------- */
+const KEY = "sbk-v1";
+const DEF = { look: { fs: 18, font: "maru", bg: "paper", lh: "n", mg: "n", just: false, mode: "page", fx: "slide", dim: 0, grain: true, wake: true }, pos: {}, done: {}, last: null, marks: [], hl: [], gone: {}, kelOv: true, vs: "krv", acct: null, t: 0 };
+function loadS() {
+  const base = JSON.parse(JSON.stringify(DEF));
+  try { const o = JSON.parse(localStorage.getItem(KEY) || "null"); if (o && typeof o === "object") { const r = Object.assign(base, o); r.look = Object.assign({}, DEF.look, o.look || {}); return r; } } catch (e) {}
+  return base;
+}
+let S = loadS();
+function save(sync) { S.t = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} if (sync !== false) syncLater(); }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+/* ---------- 책 목록 ---------- */
+const SM_BOOKS = [
+  { id: "jjm-ep", pre: "jjm-ep-", t: "은평교회 설교 원고집", spine: "은평교회 설교", who: "장진명", cloth: "#2e5a4c", notes: "jjm-ep-notes" },
+  { id: "jjm-gs", pre: "jjm-gs-", t: "군산성결교회 설교 원고집", spine: "군산성결교회 설교", who: "장진명", cloth: "#7a2f2c", notes: "jjm-gs-notes" },
+  { id: "ykj-1", pre: "ykj-1-", t: "일상의 기적을 체험하라", sub: "제자훈련 6편", spine: "일상의 기적", who: "유기성", cloth: "#2b3d68", notes: "ykj-1-notes" },
+  { id: "ykj-2", pre: "ykj-2-", t: "일상의 기적을 체험하라", sub: "제2권", spine: "일상의 기적 2", who: "유기성", cloth: "#665627", notes: "ykj-2-notes" },
+  { id: "ykj-3", pre: "ykj-3-", t: "하나님의 인도하심을 구하라", sub: "제3권", spine: "인도하심을 구하라", who: "유기성", cloth: "#4c3a62", notes: "ykj-3-notes" },
+  { id: "ykj-4", pre: "ykj-4-", t: "하나님의 뜻대로 살아가라", sub: "제4권", spine: "뜻대로 살아가라", who: "유기성", cloth: "#2f5e6c", notes: "ykj-4-notes" },
+];
+const KEL_CLOTH = { 1: "#37475a", 2: "#7b582c", 3: "#4a3a32", 4: "#5b2e44", 5: "#2f4e3a" };
+const KEL_COL = { 1: "팀 켈러 설교 원고 1 · 19편", 2: "팀 켈러 설교 원고 2 · ver2 17편", 3: "욥기 · 고난을 지나는 길 · 5편", 4: "요한계시록 · 마지막 말씀 · 10편", 5: "복음 앞에서 · 설교·강연 선집 · 19편" };
+let KEL_INFO = {};
+let SM = [], SMBY = {}, CAT = {}, SMV = null;
+const SMT = new Map();
+async function loadBase() {
+  const [a, c] = await Promise.all([getJ("../bible/sm.json"), getJ("catalog.json")]);
+  SM = (a || []).slice().sort((x, y) => x.sid < y.sid ? -1 : 1); CAT = c || {}; SMBY = {}; SM.forEach(s => { SMBY[s.sid] = s; });
+}
+function loadSmt(id) { if (SMT.has(id)) return Promise.resolve(SMT.get(id)); return getJ(`../bible/smt/${id}.json`).then(d => { if (d) SMT.set(id, d); return d; }); }
+function loadSmv() { if (SMV) return Promise.resolve(SMV); return getJ("../bible/smv.json").then(d => (SMV = d || {})); }
+
+function kelBookTitle(c) { const t = KEL_COL[c] || `켈러 묶음 ${c}`, p = t.split(" · "); return { t: p[0], sub: p.slice(1).join(" · ") }; }
+function bookOf(id) {
+  if (/^kel-\d+$/.test(id)) {
+    const c = +id.slice(4), L = kel.list.filter(s => s.col === c).sort((a, b) => (a.ord || a.no) - (b.ord || b.no)); if (!L.length) return null;
+    const tt = kelBookTitle(c);
+    return { id, kel: true, col: c, t: tt.t, sub: tt.sub, spine: tt.t.replace(/^팀 켈러 /, ""), who: "팀 켈러", cloth: KEL_CLOTH[c] || "#3b4652", sids: L.map(s => s.id) };
+  }
+  const b = SM_BOOKS.find(x => x.id === id); if (!b) return null;
+  return Object.assign({}, b, { sids: SM.filter(s => s.sid.startsWith(b.pre)).map(s => s.sid) });
+}
+function allBooks() { const L = SM_BOOKS.map(b => bookOf(b.id)).filter(Boolean); if (kel.ready) [...new Set(kel.list.map(s => s.col))].sort((a, b) => a - b).forEach(c => { const b = bookOf("kel-" + c); if (b) L.push(b); }); return L; }
+function bookIdOf(sid) { if (kel.by[sid]) return "kel-" + kel.by[sid].col; const b = SM_BOOKS.find(x => sid.startsWith(x.pre) || x.notes === sid); return b ? b.id : null; }
+function docOf(sid) {
+  if (kel.by[sid]) { const s = kel.by[sid]; return { sid, kind: "kel", title: s.title, len: s.len, s, book: "kel-" + s.col }; }
+  const nb = SM_BOOKS.find(x => x.notes === sid); if (nb) return { sid, kind: "notes", title: "편집 주와 대조 자료", len: (CAT[sid] || {}).len || 0, book: nb.id };
+  const s = SMBY[sid]; if (!s) return null;
+  return { sid, kind: "sm", title: s.title, len: (CAT[sid] || {}).len || 0, s, book: bookIdOf(sid) };
+}
+function posOf(sid) { return S.pos[sid] || null; }
+function fracOf(sid) { const p = posOf(sid); return p ? (p.f || 0) : 0; }
+function bookLen(b) { return b.sids.reduce((n, sid) => n + ((docOf(sid) || {}).len || 0), 0); }
+
+/* ---------- 성경 주소 → 누를 수 있는 링크 (게임 refHtml 그대로) ---------- */
+const BIB = [["창세기",50],["출애굽기",40],["레위기",27],["민수기",36],["신명기",34],["여호수아",24],["사사기",21],["룻기",4],["사무엘상",31],["사무엘하",24],["열왕기상",22],["열왕기하",25],["역대상",29],["역대하",36],["에스라",10],["느헤미야",13],["에스더",10],["욥기",42],["시편",150],["잠언",31],["전도서",12],["아가",8],["이사야",66],["예레미야",52],["예레미야애가",5],["에스겔",48],["다니엘",12],["호세아",14],["요엘",3],["아모스",9],["오바댜",1],["요나",4],["미가",7],["나훔",3],["하박국",3],["스바냐",3],["학개",2],["스가랴",14],["말라기",4],["마태복음",28],["마가복음",16],["누가복음",24],["요한복음",21],["사도행전",28],["로마서",16],["고린도전서",16],["고린도후서",13],["갈라디아서",6],["에베소서",6],["빌립보서",4],["골로새서",4],["데살로니가전서",5],["데살로니가후서",3],["디모데전서",6],["디모데후서",4],["디도서",3],["빌레몬서",1],["히브리서",13],["야고보서",5],["베드로전서",5],["베드로후서",3],["요한일서",5],["요한이서",1],["요한삼서",1],["유다서",1],["요한계시록",22]];
+const REF_AB = ["창","출","레","민","신","수","삿","룻","삼상","삼하","왕상","왕하","대상","대하","스","느","에","욥","시","잠","전","아","사","렘","애","겔","단","호","욜","암","옵","욘","미","나","합","습","학","슥","말","마","막","눅","요","행","롬","고전","고후","갈","엡","빌","골","살전","살후","딤전","딤후","딛","몬","히","약","벧전","벧후","요일","요이","요삼","유","계"];
+const REF_MAP = (() => { const m = {}; BIB.forEach((x, i) => { m[x[0]] = i; }); REF_AB.forEach((a, i) => { m[a] = i; }); m["애가"] = 24; m["시"] = 18; return m; })();
+const REF_RE = new RegExp(`(^|[^가-힣A-Za-z0-9])(${Object.keys(REF_MAP).sort((a, b) => b.length - a.length).join("|")})\\s?(\\d{1,3}):(\\d{1,3})(?:\\s?[-–~]\\s?(\\d{1,3})(?!:))?`, "g");
+const REF_KO = new RegExp(`(^|[^가-힣A-Za-z0-9])(${BIB.map(x => x[0]).concat(["애가"]).sort((a, b) => b.length - a.length).join("|")})\\s?(\\d{1,3})\\s?(?:장|편)(?:\\s?(\\d{1,3})(?:\\s?[-–~]\\s?(\\d{1,3}))?\\s?절(?:\\s?(?:부터|에서|~|-|–)\\s?(\\d{1,3})\\s?절)?)?(?![0-9])`, "g");
+function refKo(s) {
+  return s.replace(REF_KO, (all, pre, bk, c, v, v2a, v2b) => {
+    const v2 = v2a || v2b, b = REF_MAP[bk], cn = +c; if (b == null || !cn || cn > BIB[b][1]) return all;
+    const vn = v ? +v : 1, ve = v ? (v2 ? +v2 : vn) : 999;
+    if (v && (ve < vn || ve - vn > 60)) return all;
+    return `${pre}<button type="button" class="vref" data-go="${b}|${cn}|${vn}|${ve}">${all.slice(pre.length)}</button>`;
+  });
+}
+function refHtml(t) {
+  return refKo(esc(t)).replace(REF_RE, (all, pre, bk, c, v, v2) => {
+    const b = REF_MAP[bk], cn = +c, vn = +v, ve = v2 ? +v2 : vn;
+    if (b == null || !cn || cn > BIB[b][1] || !vn || ve < vn || ve - vn > 40) return all;
+    return `${pre}<button type="button" class="vref" data-go="${b}|${cn}|${vn}|${ve}">${all.slice(pre.length)}</button>`;
+  });
+}
+
+/* ---------- 켈러 읽기 팩 ---------- */
+var kel = { ready: false, list: [], by: {}, busy: false, msg: "" };
+function kelDb() { return new Promise((res, rej) => { const r = indexedDB.open("sbk_keller", 1); r.onupgradeneeded = () => r.result.createObjectStore("pack"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function kelDbDo(mode, fn) { const db = await kelDb(); return new Promise((res, rej) => { const q = fn(db.transaction("pack", mode).objectStore("pack")); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); }
+function kelLoad(pack) {
+  if (!pack || pack.kind !== "keller-pack" || !Array.isArray(pack.sermons)) return false;
+  if (pack.cols && typeof pack.cols === "object") Object.keys(pack.cols).forEach(k => { if (pack.cols[k]) KEL_COL[k] = pack.cols[k]; });
+  if (pack.colinfo && typeof pack.colinfo === "object") Object.keys(pack.colinfo).forEach(k => { if (pack.colinfo[k]) KEL_INFO[k] = pack.colinfo[k]; });
+  kel.list = pack.sermons; kel.by = {};
+  kel.list.forEach(s => {
+    kel.by[s.id] = s;
+    if (s.ref && (!/\d/.test(s.ref) || s.ref === s.sub)) s.ref = "";
+    s.len = (s.secs || []).reduce((n, x) => n + (x.b || []).reduce((k, b) => k + (b.t || "").length, 0), 0);
+  });
+  kel.ready = kel.list.length > 0; return kel.ready;
+}
+/* 사파리에서 게임이 같은 주소에 저장해 둔 팩이 있으면 읽기만 함 (없으면 만들지 않음) */
+async function kelFromGame() {
+  try {
+    if (!indexedDB.databases) return null;
+    const L = await indexedDB.databases(); if (!L.some(d => d.name === "kjy_keller")) return null;
+    return await new Promise(res => {
+      const r = indexedDB.open("kjy_keller");
+      r.onupgradeneeded = () => { try { r.transaction.abort(); } catch (e) {} };
+      r.onsuccess = () => { const db = r.result; if (!db.objectStoreNames.contains("pack")) { db.close(); res(null); return; } const q = db.transaction("pack").objectStore("pack").get("main"); q.onsuccess = () => { res(q.result || null); db.close(); }; q.onerror = () => { res(null); db.close(); }; };
+      r.onerror = () => res(null); r.onblocked = () => res(null);
+    });
+  } catch (e) { return null; }
+}
+async function kelMergeStore(pack) {
+  try {
+    const old = await kelDbDo("readonly", st => st.get("main"));
+    if (old && old.kind === "keller-pack" && Array.isArray(old.sermons)) {
+      const cols = new Set(pack.sermons.map(x => x.col)), keep = old.sermons.filter(x => !cols.has(x.col));
+      if (keep.length) pack = Object.assign({}, old, pack, { cols: Object.assign({}, old.cols || {}, pack.cols || {}), colinfo: Object.assign({}, old.colinfo || {}, pack.colinfo || {}), sermons: keep.concat(pack.sermons).sort((a, b) => (a.col - b.col) || ((a.ord || a.no) - (b.ord || b.no))) });
+    }
+  } catch (e) {}
+  if (!kelLoad(pack)) throw new Error("켈러 읽기 팩이 아니에요. keller_pack.json 파일을 골라 주세요.");
+  let kept = true; try { await kelDbDo("readwrite", st => st.put(pack, "main")); } catch (e) { kept = false; }
+  return kept;
+}
+async function kelImport(file) {
+  if (kel.busy || !file) return; kel.busy = true; kel.msg = "읽는 중…"; rerender();
+  try {
+    let txt;
+    if (/\.gz$/i.test(file.name) && typeof DecompressionStream === "function") txt = await new Response(file.stream().pipeThrough(new DecompressionStream("gzip"))).text();
+    else txt = await file.text();
+    const pack = JSON.parse(txt);
+    if (!pack || pack.kind !== "keller-pack" || !Array.isArray(pack.sermons)) throw new Error("켈러 읽기 팩이 아니에요. keller_pack.json 파일을 골라 주세요.");
+    const kept = await kelMergeStore(pack);
+    kel.msg = ""; toast(kept ? `켈러 설교 ${kel.list.length}편을 서가에 꽂았어요` : "불러왔지만 이 폰에 저장하지 못했어요. 다시 열면 한 번 더 골라 주세요.");
+  } catch (e) { kel.msg = "불러오지 못했어요: " + ((e && e.message) || e); }
+  kel.busy = false; rerender();
+}
+async function kelDelete() { try { await kelDbDo("readwrite", st => st.delete("main")); } catch (e) {} kel.ready = false; kel.list = []; kel.by = {}; toast("켈러 원고를 이 폰에서 지웠어요"); rerender(); }
+async function kelInit() {
+  try { const p = await kelDbDo("readonly", st => st.get("main")); if (p && kelLoad(p)) return; } catch (e) {}
+  const g = await kelFromGame(); if (g && kelLoad(g)) { try { await kelDbDo("readwrite", st => st.put(g, "main")); } catch (e) {} }
+}
+
+/* ---------- 곽준영키우기 계정 (켈러 팩 받기 · 읽은 기록 맞추기) ---------- */
+const CLOUD = { url: "https://ownarhjgryafrgoouirs.supabase.co", key: "sb_publishable_MNcnBoOldNm0FN0r9G98aA_OB_gS87n" };
+const CLOUD_ERR = { bad_id: "아이디는 2~20자, 한글·영문 소문자·숫자·밑줄(_)만 돼요.", bad_pw: "비밀번호는 4자 이상이에요.", wrong: "아이디나 비밀번호가 맞지 않아요. 곽준영키우기에서 쓰는 것을 넣어 주세요.", locked: "여러 번 틀려서 10분 동안 잠겼어요. 잠시 뒤 다시 해 주세요.", auth: "로그인이 풀렸어요. 다시 로그인해 주세요." };
+async function rpc(fn, args) {
+  const h = { "Content-Type": "application/json", apikey: CLOUD.key };
+  const r = await fetch(`${CLOUD.url}/rest/v1/rpc/${fn}`, { method: "POST", headers: h, body: JSON.stringify(args) });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+const acct = { busy: false, err: "", msg: "" };
+async function login(id, pw) {
+  if (acct.busy) return; acct.busy = true; acct.err = ""; acct.msg = ""; rerender();
+  try {
+    const r = await rpc("kjy_login", { p_id: id, p_pw: pw });
+    if (!r || !r.ok) acct.err = CLOUD_ERR[r && r.err] || "잠시 뒤 다시 해 주세요.";
+    else { S.acct = { id: r.id || id, token: r.token }; save(false); acct.msg = `${S.acct.id} 계정으로 로그인했어요.`; await kelPull(true); await syncPull(); }
+  } catch (e) { acct.err = "서버에 연결하지 못했어요. 인터넷 연결을 확인해 주세요."; }
+  acct.busy = false; rerender();
+}
+async function logout() { const a = S.acct; if (!a) return; try { await rpc("kjy_logout", { p_id: a.id, p_token: a.token }); } catch (e) {} S.acct = null; save(false); acct.msg = "로그아웃했어요. 이 폰에 받은 원고와 기록은 그대로 있어요."; rerender(); }
+function authLost() { S.acct = null; save(false); acct.err = CLOUD_ERR.auth; rerender(); }
+async function packGet(key) {
+  const a = S.acct; if (!a) return null;
+  const r0 = await rpc("kjy_pack_get", { p_id: a.id, p_token: a.token, p_key: key, p_part: 0 });
+  if (r0 && r0.err === "auth") { authLost(); return null; }
+  if (!r0 || !r0.ok || r0.none || r0.have !== r0.total) return null;
+  const parts = [r0.data];
+  for (let i = 1; i < r0.total; i++) { const r = await rpc("kjy_pack_get", { p_id: a.id, p_token: a.token, p_key: key, p_part: i }); if (!r || !r.ok) return null; parts.push(r.data); }
+  return parts.join("");
+}
+async function kelPull(force) {
+  if (!S.acct || (kel.ready && !force) || kel.busy) return;
+  kel.busy = true; kel.msg = "계정에서 켈러 원고를 받는 중…"; rerender();
+  try {
+    const s = await packGet("keller");
+    if (s) { const kept = await kelMergeStore(JSON.parse(s)); kel.msg = ""; toast(`켈러 설교 ${kel.list.length}편을 받아 서가에 꽂았어요${kept ? "" : " (이 폰 저장은 못 했어요)"}`); }
+    else kel.msg = kel.ready ? "" : "이 계정에는 켈러 원고가 아직 없어요. 곽준영키우기 설정에서 팩을 한 번 불러오면 여기서도 받아요.";
+  } catch (e) { kel.msg = "켈러 원고를 받지 못했어요. 인터넷 연결을 확인해 주세요."; }
+  kel.busy = false; rerender();
+}
+/* 읽은 기록 맞추기: 같은 계정의 비공개 칸 "books" */
+let syncT = 0, syncOff = false;
+function syncLater() { if (!S.acct || syncOff) return; clearTimeout(syncT); syncT = setTimeout(syncPush, 6000); }
+async function syncPush() {
+  const a = S.acct; if (!a || syncOff) return;
+  const data = JSON.stringify({ v: 1, t: S.t, pos: S.pos, done: S.done, marks: S.marks, hl: S.hl, gone: S.gone, last: S.last });
+  try { const r = await rpc("kjy_pack_put", { p_id: a.id, p_token: a.token, p_key: "books", p_part: 0, p_total: 1, p_ver: "b1", p_data: data }); if (r && r.err === "auth") authLost(); else if (!r || !r.ok) syncOff = true; } catch (e) {}
+}
+async function syncPull() {
+  if (!S.acct) return;
+  try { const s = await packGet("books"); if (s) { mergeRec(JSON.parse(s)); save(false); rerender(); } } catch (e) {}
+}
+function mergeRec(o) {
+  if (!o || typeof o !== "object") return;
+  Object.assign(S.gone, o.gone || {});
+  Object.entries(o.pos || {}).forEach(([k, v]) => { if (v && (!S.pos[k] || (v.t || 0) > (S.pos[k].t || 0))) S.pos[k] = v; });
+  Object.entries(o.done || {}).forEach(([k, v]) => { const m = S.done[k]; if (v && (!m || (v.n || 0) > (m.n || 0))) S.done[k] = v; });
+  const un = (a, b) => { const m = new Map(); (a || []).concat(b || []).forEach(x => { if (x && x.id && !S.gone[x.id]) m.set(x.id, x); }); return [...m.values()].sort((p, q) => (p.t || 0) - (q.t || 0)); };
+  S.marks = un(S.marks, o.marks); S.hl = un(S.hl, o.hl);
+  if (o.last && (!S.last || (o.last.t || 0) > (S.last.t || 0))) S.last = o.last;
+}
+
+/* ---------- 알림 띠 ---------- */
+let toastT = 0;
+function toast(msg, act) {
+  const t = $("toast"); clearTimeout(toastT);
+  t.innerHTML = `<span>${esc(msg)}</span>${act ? `<button type="button" id="toastAct">${esc(act.label)}</button>` : ""}`; t.hidden = false;
+  if (act) $("toastAct").onclick = () => { act.run(); t.hidden = true; };
+  toastT = setTimeout(() => { t.hidden = true; }, act ? 6000 : 3200);
+}
+
+/* ---------- 화면 길 (주소 = 화면 상태) ---------- */
+function parseHash() { const h = decodeURIComponent(location.hash.replace(/^#/, "")) || "/"; const p = h.split("/").filter(Boolean); return { v: p[0] || "home", a: p[1] || "", b: p[2] || "" }; }
+function go(h) { if (location.hash !== h) location.hash = h; else route(); }
+let lastView = "";
+function route() {
+  const r = parseHash();
+  if (r.v === "r" && r.a) { const [sid, pi] = r.a.split("@"); openReader(sid, pi || null); return; }
+  closeReader();
+  const v = $("view"), key = r.v + "/" + r.a;
+  if (r.v === "b") v.innerHTML = bookHtml(r.a);
+  else if (r.v === "find") v.innerHTML = findHtml();
+  else if (r.v === "marks") v.innerHTML = marksHtml(r.a || "hl");
+  else if (r.v === "set") v.innerHTML = setHtml();
+  else v.innerHTML = homeHtml();
+  document.querySelectorAll("[data-nav]").forEach(a => { const on = (r.v === "home" && a.dataset.nav === "home") || a.dataset.nav === r.v; if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  if (key !== lastView) { window.scrollTo(0, 0); lastView = key; }
+  if (r.v === "find") { const q = $("findQ"); if (q && findState.q) runFind(findState.q, true); }
+  setTheme("#233041");
+}
+function rerender() { const r = parseHash(); if (r.v === "r") { updateOpts(); return; } const y = window.scrollY; const ae = document.activeElement && document.activeElement.id; lastView = r.v + "/" + r.a; route(); window.scrollTo(0, y); if (ae && $(ae) && /^(lgId|lgPw|findQ)$/.test(ae)) $(ae).focus(); }
+function setTheme(c) { const m = $("themeColor"); if (m) m.setAttribute("content", c); }
+
+/* ---------- 서가 ---------- */
+function totalCount() { return SM.length + (kel.ready ? kel.list.length : 0); }
+function readCount() { return Object.keys(S.done).filter(k => SMBY[k] || kel.by[k]).length; }
+function spineHtml(b, i) {
+  const len = bookLen(b), w = Math.round(Math.max(44, Math.min(80, 36 + len / 9000))), h = 262 + [0, 22, 10, 30, 14, 6][i % 6];
+  const read = b.sids.filter(s => S.done[s]).length, started = b.sids.some(s => fracOf(s) > 0.02 && !S.done[s]);
+  return `<a class="spine" role="listitem" href="#/b/${b.id}" style="--c:${b.cloth};--w:${w}px;--h:${h}px" aria-label="${esc(b.t)}${b.sub ? " " + esc(b.sub) : ""}, ${esc(b.who)} 목사, ${b.sids.length}편 중 ${read}편 읽음">`
+    + `${started ? `<i class="sp-rib" aria-hidden="true"></i>` : ""}<span class="sp-band" aria-hidden="true"></span><span class="sp-t" aria-hidden="true">${esc(b.spine)}</span><span class="sp-w" aria-hidden="true">${esc(b.who)}</span>${read ? `<span class="sp-done" aria-hidden="true">${read}/${b.sids.length}</span>` : ""}<span class="sp-band" aria-hidden="true"></span></a>`;
+}
+function contHtml() {
+  const L = S.last && docOf(S.last.sid); if (!L) return "";
+  const b = bookOf(L.book), f = fracOf(L.sid), left = Math.max(1, Math.ceil(mins(L.len) * (1 - f)));
+  return `<a class="cont" href="#/r/${encodeURIComponent(L.sid)}" style="--c:${b ? b.cloth : "#444"}"><span class="cont-sw" aria-hidden="true"></span><span class="cont-b"><small>이어 읽기</small><b>${esc(L.title)}</b><span class="cont-bar" aria-hidden="true"><i style="width:${Math.round(f * 100)}%"></i></span><span class="cont-meta">${esc(b ? b.t : "")} · ${f >= .98 ? "끝까지 읽었어요" : `${left}분 남음`}</span></span></a>`;
+}
+function homeHtml() {
+  if (!SM.length) return `<header class="lib-h"><h1>설교 서가</h1></header><p class="empty">원고를 불러오지 못했어요. 인터넷에 연결한 뒤 다시 열어 주세요. 한 번 읽은 원고는 다음부터 인터넷 없이도 열려요.</p>`;
+  const sm = SM_BOOKS.map(b => bookOf(b.id)).filter(Boolean);
+  let h = `<header class="lib-h"><h1>설교 서가</h1><p class="lib-sum">${readCount()}편 읽음 / ${totalCount()}편</p></header>` + contHtml();
+  h += `<section class="shelf-wrap" aria-labelledby="sh1"><h2 class="shelf-t" id="sh1">장진명 · 유기성 목사 원고집</h2><div class="shelf" role="list">${sm.map(spineHtml).join("")}</div><div class="plank" aria-hidden="true"></div></section>`;
+  const kb = allBooks().filter(b => b.kel);
+  h += `<section class="shelf-wrap" aria-labelledby="sh2"><h2 class="shelf-t" id="sh2">팀 켈러 설교 원고</h2><div class="shelf" role="list">${kb.length ? kb.map((b, i) => spineHtml(b, i + 2)).join("") : `<a class="spine slot" role="listitem" href="#/set" style="--w:56px;--h:190px"><span class="sp-t">켈러 원고 꽂기</span></a>`}</div><div class="plank" aria-hidden="true"></div></section>`;
+  if (!kb.length) h += `<p class="note">켈러 원고는 공개하지 않는 개인 학습본이라 이 앱에 들어 있지 않아요. 설정에서 팩 파일을 고르거나 곽준영키우기 계정으로 받아 오면 이 폰에만 꽂혀요.</p>`;
+  return h;
+}
+
+/* ---------- 책 ---------- */
+function partOf(sid) { const d = docOf(sid); if (!d) return ""; return d.kind === "kel" ? (d.s.part || "") : (d.s.series || ""); }
+function refOf(d) { return d.kind === "kel" ? (d.s.ref || d.s.en || "") : (d.s.refs || []).join(", "); }
+function nextUnread(b) { const cur = S.last && b.sids.includes(S.last.sid) && !S.done[S.last.sid] ? S.last.sid : null; return cur || b.sids.find(s => !S.done[s]) || b.sids[0]; }
+function bookHtml(id) {
+  const b = bookOf(id); if (!b) return `<div class="topbar"><a class="tb-back" href="#/">‹ 서가</a></div><p class="empty">이 책을 찾지 못했어요. 서가로 돌아가 다시 골라 주세요.</p>`;
+  const read = b.sids.filter(s => S.done[s]).length, len = bookLen(b), nx = nextUnread(b), started = b.sids.some(s => fracOf(s) > 0.02 || S.done[s]);
+  let h = `<div class="topbar"><a class="tb-back" href="#/">‹ 서가</a></div>`;
+  h += `<header class="cover" style="--c:${b.cloth}"><div class="cv-frame"><p class="cv-who">${esc(b.who)} 목사</p><h1 class="cv-t">${esc(b.t)}</h1>${b.sub ? `<p class="cv-sub">${esc(b.sub)}</p>` : ""}<span class="cv-orn" aria-hidden="true"></span><p class="cv-meta">설교 ${b.sids.length}편 · 모두 읽으면 약 ${fmtMin(mins(len))}</p></div></header>`;
+  h += `<div class="bk-act"><a class="btn pri" href="#/r/${encodeURIComponent(nx)}">${started ? "이어 읽기" : "처음부터 읽기"}</a><span class="bk-prog">${read ? `${b.sids.length}편 중 ${read}편 읽음` : "아직 읽은 설교가 없어요"}</span></div>`;
+  if (b.kel) { const I = KEL_INFO[b.col]; if (I && (I.sub || (I.guide || []).length || (I.gloss || []).length)) h += `<details class="bk-info"><summary>이 책에 대하여</summary>${I.sub ? `<p>${esc(I.sub)}</p>` : ""}${(I.guide || []).map(g => `<p>${esc(g)}</p>`).join("")}${I.gloss && I.gloss.length ? `<h3 class="sec-h" style="margin:14px 0 8px;font-size:16px">용어 대조표</h3><div class="gl">${I.gloss.map(([e, k]) => `<span>${esc(e)}</span><b>${esc(k)}</b>`).join("")}</div>` : ""}</details>`; }
+  h += `<h2 class="sec-h">차례</h2><ol class="toc">`;
+  let part = "";
+  b.sids.forEach((sid, i) => {
+    const d = docOf(sid); if (!d) return; const p = partOf(sid);
+    if (p && p !== part) { h += `<li class="toc-part">${esc(p)}</li>`; } part = p;
+    const f = fracOf(sid), dn = S.done[sid], cur = S.last && S.last.sid === sid;
+    const nol = d.kind === "kel" ? (/^\d+$/.test(String(d.s.nol || d.s.no)) ? +(d.s.nol || d.s.no) : (d.s.nol || i + 1)) : i + 1;
+    h += `<li><a href="#/r/${encodeURIComponent(sid)}" class="${dn ? "done" : ""}${cur ? " cur" : ""}"><span class="toc-n">${esc(String(nol))}</span><span class="toc-b"><b>${esc(d.title)}</b><small>${esc(refOf(d))}${refOf(d) ? " · " : ""}${mins(d.len)}분</small></span><span class="toc-s">${dn ? `<span aria-label="읽음 ${dn.n}번">✓${dn.n > 1 ? " " + dn.n : ""}</span>` : f > .02 ? `${Math.round(f * 100)}%` : ""}</span></a></li>`;
+  });
+  h += `</ol>`;
+  if (b.notes) h += `<a class="bk-note" href="#/r/${b.notes}">원고집 편집 주와 대조 자료 읽기</a>`;
+  if (b.kel) h += `<p class="note">개인 학습용 비공식 교정번역본이에요. 켈러의 낱말·문장은 원고 그대로이고, 문단 나눔과 편집자 길잡이만 더했어요. 이 폰과 내 계정의 비공개 칸에만 있어요.</p>`;
+  else h += `<p class="note">원고는 흐름을 점검해 받아쓰기 오류와 뜻이 분명한 음성 인식 오타만 바로잡았어요. 두 목사님의 허락을 받아 공개해요.</p>`;
+  return h;
+}
+
+/* ---------- 원고 → 화면 ---------- */
+function mentionChips(s, ix) {
+  return (ix || []).map(i => { const m = s.m && s.m[i], sp = m && m.spans && m.spans[0]; return sp ? `<button type="button" class="vref" data-go="${sp[0] - 1}|${sp[1]}|${sp[2]}|${sp[3]}">${esc(m.ref)}</button>` : ""; }).join("");
+}
+function smDocHtml(d, t) {
+  const s = d.s; let h = `<header class="d-head"><p class="d-kick">${esc(s.preacher)} 목사 · ${esc(s.place || "")}${s.series ? ` · ${esc(s.series)}` : ""}</p><h1 class="d-t">${esc(s.title)}</h1><p class="d-meta">${(s.refs || []).map(refHtml).join(", ")} · 약 ${mins(d.len)}분</p></header>`;
+  if (s.core || (s.outline || []).length) h += `<details class="d-ov"><summary>설교 한눈에 보기</summary>${s.core ? `<p>${refHtml(s.core)}</p>` : ""}${(s.outline || []).length ? `<ol>${s.outline.map(o => `<li>${esc(o)}</li>`).join("")}</ol>` : ""}</details>`;
+  (t.paras || []).forEach((p, i) => {
+    const x = refHtml(p.t || ""), a = ` data-pi="${i}"`;
+    if (p.k === "title") return;
+    if (p.k === "label") h += `<p class="d-lab"${a}>${x}</p>`;
+    else if (p.k === "ref") h += `<p class="d-ref"${a}>${x}</p>`;
+    else if (p.k === "h") h += `<h2 class="d-h"${a}>${x}</h2>`;
+    else if (p.k === "q") h += `<blockquote class="d-q"${a}>${x}</blockquote>`;
+    else if (p.k === "pre") h += `<pre class="d-pre"${a}>${esc(p.t)}</pre>`;
+    else if (p.k === "small") h += `<p class="d-small"${a}>${x}</p>`;
+    else h += `<p class="d-p"${a}>${x}</p>`;
+    if (p.m && p.m.length) h += `<div class="d-ml">${mentionChips(s, p.m)}</div>`;
+  });
+  if (t.rest && t.rest.length) h += `<section class="d-more"><h2>이 설교가 함께 가리킨 말씀</h2>${t.rest.map(i => { const m = s.m && s.m[i]; if (!m) return ""; return `<div class="d-mn" data-pi="m${i}"><p class="d-mr">${refHtml(m.ref || "")}</p><p>${refHtml(m.how || "")}</p>${m.quote ? `<blockquote>“${esc(m.quote)}”</blockquote>` : ""}</div>`; }).join("")}</section>`;
+  h += `<p class="d-cap">${esc(t.book || "")} — 원고 그대로 싣되, 흐름을 점검하며 생긴 오류와 뜻이 분명한 음성 인식 오타만 바로잡았어요. 두 목사님의 허락을 받아 공개해요.</p>`;
+  return h;
+}
+function notesDocHtml(d, t) {
+  const b = bookOf(d.book);
+  let h = `<header class="d-head"><p class="d-kick">${esc(t.book || (b && b.t) || "")}</p><h1 class="d-t">편집 주와 대조 자료</h1></header>`;
+  (t.paras || []).forEach((p, i) => { if (p.k === "title") return; const a = ` data-pi="${i}"`, x = refHtml(p.t || ""); if (p.k === "h") h += `<h2 class="d-h"${a}>${x}</h2>`; else if (p.k === "pre") h += `<pre class="d-pre"${a}>${esc(p.t)}</pre>`; else h += `<p class="d-p"${a}>${x}</p>`; });
+  return h;
+}
+/* 켈러 (게임 v50 kelHtml을 옮김 · 켈러 낱말은 한 글자도 바꾸지 않음) */
+function kelInline(t, sid) {
+  return refHtml(t).replace(/\[주\s?(\d+)\]/g, (a, n) => `<button type="button" class="kl-fn" data-kn="${sid}|${n}" aria-label="주석 ${n}">주${n}</button>`)
+    .replace(/\[자료[^\]]{0,20}\]/g, m => `<span class="kl-src">${m}</span>`);
+}
+function kelParaHtml(t, sid, em, k) {
+  const cls = k === "q" ? "kl-q0" : "sm-p", pieces = [];
+  let rest = t; const hits = (em || []).filter(e => e && rest.includes(e));
+  if (!hits.length) pieces.push([cls, rest]);
+  else {
+    hits.sort((a, b) => rest.indexOf(a) - rest.indexOf(b));
+    const BIT = /^[\s“”‘’"'「」『』()\[\].,!?…·]*(\[(주\s?\d+|자료[^\]]{0,20})\][\s”’」』).,!?]*)?$/;
+    hits.forEach(e => {
+      const i = rest.indexOf(e); if (i < 0) return;
+      let pre = rest.slice(0, i).trim(), m = e; rest = rest.slice(i + e.length).trim();
+      if (pre && BIT.test(pre)) { m = pre + m; pre = ""; } else if (pre && /[“‘「『]$/.test(pre)) { m = pre.slice(-1) + m; pre = pre.slice(0, -1).trim(); }
+      const tail = /^[”’」』)\].,!?…]*(\[(주\s?\d+|자료[^\]]{0,20})\])?[”’」』).,!?]*/.exec(rest); if (tail && tail[0]) { m += tail[0]; rest = rest.slice(tail[0].length).trim(); }
+      if (rest && BIT.test(rest)) { m += rest; rest = ""; }
+      if (pre) pieces.push([cls, pre]); pieces.push(["kl-em", m]);
+    });
+    if (rest) pieces.push([cls, rest]);
+  }
+  if (k === "q") return `<blockquote class="d-q">${pieces.map(([c, x]) => `<p>${kelInline(x, sid)}</p>`).join("")}</blockquote>`;
+  return pieces.map(([c, x]) => `<p class="${c}">${kelInline(x, sid)}</p>`).join("");
+}
+const kelH = (h, i) => /^\s*(\d+|Q\d+)[.)]/.test(h || "") ? h : `${i + 1}. ${h || ""}`;
+function kelDocHtml(d) {
+  const s = d.s, ovOn = S.kelOv !== false, ov = ovOn ? (s.ov || null) : null, secs = s.secs || [], N = secs.length;
+  const stages = ov && ov.stages && ov.stages.length ? ov.stages : null;
+  let h = `<header class="d-head"><p class="d-kick">팀 켈러 · ${esc(kelBookTitle(s.col).t.replace(/^팀 켈러\s*/, ""))}${s.part ? ` · ${esc(s.part)}` : ""}</p><h1 class="d-t">${esc(s.title)}</h1>${s.sub ? `<p class="d-sub">${esc(s.sub)}</p>` : ""}${s.en ? `<p class="d-en">${esc(s.en)}</p>` : ""}<p class="d-meta">${s.ref ? refHtml(s.ref) + " · " : ""}약 ${mins(d.len)}분 · 소제목 ${N}개</p></header>`;
+  h += `<div class="kl-tools"><button type="button" class="kl-tb" data-ktoc="1" aria-expanded="false">소제목 차례</button><button type="button" class="kl-tb${ov ? " on" : ""}" data-kov="1" aria-pressed="${ov ? "true" : "false"}">편집자 길잡이 ${ov ? "켜짐" : "꺼짐"}</button>${s.ov && s.ov.anatomy ? `<button type="button" class="kl-tb" data-kjump="anat">설교 해부</button>` : ""}</div>`;
+  if (s.flow && s.flow.length) h += `<details class="d-ov"><summary>이 설교의 흐름</summary><ol>${s.flow.map(f => `<li>${esc(f)}</li>`).join("")}</ol></details>`;
+  h += `<ol class="kl-toc" hidden>${secs.map((x, i) => `<li><button type="button" data-kjump="${i}"><b>${esc(x.h || "시작")}</b>${ov && ov.secs && ov.secs[i] && ov.secs[i].hook ? `<small>${esc(ov.secs[i].hook)}</small>` : ""}</button></li>`).join("")}</ol>`;
+  if (stages) h += `<div class="kl-map" role="navigation" aria-label="설교 지도">${stages.map((st, i) => `<button type="button" data-kstage="${i}"><i aria-hidden="true"></i>${esc(st)}</button>`).join("")}</div>`;
+  if (ov && ov.open) h += `<div class="kl-open"><span class="kl-ed">편집자</span><p>${esc(ov.open)}</p></div>`;
+  secs.forEach((x, i) => {
+    const o = ov && ov.secs && ov.secs[i] || null;
+    h += `<section class="kl-sec" id="kls-${i}" data-ki="${i}" data-kst="${o && o.stage != null ? o.stage : ""}">`;
+    if (x.h) h += `<div class="kl-sh" data-pi="${i}.h"><span class="kl-n">${i + 1}/${N}${stages && o && stages[o.stage] ? ` · ${esc(stages[o.stage])}` : ""}</span><h2>${esc(x.h)}</h2></div>`;
+    if (o && o.hook && !o.rest) h += `<p class="kl-hook">${esc(o.hook)}</p>`;
+    (x.b || []).forEach((b, j) => {
+      const t = b.t || "", a = ` data-pi="${i}.${j}"`;
+      if (b.k === "del") return;
+      if (b.k === "h2") h += `<h3 class="kl-h2"${a}>${esc(t)}</h3>`;
+      else if (b.k === "sp") h += `<p class="kl-sp"${a}>${esc(t)}</p>`;
+      else if (b.k === "qq") h += `<p class="kl-qq"${a}>${kelInline(t, s.id)}</p>`;
+      else if (b.k === "em") h += `<p class="kl-em kl-em0"${a}>${kelInline(t, s.id)}</p>`;
+      else if (b.k === "note") h += `<p class="kl-note"${a}>${kelInline(t, s.id)}</p>`;
+      else if (b.k === "li") h += `<p class="sm-p kl-li"${a}>${kelInline(t, s.id)}</p>`;
+      else { if (b.sp) h += `<p class="kl-sp">${esc(b.sp)}</p>`; h += `<div${a}>${kelParaHtml(t, s.id, o && o.em, b.k)}</div>`; }
+      if (b.enote && b.enote.length && ovOn) h += b.enote.map(n => `<p class="kl-enote"><span>편집자 메모</span>${esc(n)}</p>`).join("");
+      if (b.orig) h += `<button type="button" class="kl-fx" data-kfx="1" aria-expanded="false">✎ 원고에서 고친 곳</button><div class="kl-fxo" hidden><b>원래 원고</b><p>${esc(b.orig)}</p><small>${esc((b.why || []).join(" · "))}</small></div>`;
+    });
+    if (o && o.key && !o.rest) h += `<p class="kl-key"><span>이 장의 한 줄</span>${kelInline(o.key, s.id)}</p>`;
+    if (i < N - 1 && secs[i + 1].h) h += `<button type="button" class="kl-next" data-kjump="${i + 1}"><small>다음 소제목</small>${esc(secs[i + 1].h)}</button>`;
+    h += `</section>`;
+  });
+  if (ov && ov.one) h += `<div class="kl-one"><span class="kl-ed">다 읽었다면, 한 문장으로</span><p>${esc(ov.one)}</p></div>`;
+  const A = s.ov && s.ov.anatomy;
+  if (A) {
+    const q = (o, lab) => o && (o.quote || o.how) ? `<div class="vm"><p class="nt-form">${lab}${o.sec != null && secs[o.sec] ? ` · <button type="button" class="kl-lnk" data-kjump="${o.sec}">${esc(kelH(secs[o.sec].h, o.sec))}</button>` : ""}</p>${o.quote ? `<p class="kl-q">“${esc(o.quote)}”</p>` : ""}${o.how ? `<p>${esc(o.how)}</p>` : ""}</div>` : "";
+    h += `<details class="kl-bl" id="kl-anat" open><summary>설교 해부 · 켈러는 이 설교를 이렇게 만들었어요</summary>`;
+    if (A.flow) h += `<p class="kl-brief">${esc(A.flow).replace(/\n/g, "<br>")}</p>`;
+    h += q(A.christ, "그리스도에 도착하는 곳") + q(A.mirror, "나를 보게 하는 거울");
+    if (A.image && (A.image.plant || A.image.harvest)) h += q(A.image.plant, "심은 이미지") + q(A.image.harvest, "거둔 곳") + (A.image.how ? `<p class="d-cap" style="margin-top:0!important">${esc(A.image.how)}</p>` : "");
+    if (A.ending) h += `<div class="vm"><p class="nt-form">결말</p><p>${esc(A.ending)}</p></div>`;
+    if (A.moves && A.moves.length) h += `<h3>켈러가 쓴 기법 ${A.moves.length}가지</h3>` + A.moves.map(m => q({ sec: m.sec, quote: m.quote, how: m.why }, esc(m.name || ""))).join("");
+    if (A.watch && A.watch.length) h += `<h3>읽을 때 조심할 점</h3>` + A.watch.map(w => `<p>· ${esc(w)}</p>`).join("");
+    h += `<p class="d-cap" style="margin-top:.6em!important">해부는 설교 스킬(팀켈러 ver2)과 몰입 연구를 기준으로 편집자가 정리했어요. 인용은 원고 그대로예요.</p></details>`;
+  }
+  const fx = []; secs.forEach((x, i) => { if (x.h_orig) fx.push([i, x.h_orig, x.h, "소제목 맞춤법"]); (x.b || []).forEach(b => { if (b.orig) fx.push([i, b.orig, b.k === "del" ? "(중복이라 뺌)" : b.t, (b.why || []).join(" · ")]); }); });
+  if (fx.length) h += `<details class="kl-bl"><summary>원고에서 고친 곳 ${fx.length}개</summary>${fx.map(([i, a, b, w]) => `<div class="vm"><p class="nt-form"><button type="button" class="kl-lnk" data-kjump="${i}">${esc(kelH(secs[i].h, i))}</button> · ${esc(w)}</p><p class="kl-was">${esc(a)}</p><p>→ ${esc(b)}</p></div>`).join("")}</details>`;
+  const notes = Object.keys(s.notes || {}).sort((a, b) => a - b);
+  if (notes.length) h += `<details class="kl-bl"><summary>주석 ${notes.length}개</summary>${notes.map(n => `<div class="vm" id="kln-${n}"><p class="nt-form">주${n}${s.notes[n].h ? ` · ${esc(s.notes[n].h)}` : ""}</p><p>${kelInline(s.notes[n].t || "", s.id)}</p></div>`).join("")}</details>`;
+  if (s.guide && s.guide.length) h += `<details class="kl-bl"><summary>원고 읽기 안내</summary>${s.guide.map(p => `<p>${kelInline(p, s.id)}</p>`).join("")}</details>`;
+  if (s.appx && s.appx.length) h += `<details class="kl-bl"><summary>교정 기록·복원 기록</summary>${s.appx.map(a => `<h3>${esc(a.h || "")}</h3>` + (a.b || []).map(b => b.k === "h2" ? `<h3 class="kl-h2">${esc(b.t)}</h3>` : `<p>${kelInline(b.t, s.id)}</p>`).join("")).join("")}</details>`;
+  h += `<p class="d-cap">개인 학습용 비공식 교정번역본이에요. 켈러의 낱말·문장은 원고 그대로이고, 문단 나눔과 편집자 길잡이(색 글씨)만 더했어요. 이 원고는 이 폰과 내 계정의 비공개 칸에만 있어요.</p>`;
+  return h;
+}
+
+/* ---------- 읽기 화면 ---------- */
+const R = { mode: "", sid: null, doc: null, pages: 1, page: 0, w: 0, openT: 0, doneMarked: false, bookId: null };
+const paged = () => S.look.mode === "page";
+const TH_BG = { paper: "#f4eee3", sepia: "#ece0c6", gray: "#2b2e34", night: "#000000", warm: "#100c08" };
+function applyLook(el) {
+  const L = S.look, r = el || $("reader");
+  ["paper", "sepia", "gray", "night", "warm"].forEach(k => r.classList.toggle("th-" + k, L.bg === k));
+  ["maru", "batang", "sans", "dodum", "donghwa", "kkot", "dahaeng", "seongsil", "mirae"].forEach(f => r.classList.toggle("f-" + f, L.font === f));
+  r.classList.toggle("lh-t", L.lh === "t"); r.classList.toggle("lh-w", L.lh === "w");
+  r.classList.toggle("just", !!L.just); r.classList.toggle("grain", !!L.grain);
+  r.style.setProperty("--fsb", L.fs + "px"); r.style.setProperty("--mg", ({ t: 16, n: 24, w: 32 }[L.mg] || 24) + "px");
+  if (!el) {
+    r.classList.toggle("mode-page", paged()); r.classList.toggle("mode-scroll", !paged());
+    $("rDim").style.opacity = String(Math.max(0, Math.min(60, L.dim || 0)) / 100);
+    if (!r.hidden) setTheme(TH_BG[L.bg] || "#f4eee3");
+    document.documentElement.style.colorScheme = ["gray", "night", "warm"].includes(L.bg) ? "dark" : "light";
+  }
+}
+async function openReader(sid, pi) {
+  const d = docOf(sid);
+  const rd = $("reader");
+  if (!d) {
+    if (!kel.ready && /^k\d-\d\d$/.test(sid)) { go("#/set"); toast("켈러 원고가 이 폰에 없어요. 설정에서 꽂아 주세요."); return; }
+    go("#/"); toast("이 설교를 찾지 못했어요."); return;
+  }
+  const same = R.sid === sid && !rd.hidden;
+  if (same && pi) { const b = blockByPi(pi); if (b) { gotoEl(b, false); flash(b); } return; }
+  if (same) return;
+  closeSheet(); $("rOpts").hidden = true; $("rAa").setAttribute("aria-expanded", "false");
+  R.sid = sid; R.doc = d; R.page = 0; R.anc = null; R.openT = Date.now(); R.doneMarked = false; R.bookId = d.book;
+  document.body.classList.add("reading"); $("view").hidden = true; rd.hidden = false; rd.classList.remove("bare");
+  applyLook();
+  $("rTitle").textContent = d.title; $("rSub").textContent = (bookOf(d.book) || {}).t || "";
+  const c = $("pgc"); c.innerHTML = `<p class="d-meta" style="padding-top:2em">원고를 펴는 중…</p>`;
+  let html = "";
+  if (d.kind === "kel") html = kelDocHtml(d);
+  else { const t = await loadSmt(sid); if (R.sid !== sid) return; if (!t) { c.innerHTML = `<p class="d-p" style="padding-top:2em">원고를 불러오지 못했어요. 인터넷에 연결한 뒤 다시 열어 주세요.</p>`; return; } html = d.kind === "notes" ? notesDocHtml(d, t) : smDocHtml(d, t); }
+  c.innerHTML = html + endHtml(d);
+  paintHl();
+  S.last = { sid, t: Date.now() }; save(false);
+  await (document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 900))]) : null);
+  if (R.sid !== sid) return;
+  layout();
+  const p = posOf(sid);
+  if (pi) { const b = blockByPi(pi); if (b) { gotoEl(b, false); flash(b); } }
+  else if (p && (p.f || 0) < .98) { if (!gotoAnchor(p)) setFrac(p.f || 0); if ((p.f || 0) > .03) toast("읽던 자리에서 이어 읽어요"); }
+  else goStart();
+  status(); wakeOn(); $("rb").focus({ preventScroll: true });
+}
+function closeReader() {
+  const rd = $("reader"); if (rd.hidden) return;
+  savePos(); rd.hidden = true; $("view").hidden = false; document.body.classList.remove("reading"); R.sid = null; closeSheet(); $("selBar").hidden = true; wakeOff();
+  document.documentElement.style.colorScheme = "dark";
+}
+function endHtml(d) {
+  const b = bookOf(d.book), i = b ? b.sids.indexOf(d.sid) : -1, nx = b && i >= 0 && i < b.sids.length - 1 ? docOf(b.sids[i + 1]) : null;
+  return `<div class="r-end" data-pi="end"><p class="r-fin">끝</p>${nx ? `<button type="button" class="r-next" data-open="${esc(nx.sid)}"><small>다음 설교</small>${esc(nx.title)}</button>` : ""}<button type="button" class="r-toc" data-back="1">${esc(b ? b.t : "서가")} 차례로</button></div>`;
+}
+function goStart() { const rb = $("rb"); if (paged()) { R.page = 0; rb.scrollLeft = 0; } else rb.scrollTop = 0; }
+
+/* 쪽 나누기: 화면 한 장 = 한 쪽 (CSS 다단) */
+function layout() {
+  const rb = $("rb"), c = $("pgc");
+  if (paged()) {
+    const w = rb.clientWidth, h = rb.clientHeight, mg = { t: 16, n: 24, w: 32 }[S.look.mg] || 24;
+    const fs = S.look.fs * (parseFloat(getComputedStyle($("reader")).getPropertyValue("--fk")) || 1);
+    const colW0 = Math.min(w - 2 * mg, Math.round(fs * 34));
+    const side = Math.floor((w - colW0) / 2), colW = w - 2 * side;
+    c.style.cssText = `height:${h}px;padding:14px ${side}px 10px;column-width:${colW}px;column-gap:${2 * side}px;column-fill:auto;width:${w}px;box-sizing:border-box;`;
+    R.w = w; R.side = side; R.mode = "page"; countPages();
+  } else { c.style.cssText = ""; R.w = 0; R.pages = 1; R.mode = "scroll"; $("pgEnd").style.left = "0px"; }
+}
+function countPages() {
+  /* 다단은 마지막 단 뒤 여백을 스크롤 너비에 넣지 않아 마지막 쪽이 덜 넘어감 → 끝에 1px 표시를 둬서 쪽 너비를 딱 맞춤 */
+  const rb = $("rb"), end = $("pgEnd"); if (R.mode !== "page" || !R.w) { end.style.left = "0px"; return; }
+  end.style.left = "0px"; const sw = rb.scrollWidth;
+  R.pages = Math.max(1, Math.round((sw + (R.side || 0)) / R.w)); end.style.left = (R.pages * R.w - 1) + "px";
+  if (R.page > R.pages - 1) R.page = R.pages - 1;
+}
+function goPage(p, anim) {
+  if (!paged()) return; const rb = $("rb");
+  p = Math.max(0, Math.min(R.pages - 1, p));
+  if (!inAnchor) R.anc = null;
+  if (p === R.page && Math.abs(rb.scrollLeft - p * R.w) < 2) { if (anim && (p === R.pages - 1)) status(); return; }
+  R.page = p;
+  const smooth = anim && S.look.fx === "slide" && !RM.matches;
+  if (smooth) rb.scrollTo({ left: p * R.w, behavior: "smooth" }); else rb.scrollLeft = p * R.w;
+  status(); savePosSoon();
+}
+function blocks() { return [...$("pgc").querySelectorAll("[data-pi]")]; }
+function blockByPi(pi) { return $("pgc").querySelector(`[data-pi="${CSS.escape(String(pi))}"]`); }
+function anchorNow() {
+  /* 지금 화면에서 '시작 부분이 보이는' 첫 문단을 기준으로 삼음 → 글자 크기를 여러 번 바꿔도 뒤로 밀리지 않음 */
+  const rb = $("rb"), r = rb.getBoundingClientRect(), B = blocks(), pg = R.mode === "page";
+  let span = null;
+  for (const b of B) {
+    const rs = b.getClientRects(); if (!rs.length) continue;
+    const x0 = rs[0];
+    if (pg ? (x0.left >= r.left - 4 && x0.left < r.right - 4) : (x0.top >= r.top - 4 && x0.top < r.bottom)) return { pi: b.dataset.pi, ri: 0, f: frac() };
+    if (!span) for (let k = 1; k < rs.length; k++) { const x = rs[k]; if (pg ? (x.right > r.left + 4 && x.left < r.right - 4) : (x.bottom > r.top + 8 && x.top < r.bottom)) { span = { pi: b.dataset.pi, ri: k, f: frac() }; break; } }
+    if (!pg && x0.top >= r.bottom) break;
+  }
+  return span || { pi: null, ri: 0, f: frac() };
+}
+function pageOfRect(x) { const c = $("pgc").getBoundingClientRect(); return Math.max(0, Math.floor((x.left - c.left + 2) / R.w)); }
+function gotoEl(el, anim, ri) {
+  const rb = $("rb");
+  if (paged()) { const rs = el.getClientRects(); if (!rs.length) return; goPage(pageOfRect(rs[Math.min(ri || 0, rs.length - 1)]), anim); }
+  else { const top = rb.scrollTop + el.getBoundingClientRect().top - rb.getBoundingClientRect().top - 14; rb.scrollTo({ top: Math.max(0, top), behavior: anim && !RM.matches ? "smooth" : "auto" }); }
+}
+function gotoAnchor(a) { if (!a || a.pi == null) return false; const b = blockByPi(a.pi); if (!b) return false; inAnchor = true; try { gotoEl(b, false, a.ri); } finally { inAnchor = false; } return true; }
+let inAnchor = false;
+function frac() { const rb = $("rb"); if (R.mode === "page") return R.pages > 1 ? R.page / (R.pages - 1) : 1; const room = rb.scrollHeight - rb.clientHeight; return room > 20 ? Math.min(1, rb.scrollTop / room) : 1; }
+function setFrac(f) { const rb = $("rb"); if (paged()) goPage(Math.round(f * (R.pages - 1)), false); else rb.scrollTop = f * (rb.scrollHeight - rb.clientHeight); }
+function relayout() { if ($("reader").hidden) return; const a = R.anc || anchorNow(); R.anc = a; applyLook(); layout(); if (!gotoAnchor(a)) setFrac(a.f); status(); }
+let posT = 0;
+function savePosSoon() { clearTimeout(posT); posT = setTimeout(savePos, 500); }
+function savePos() { if (!R.sid) return; const a = anchorNow(); S.pos[R.sid] = { pi: a.pi, ri: a.ri, f: Math.round(a.f * 1000) / 1000, t: Date.now() }; S.last = { sid: R.sid, t: Date.now() }; save(); }
+function status() {
+  if (!R.doc) return;
+  const f = frac(), left = Math.max(0, Math.ceil(mins(R.doc.len) * (1 - f)));
+  $("rProg").style.width = (f * 100).toFixed(1) + "%";
+  const leftTxt = f >= .98 ? "끝까지 읽었어요" : `이 설교 ${left}분 남음`;
+  if (paged()) { $("rPage").textContent = `${R.page + 1} / ${R.pages}쪽`; $("rLeft").textContent = leftTxt; }
+  let sub = (bookOf(R.doc.book) || {}).t || "";
+  if (R.doc.kind === "kel") { const sec = curKelSec(); if (sec) { const hh = sec.querySelector(".kl-sh h2"); if (hh) sub = kelH(hh.textContent, +sec.dataset.ki); kelMap(sec); } }
+  $("rSub").textContent = paged() ? sub : `${sub}${sub ? " · " : ""}${leftTxt}`;
+  const a = anchorNow(), on = S.marks.some(m => m.sid === R.sid && m.pi === a.pi);
+  $("rMark").setAttribute("aria-pressed", on ? "true" : "false"); $("rMark").setAttribute("aria-label", on ? "책갈피 빼기" : "책갈피 꽂기");
+  checkDone(f);
+}
+function checkDone(f) {
+  if (R.doneMarked || !R.sid || f < .98) return;
+  const need = 20000 - (Date.now() - R.openT);
+  if (need > 0) { clearTimeout(checkDone.t); checkDone.t = setTimeout(() => { if (R.sid && frac() >= .98) checkDone(frac()); }, need + 50); return; }
+  R.doneMarked = true; const d = S.done[R.sid] || { n: 0 }; S.done[R.sid] = { n: (d.n || 0) + 1, t: Date.now() }; save();
+  toast(d.n ? `끝까지 읽었어요 · ${d.n + 1}번째` : "끝까지 읽었어요");
+}
+/* 켈러 설교 지도 */
+function curKelSec() { const a = anchorNow(); if (!a.pi) return null; const b = blockByPi(a.pi); return b && b.closest(".kl-sec"); }
+function kelMap(sec) { const st = sec ? sec.dataset.kst : ""; $("pgc").querySelectorAll(".kl-map button").forEach(b => { const k = +b.dataset.kstage; b.classList.toggle("on", st !== "" && k === +st); b.classList.toggle("past", st !== "" && k < +st); }); }
+function flash(el) { el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 2000); }
+
+/* 넘기기: 누르기 · 밀기 · 키보드 */
+(function () {
+  const rb = $("rb"); let tch = null, swiped = false;
+  rb.addEventListener("touchstart", e => { if (e.touches.length !== 1) { tch = null; return; } const t = e.touches[0]; tch = { x: t.clientX, y: t.clientY, t: Date.now() }; }, { passive: true });
+  rb.addEventListener("touchend", e => {
+    if (!tch || !paged()) { tch = null; return; }
+    const t = e.changedTouches[0], dx = t.clientX - tch.x, dy = t.clientY - tch.y, dt = Date.now() - tch.t; tch = null;
+    if (hasSel()) return;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3 && dt < 900) { swiped = true; setTimeout(() => { swiped = false; }, 450); R.anc = null; goPage(R.page + (dx < 0 ? 1 : -1), true); }
+  }, { passive: true });
+  rb.addEventListener("click", e => {
+    if (swiped) return;
+    const t = e.target;
+    if (t.closest("button, a, summary, input, select, textarea, label, mark.hl, .kl-toc")) return;
+    if (hasSel()) return;
+    if (!$("rOpts").hidden) { toggleOpts(false); return; }
+    const r = rb.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+    if (paged()) { if (x < .3) { R.anc = null; goPage(R.page - 1, true); } else if (x > .7) { R.anc = null; goPage(R.page + 1, true); } else $("reader").classList.toggle("bare"); }
+    else if (x > .3 && x < .7) $("reader").classList.toggle("bare");
+  });
+  let scT = 0;
+  rb.addEventListener("scroll", () => { if (paged()) return; R.anc = null; const n = Date.now(); if (n - scT < 120) return; scT = n; status(); savePosSoon(); }, { passive: true });
+  rb.addEventListener("scrollend", () => { if (!paged()) { status(); savePosSoon(); } });
+  document.addEventListener("keydown", e => {
+    if ($("reader").hidden || /INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "")) return;
+    if (e.key === "Escape") { if (!$("sheet").hidden) closeSheet(); else if (!$("rOpts").hidden) toggleOpts(false); else backFromReader(); return; }
+    if (!paged() || !$("sheet").hidden) return;
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); R.anc = null; goPage(R.page + 1, true); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); R.anc = null; goPage(R.page - 1, true); }
+  });
+  let rsT = 0; window.addEventListener("resize", () => { clearTimeout(rsT); rsT = setTimeout(relayout, 160); });
+  $("pgc").addEventListener("toggle", () => { if (paged()) { countPages(); status(); } }, true);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") { savePos(); syncPush(); } else if (!$("reader").hidden) wakeOn(); });
+})();
+function backFromReader() { savePos(); const b = R.bookId; if (history.length > 1 && sessionStorage.getItem("sbk-in")) history.back(); else go(b ? `#/b/${b}` : "#/"); }
+
+/* 위 띠 버튼 */
+$("rBack").addEventListener("click", backFromReader);
+$("rMark").addEventListener("click", () => {
+  const a = anchorNow(); if (!a.pi) return;
+  const i = S.marks.findIndex(m => m.sid === R.sid && m.pi === a.pi);
+  if (i >= 0) { const m = S.marks.splice(i, 1)[0]; S.gone[m.id] = Date.now(); save(); toast("책갈피를 뺐어요"); }
+  else { const b = blockByPi(a.pi); S.marks.push({ id: uid(), sid: R.sid, pi: a.pi, ri: a.ri, f: a.f, text: (b ? b.textContent : "").replace(/\s+/g, " ").trim().slice(0, 90), t: Date.now() }); save(); toast("책갈피를 꽂았어요"); }
+  status();
+});
+$("rAa").addEventListener("click", () => toggleOpts());
+function toggleOpts(on) { const o = $("rOpts"); const show = on == null ? o.hidden : on; if (show) o.innerHTML = optsHtml(); o.hidden = !show; $("rAa").setAttribute("aria-expanded", show ? "true" : "false"); }
+function updateOpts() { const o = $("rOpts"); if (o && !o.hidden) { const y = o.scrollTop; o.innerHTML = optsHtml(); o.scrollTop = y; } }
+
+/* ---------- 읽기 모양 판 (읽기 화면 · 설정이 같이 씀) ---------- */
+const FONTS = [["maru", "마루부리", "MaruBuri"], ["batang", "고운바탕", "Gowun Batang"], ["sans", "고딕", "Apple SD Gothic Neo"], ["dodum", "둥근돋움", "Gowun Dodum"], ["donghwa", "동화또박", "NSDonghwa"], ["kkot", "꽃내음", "NSKkot"], ["dahaeng", "다행체", "NSDahaeng"], ["seongsil", "성실체", "NSSeongsil"], ["mirae", "미래나무", "NSMirae"]];
+const THEMES = [["paper", "종이", "#f4eee3", "#36322d"], ["sepia", "세피아", "#ece0c6", "#3b2f21"], ["gray", "회색", "#2b2e34", "#d0ccc4"], ["night", "밤", "#000", "#b8b1a5"], ["warm", "밤 노을", "#100c08", "#c6a378"]];
+function seg(key, list) { return `<div class="op-seg" role="group">${list.map(([v, l, extra]) => `<button type="button" data-lk="${key}" data-lv="${v}" aria-pressed="${String(S.look[key]) === String(v)}"${extra || ""}>${l}</button>`).join("")}</div>`; }
+function optsHtml() {
+  const L = S.look;
+  return `<div class="op-r"><span>글자 크기</span><div class="op-seg"><button type="button" data-lk="fs" data-lv="-1" aria-label="글자 작게">가−</button><b aria-live="polite">${L.fs}</b><button type="button" data-lk="fs" data-lv="+1" aria-label="글자 크게">가+</button></div></div>`
+    + `<div class="op-r fonts"><span>글꼴</span><div class="op-seg op-fonts" role="group">${FONTS.map(([v, l, f]) => `<button type="button" data-lk="font" data-lv="${v}" aria-pressed="${L.font === v}" style="font-family:'${f}'">${l}</button>`).join("")}</div></div>`
+    + `<div class="op-r"><span>바탕</span><div class="op-seg op-th" role="group">${THEMES.map(([v, l, bg, fg]) => `<button type="button" data-lk="bg" data-lv="${v}" aria-pressed="${L.bg === v}"><span class="sw" style="background:${bg};color:${fg}" aria-hidden="true">가</span>${l}</button>`).join("")}</div></div>`
+    + `<div class="op-r"><span>줄 간격</span>${seg("lh", [["t", "좁게"], ["n", "보통"], ["w", "넓게"]])}</div>`
+    + `<div class="op-r"><span>여백</span>${seg("mg", [["t", "좁게"], ["n", "보통"], ["w", "넓게"]])}</div>`
+    + `<div class="op-r"><span>넘기는 방식</span>${seg("mode", [["page", "쪽 넘기기"], ["scroll", "스크롤"]])}</div>`
+    + (L.mode === "page" ? `<div class="op-r"><span>넘길 때</span>${seg("fx", [["slide", "밀기"], ["none", "바로"]])}</div>` : "")
+    + `<div class="op-r"><span>양쪽 맞춤</span>${seg("just", [[false, "끔"], [true, "켬"]])}</div>`
+    + `<div class="op-r"><span>종이 결</span>${seg("grain", [[true, "있음"], [false, "없음"]])}</div>`
+    + `<div class="op-r"><label for="dimR">화면 어둡게</label><input class="op-range" id="dimR" type="range" min="0" max="60" step="5" value="${L.dim || 0}" data-lk="dim" aria-valuetext="${L.dim || 0}%"></div>`
+    + `<div class="op-r"><span>읽는 동안 화면</span>${seg("wake", [[true, "켜 두기"], [false, "기기 설정대로"]])}</div>`
+    + `<p class="op-hint">${L.mode === "page" ? "화면 오른쪽을 누르거나 왼쪽으로 밀면 다음 쪽, 왼쪽을 누르면 앞 쪽이에요. 가운데를 누르면 위아래 띠가 숨어요." : "가운데를 누르면 위 띠가 숨어요."} 밤에는 ‘밤’이나 ‘밤 노을’ 바탕이 눈부심이 가장 적어요.</p>`;
+}
+function setLook(k, v) {
+  const L = S.look;
+  if (k === "fs") L.fs = Math.max(14, Math.min(28, L.fs + (+v)));
+  else if (k === "dim") L.dim = Math.max(0, Math.min(60, +v));
+  else if (k === "just" || k === "grain" || k === "wake") L[k] = v === "true" || v === true;
+  else L[k] = v;
+  save(false);
+  if (k === "wake") { if (L.wake) wakeOn(); else wakeOff(); }
+  if (!$("reader").hidden) relayout(); else applyLook();
+  updateOpts();
+  const pv = $("pv"); if (pv) { applyLook(pv); }
+  const so = $("setOpts"); if (so) { so.innerHTML = optsHtml(); }
+}
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("button[data-lk]"); if (b) { e.preventDefault(); setLook(b.dataset.lk, b.dataset.lv); } });
+document.addEventListener("input", e => { const t = e.target; if (t && t.id === "dimR") { S.look.dim = +t.value; $("rDim").style.opacity = String(S.look.dim / 100); t.setAttribute("aria-valuetext", t.value + "%"); } });
+document.addEventListener("change", e => { const t = e.target; if (t && t.id === "dimR") setLook("dim", t.value); if (t && t.id === "kelFile" && t.files && t.files[0]) { kelImport(t.files[0]); try { t.value = ""; } catch (er) {} } });
+
+/* ---------- 화면 켜 두기 ---------- */
+let wakeL = null;
+async function wakeOn() { if (!S.look.wake || wakeL || !("wakeLock" in navigator) || document.visibilityState !== "visible") return; try { wakeL = await navigator.wakeLock.request("screen"); wakeL.addEventListener("release", () => { wakeL = null; }); } catch (e) { wakeL = null; } }
+function wakeOff() { try { if (wakeL) wakeL.release(); } catch (e) {} wakeL = null; }
+
+/* ---------- 아래 창: 성경 구절 ---------- */
+const BIBC = { krv: {}, mz: {} };
+function loadBib(v, b) { const k = String(b + 1).padStart(2, "0"); if (BIBC[v][k]) return Promise.resolve(BIBC[v][k]); return getJ(`../bible/${v}/${k}.json`).then(d => { if (d) BIBC[v][k] = d; return d; }); }
+function openSheet(title, html) { $("shT").textContent = title; $("shB").innerHTML = html; $("sheet").hidden = false; $("shB").scrollTop = 0; setTimeout(() => { const x = $("sheet").querySelector(".sh-x"); if (x) x.focus({ preventScroll: true }); }, 30); }
+function closeSheet() { const s = $("sheet"); if (s.hidden) return; s.hidden = true; $("rb").focus({ preventScroll: true }); }
+let vsGo = "";
+async function openVerse(goStr, ver) {
+  vsGo = goStr; ver = ver || S.vs || "krv";
+  const [b, c, v1, v2raw] = goStr.split("|").map(Number), whole = v2raw >= 999;
+  const ref = whole ? `${BIB[b][0]} ${c}장` : `${BIB[b][0]} ${c}:${v1}${v2raw > v1 ? "–" + v2raw : ""}`;
+  openSheet(ref, `<p class="sh-more">구절을 불러오는 중…</p>`);
+  const [bk, smv] = await Promise.all([loadBib(ver, b), loadSmv()]);
+  if (vsGo !== goStr) return;
+  let h = `<div class="sh-seg" role="group" aria-label="번역"><button type="button" data-vv="krv" aria-pressed="${ver === "krv"}">개역한글</button><button type="button" data-vv="mz" aria-pressed="${ver === "mz"}">20대 말투</button></div>`;
+  const ch = bk && bk[c - 1], vs = ch ? (ver === "mz" ? ch.v : ch) : null;
+  if (vs && v1 <= vs.length) {
+    const end = whole ? vs.length : Math.min(v2raw, vs.length), heads = {};
+    if (ver === "mz" && ch.h) ch.h.forEach(x => { if (Array.isArray(x)) heads[x[0]] = x[1]; });
+    for (let n = v1; n <= end; n++) { if (heads[n]) h += `<p class="vs-h">${esc(heads[n])}</p>`; h += `<p class="vs-v"><sup>${n}</sup>${esc(String(vs[n - 1] || "")).replace(/\n/g, "<br>")}</p>`; }
+    if (!whole) h += `<button type="button" class="sh-link" data-vgo="${b}|${c}|1|999">${esc(BIB[b][0])} ${c}장 전체 읽기</button>`;
+  } else h += `<p class="sh-more">이 구절을 찾지 못했어요. ${ver === "mz" ? "개역한글로 바꿔 보세요." : "주소를 확인해 주세요."}</p>`;
+  const sv = smv && smv[`${b + 1}:${c}`], seen = new Set(), L = [];
+  if (sv) { const vend = whole ? 999 : v2raw; Object.keys(sv.v || {}).forEach(n => { if (+n >= v1 && +n <= vend) (sv.v[n] || []).forEach(([sid]) => { if (!seen.has(sid) && sid !== R.sid && SMBY[sid]) { seen.add(sid); L.push(sid); } }); }); }
+  if (kel.ready) kel.list.forEach(s => { if (seen.has(s.id) || s.id === R.sid || !s.ref) return; const m = refHtml(s.ref).match(/data-go="(\d+)\|(\d+)\|(\d+)\|(\d+)"/); if (m && +m[1] === b && +m[2] === c && !(+m[4] < v1 || +m[3] > (whole ? 999 : v2raw))) { seen.add(s.id); L.push(s.id); } });
+  if (L.length) h += `<p class="vs-h" style="margin-top:1.4em">이 말씀을 다룬 다른 설교</p>` + L.slice(0, 12).map(sid => { const d = docOf(sid); return `<button type="button" class="sh-link" data-open="${esc(sid)}">${esc(d.title)}<small>${esc(d.kind === "kel" ? "팀 켈러" : d.s.preacher + " 목사")} · ${esc((bookOf(d.book) || {}).t || "")}</small></button>`; }).join("");
+  $("shB").innerHTML = h;
+}
+
+/* ---------- 밑줄 · 메모 ---------- */
+function hasSel() { const s = getSelection(); return !!(s && !s.isCollapsed && String(s).trim()); }
+function selInfo() {
+  const sel = getSelection(); if (!sel || sel.isCollapsed || !sel.rangeCount) return null;
+  const r = sel.getRangeAt(0), c = $("pgc"); if (!c.contains(r.commonAncestorContainer)) return null;
+  const el = n => n.nodeType === 1 ? n : n.parentElement;
+  const sb = el(r.startContainer).closest("[data-pi]"); if (!sb) return null;
+  const eb = el(r.endContainer).closest("[data-pi]");
+  const pre = document.createRange(); pre.selectNodeContents(sb); pre.setEnd(r.startContainer, r.startOffset); const a = pre.toString().length;
+  let b; if (eb === sb) { const p2 = document.createRange(); p2.selectNodeContents(sb); p2.setEnd(r.endContainer, r.endOffset); b = p2.toString().length; } else b = sb.textContent.length;
+  const text = sb.textContent.slice(a, b); if (!text.trim()) return null;
+  return { pi: sb.dataset.pi, a, b, text: text.trim() };
+}
+document.addEventListener("selectionchange", () => { if ($("reader").hidden) return; const ok = !!selInfo(); $("selBar").hidden = !ok; });
+function wrapRange(block, a, b, h) {
+  const tw = document.createTreeWalker(block, NodeFilter.SHOW_TEXT); let pos = 0, n; const segs = [];
+  while ((n = tw.nextNode())) { const L = n.nodeValue.length, s = pos, e = pos + L; if (e > a && s < b) segs.push([n, Math.max(0, a - s), Math.min(L, b - s)]); pos = e; if (pos >= b) break; }
+  segs.forEach(([n, x, y]) => { if (y <= x || (n.parentElement && n.parentElement.closest("button"))) return; const r = document.createRange(); r.setStart(n, x); r.setEnd(n, y); const m = document.createElement("mark"); m.className = "hl" + (h.note ? " has-note" : ""); m.dataset.hid = h.id; try { r.surroundContents(m); } catch (e) {} });
+}
+function paintHl() { S.hl.filter(h => h.sid === R.sid).forEach(h => { const b = blockByPi(h.pi); if (b) wrapRange(b, h.a, h.b, h); }); }
+function repaint() { const a = anchorNow(); $("pgc").querySelectorAll("mark.hl").forEach(m => { const p = m.parentNode; while (m.firstChild) p.insertBefore(m.firstChild, m); p.removeChild(m); p.normalize(); }); paintHl(); if (paged()) { countPages(); gotoAnchor(a); } status(); }
+function addHl(info, note) { const h = { id: uid(), sid: R.sid, pi: info.pi, a: info.a, b: info.b, text: info.text.slice(0, 400), note: note || "", t: Date.now() }; S.hl.push(h); save(); try { getSelection().removeAllRanges(); } catch (e) {} $("selBar").hidden = true; repaint(); return h; }
+let pendSel = null;
+$("selBar").addEventListener("pointerdown", e => e.preventDefault());
+$("selBar").addEventListener("click", e => {
+  const b = e.target.closest("[data-sel]"); if (!b) return; const info = selInfo(); if (!info) { $("selBar").hidden = true; return; }
+  if (b.dataset.sel === "hl") { addHl(info); toast("밑줄을 그었어요", { label: "되돌리기", run: () => { const h = S.hl.pop(); if (h) { S.gone[h.id] = Date.now(); save(); repaint(); } } }); }
+  else if (b.dataset.sel === "copy") { const txt = info.text; (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast("복사했어요"), () => { try { document.execCommand("copy"); toast("복사했어요"); } catch (er) { toast("복사하지 못했어요. 길게 눌러 '복사'를 써 주세요."); } }); }
+  else { pendSel = info; try { getSelection().removeAllRanges(); } catch (er) {} $("selBar").hidden = true; noteSheet(null, info.text); }
+});
+function noteSheet(h, text) {
+  openSheet(h ? "밑줄과 메모" : "메모 남기기", `<p class="sh-q">${esc(text)}</p><label class="sr" for="noteTa">메모</label><textarea class="sh-ta" id="noteTa" placeholder="떠오른 생각을 적어 두세요…">${esc(h ? h.note : "")}</textarea><div class="sh-acts"><button type="button" class="pri" data-note-save="${h ? h.id : ""}">메모 저장</button>${h ? `<button type="button" class="del" data-hl-del="${h.id}">밑줄 지우기</button>` : ""}</div>`);
+}
+$("pgc").addEventListener("click", e => { const m = e.target.closest("mark.hl"); if (!m || hasSel()) return; const h = S.hl.find(x => x.id === m.dataset.hid); if (h) noteSheet(h, h.text); });
+
+/* ---------- 읽기 화면 안 누르기 ---------- */
+$("reader").addEventListener("click", e => {
+  const t = e.target; if (!t.closest) return;
+  if (t.closest("[data-shx]")) { closeSheet(); return; }
+  const vr = t.closest("[data-go]"); if (vr) { e.preventDefault(); openVerse(vr.dataset.go); return; }
+  const vg = t.closest("[data-vgo]"); if (vg) { openVerse(vg.dataset.vgo); return; }
+  const vv = t.closest("[data-vv]"); if (vv) { S.vs = vv.dataset.vv; save(false); openVerse(vsGo, S.vs); return; }
+  const op = t.closest("[data-open]"); if (op) { closeSheet(); savePos(); go(`#/r/${encodeURIComponent(op.dataset.open)}`); return; }
+  if (t.closest("[data-back]")) { backFromReader(); return; }
+  const ns = t.closest("[data-note-save]");
+  if (ns) { const v = ($("noteTa").value || "").trim(); if (ns.dataset.noteSave) { const h = S.hl.find(x => x.id === ns.dataset.noteSave); if (h) { h.note = v; h.t = Date.now(); save(); } } else if (pendSel) { addHl(pendSel, v); pendSel = null; } closeSheet(); repaint(); toast(v ? "메모를 저장했어요" : "밑줄을 그었어요"); return; }
+  const hd = t.closest("[data-hl-del]"); if (hd) { const i = S.hl.findIndex(x => x.id === hd.dataset.hlDel); if (i >= 0) { const h = S.hl.splice(i, 1)[0]; S.gone[h.id] = Date.now(); save(); closeSheet(); repaint(); toast("밑줄을 지웠어요", { label: "되돌리기", run: () => { delete S.gone[h.id]; S.hl.push(h); save(); repaint(); } }); } return; }
+  /* 켈러 */
+  const fn = t.closest("[data-kn]"); if (fn) { e.preventDefault(); kelNote(fn); return; }
+  const j = t.closest("[data-kjump]"); if (j) { e.preventDefault(); const toc = $("pgc").querySelector(".kl-toc"); if (toc && !toc.hidden && j.closest(".kl-toc")) { toc.hidden = true; if (paged()) countPages(); } const el = j.dataset.kjump === "anat" ? $("kl-anat") : $("kls-" + j.dataset.kjump); if (el) { R.anc = null; gotoEl(el, true); } return; }
+  const sg = t.closest("[data-kstage]"); if (sg) { const sec = $("pgc").querySelector(`.kl-sec[data-kst="${sg.dataset.kstage}"]`); if (sec) { R.anc = null; gotoEl(sec, true); } return; }
+  const fx = t.closest("[data-kfx]"); if (fx) { const o = fx.nextElementSibling; if (o) { o.hidden = !o.hidden; fx.setAttribute("aria-expanded", String(!o.hidden)); if (paged()) { countPages(); status(); } } return; }
+  const tc = t.closest("[data-ktoc]"); if (tc) { const toc = $("pgc").querySelector(".kl-toc"); if (toc) { toc.hidden = !toc.hidden; tc.setAttribute("aria-expanded", String(!toc.hidden)); if (paged()) { countPages(); if (!toc.hidden) gotoEl(toc, false); status(); } } return; }
+  if (t.closest("[data-kov]")) { const a = anchorNow(); S.kelOv = S.kelOv === false; save(false); $("pgc").innerHTML = kelDocHtml(R.doc) + endHtml(R.doc); paintHl(); layout(); if (!gotoAnchor(a)) setFrac(a.f); status(); return; }
+});
+function kelNote(btn) {
+  const [sid, n] = btn.dataset.kn.split("|"), s = kel.by[sid], nt = s && s.notes && s.notes[n];
+  const p = btn.closest("p, blockquote"); if (!p) return;
+  const nx = p.nextElementSibling;
+  if (nx && nx.classList.contains("kl-fnt") && nx.dataset.n === n) nx.remove();
+  else { const box = document.createElement("div"); box.className = "kl-fnt"; box.dataset.n = n; box.innerHTML = nt ? `<b>주${esc(n)}${nt.h ? ` · ${esc(nt.h)}` : ""}</b><p>${kelInline(nt.t || "", sid)}</p>` : `<p>주${esc(n)}의 설명은 원고 뒤 교정 기록에 있어요.</p>`; p.after(box); }
+  if (paged()) { countPages(); status(); }
+}
+
+/* ---------- 찾기 ---------- */
+const findState = { q: "", busy: false, res: null, loaded: false };
+function findHtml() {
+  return `<h1 class="pg-h">찾기</h1><form class="find-f" id="findF" role="search"><label class="sr" for="findQ">찾을 말</label><input class="inp" id="findQ" name="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="예: 처음 사랑, 느헤미야…" value="${esc(findState.q)}"><button class="btn sm pri" type="submit">찾기</button></form>`
+    + `<div id="findOut">${findOutHtml()}</div>`;
+}
+function findOutHtml() {
+  if (findState.busy) return `<p class="note">원고 ${totalCount()}편에서 찾는 중…</p>`;
+  if (!findState.res) return `<p class="note">설교 ${totalCount()}편의 전문에서 찾아요. 두 글자 이상 넣어 주세요. 처음 한 번은 원고를 모두 받아서 조금 걸려요.</p>`;
+  const R0 = findState.res; if (!R0.length) return `<p class="empty">‘${esc(findState.q)}’이(가) 들어간 문단이 없어요. 띄어쓰기를 바꾸거나 더 짧은 말로 찾아보세요.</p>`;
+  const total = R0.reduce((n, g) => n + g.hits.length, 0);
+  return `<p class="note">${R0.length}편에서 ${total}곳을 찾았어요.</p><div class="res">` + R0.map(g => `<section class="res-g"><h3>${esc(g.title)}<small>${esc(g.book)}</small></h3>${g.hits.slice(0, 6).map(x => `<a href="#/r/${encodeURIComponent(g.sid)}@${encodeURIComponent(x.pi)}">${x.html}</a>`).join("")}${g.hits.length > 6 ? `<p class="note" style="margin:2px 10px 8px">이 설교에 ${g.hits.length - 6}곳이 더 있어요.</p>` : ""}</section>`).join("") + `</div>`;
+}
+function snip(t, q) {
+  const i = t.toLowerCase().indexOf(q.toLowerCase()); if (i < 0) return null;
+  const s = Math.max(0, i - 34), e = Math.min(t.length, i + q.length + 50);
+  return (s > 0 ? "…" : "") + esc(t.slice(s, i)) + `<mark>${esc(t.slice(i, i + q.length))}</mark>` + esc(t.slice(i + q.length, e)) + (e < t.length ? "…" : "");
+}
+async function runFind(q, quiet) {
+  q = (q || "").trim(); findState.q = q;
+  if (q.length < 2) { findState.res = null; const o = $("findOut"); if (o) o.innerHTML = findOutHtml(); if (!quiet) toast("두 글자 이상 넣어 주세요"); return; }
+  findState.busy = true; let o = $("findOut"); if (o) o.innerHTML = findOutHtml();
+  const ids = SM.map(s => s.sid);
+  for (let i = 0; i < ids.length; i += 8) await Promise.all(ids.slice(i, i + 8).map(loadSmt));
+  const out = [];
+  SM.forEach(s => { const t = SMT.get(s.sid); if (!t) return; const hits = []; (t.paras || []).forEach((p, i) => { if (p.k === "title") return; const h = snip(p.t || "", q); if (h) hits.push({ pi: String(i), html: h }); }); if (hits.length) out.push({ sid: s.sid, title: s.title, book: (bookOf(bookIdOf(s.sid)) || {}).t || "", hits }); });
+  if (kel.ready) kel.list.forEach(s => { const hits = []; (s.secs || []).forEach((x, i) => { (x.b || []).forEach((b, j) => { if (b.k === "del") return; const h = snip(b.t || "", q); if (h) hits.push({ pi: `${i}.${j}`, html: h }); }); }); if (hits.length) out.push({ sid: s.id, title: s.title, book: kelBookTitle(s.col).t, hits }); });
+  out.sort((a, b) => b.hits.length - a.hits.length);
+  findState.res = out; findState.busy = false;
+  o = $("findOut"); if (o) o.innerHTML = findOutHtml();
+}
+document.addEventListener("submit", e => { if (e.target && e.target.id === "findF") { e.preventDefault(); const q = $("findQ").value; $("findQ").blur(); runFind(q); } if (e.target && e.target.id === "lgF") { e.preventDefault(); login(($("lgId").value || "").trim(), $("lgPw").value || ""); } });
+
+/* ---------- 밑줄 · 책갈피 모음 ---------- */
+function marksHtml(tab) {
+  const t = tab === "mk" ? "mk" : "hl";
+  let h = `<h1 class="pg-h">밑줄과 책갈피</h1><div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${t === "hl"}" data-tab="hl">밑줄·메모 ${S.hl.length}</button><button type="button" role="tab" aria-selected="${t === "mk"}" data-tab="mk">책갈피 ${S.marks.length}</button></div>`;
+  const L = (t === "hl" ? S.hl : S.marks).filter(x => docOf(x.sid)).slice().sort((a, b) => (b.t || 0) - (a.t || 0));
+  if (!L.length) return h + `<p class="empty">${t === "hl" ? "읽다가 마음에 남는 문장을 길게 눌러 고르고 ‘밑줄’을 누르면 여기에 모여요." : "읽는 화면 위쪽의 리본 버튼을 누르면 그 자리에 책갈피가 꽂혀요."}</p>`;
+  h += L.map(x => { const d = docOf(x.sid); return `<div class="mk"><a href="#/r/${encodeURIComponent(x.sid)}@${encodeURIComponent(x.pi)}"><q>${esc(x.text || "")}</q>${x.note ? `<span class="mk-note">${esc(x.note)}</span>` : ""}<small>${esc(d.title)} · ${new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric" }).format(new Date(x.t || Date.now()))}</small></a><button type="button" data-mdel="${t}|${x.id}" aria-label="지우기">지우기</button></div>`; }).join("");
+  return h;
+}
+document.addEventListener("click", e => {
+  const t = e.target; if (!t.closest) return;
+  const tb = t.closest("[data-tab]"); if (tb) { go(`#/marks/${tb.dataset.tab}`); return; }
+  const md = t.closest("[data-mdel]"); if (md) { const [k, id] = md.dataset.mdel.split("|"), arr = k === "hl" ? S.hl : S.marks, i = arr.findIndex(x => x.id === id); if (i >= 0) { const x = arr.splice(i, 1)[0]; S.gone[x.id] = Date.now(); save(); rerender(); toast("지웠어요", { label: "되돌리기", run: () => { delete S.gone[x.id]; arr.push(x); save(); rerender(); } }); } return; }
+  if (t.closest("[data-kdel]")) { if (t.closest("[data-kdel]").dataset.kdel === "1") { t.closest("[data-kdel]").dataset.kdel = "2"; t.closest("[data-kdel]").textContent = "한 번 더 누르면 지워요"; return; } kelDelete(); return; }
+  if (t.closest("[data-kpull]")) { kelPull(true); return; }
+  if (t.closest("[data-logout]")) { logout(); return; }
+  if (t.closest("[data-offline]")) { offlineAll(); return; }
+  const rs = t.closest("[data-reset]"); if (rs) { if (rs.dataset.reset === "1") { rs.dataset.reset = "2"; rs.textContent = "한 번 더 누르면 지워요"; return; } S.pos = {}; S.done = {}; S.last = null; save(); toast("읽은 기록을 지웠어요. 밑줄과 책갈피는 그대로 있어요."); rerender(); return; }
+});
+
+/* ---------- 설정 ---------- */
+const off = { busy: false, msg: "" };
+function setHtml() {
+  let h = `<h1 class="pg-h">설정</h1>`;
+  h += `<section class="set-s"><h2>읽기 모양</h2><div class="pv thm" id="pv"><p><b>처음 사랑을 회복하라.</b> 주님은 수고와 인내를 다 아시면서도 처음 사랑을 버린 교회를 다시 부르십니다. 어디서 떨어졌는지 기억하고, 돌아오라고요.</p></div><div class="set-opts" id="setOpts">${optsHtml()}</div></section>`;
+  h += `<section class="set-s"><h2>팀 켈러 원고</h2><p>${kel.busy || kel.msg ? esc(kel.msg || "읽는 중…") : kel.ready ? `서가에 ${kel.list.length}편이 꽂혀 있어요. 이 폰에만 저장돼 있어요.` : "아직 없어요. 받은 켈러 읽기 팩(.json)을 고르거나, 곽준영키우기 계정으로 로그인해 받아 오세요."}</p><div class="row-btn"><label class="btn sm${kel.ready ? "" : " pri"}">팩 파일 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label>${S.acct ? `<button type="button" class="btn sm" data-kpull="1">계정에서 다시 받기</button>` : ""}${kel.ready ? `<button type="button" class="btn sm warn" data-kdel="1">이 폰에서 지우기</button>` : ""}</div></section>`;
+  h += `<section class="set-s"><h2>곽준영키우기 계정</h2>`;
+  if (S.acct) h += `<p><b style="color:var(--lt)">${esc(S.acct.id)}</b>로 로그인했어요. 켈러 원고를 받고, 읽은 자리·밑줄·책갈피를 다른 폰과 맞춰요. 게임 기록은 건드리지 않아요.</p><div class="row-btn"><button type="button" class="btn sm" data-logout="1">로그아웃</button></div>`;
+  else h += `<p>게임에서 쓰는 아이디로 로그인하면 켈러 원고를 받아 오고, 읽은 기록을 다른 폰과 맞춰요. 게임 기록은 건드리지 않아요.</p><form id="lgF" class="lgf" style="margin:0 20px"><label class="field" style="margin:0"><span>아이디</span><input class="inp" id="lgId" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required></label><label class="field" style="margin:0"><span>비밀번호</span><input class="inp" id="lgPw" name="password" type="password" autocomplete="current-password" required></label><button class="btn pri" type="submit"${acct.busy ? " disabled" : ""}>${acct.busy ? "로그인하는 중…" : "로그인"}</button></form>`;
+  if (acct.err) h += `<p class="err" role="alert">${esc(acct.err)}</p>`; else if (acct.msg) h += `<p class="err ok" role="status">${esc(acct.msg)}</p>`;
+  h += `</section>`;
+  h += `<section class="set-s"><h2>인터넷 없이 읽기</h2><p>${esc(off.msg || "한 번 연 원고는 저절로 저장돼요. 비행기나 지하에서도 읽으려면 원고와 성경을 미리 모두 받아 두세요(약 15MB).")}</p><div class="row-btn"><button type="button" class="btn sm" data-offline="1"${off.busy ? " disabled" : ""}>${off.busy ? "받는 중…" : "원고와 성경 모두 받기"}</button></div></section>`;
+  h += `<section class="set-s"><h2>기록</h2><p>읽은 설교 ${readCount()}편 · 밑줄 ${S.hl.length}개 · 책갈피 ${S.marks.length}개</p><div class="row-btn"><button type="button" class="btn sm warn" data-reset="1">읽은 기록 지우기</button></div></section>`;
+  h += `<section class="set-s"><h2>이 앱</h2><p>설교 서가 ${VER}. 곽준영키우기의 설교 원고집을 그대로 가져와 책처럼 읽도록 만들었어요. 아이폰 사파리에서 공유 → ‘홈 화면에 추가’를 누르면 앱처럼 열려요.</p></section>`;
+  setTimeout(() => { const pv = $("pv"); if (pv) applyLook(pv); }, 0);
+  return h;
+}
+async function offlineAll() {
+  if (off.busy) return; off.busy = true; off.msg = "받는 중… 0%"; rerender();
+  const urls = ["../bible/sm.json", "../bible/smv.json"].concat(SM.map(s => `../bible/smt/${s.sid}.json`), SM_BOOKS.map(b => `../bible/smt/${b.notes}.json`));
+  for (let b = 1; b <= 66; b++) { const k = String(b).padStart(2, "0"); urls.push(`../bible/krv/${k}.json`, `../bible/mz/${k}.json`); }
+  ["maruburi-r", "maruburi-sb", "donghwa", "kkot", "dahaeng", "seongsil", "mirae"].forEach(f => urls.push(`../fonts/${f}.woff`));
+  let n = 0, bad = 0;
+  for (let i = 0; i < urls.length; i += 6) {
+    await Promise.all(urls.slice(i, i + 6).map(u => fetch(u).then(r => { if (!r.ok) bad++; }).catch(() => { bad++; })));
+    n = Math.min(urls.length, i + 6); off.msg = `받는 중… ${Math.round(n / urls.length * 100)}%`; const p = document.querySelector("[data-offline]"); if (p) { p.closest(".set-s").querySelector("p").textContent = off.msg; }
+  }
+  off.busy = false; off.msg = bad > 4 ? `거의 다 받았어요. ${bad}개는 받지 못했어요. 인터넷이 잘 될 때 한 번 더 눌러 주세요.` : "다 받았어요. 이제 인터넷 없이도 모든 원고와 성경을 읽을 수 있어요."; rerender();
+}
+
+/* ---------- 시작 ---------- */
+window.addEventListener("hashchange", () => { sessionStorage.setItem("sbk-in", "1"); route(); });
+(async function boot() {
+  applyLook();
+  $("view").innerHTML = `<header class="lib-h"><h1>설교 서가</h1></header><p class="note">서가를 정리하는 중…</p>`;
+  await Promise.all([loadBase(), kelInit()]);
+  route();
+  if (S.acct) { kelPull(false); syncPull(); }
+  if ("serviceWorker" in navigator && location.protocol === "https:") { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
+})();
+</script>
+</body>
+</html>

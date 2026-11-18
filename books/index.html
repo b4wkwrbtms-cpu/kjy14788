@@ -367,6 +367,8 @@ mark.hl.has-note { border-bottom: 1.5px dotted var(--acc); }
 .b-ver button[aria-pressed="true"] { border-color: var(--acc); color: var(--acc); font-weight: 700; }
 .b-cx { margin: 0 0 1.6em; padding: .8em 1em; border-left: 3px solid var(--acc); background: var(--accbg); border-radius: 0 10px 10px 0; font-size: .9em; line-height: 1.65; }
 .b-cx p { margin: 0 0 .3em !important; } .b-cx p:last-child { margin: 0 !important; }
+.b-cx .b-q { font-weight: 600; color: var(--fg); } .b-cx .b-q::before { content: "읽기 전에 · "; font-weight: 400; color: var(--acc); }
+.b-one { margin: 2em 0 1.2em !important; padding-top: 1em; border-top: 1px solid var(--line); text-align: center; font-style: italic; opacity: .85; text-indent: 0 !important; }
 .b-sm { margin: 0 0 1.6em; font-size: .86em; }
 .b-sm small { display: block; font: 12px/1.4 var(--ui); color: var(--mut); margin-bottom: 6px; }
 .b-chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -1340,7 +1342,7 @@ function bibDocHtml(d) {
   const nv = showMz ? mzCh.v.length : kv.length; d.len = bibLen(b, c, ver) || 1500;
   let h = `<header class="d-head"><p class="d-kick">${b < 39 ? "구약" : "신약"} · ${esc(BIB[b][0])} · ${showMz ? "20대 말투" : "개역한글"}</p><h1 class="d-t">${esc(BIB[b][0])} ${c}장</h1>${x && x.t ? `<p class="d-sub">${esc(x.t)}</p>` : ""}<p class="d-meta">${nv}절 · 약 ${mins(d.len)}분</p></header>`;
   h += `<div class="b-ver" role="group" aria-label="번역"><button type="button" data-bv="mz" aria-pressed="${o.ver === "mz"}">20대 말투</button><button type="button" data-bv="krv" aria-pressed="${o.ver === "krv"}">개역한글</button><button type="button" data-bopen="1">보기 설정</button></div>`;
-  if (x && x.g && x.g.length) h += `<div class="b-cx">${x.g.map(g => `<p>${esc(g)}</p>`).join("")}</div>`;
+  if (x && ((x.g && x.g.length) || x.q)) h += `<div class="b-cx">${(x.g || []).map(g => `<p>${esc(g)}</p>`).join("")}${x.q ? `<p class="b-q">${esc(x.q)}</p>` : ""}</div>`;
   const sms = smOfChap(b, c), nsv = sv && sv.v ? Object.keys(sv.v).length : 0;
   if (sms.length) h += `<div class="b-sm"><small>이 본문으로 한 설교</small><div class="b-chips">${sms.slice(0, 8).map(sid => { const dd = docOf(sid); return dd ? `<button type="button" class="b-chip" data-open="${esc(sid)}">${esc(dd.title)} · ${esc(dd.kind === "kel" ? "팀 켈러" : dd.s.preacher + " 목사")}</button>` : ""; }).join("")}</div></div>`;
   if (o.ver === "mz" && !mzCh) h += `<p class="b-note">이 장은 20대 말투로 다듬는 중이에요. 지금은 개역한글로 보여 드려요.</p>`;
@@ -1363,6 +1365,7 @@ function bibDocHtml(d) {
       h += (heads[n] ? `<h2 class="b-h">${esc(heads[n])}</h2>` : "") + `<p class="mz" data-pi="v${n}">${ls}</p>`;
     } else h += `<p class="kv" data-pi="v${n}">${num}${markLine(String(kv[n - 1] || ""), lin[n], null, done)}</p>`;
   }
+  if (x && x.one) h += `<p class="b-one">${esc(x.one)}</p>`;
   if (x) {
     const ids = [], seen = new Set();
     Object.keys(x.ln || {}).sort((a, z) => a - z).forEach(n => x.ln[n].forEach(l => { if (!seen.has(l[0])) { seen.add(l[0]); ids.push([l[0], l[2], l[1]]); } }));

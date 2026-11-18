@@ -364,9 +364,11 @@ print('13~66 links', sum(lnk.values()), 'terms', len(lnk), 'books', len(used13),
 json.dump(dict(lnk.most_common()), open(f'{R0}/notes2/links_13_66.json', 'w'), ensure_ascii=False, indent=0)
 
 # ---------- 11) 13~66권 새 해설 카드(notes3/out): 선정한 낱말에 밑줄 + also 자리에도 ----------
-N3 = {}
+N3 = {}; LK3 = {}   # 11-18: 'link' 카드 = 새 카드 대신 이미 있는 카드로 연결(같은 원어·같은 뜻)
 for f in sorted(glob.glob(f'{R0}/notes3/out/*.json')):
-    o = json.load(open(f)); N3[o['id']] = o; N2[o['id']] = o
+    o = json.load(open(f))
+    if o.get('link'): LK3[o['id']] = o; continue
+    N3[o['id']] = o; N2[o['id']] = o
 BK = {nm: i + 1 for i, nm in enumerate(json.load(open(f'{R0}/book_names.json')))}
 def parse_ref(r):
     m = re.match(r'^\s*(.+?)\s+(\d+):(\d+)', r or '')
@@ -380,6 +382,12 @@ for nid, o in N3.items():
         if not ch or v > len(ch['v']): continue
         if findterm2(ch['v'][v - 1].replace('\n', ' '), o['term']) < 0: continue
         add3[b][c][str(v)].append([nid, o['term'], o.get('k') or 'hebrew']); n3 += 1
+for nid, o in LK3.items():
+    if o['link'] not in N2: continue
+    for bb, cc, vv in [(o['b'], o['c'], o['v'])] + [p for p in (parse_ref(r) for r in o.get('also') or []) if p]:
+        ch = MZ.get(bb) and MZ[bb][cc - 1]
+        if ch and vv <= len(ch['v']) and findterm2(ch['v'][vv - 1].replace('\n', ' '), o['term']) >= 0:
+            add3[bb][cc][str(vv)].append([o['link'], o['term'], o.get('k') or 'hebrew']); n3 += 1
 # 11b) 공통 링크(10-26 사용자: 시편에 반복되는 낱말은 새 카드 대신 기존 카드로): 카드의 우리말 낱말 + 원어(자음)가 함께 있는 다른 절에도 같은 카드 연결
 import unicodedata
 def _cons(w):

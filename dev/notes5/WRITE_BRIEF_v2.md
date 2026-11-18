@@ -1,0 +1,35 @@
+# 해설 카드 집필 v2 (11-18) — 호세아~요한계시록 남은 868장
+
+사용자 요청(11-18): "이전 66권 작업 이어서, 해설부터 가장 효율적이면서 가장 완벽하게. 해설할 때 우리가 등록한 모든 책 — 장진명·유기성 목사 설교, 팀 켈러 — 을 말씀마다 다 녹여 넣어라."
+
+## 먼저 읽기 (끝까지, 이 순서)
+1. /home/claude/renewal/notes3/WRITE_BRIEF.md — 기본 지침(출력 키 term/b/c/v/also/k/expr, 설교 스킬 적용, 이름 표기). 그 안에서 읽으라는 BRIEF.md(특히 2·5·6·8절)와 PROMPT_user.txt도 읽는다. **단, 그 문서의 '스킬 지침' 경로(/home/claude/skill_brs/…)는 이번 환경에 없으니 건너뛴다**(같은 원칙이 BRIEF.md 6·8절에 들어 있다).
+2. 설교 스킬: /root/.claude/skills/synced/c88a654a-cd58-4601-ab19-a17ebb785173_72748273-515d-47f3-aecb-aaa130e33f0a/sermon-text-deep-prep-v2/SKILL.md (본문 연구 부분).
+3. 예시 카드 하나: /home/claude/renewal/notes2/out/gen-ezer.json, 최근 카드 하나: /home/claude/renewal/notes3/out/ot-27-009-0757.json (없으면 notes3/out 아무 ot-27-*).
+
+## 이번에 달라진 것 (v1보다 우선)
+### A. 자료 꾸러미부터 — 웹 검색을 크게 줄인다
+- 카드마다 `/home/claude/renewal/notes5/pk/{id}.json` 을 **먼저** 읽는다: 선정 항목(sel: term·orig·q·why·also), 앞뒤 ±3절 우리 본문(context), 그 절 원어 낱말과 형태(orig_words), 낱말별 사전 요약(lexicon: STEPBible TBESH=축약 BDB / TBESG=Abbott-Smith), 이 절을 다룬 설교(sermons_on_this_verse), 이 장을 본문으로 한 설교(sermons_on_this_chapter), 같은 원어·낱말로 이미 있는 카드(existing_cards_same_word).
+- 원어 뜻·형태·고유명사는 **로컬 자료로 확인**한다: `python3 /home/claude/bw/lex/lex.py H1234` (full 가능), `python3 /home/claude/bw/lex/lex.py name Hosea` (인물·지명: 부모·자녀·첫 언급·모든 주소). 절 원어 /home/claude/bw/orig/BB/CCC.json, 개역·WEB 대조 pk의 krv_bin. src 표기: "STEPBible TBESH H1234", "STEPBible TIPNR", "OSHB(WLC) 형태 분석", "MorphGNT(SBLGNT) 형태 분석".
+- WebSearch는 **주석(서로 다른 전통 2~3)과 설교자 관점 확인에만**, 작업자 한 명(6장) 합쳐 **12회 이하**. 검색 결과로 나온 biblehub·ccel·spurgeon·gospelinlife 주소는 WebFetch로 읽는다(검색 결과에 없는 주소를 지어 내 열지 않는다). 막히면 읽은 만큼만 쓰고 memo에 못 본 것을 적는다.
+
+### B. 설교를 말씀마다 녹여 넣기 (가장 중요)
+- `sermons_on_this_verse`가 있으면 **반드시** 그 설교 전문(full 경로)의 해당 단락을 직접 읽고, deep의 '설교자·주석가의 관점'에 **3단**(설교자의 읽기 → 그 읽기의 근거 낱말·흐름 → 본문 의미와 적용의 경계)으로 넣는다. 설교의 반복 핵심 문장은 한 줄 인용 가능. 설교 속 원어·역사 주장은 로컬 원어 자료로 확인된 만큼만, 어긋나면 '다른 해석과 판단 근거'에서 정중하게. src: {"t":"장진명 · 「제목」(군산성결교회 설교 원고집, 수정본) · 다룬 단락 · 전문 확인","u":""} (유기성은 원고집 이름과 강의 번호).
+- `sermons_on_this_chapter`만 있으면 전문에서 이 낱말·장면을 다룬 단락이 있는지 찾아보고, **실제로 다뤘을 때만** 넣는다. 이름만 스치는 언급은 넣지 않는다.
+- 설교가 없으면 '설교자·주석가의 관점'은 공개 자료(스펄전·칼뱅·매튜 헨리·켈러 공개 설교 등)로, 실제 읽은 만큼만.
+- **팀 켈러 번역 원고(사용자 개인 학습본)는 공개 카드에 넣지 않는다.** 켈러 원고와의 연결은 앱이 사용자 폰에서 자동으로 붙인다. 카드에는 켈러의 **공개** 자료(gospelinlife·timothykeller.com·출간 저서)를 실제로 읽었을 때만 쓴다.
+
+### C. 겹치는 카드는 새로 쓰지 않는다 (불필요한 일 빼기)
+- `existing_cards_same_word`의 카드가 **같은 원어·같은 대상·같은 뜻**이면(예: 신약의 '모퉁잇돌'이 시편 118편 인용, 같은 인물·지명), 긴 카드 대신 **연결 카드**만 쓴다:
+  `{"id":"…","link":"기존 카드 id","term":"선정 term","b":…,"c":…,"v":…,"also":[…],"k":"…","why":"같은 낱말·같은 뜻인 근거 한 줄"}`
+- 뜻·쓰임이 달라지면(구약 개념을 신약이 새로 채운 경우 등) 새 카드를 쓰고, deep에 '구약 카드와 이어 읽기' 한 항목으로 차이를 밝힌다(기존 카드 제목을 적는다).
+
+### D. 품질 기준 (그대로)
+- 20대 해요체, 개역한글 이름(원어 발음은 괄호), 성경 주소는 늘 책 이름과 함께, 본문 인용은 우리 앱 본문(context).
+- 세 층 구분(본문/해석자/내 추론), 못 찾으면 쓰지 않고 memo에, 숫자·연대는 출처와 함께 병기.
+- 우리 본문이 원어·주석 다수와 다르면 `tq`에 기록(본문은 고치지 않는다).
+
+## 출력·점검·보고
+- `/home/claude/renewal/notes3/out/{id}.json` (끝나는 즉시 Write, 이미 있으면 건너뜀). **맡은 id 파일만** 연다. 임시 파일은 /home/claude/renewal/notes5/work/{첫 id}/.
+- python3로 JSON 열림, 해요체('-다.'/'-니다.' 끝 0, 인용 안 예외), term이 그 절 본문에 그대로 있는지, 책 이름 없는 장:절 0 확인.
+- 보고 3줄: 새 카드 n / 연결 카드 n / 설교를 넣은 카드(sid) · WebSearch 횟수 · 편집 판단이 꼭 필요한 것 한 줄.

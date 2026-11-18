@@ -6,15 +6,40 @@
  "c": 3,
  "v": 2,
  "term": "하늘나라",
- "also": ["마태복음 4:17", "마태복음 5:3", "마태복음 13:11", "마태복음 19:24"],
+ "also": [
+  "마태복음 4:17",
+  "마태복음 5:3",
+  "마태복음 13:11",
+  "마태복음 19:24"
+ ],
  "q": "‘하늘나라’는 죽은 뒤에 가는 곳인가, 하나님의 다스림인가?",
  "title": "장소 이름이기 전에, 가까이 다가온 하나님의 다스림",
  "expr": [
-  ["βασιλεία τῶν οὐρανῶν", "바실레이아 톤 우라논", "하늘의 나라, 곧 하나님의 다스림(왕 노릇)"],
-  ["βασιλεία", "바실레이아", "왕의 권세·통치, 또 그 통치가 미치는 나라"],
-  ["οὐρανῶν", "우라논", "하늘들의 (복수 속격) — 여기서는 하나님을 에둘러 부르는 말로 읽혀요"],
-  ["ἤγγικεν", "엥기켄", "가까이 왔다 (완료)"],
-  ["מַלְכוּת שָׁמַיִם", "말쿠트 샤마임", "하늘의 나라 (후대 랍비 문헌의 표현)"]
+  [
+   "βασιλεία τῶν οὐρανῶν",
+   "바실레이아 톤 우라논",
+   "하늘의 나라, 곧 하나님의 다스림(왕 노릇)"
+  ],
+  [
+   "βασιλεία",
+   "바실레이아",
+   "왕의 권세·통치, 또 그 통치가 미치는 나라"
+  ],
+  [
+   "οὐρανῶν",
+   "우라논",
+   "하늘들의 (복수 속격) — 여기서는 하나님을 에둘러 부르는 말로 읽혀요"
+  ],
+  [
+   "ἤγγικεν",
+   "엥기켄",
+   "가까이 왔다 (완료)"
+  ],
+  [
+   "מַלְכוּת שָׁמַיִם",
+   "말쿠트 샤마임",
+   "하늘의 나라 (후대 랍비 문헌의 표현)"
+  ]
  ],
  "core": "마태가 말하는 ‘하늘나라’는 하나님이 왕으로 다스리시는 일이고, 요한은 그 다스림이 이제 가까이 왔다고 외쳐요.",
  "body": [
@@ -54,16 +79,44 @@
   }
  ],
  "src": [
-  {"t": "마태복음 3:2; 4:17; 5:3–10, 19–20; 8:11; 12:28; 13:11; 19:23–24; 21:31, 43, 마가복음 10:23–25, 누가복음 18:24–25, 다니엘 4:26 — 우리 앱 본문과 원어 대조(bin: 개역·WEB·SBLGNT, 다니엘 아람어 자음 본문) 직접 확인", "u": ""},
-  {"t": "Bible Hub, 마태복음 3:2 주석 모음 — Ellicott, Benson, Matthew Henry, Barnes, JFB, Poole, Gill, Geneva, Meyer, Expositor's, Cambridge, Bengel, Pulpit, Vincent의 ‘왜 하늘인가’와 ‘가까이 왔다’ 부분을 요약 도구로 읽음", "u": "https://biblehub.com/commentaries/matthew/3-2.htm"},
-  {"t": "Adam Clarke, 마태복음 3장 주석(Bible Hub) 3:2 — 그리스도의 통치, 다니엘 7:13–14, 말쿠트 샤마임 언급 부분. 요약 도구로 읽음", "u": "https://biblehub.com/commentaries/clarke/matthew/3.htm"},
-  {"t": "John Wesley, Explanatory Notes 마태복음 3장(Bible Hub) 3:2 — 하늘나라를 땅에서 누리는 영적 상태로 푼 부분. 요약 도구로 읽음", "u": "https://biblehub.com/commentaries/wes/matthew/3.htm"},
-  {"t": "Henry Alford, Greek Testament 마태복음 3장(Bible Hub) 3:2 — ‘하늘나라는 늘 미래만’이라는 견해에 대한 의문. 요약 도구로 읽음", "u": "https://biblehub.com/commentaries/alford/matthew/3.htm"},
-  {"t": "Bible Hub, Thayer's Greek Lexicon, βασιλεία (Strong's 932) — 통치·왕권(1)과 영토(2) 구분, ‘하늘나라’가 마태에만 나온다는 설명. 요약 도구로 읽음", "u": "https://biblehub.com/thayers/932.htm"},
-  {"t": "Jewish Encyclopedia, ‘Kingdom of God’ — 말쿠트 샤마임, 쉐마와 ‘하늘 나라의 멍에’(Ber. ii. 2), ‘하늘’이 하나님의 동의어라는 설명. 요약 도구로 읽음", "u": "https://www.jewishencyclopedia.com/articles/9328-kingdom-of-god.html"},
-  {"t": "Jewish Encyclopedia, ‘Heaven’ — 랍비 용어에서 ‘샤마임’이 경외 때문에 하나님 이름을 대신했다는 설명. 요약 도구로 읽음", "u": "https://www.jewishencyclopedia.com/articles/7440-heaven"},
-  {"t": "George Eldon Ladd, A Theology of the New Testament, 68–72쪽 발췌(제3자 사이트에 실린 발췌문, 저자·책 이름이 밝혀진 부분만 사용) — 바실레이아의 뿌리 뜻, 현재와 미래. 요약 도구로 읽음", "u": "https://adishakti.org/_/Kingdom_of_God_stands_as_a_comprehensive_term_for_all_that_the_messianic_salvation.htm"}
+  {
+   "t": "마태복음 3:2; 4:17; 5:3–10, 19–20; 8:11; 12:28; 13:11; 19:23–24; 21:31, 43, 마가복음 10:23–25, 누가복음 18:24–25, 다니엘 4:26 — 우리 앱 본문과 원어 대조(bin: 개역·WEB·SBLGNT, 다니엘 아람어 자음 본문) 직접 확인",
+   "u": ""
+  },
+  {
+   "t": "Bible Hub, 마태복음 3:2 주석 모음 — Ellicott, Benson, Matthew Henry, Barnes, JFB, Poole, Gill, Geneva, Meyer, Expositor's, Cambridge, Bengel, Pulpit, Vincent의 ‘왜 하늘인가’와 ‘가까이 왔다’ 부분을 요약 도구로 읽음",
+   "u": "https://biblehub.com/commentaries/matthew/3-2.htm"
+  },
+  {
+   "t": "Adam Clarke, 마태복음 3장 주석(Bible Hub) 3:2 — 그리스도의 통치, 다니엘 7:13–14, 말쿠트 샤마임 언급 부분. 요약 도구로 읽음",
+   "u": "https://biblehub.com/commentaries/clarke/matthew/3.htm"
+  },
+  {
+   "t": "John Wesley, Explanatory Notes 마태복음 3장(Bible Hub) 3:2 — 하늘나라를 땅에서 누리는 영적 상태로 푼 부분. 요약 도구로 읽음",
+   "u": "https://biblehub.com/commentaries/wes/matthew/3.htm"
+  },
+  {
+   "t": "Henry Alford, Greek Testament 마태복음 3장(Bible Hub) 3:2 — ‘하늘나라는 늘 미래만’이라는 견해에 대한 의문. 요약 도구로 읽음",
+   "u": "https://biblehub.com/commentaries/alford/matthew/3.htm"
+  },
+  {
+   "t": "Bible Hub, Thayer's Greek Lexicon, βασιλεία (Strong's 932) — 통치·왕권(1)과 영토(2) 구분, ‘하늘나라’가 마태에만 나온다는 설명. 요약 도구로 읽음",
+   "u": "https://biblehub.com/thayers/932.htm"
+  },
+  {
+   "t": "Jewish Encyclopedia, ‘Kingdom of God’ — 말쿠트 샤마임, 쉐마와 ‘하늘 나라의 멍에’(Ber. ii. 2), ‘하늘’이 하나님의 동의어라는 설명. 요약 도구로 읽음",
+   "u": "https://www.jewishencyclopedia.com/articles/9328-kingdom-of-god.html"
+  },
+  {
+   "t": "Jewish Encyclopedia, ‘Heaven’ — 랍비 용어에서 ‘샤마임’이 경외 때문에 하나님 이름을 대신했다는 설명. 요약 도구로 읽음",
+   "u": "https://www.jewishencyclopedia.com/articles/7440-heaven"
+  },
+  {
+   "t": "George Eldon Ladd, A Theology of the New Testament, 68–72쪽 발췌(제3자 사이트에 실린 발췌문, 저자·책 이름이 밝혀진 부분만 사용) — 바실레이아의 뿌리 뜻, 현재와 미래. 요약 도구로 읽음",
+   "u": "https://adishakti.org/_/Kingdom_of_God_stands_as_a_comprehensive_term_for_all_that_the_messianic_salvation.htm"
+  }
  ],
  "tq": [],
- "memo": "1) 확인한 것: 마태 안의 ‘하늘나라/하나님 나라’ 분포(3:2; 4:17; 5:3 등 대 12:28; 19:24; 21:31, 43)와 마 19:23–24 대 막 10:23·눅 18:24 평행은 우리 본문·헬라어로 직접 확인함. 2) 못 본 것: BDAG·TDNT, 미쉬나 베라홋 2:2 원문(JE의 언급에 의존), 다니엘 7:13–14 본문 대조, 마태 안에서 ‘하늘나라’ 횟수의 직접 집계(Thayer의 ‘약 33회’를 그대로 옮기지 않고 ‘약’으로 표시함). 3) 눅 15:18, 21의 ‘하늘에’가 하나님을 가리킨다는 읽기는 일반적인 설명이지만 이번에 주석으로 확인하지 못해 카드에 쓰지 않음. 4) ἔφθασεν의 뜻(‘이르렀다’)은 사전으로 대조하지 않고 본문 번역과 문맥에 의존함. 5) 래드는 3자 사이트의 발췌문(책 68–72쪽 구간)만 읽었고 마태의 ‘하늘나라’ 논의는 그 발췌문에 없음 — 마태 구절에 적용한 부분은 카드에서 추론이라고 표시함. 6) 설교자 자료: 설교 원고는 조사 한도 때문에 찾지 못함(켈러·휫필드·국내 목회자 미조사). 7) ‘하늘나라’와 ‘하나님 나라’를 구별하는 견해(예: 세대주의 일부)의 자료는 읽지 못함 — 카드에서는 마태 안 평행으로만 반박함, 필요하면 추가 연구. 8) 아람어 단 4:26 ‘하늘’(שְׁמַיָּא)의 모음은 기억으로 적음."
+ "memo": "[11-18 설교 반영] 해당 없음: 걸린 절 마 4:17·5:3·7:21은 jjm-gs-09(느 9장)·jjm-gs-11(눅 7장)·jjm-gs-14(마 25장)·ykj-1-05(느 9장)·ykj-2-06(요 8장)·ykj-3-03(행 21장)·ykj-4-02(요일 5:14)에서 다른 본문 설교 속 인용·예화로 한두 문장 스친 것이며 '하늘나라/천국'의 뜻을 푼 곳은 없음. / 고친 사실: 없음. 1) 확인한 것: 마태 안의 ‘하늘나라/하나님 나라’ 분포(3:2; 4:17; 5:3 등 대 12:28; 19:24; 21:31, 43)와 마 19:23–24 대 막 10:23·눅 18:24 평행은 우리 본문·헬라어로 직접 확인함. 2) 못 본 것: BDAG·TDNT, 미쉬나 베라홋 2:2 원문(JE의 언급에 의존), 다니엘 7:13–14 본문 대조, 마태 안에서 ‘하늘나라’ 횟수의 직접 집계(Thayer의 ‘약 33회’를 그대로 옮기지 않고 ‘약’으로 표시함). 3) 눅 15:18, 21의 ‘하늘에’가 하나님을 가리킨다는 읽기는 일반적인 설명이지만 이번에 주석으로 확인하지 못해 카드에 쓰지 않음. 4) ἔφθασεν의 뜻(‘이르렀다’)은 사전으로 대조하지 않고 본문 번역과 문맥에 의존함. 5) 래드는 3자 사이트의 발췌문(책 68–72쪽 구간)만 읽었고 마태의 ‘하늘나라’ 논의는 그 발췌문에 없음 — 마태 구절에 적용한 부분은 카드에서 추론이라고 표시함. 6) 설교자 자료: 설교 원고는 조사 한도 때문에 찾지 못함(켈러·휫필드·국내 목회자 미조사). 7) ‘하늘나라’와 ‘하나님 나라’를 구별하는 견해(예: 세대주의 일부)의 자료는 읽지 못함 — 카드에서는 마태 안 평행으로만 반박함, 필요하면 추가 연구. 8) 아람어 단 4:26 ‘하늘’(שְׁמַיָּא)의 모음은 기억으로 적음.",
+ "up": "11-18"
 }

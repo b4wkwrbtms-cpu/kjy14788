@@ -456,6 +456,7 @@ if os.path.isdir(N6):
         b6 = int(os.path.basename(fp).split('-')[0])
         try: d6 = json.load(open(fp))
         except Exception as e: print('notes6 읽기 실패', fp, e); continue
+        if isinstance(d6.get('장'), dict): d6 = d6['장']
         for c6, v6 in d6.items(): ch6[b6][str(int(c6))] = v6
     for b6, chs in ch6.items():
         xp = f'{APP}/bible/x/{b6:02d}.json'; X = json.load(open(xp)) if os.path.exists(xp) else {}

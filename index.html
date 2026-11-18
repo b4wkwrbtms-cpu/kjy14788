@@ -79,6 +79,7 @@ button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .kl-fxo b { display: block; color: var(--rq); font-size: .9em; } .kl-fxo p { margin: 4px 0; } .kl-was { text-decoration: line-through; opacity: .7; }
 .kl-enote { margin: -.5em 0 1.2em; padding: 6px 10px; font-size: .78em; line-height: 1.55; color: var(--ked); background: var(--kedbg); border-radius: 8px; }
 .kl-enote span { font-weight: 700; margin-right: 6px; font-size: .9em; }
+.kl-part{margin:12px 0 4px;font-size:12px;font-weight:700;color:var(--accent,#8a5a2b);letter-spacing:.02em}.kl-book p{font-size:13px;line-height:1.6}.kl-gl{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:12.5px}.kl-gl span{opacity:.7}.kl-flow ol{margin:6px 0 4px 1.2em;padding:0;font-size:13.5px;line-height:1.6}.kl-flow li{margin:2px 0}
 </style>
 <title>곽준영 키우기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17447,11 +17448,13 @@ function hl5Card() {
 var kel = { ready: false, list: [], by: {}, busy: false, msg: "", openId: "" };
 function kelDb() { return new Promise((res, rej) => { const r = indexedDB.open("kjy_keller", 1); r.onupgradeneeded = () => r.result.createObjectStore("pack"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
 async function kelDbDo(mode, fn) { const db = await kelDb(); return new Promise((res, rej) => { const q = fn(db.transaction("pack", mode).objectStore("pack")); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); }
-const KEL_COL = { 1: "팀 켈러 설교 원고 1 · 19편", 2: "팀 켈러 설교 원고 2 · ver2 17편", 3: "욥기 · 고난을 지나는 길 · 5편", 4: "요한계시록 · 마지막 말씀 · 9편" };   /* 11-18: 3·4묶음(욥기·계시록 연속 설교) 추가 */
+const KEL_COL = { 1: "팀 켈러 설교 원고 1 · 19편", 2: "팀 켈러 설교 원고 2 · ver2 17편", 3: "욥기 · 고난을 지나는 길 · 5편", 4: "요한계시록 · 마지막 말씀 · 10편", 5: "복음 앞에서 · 설교·강연 선집 · 19편" };
+var KEL_INFO = {};   /* 11-18 v55: 묶음(책) 소개·일러두기·용어 대조표 — 팩의 colinfo에서 받음 */   /* 11-18: 3·4묶음(욥기·계시록 연속 설교) 추가 */
 function kelOvOn() { return S.kelOv !== false; }
 function kelLoad(pack) {
   if (!pack || pack.kind !== "keller-pack" || !Array.isArray(pack.sermons)) return false;
   if (pack.cols && typeof pack.cols === "object") Object.keys(pack.cols).forEach(k => { if (pack.cols[k]) KEL_COL[k] = pack.cols[k]; });
+  if (pack.colinfo && typeof pack.colinfo === "object") Object.keys(pack.colinfo).forEach(k => { if (pack.colinfo[k]) KEL_INFO[k] = pack.colinfo[k]; });
   kel.list = pack.sermons; kel.by = {};
   kel.list.forEach(s => {
     kel.by[s.id] = s;
@@ -17533,10 +17536,11 @@ function kelH(h, i) { return /^\s*(\d+|Q\d+)[.)]/.test(h || "") ? h : `${i + 1}.
 function kelHtml(s) {
   const ov = kelOvOn() ? (s.ov || null) : null, secs = s.secs || [], N = secs.length, min = Math.max(1, Math.round(s.len / 500));
   const stages = ov && ov.stages && ov.stages.length ? ov.stages : null, D = (S.smDone || {})[s.id];
-  let h = `<div class="nt-head"><span class="nt-badge k-sm">팀 켈러</span><small>${escapeHtml(KEL_COL[s.col] || "")} · ${s.no}편</small></div>`;
+  let h = `<div class="nt-head"><span class="nt-badge k-sm">팀 켈러</span><small>${escapeHtml(KEL_COL[s.col] || "")}${s.part ? ` · ${escapeHtml(s.part)}` : ""} · ${/^\d+$/.test(String(s.nol || s.no)) ? (+(s.nol || s.no)) + "편" : escapeHtml(String(s.nol))}</small></div>`;
   h += `<h3 class="sm-t">${escapeHtml(s.title)}</h3>${s.sub ? `<p class="kl-sub">${escapeHtml(s.sub)}</p>` : ""}${s.en ? `<p class="kl-en">${escapeHtml(s.en)}</p>` : ""}`;
   h += `<p class="sm-meta">${s.ref ? refHtml(s.ref) + " · " : ""}약 ${min}분 · 소제목 ${N}개 · 끝까지 읽으면 광석을 받아요${D ? ` · ✓ ${D.n}번 읽음` : ""}</p>`;
   h += `<div class="kl-tools"><button type="button" class="kl-tb" data-ktoc="1">차례</button><button type="button" class="kl-tb${ov ? " on" : ""}" data-kov="1">편집자 길잡이 ${ov ? "켜짐" : "꺼짐"}</button>${s.ov && s.ov.anatomy ? `<button type="button" class="kl-tb" data-kjump="anat">설교 해부</button>` : ""}</div>`;
+  if (s.flow && s.flow.length) h += `<details class="nt-bl kl-flow"><summary>이 설교의 흐름</summary><ol>${s.flow.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ol></details>`;
   h += `<ol class="kl-toc" hidden>${secs.map((x, i) => `<li><button type="button" data-kjump="${i}"><b>${escapeHtml(x.h || "시작")}</b>${ov && ov.secs && ov.secs[i] && ov.secs[i].hook ? `<small>${escapeHtml(ov.secs[i].hook)}</small>` : ""}</button></li>`).join("")}</ol>`;
   if (stages) h += `<div class="kl-map" role="navigation" aria-label="설교 지도">${stages.map((st, i) => `<button type="button" data-kstage="${i}"><i></i>${escapeHtml(st)}</button>`).join("")}</div>`;
   if (ov && ov.open) h += `<div class="kl-open"><span class="kl-ed">편집자</span><p>${escapeHtml(ov.open)}</p></div>`;
@@ -17580,7 +17584,7 @@ function kelHtml(s) {
   const notes = Object.keys(s.notes || {}).sort((a, b) => a - b);
   if (notes.length) h += `<details class="nt-bl"><summary>주석 ${notes.length}개</summary>${notes.map(n => `<div class="vm" id="kln-${n}"><p class="nt-form">주${n}${s.notes[n].h ? ` · ${escapeHtml(s.notes[n].h)}` : ""}</p><p>${kelInline(s.notes[n].t || "", s.id)}</p></div>`).join("")}</details>`;
   if (s.guide && s.guide.length) h += `<details class="nt-bl"><summary>원고 읽기 안내</summary>${s.guide.map(p => `<p>${kelInline(p, s.id)}</p>`).join("")}</details>`;
-  if (s.appx && s.appx.length) h += `<details class="nt-bl"><summary>교정 기록·확인한 자료</summary>${s.appx.map(a => `<h4>${escapeHtml(a.h || "")}</h4>` + (a.b || []).map(b => b.k === "h2" ? `<h5 class="kl-h2">${escapeHtml(b.t)}</h5>` : `<p>${kelInline(b.t, s.id)}</p>`).join("")).join("")}</details>`;
+  if (s.appx && s.appx.length) h += `<details class="nt-bl"><summary>교정 기록·복원 기록</summary>${s.appx.map(a => `<h4>${escapeHtml(a.h || "")}</h4>` + (a.b || []).map(b => b.k === "h2" ? `<h5 class="kl-h2">${escapeHtml(b.t)}</h5>` : `<p>${kelInline(b.t, s.id)}</p>`).join("")).join("")}</details>`;
   h += `<p class="nt-cap">개인 학습용 비공식 교정번역본이에요. 켈러의 낱말·문장은 원고 그대로이고, 문단 나눔과 편집자 길잡이(색 글씨)만 더했어요. 이 원고는 이 폰과 내 계정의 비공개 칸에만 있어요.</p>`;
   return h;
 }
@@ -17640,7 +17644,7 @@ async function kelImport(file) {
       const old = await kelDbDo("readonly", st => st.get("main"));
       if (old && old.kind === "keller-pack" && Array.isArray(old.sermons)) {
         const cols = new Set(pack.sermons.map(x => x.col)), keep = old.sermons.filter(x => !cols.has(x.col));
-        if (keep.length) pack = Object.assign({}, old, pack, { cols: Object.assign({}, old.cols || {}, pack.cols || {}), made: (pack.made || "") + " + " + (old.made || ""), sermons: keep.concat(pack.sermons).sort((a, b) => (a.col - b.col) || (a.no - b.no)) });
+        if (keep.length) pack = Object.assign({}, old, pack, { cols: Object.assign({}, old.cols || {}, pack.cols || {}), colinfo: Object.assign({}, old.colinfo || {}, pack.colinfo || {}), made: (pack.made || "") + " + " + (old.made || ""), sermons: keep.concat(pack.sermons).sort((a, b) => (a.col - b.col) || ((a.ord || a.no) - (b.ord || b.no))) });
       }
     } catch (e) {}
     if (!kelLoad(pack)) throw new Error("켈러 읽기 팩이 아니에요 (keller_pack.json을 골라 주세요)");
@@ -17654,11 +17658,14 @@ function kelListHtml() {
   if (!kel.ready) return `<div class="kl-imp"><div class="sec-title" style="margin:14px 0 6px">팀 켈러 설교 원고 <small>이 폰에서만</small></div><p class="muted">${escapeHtml(kel.msg || "받은 '켈러 읽기 팩'(keller_pack.json)을 한 번 고르면 이 폰에만 저장돼서 바로 읽을 수 있어요. 팩이 여러 개면 하나씩 고르면 묶음별로 더해져요. 원고는 어디에도 올라가지 않아요.")}</p><label class="btn primary kl-pick">켈러 읽기 팩 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label></div>`;
   let h = "";
   Object.keys(KEL_COL).map(Number).sort((a, b) => a - b).forEach(c => {
-    const L = kel.list.filter(s => s.col === c); if (!L.length) return;
+    const L = kel.list.filter(s => s.col === c).sort((a, b) => (a.ord || a.no) - (b.ord || b.no)); if (!L.length) return;
     h += `<div class="sec-title" style="margin:14px 0 6px">${escapeHtml(KEL_COL[c])} <small>읽음 ${L.filter(s => D[s.id]).length}</small></div>`;
-    h += L.map(s => `<button type="button" class="sm-li${D[s.id] ? " done" : ""}" data-smopen="${s.id}"><b>${s.no}. ${escapeHtml(s.title)}</b><small>${s.ov && s.ov.open && kelOvOn() ? escapeHtml(s.ov.open) : escapeHtml(s.ref || s.en || "")}${D[s.id] ? ` · ✓ ${D[s.id].n}번 읽음` : ""}</small></button>`).join("");
+    const I = KEL_INFO[c];
+    if (I) h += `<details class="nt-bl kl-book"><summary>${escapeHtml(I.title || "")} · 책 소개 · 일러두기 · 용어 대조표</summary>${I.sub ? `<p class="kl-sub">${escapeHtml(I.sub)}</p>` : ""}${(I.guide || []).map(g => `<p>· ${escapeHtml(g)}</p>`).join("")}${I.gloss && I.gloss.length ? `<h4>용어 대조표</h4><div class="kl-gl">${I.gloss.map(([e, k]) => `<span>${escapeHtml(e)}</span><b>${escapeHtml(k)}</b>`).join("")}</div>` : ""}</details>`;
+    let lastPart = "";
+    h += L.map(s => { const ph = s.part && s.part !== lastPart ? `<div class="kl-part">${escapeHtml(s.part)}</div>` : ""; lastPart = s.part || ""; return ph + `<button type="button" class="sm-li${D[s.id] ? " done" : ""}" data-smopen="${s.id}"><b>${/^\d+$/.test(String(s.nol || s.no)) ? escapeHtml(String(s.nol || s.no)) + "." : escapeHtml(String(s.nol)) + " ·"} ${escapeHtml(s.title)}</b><small>${s.ov && s.ov.open && kelOvOn() ? escapeHtml(s.ov.open) : escapeHtml(s.ref || s.en || "")}${D[s.id] ? ` · ✓ ${D[s.id].n}번 읽음` : ""}</small></button>`; }).join("");
   });
-  h += `<p class="nt-cap" style="margin-top:8px">켈러 원고는 이 폰에만 저장돼 있어요. 다른 묶음 팩(예: 욥기·계시록)을 더하려면 <label class="kl-lnk">팩 더하기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label> · <button type="button" class="kl-lnk" data-kdel="1">이 폰에서 지우기</button></p>`;
+  h += `<p class="nt-cap" style="margin-top:8px">켈러 원고는 이 폰에만 저장돼 있어요. 다른 묶음 팩(예: 선집·욥기·계시록 세 권 팩)을 더하려면 <label class="kl-lnk">팩 더하기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label> · <button type="button" class="kl-lnk" data-kdel="1">이 폰에서 지우기</button></p>`;
   return h;
 }
 
@@ -17695,7 +17702,7 @@ function kelListHtml() {
    1) 켈러 읽기 팩·영웅서기5 자료를 한 번 불러오면 게임 계정 서버의 '내 계정 전용' 칸(kjy_private.packs)에 올려 둠.
       로그인한 앱이 자료가 없으면 저절로 받아 와서 폰에 저장함. 다른 계정·공개 사이트에서는 볼 수 없음.
    2) 새 버전이 배포되면 앱을 열거나 다시 볼 때 바로 확인해 바꿈(서비스워커 갱신 + 한 번 새로고침). */
-var APP_VER = "54b";
+var APP_VER = "55a";
 var psync = { msg: { keller: "", hl5: "" }, busy: {} };
 function psB64(u8) { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
 function psUnB64(b) { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }

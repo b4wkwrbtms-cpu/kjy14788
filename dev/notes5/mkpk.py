@@ -50,6 +50,11 @@ for i in rem:
     try: og = json.load(open(f'{BW}/orig/{b:02d}/{c:03d}.json'))
     except Exception: og = {}
     words = og.get(str(v), [])
+    onote = ''
+    if og and len(og) != len(bo):
+        onote = f'주의: 이 장은 히브리어/헬라어 절 수({len(og)})와 우리 절 수({len(bo)})가 달라요. orig_words는 원문 절 번호 {v} 기준이라 다른 절일 수 있어요. 우리 절과 맞는 원문은 krv_bin 파일과 orig_near(원문 {v-1}~{v+1}절)에서 확인하세요.'
+        near = {str(k): og.get(str(k), []) for k in (v - 1, v + 1) if str(k) in og}
+    else: near = {}
     lex = []
     seen = set()
     for w, lem, mo in words:
@@ -69,7 +74,7 @@ for i in rem:
                 r = sref(sid)[k]; sm.append({'sid': sid, 'title': SM[sid]['title'], 'who': SM[sid]['preacher'], 'book': SM[sid].get('place', ''), 'v': int(vv), 'how': r.get('how', ''), 'quote': r.get('quote', ''), 'full': f'/home/claude/sermons/full/{sid}.json'})
     whole = [sid for sid, s2 in SM.items() if any(B == b and C == c for B, C, *_ in s2.get('spans', []))]
     ex = EX.get(norm(s.get('orig', '')), []) + EX.get('T:' + s['term'], [])
-    pk = {'id': i, 'sel': s, 'context': ctx, 'krv_bin': f'{BW}/bin/{b:02d}/{c:03d}.txt', 'orig_words': words, 'lexicon': lex[:14],
+    pk = {'id': i, 'sel': s, 'context': ctx, 'krv_bin': f'{BW}/bin/{b:02d}/{c:03d}.txt', 'orig_words': words, 'orig_note': onote, 'orig_near': near, 'lexicon': lex[:14],
           'sermons_on_this_verse': sm[:8], 'sermons_on_this_chapter': whole,
           'existing_cards_same_word': [list(x) for x in {tuple(e) for e in ex}][:4],
           'note': '사전은 STEPBible TBESH(축약 BDB)/TBESG(Abbott-Smith) 요약. 더 보려면 python3 /home/claude/bw/lex/lex.py <번호> (full). 고유명사는 lex.py name <영어 이름>.'}

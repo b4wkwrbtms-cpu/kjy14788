@@ -448,6 +448,25 @@ sys.path.insert(0, f'{R0}/tools')
 import linkaudit
 linkaudit.run(write=True, report=f'{R0}/notes3/linkaudit.json')
 
+# ---------- 11d) 11-18 장 층(notes6/out): 13~66권 t·q·g·one·sp·fold, 1~12권 q·one ----------
+N6 = f'{R0}/notes6/out'
+if os.path.isdir(N6):
+    ch6 = collections.defaultdict(dict)
+    for fp in sorted(glob.glob(f'{N6}/*.json')):
+        b6 = int(os.path.basename(fp).split('-')[0])
+        try: d6 = json.load(open(fp))
+        except Exception as e: print('notes6 읽기 실패', fp, e); continue
+        for c6, v6 in d6.items(): ch6[b6][str(int(c6))] = v6
+    for b6, chs in ch6.items():
+        xp = f'{APP}/bible/x/{b6:02d}.json'; X = json.load(open(xp)) if os.path.exists(xp) else {}
+        keys = ('q', 'one') if b6 <= 12 else ('t', 'q', 'g', 'one', 'sp', 'fold')
+        for c6, v6 in chs.items():
+            cx = X.setdefault(c6, {})
+            for k6 in keys:
+                if v6.get(k6): cx[k6] = v6[k6]; stats['ch6_' + k6] += 1
+        json.dump(X, open(xp, 'w'), ensure_ascii=False, separators=(',', ':'))
+    print('장 층 반영:', {k: v for k, v in stats.items() if k.startswith('ch6_')})
+
 # ---------- 12) 설교 카드(10-25, 사용자 설교 원고집 → 요약 카드, 원고 전문은 싣지 않음) ----------
 SM = []
 for f in sorted(glob.glob('/home/claude/sermons/out/*.json')):

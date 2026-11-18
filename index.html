@@ -4115,8 +4115,10 @@ function kill() {
   spawnWait = boss ? 650 : 430;
   feelKill(boss);
   if (boss) { screenFlash = Math.max(screenFlash, 0.45); flashCol = "#ffffff"; }
+  if (!fx55On() || mon.kind >= 1) {   // v55c: 일반 몬스터 처치는 몸이 부서지는 연출 하나만 (U-FEEL-07 위계)
   rings.push({ x: MON_X, y: GROUND - mh * 0.5, life: 1, crit: true, big: true });
   for (let i = 0; i < (boss ? 26 : 14); i++) { const a = Math.random() * Math.PI * 2; sparks.push({ x: MON_X, y: GROUND - mh * 0.5, vx: Math.cos(a) * (4 + Math.random() * 9), vy: Math.sin(a) * (4 + Math.random() * 9) - 2, life: 1, c: i % 2 ? "#ffd54a" : monColor(), line: true }); }
+  }
   hitSound(1.2);
   if (mode === "vault") {
     const one = (mon.hitN || 0) <= 1, V = BAL.vault;
@@ -4358,7 +4360,7 @@ let lift = null;               // 층 이동 엘리베이터 { t, from, to, swap
 let intro = null;              // 보스 등장 컷인 { t, dur, kind, name, landed, light }
 let slowMo = 0;                // 남은 슬로모션 (실제 ms)
 let coins = [], puffs = [], stampFx = null, critLines = 0, fever = { t: 0, n: 0 }, angerT = 0, lastBump = 0;
-const L_DELAY = 260, L_CLOSED = 560, L_OPEN = 1000, L_END = 1350;
+let L_DELAY = 260, L_CLOSED = 560, L_OPEN = 1000, L_END = 1350;   // v55c: 새 손맛에선 짧게(fx55Lift)
 const easeIO = k => k * k * (3 - 2 * k);
 const easeOutBack = k => { const c = 1.70158; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
 
@@ -4483,7 +4485,7 @@ function fxStep(dt) {
     if (stampFx.t > (stampFx.kind >= 2 ? 1500 : 950)) stampFx = null;
   }
   critLines = Math.max(0, critLines - dt / 170);
-  if (fever.t > 0) fever.t = Math.max(0, fever.t - dt / 1300);
+  if (fever.t > 0) fever.t = Math.max(0, fever.t - dt / (fx55On() ? 850 : 1300));
   angerT += dt;
   AMB.planeCd -= dt / 1000;
   if (AMB.plane) { AMB.plane.x += dt * 0.045; if (AMB.plane.x > W + 30) AMB.plane = null; }
@@ -5313,12 +5315,13 @@ function drawFever(t) {
   if (fever.t <= 0) return;
   const k = 1 - fever.t, a = Math.min(1, fever.t * 3), sc = k < 0.12 ? 2.2 - (k / 0.12) * 1.2 : 1;
   const txt = `${fever.n}연타!`, sub = fever.n >= 100 ? "야근 폭주 모드" : fever.n >= 50 ? "업무 몰입!" : "손이 안 보인다!";
-  ctx.save(); ctx.translate(UW / 2, UH * 0.36); ctx.rotate(-0.08); ctx.scale(sc, sc); ctx.globalAlpha = a;
+  const s55 = fx55On();
+  ctx.save(); ctx.translate(UW / 2, UH * (s55 ? 0.2 : 0.36)); ctx.rotate(-0.08); ctx.scale(sc * (s55 ? 0.62 : 1), sc * (s55 ? 0.62 : 1)); ctx.globalAlpha = a;
   ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = '38px "Do Hyeon", sans-serif';
   ctx.lineWidth = 10; ctx.strokeStyle = "#1b1206"; ctx.strokeText(txt, 0, 0);
   const gr = ctx.createLinearGradient(0, -19, 0, 19); gr.addColorStop(0, "#fff7c2"); gr.addColorStop(0.5, "#ffd54a"); gr.addColorStop(1, "#ff8a3b");
   ctx.fillStyle = gr; ctx.fillText(txt, 0, 0);
-  ctx.font = '14px "Do Hyeon", sans-serif'; ctx.lineWidth = 4; ctx.strokeText(sub, 0, 28); ctx.fillStyle = "#ffffff"; ctx.fillText(sub, 0, 28);
+  if (!s55 || fever.n >= 50) { ctx.font = '14px "Do Hyeon", sans-serif'; ctx.lineWidth = 4; ctx.strokeText(sub, 0, 28); ctx.fillStyle = "#ffffff"; ctx.fillText(sub, 0, 28); }
   ctx.restore();
 }
 function drawImpactFrame() {
@@ -10862,8 +10865,8 @@ function feelPoseAt(mv, fd, p0, fr) {
   if (fr < S) return feelLerp(W > 0 ? K.A : p0, K.B, feelEaseIn((fr - W) / fd.strike));        // 내려치기: 점점 빠르게
   if (fr < A) return feelLerp(K.B, K.C, feelEaseOut((fr - S) / fd.active));                     // 맞는 구간: 끝까지 밀어붙임 (총은 반동)
   const H = K.D || K.C;                                                                         // D: 반동 뒤 다시 겨누는 자세 (거너·저격수)
-  if (fr < fd.cancel) return K.D ? feelLerp(K.C, K.D, feelEaseIO((fr - A) / Math.max(1, fd.hold))) : Object.assign({}, K.C);
-  if (fr < E) return Object.assign({}, H);                                                      // 포즈 홀드 (캔슬 뒤 keep까지 — 다음 기술이 오면 여기서 바로 이어짐)
+  if (fr < fd.cancel) return fx55Settle(K.D ? feelLerp(K.C, K.D, feelEaseIO((fr - A) / Math.max(1, fd.hold))) : Object.assign({}, K.C), fr - A);
+  if (fr < E) return fx55Settle(Object.assign({}, H), fr - A);                                                      // 포즈 홀드 (캔슬 뒤 keep까지 — 다음 기술이 오면 여기서 바로 이어짐)
   if (fr < fd.total) return feelLerp(H, feelIdle(), feelEaseIO((fr - E) / fd.ret));             // 다음 타격이 멀면 제자리로
   return feelIdle();
 }
@@ -16780,7 +16783,7 @@ function fx48Bloom() {
       const heavy = src === "hero" || src === "tap" || src === "jhero" || src === "skill", small = src === "pet" || src === "clone";
       if (heavy || small) {
         let x = px, y = py; if (x == null || y == null) { try { [x, y] = monHitPoint(); } catch (e) { x = MON_X - 14; y = GROUND - 80; } }
-        fx48Hit(x, y, !!crit, src === "skill", small);
+        if (!fx55On() || crit || src === "skill" || small) fx48Hit(x, y, !!crit, src === "skill", small);   // v55c: 평타는 손맛 레시피 하나로
       }
     }
     return r;
@@ -16791,7 +16794,7 @@ function fx48Bloom() {
     const r = kill0.apply(this, arguments);
     if (was && m && m.dying && fx48K() > 0) {
       const { h } = monSize(m), big = m.kind >= 2;
-      fx48KillAt(MON_X + monOX(), GROUND - h * 0.45, big);
+      if (!fx55On() || big) fx48KillAt(MON_X + monOX(), GROUND - h * 0.45, big);
       fx48Shatter(m, big);
       if (big) fx48BossChain(m);
     }
@@ -17725,11 +17728,53 @@ function kelCard() {
   (async () => { try { const p = await kelDbDo("readonly", st => st.get("main")); if (p) kelLoad(p); } catch (e) {} })();
 })();
 
+/* ================= v55c: 손맛 정리 1단계 (action-feel-motion 스킬) =================
+   진단(11-18, 실제 화면 프레임 캡처): ① 친 자세에서 몸이 완전히 굳어(18f+ 같은 그림) 인형처럼 보임
+   ② 1층 일반 몬스터 처치에도 처치 연출 4겹(손맛 처치 + 예전 고리·불꽃 + v48 고리·알갱이 + 몸 부서짐) → 위계가 없음(U-FEEL-07, AP-FEEL-06)
+   ③ 평타마다 손맛 레시피 + v48 타격 이펙트가 겹침 ④ 'n연타!' 글자가 화면 한가운데를 1.3초 가림 ⑤ 층마다 엘리베이터 1.35초
+   고친 것: 친 자세에 팔로우스루(무기 끝이 따라왔다 잦아듦)·착지 눌림·숨쉬기 / 일반 처치는 몸 부서짐 하나 / 평타 이펙트 한 겹 /
+   연타 글자 작고 짧게(위쪽) / 엘리베이터 0.8초. 설정 › 전투 손맛에서 예전과 바로 비교하고, 슬로모션으로 볼 수 있음 */
+function fx55On() { return !(typeof S !== "undefined" && S && S.fx55 === false); }
+function fx55Settle(P, t) {
+  if (!fx55On() || feelBodyK() <= 0 || reduceMotion) return P;
+  const o = P; t = Math.max(0, t);
+  o.wa = (o.wa || 0) + 0.16 * Math.exp(-t / 4.5) * Math.cos(t * 0.95);         // 무기 끝 따라오기 (팔로우스루, 약 10f에 잦아듦)
+  if (t < 2) o.lift = (o.lift || 0) + 2; else if (t < 4) o.lift = (o.lift || 0) + 1;   // 내려친 반동으로 몸이 살짝 눌림
+  else if (t > 10) o.lift = (o.lift || 0) + (Math.floor(performance.now() / 520) % 2);  // 버티는 동안 숨쉬기 1px
+  return o;
+}
+var FX55_LIFT0 = [260, 560, 1000, 1350], FX55_LIFT1 = [150, 330, 600, 820];
+function fx55Lift() { const v = fx55On() ? FX55_LIFT1 : FX55_LIFT0; L_DELAY = v[0]; L_CLOSED = v[1]; L_OPEN = v[2]; L_END = v[3]; }
+var fx55Slow = 1;   // 시험용 슬로모션 (저장하지 않음)
+(function () {
+  const fs0 = fxStep;
+  fxStep = function (dt) { fx55Lift(); return fs0.apply(this, arguments) * fx55Slow; };
+  function fx55Card() {
+    const card = el("div", "card stg fxset fx48 fx55-card");
+    const seg = (id, lbl, opts) => `<div class="fx-row"><span>${lbl}</span><div class="seg" role="group" aria-label="${lbl}">${opts.map(([v, n]) => `<button type="button" data-fx55="${id}" data-v="${v}" aria-pressed="false">${n}</button>`).join("")}</div></div>`;
+    card.innerHTML = `<div class="fx48-t">전투 손맛 <small>새 연출과 예전 연출 비교</small></div>`
+      + seg("on", "손맛", [[1, "새 손맛"], [0, "예전"]])
+      + seg("slow", "슬로모션", [[1, "1×"], [0.5, "½×"], [0.25, "¼×"]])
+      + `<p class="muted">새 손맛: 친 자세에서 무기 끝이 따라왔다 멈추고 몸이 살짝 눌렸다 숨쉬어요. 일반 몬스터는 몸이 부서지는 연출 하나만, 보스는 그대로 크게. 연타 글자는 작고 짧게, 엘리베이터는 0.8초. 슬로모션은 저장되지 않아요.</p>`;
+    addCustom("set", card, () => {
+      const cur = { on: fx55On() ? 1 : 0, slow: fx55Slow };
+      card.querySelectorAll("button[data-fx55]").forEach(b => { b.setAttribute("aria-pressed", String(+b.dataset.v === +cur[b.dataset.fx55])); });
+    });
+    card.addEventListener("click", e => {
+      const b = e.target && e.target.closest && e.target.closest("button[data-fx55]"); if (!b) return;
+      if (b.dataset.fx55 === "on") { S.fx55 = +b.dataset.v === 1; save(); }
+      else fx55Slow = +b.dataset.v || 1;
+      sfx("tick"); updateUI(true);
+    });
+  }
+  const fc2 = buildScrCard; buildScrCard = function () { const r = fc2.apply(this, arguments); fx55Card(); return r; };
+})();
+
 /* ================= v51: 내 자료 자동 받기 + 새 버전 자동 적용 =================
    1) 켈러 읽기 팩·영웅서기5 자료를 한 번 불러오면 게임 계정 서버의 '내 계정 전용' 칸(kjy_private.packs)에 올려 둠.
       로그인한 앱이 자료가 없으면 저절로 받아 와서 폰에 저장함. 다른 계정·공개 사이트에서는 볼 수 없음.
    2) 새 버전이 배포되면 앱을 열거나 다시 볼 때 바로 확인해 바꿈(서비스워커 갱신 + 한 번 새로고침). */
-var APP_VER = "55b";
+var APP_VER = "55c";
 var psync = { msg: { keller: "", hl5: "" }, busy: {} };
 function psB64(u8) { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
 function psUnB64(b) { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }

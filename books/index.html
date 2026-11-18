@@ -605,7 +605,29 @@ function kelLoad(pack) {
     if (s.ref && (!/\d/.test(s.ref) || s.ref === s.sub)) s.ref = "";
     s.len = (s.secs || []).reduce((n, x) => n + (x.b || []).reduce((k, b) => k + (b.t || "").length, 0), 0);
   });
-  kel.ready = kel.list.length > 0; return kel.ready;
+  kel.ready = kel.list.length > 0; kelIndex(); return kel.ready;
+}
+/* 켈러 원고 속 성경 주소 → 절 단위 연결 (폰 안에서만 만듦 · 켈러 글은 공개 저장소에 없음) */
+let KIX = {};
+function kelIndex() {
+  KIX = {};
+  kel.list.forEach(s => (s.secs || []).forEach((x, i) => (x.b || []).forEach((bl, j) => {
+    if (bl.k === "del" || !bl.t) return;
+    for (const m of refHtml(bl.t).matchAll(/data-go="(\d+)\|(\d+)\|(\d+)\|(\d+)"/g)) {
+      const b = +m[1], c = +m[2], v1 = +m[3], v2 = Math.min(+m[4], v1 + 40), key = b + "|" + c;
+      (KIX[key] = KIX[key] || []).push({ sid: s.id, pi: `${i}.${j}`, v1, v2: v2 >= 999 ? 999 : v2, t: bl.t });
+    }
+  })));
+}
+function kelAt(b, c, v1, v2) {
+  const L = KIX[b + "|" + c] || [], seen = new Set(), out = [];
+  L.forEach(m => { if (m.v2 < v1 || m.v1 > (v2 || v1)) return; const k = m.sid + m.pi; if (seen.has(k)) return; seen.add(k); out.push(m); });
+  return out;
+}
+function kelSnip(t, n) { t = String(t || "").replace(/\[(주\s?\d+|자료[^\]]{0,20})\]/g, "").replace(/\s+/g, " ").trim(); return t.length > (n || 120) ? t.slice(0, n || 120) + "…" : t; }
+function kelMentionsHtml(L, max) {
+  if (!L.length) return "";
+  return `<p class="vs-h" style="margin-top:1.4em">팀 켈러가 이 말씀을 다룬 곳</p>` + L.slice(0, max || 6).map(m => { const s = kel.by[m.sid]; return `<button type="button" class="sh-link" data-open="${esc(m.sid)}@${esc(m.pi)}">${esc(s ? s.title : "")}<small>${esc(kelSnip(m.t))}</small></button>`; }).join("") + (L.length > (max || 6) ? `<p class="sh-more">이 밖에 ${L.length - (max || 6)}곳 더 있어요.</p>` : "") + `<p class="n-cap">켈러 원고는 이 폰과 내 계정에만 있는 개인 학습본이에요.</p>`;
 }
 /* 사파리에서 게임이 같은 주소에 저장해 둔 팩이 있으면 읽기만 함 (없으면 만들지 않음) */
 async function kelFromGame() {
@@ -1178,6 +1200,7 @@ async function openVerse(goStr, ver) {
   const sv = smv && smv[`${b + 1}:${c}`], seen = new Set(), L = [];
   if (sv) { const vend = whole ? 999 : v2raw; Object.keys(sv.v || {}).forEach(n => { if (+n >= v1 && +n <= vend) (sv.v[n] || []).forEach(([sid]) => { if (!seen.has(sid) && sid !== R.sid && SMBY[sid]) { seen.add(sid); L.push(sid); } }); }); }
   if (kel.ready) kel.list.forEach(s => { if (seen.has(s.id) || s.id === R.sid || !s.ref) return; const m = refHtml(s.ref).match(/data-go="(\d+)\|(\d+)\|(\d+)\|(\d+)"/); if (m && +m[1] === b && +m[2] === c && !(+m[4] < v1 || +m[3] > (whole ? 999 : v2raw))) { seen.add(s.id); L.push(s.id); } });
+  if (kel.ready) { const KM = kelAt(b, c, v1, whole ? 999 : v2raw).filter(m => m.sid !== R.sid); h += kelMentionsHtml(KM, 5); KM.forEach(m => seen.add(m.sid)); }
   if (L.length) h += `<p class="vs-h" style="margin-top:1.4em">이 말씀을 다룬 다른 설교</p>` + L.slice(0, 12).map(sid => { const d = docOf(sid); return `<button type="button" class="sh-link" data-open="${esc(sid)}">${esc(d.title)}<small>${esc(d.kind === "kel" ? "팀 켈러" : d.s.preacher + " 목사")} · ${esc((bookOf(d.book) || {}).t || "")}</small></button>`; }).join("");
   h += `<button type="button" class="sh-link" data-open="${bibSid(b, c)}@v${v1}">${esc(BIB[b][0])} ${c}장 펴서 읽기<small>우리가 만든 성경으로 이 장을 열어요</small></button>`;
   fillSheet(h);
@@ -1331,7 +1354,7 @@ function bibDocHtml(d) {
       if (!R.opened[fi]) { if (n === folds[fi][0]) h += foldCard(folds[fi], fi, fi > 0 && folds[fi - 1][3] === folds[fi][3]); continue; }
       if (n === folds[fi][0]) h += `<button type="button" class="b-fold-x" data-fold-close="${fi}">${esc(folds[fi][3])} · 다시 접기</button>`;
     }
-    const hasS = !!(sv && sv.v && sv.v[n]), hasM = !!(x && x.vn && x.vn[n]), hasF = hasM && x.vn[n].some(m => m.fx), canTap = b <= 11 || hasM || hasS || !!(x && x.ln && x.ln[n]);
+    const hasS = !!(sv && sv.v && sv.v[n]) || (kel.ready && kelAt(b, c, n, n).length > 0), hasM = !!(x && x.vn && x.vn[n]), hasF = hasM && x.vn[n].some(m => m.fx), canTap = b <= 11 || hasM || hasS || !!(x && x.ln && x.ln[n]);
     const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasF ? " fx" : ""}${hasS ? " sm" : ""}"${canTap ? ` data-vn="${n}" role="button" tabindex="0" aria-label="${n}절 원어·메모 보기"` : ""}>${n}</sup>`;
     if (showMz) {
       const labs = {}; if (o.sp && x && x.sp && x.sp[n]) x.sp[n].forEach(l => { if (!labs[l[0]]) labs[l[0]] = l; });
@@ -1367,7 +1390,16 @@ async function bibNote(id) {
   const d = R.doc; if (!d || d.kind !== "bib") return; const b = d.b;
   openSheet("해설", `<p class="sh-more">해설을 불러오는 중…</p>`);
   const nt = await loadNt(b), n = nt && nt[id];
-  fillSheet(n ? noteHtml(n, b, d.c) : `<p class="sh-more">해설을 불러오지 못했어요. 인터넷에 연결한 뒤 다시 눌러 주세요.</p>`, n ? `${(NK[n.k] || ["해설"])[0]} 해설 · ${BIB[b][0]} ${d.c}장` : "해설");
+  let extra = "";
+  if (n) {
+    const x = xChap(b, d.c); let vv = 0; if (x && x.ln) for (const k in x.ln) if (x.ln[k].some(l => l[0] === id)) { vv = +k; break; }
+    if (vv) {
+      const sv = smvOf(b, d.c), sml = sv && sv.v && sv.v[vv] || [];
+      if (sml.length) extra += `<h4>설교에서 이 말씀 (${BIB[b][0]} ${d.c}:${vv})</h4>` + sml.slice(0, 5).map(([sid, i]) => { const s = SMBY[sid], m = s && s.m && s.m[i]; return s ? `<button type="button" class="sh-link" data-open="${esc(sid)}">${esc(s.title)}<small>${esc(s.preacher)} 목사 · ${esc(kelSnip(m && m.how, 90))}</small></button>` : ""; }).join("");
+      if (kel.ready) extra += kelMentionsHtml(kelAt(b, d.c, vv, vv), 4);
+    }
+  }
+  fillSheet(n ? noteHtml(n, b, d.c) + extra : `<p class="sh-more">해설을 불러오지 못했어요. 인터넷에 연결한 뒤 다시 눌러 주세요.</p>`, n ? `${(NK[n.k] || ["해설"])[0]} 해설 · ${BIB[b][0]} ${d.c}장` : "해설");
   if (nt) { const box = $("pgc").querySelector("[data-ntall]"); if (box && !box.dataset.named) { box.dataset.named = "1"; box.querySelectorAll("[data-nt]").forEach(bt => { const x = nt[bt.dataset.nt]; if (x) bt.textContent = x.t; }); } }
 }
 function altHtml(m, always) {
@@ -1391,6 +1423,7 @@ async function bibVerse(n) {
   if (ln.length) h += `<h4>이 절의 해설</h4><div class="b-chips">${ln.map(l => `<button type="button" class="b-chip ${NK[l[2]] ? NK[l[2]][1] : ""}" data-nt="${esc(l[0])}">${esc(nt && nt[l[0]] ? nt[l[0]].t : l[1])}</button>`).join("")}</div>`;
   const sv = smvOf(b, c), sml = sv && sv.v && sv.v[n] || [];
   if (sml.length) h += `<h4>설교에서 이 말씀</h4>` + sml.map(([sid, i]) => { const s = SMBY[sid], m = s && s.m && s.m[i]; if (!m) return ""; return `<div class="vm"><button type="button" class="sh-link" data-open="${esc(sid)}">${esc(s.title)}<small>${esc(s.preacher)} 목사</small></button><p>${refHtml(m.how || "")}</p>${m.quote ? `<p class="n-cap">“${esc(m.quote)}”</p>` : ""}</div>`; }).join("");
+  if (kel.ready) h += kelMentionsHtml(kelAt(b, c, n, n), 6);
   fillSheet(h, ref);
 }
 /* 성경 목차 화면 */

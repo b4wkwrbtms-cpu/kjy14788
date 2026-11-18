@@ -1,6 +1,8 @@
 # 카드마다 '자료 꾸러미'를 미리 만든다 → 작업자는 이것부터 읽고, 웹은 주석·설교자 확인에만 쓴다.
 # 출력: /home/claude/renewal/notes5/pk/{id}.json
 import json, os, glob, re, sys, subprocess, unicodedata, collections
+import json as _j, os as _o
+KEL = _j.load(open('/home/claude/private/keller/idx.json')) if _o.path.exists('/home/claude/private/keller/idx.json') else {'v': {}, 'meta': {}}
 R = '/home/claude/renewal'; BW = '/home/claude/bw'
 L = '/home/claude/data_src/STEPBible-Data/Lexicons/'
 sel = {}
@@ -74,7 +76,12 @@ for i in rem:
                 r = sref(sid)[k]; sm.append({'sid': sid, 'title': SM[sid]['title'], 'who': SM[sid]['preacher'], 'book': SM[sid].get('place', ''), 'v': int(vv), 'how': r.get('how', ''), 'quote': r.get('quote', ''), 'full': f'/home/claude/sermons/full/{sid}.json'})
     whole = [sid for sid, s2 in SM.items() if any(B == b and C == c for B, C, *_ in s2.get('spans', []))]
     ex = EX.get(norm(s.get('orig', '')), []) + EX.get('T:' + s['term'], [])
-    pk = {'id': i, 'sel': s, 'context': ctx, 'krv_bin': f'{BW}/bin/{b:02d}/{c:03d}.txt', 'orig_words': words, 'orig_note': onote, 'orig_near': near, 'lexicon': lex[:14],
+    kp = []
+    for sid, ln, kind in KEL['v'].get(f'{b}:{c}', {}).get('v', {}).get(str(v), []):
+        m = KEL['meta'][sid]
+        kp.append({'sid': sid, 'kind': kind, 'title': m['title'], 'en': m['en'], 'date': m['date'], 'main': m['main'], 'path': m['path'], 'line': ln})
+    kp.sort(key=lambda x: x['kind'] != 'main')
+    pk = {'id': i, 'sel': s, 'keller_private': kp[:6], 'context': ctx, 'krv_bin': f'{BW}/bin/{b:02d}/{c:03d}.txt', 'orig_words': words, 'orig_note': onote, 'orig_near': near, 'lexicon': lex[:14],
           'sermons_on_this_verse': sm[:8], 'sermons_on_this_chapter': whole,
           'existing_cards_same_word': [list(x) for x in {tuple(e) for e in ex}][:4],
           'note': '사전은 STEPBible TBESH(축약 BDB)/TBESG(Abbott-Smith) 요약. 더 보려면 python3 /home/claude/bw/lex/lex.py <번호> (full). 고유명사는 lex.py name <영어 이름>.'}

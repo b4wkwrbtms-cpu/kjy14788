@@ -17447,10 +17447,11 @@ function hl5Card() {
 var kel = { ready: false, list: [], by: {}, busy: false, msg: "", openId: "" };
 function kelDb() { return new Promise((res, rej) => { const r = indexedDB.open("kjy_keller", 1); r.onupgradeneeded = () => r.result.createObjectStore("pack"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
 async function kelDbDo(mode, fn) { const db = await kelDb(); return new Promise((res, rej) => { const q = fn(db.transaction("pack", mode).objectStore("pack")); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }); }
-const KEL_COL = { 1: "팀 켈러 설교 원고 1 · 19편", 2: "팀 켈러 설교 원고 2 · ver2 17편" };
+const KEL_COL = { 1: "팀 켈러 설교 원고 1 · 19편", 2: "팀 켈러 설교 원고 2 · ver2 17편", 3: "욥기 · 고난을 지나는 길 · 5편", 4: "요한계시록 · 마지막 말씀 · 9편" };   /* 11-18: 3·4묶음(욥기·계시록 연속 설교) 추가 */
 function kelOvOn() { return S.kelOv !== false; }
 function kelLoad(pack) {
   if (!pack || pack.kind !== "keller-pack" || !Array.isArray(pack.sermons)) return false;
+  if (pack.cols && typeof pack.cols === "object") Object.keys(pack.cols).forEach(k => { if (pack.cols[k]) KEL_COL[k] = pack.cols[k]; });
   kel.list = pack.sermons; kel.by = {};
   kel.list.forEach(s => {
     kel.by[s.id] = s;
@@ -17461,7 +17462,7 @@ function kelLoad(pack) {
   });
   kel.ready = kel.list.length > 0; return kel.ready;
 }
-function kelIs(sid) { return typeof sid === "string" && /^k[12]-\d\d$/.test(sid) && !!kel.by[sid]; }
+function kelIs(sid) { return typeof sid === "string" && /^k\d-\d\d$/.test(sid) && !!kel.by[sid]; }
 
 /* ---------- 모양만 바꾸기: 긴 문단을 2~3문장 덩어리로 (따옴표 안에서는 자르지 않음) ---------- */
 function kelSentences(t) {
@@ -17632,7 +17633,16 @@ async function kelImport(file) {
     let txt;
     if (/\.gz$/i.test(file.name) && typeof DecompressionStream === "function") txt = await new Response(file.stream().pipeThrough(new DecompressionStream("gzip"))).text();
     else txt = await file.text();
-    const pack = JSON.parse(txt);
+    let pack = JSON.parse(txt);
+    if (!pack || pack.kind !== "keller-pack" || !Array.isArray(pack.sermons)) throw new Error("켈러 읽기 팩이 아니에요 (keller_pack.json을 골라 주세요)");
+    /* 11-18: 묶음별로 합치기 — 새 팩에 들어 있는 묶음만 바꾸고, 이 폰에 있던 다른 묶음은 그대로 둠 (예: 36편 팩 + 욥기·계시록 팩) */
+    try {
+      const old = await kelDbDo("readonly", st => st.get("main"));
+      if (old && old.kind === "keller-pack" && Array.isArray(old.sermons)) {
+        const cols = new Set(pack.sermons.map(x => x.col)), keep = old.sermons.filter(x => !cols.has(x.col));
+        if (keep.length) pack = Object.assign({}, old, pack, { cols: Object.assign({}, old.cols || {}, pack.cols || {}), made: (pack.made || "") + " + " + (old.made || ""), sermons: keep.concat(pack.sermons).sort((a, b) => (a.col - b.col) || (a.no - b.no)) });
+      }
+    } catch (e) {}
     if (!kelLoad(pack)) throw new Error("켈러 읽기 팩이 아니에요 (keller_pack.json을 골라 주세요)");
     let kept = true; try { await kelDbDo("readwrite", st => st.put(pack, "main")); } catch (e) { kept = false; }
     kel.msg = ""; toast(kept ? `켈러 설교 ${kel.list.length}편을 불러왔어요` : "불러왔지만 폰에 저장하지 못했어요 (다시 열면 한 번 더 골라야 해요)");
@@ -17641,14 +17651,14 @@ async function kelImport(file) {
 }
 function kelListHtml() {
   const D = S.smDone || {};
-  if (!kel.ready) return `<div class="kl-imp"><div class="sec-title" style="margin:14px 0 6px">팀 켈러 설교 원고 <small>36편 · 이 폰에서만</small></div><p class="muted">${escapeHtml(kel.msg || "받은 '켈러 읽기 팩'(keller_pack.json)을 한 번 고르면 이 폰에만 저장돼서 바로 읽을 수 있어요. 원고는 어디에도 올라가지 않아요.")}</p><label class="btn primary kl-pick">켈러 읽기 팩 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label></div>`;
+  if (!kel.ready) return `<div class="kl-imp"><div class="sec-title" style="margin:14px 0 6px">팀 켈러 설교 원고 <small>이 폰에서만</small></div><p class="muted">${escapeHtml(kel.msg || "받은 '켈러 읽기 팩'(keller_pack.json)을 한 번 고르면 이 폰에만 저장돼서 바로 읽을 수 있어요. 팩이 여러 개면 하나씩 고르면 묶음별로 더해져요. 원고는 어디에도 올라가지 않아요.")}</p><label class="btn primary kl-pick">켈러 읽기 팩 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label></div>`;
   let h = "";
-  [1, 2].forEach(c => {
+  Object.keys(KEL_COL).map(Number).sort((a, b) => a - b).forEach(c => {
     const L = kel.list.filter(s => s.col === c); if (!L.length) return;
     h += `<div class="sec-title" style="margin:14px 0 6px">${escapeHtml(KEL_COL[c])} <small>읽음 ${L.filter(s => D[s.id]).length}</small></div>`;
     h += L.map(s => `<button type="button" class="sm-li${D[s.id] ? " done" : ""}" data-smopen="${s.id}"><b>${s.no}. ${escapeHtml(s.title)}</b><small>${s.ov && s.ov.open && kelOvOn() ? escapeHtml(s.ov.open) : escapeHtml(s.ref || s.en || "")}${D[s.id] ? ` · ✓ ${D[s.id].n}번 읽음` : ""}</small></button>`).join("");
   });
-  h += `<p class="nt-cap" style="margin-top:8px">켈러 원고는 이 폰에만 저장돼 있어요. <button type="button" class="kl-lnk" data-kdel="1">이 폰에서 지우기</button></p>`;
+  h += `<p class="nt-cap" style="margin-top:8px">켈러 원고는 이 폰에만 저장돼 있어요. 다른 묶음 팩(예: 욥기·계시록)을 더하려면 <label class="kl-lnk">팩 더하기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label> · <button type="button" class="kl-lnk" data-kdel="1">이 폰에서 지우기</button></p>`;
   return h;
 }
 
@@ -17685,7 +17695,7 @@ function kelListHtml() {
    1) 켈러 읽기 팩·영웅서기5 자료를 한 번 불러오면 게임 계정 서버의 '내 계정 전용' 칸(kjy_private.packs)에 올려 둠.
       로그인한 앱이 자료가 없으면 저절로 받아 와서 폰에 저장함. 다른 계정·공개 사이트에서는 볼 수 없음.
    2) 새 버전이 배포되면 앱을 열거나 다시 볼 때 바로 확인해 바꿈(서비스워커 갱신 + 한 번 새로고침). */
-var APP_VER = "54a";
+var APP_VER = "54b";
 var psync = { msg: { keller: "", hl5: "" }, busy: {} };
 function psB64(u8) { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
 function psUnB64(b) { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }

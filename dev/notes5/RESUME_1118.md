@@ -40,3 +40,11 @@
 ## 11-19 해설 카드 완료
 - 13~66권 계획 1,628장 전부 작성(notes3/out, 연결 카드 31장 포함). 1~12권 1,067장은 기존.
 - 다음: ① 본문 교정 — TQ_ALL.json 1,250건(확실 100·판단 577·옛 형식 573) 원어 대조 후 반영 ② 책 이름 없는 장:절 일괄 보충 ③ 분량 짧은 묶음(N01·N17) 보강 검토, 주석 미열람 카드 보강(선택) ④ mkapp/build → 한 번에 배포.
+
+## 11-19 16:40 본문 교정 반영 끝
+- tqfix q10~q29 전부 판정(1,012건): fix 671줄, done 24, keep 531, defer 20. 저장·푸시 완료(v30-wip).
+- 빌드: `python3 /home/claude/renewal/tools/mkapp.py` (루트 mkapp.py와 같은 파일로 합침: 2d 교정 반영 + 12b 메모 + 연결 카드 + 11d 장 층). lineage 경로 고침. names/vocab.json은 잃어버려서 개역+본문 낱말로 다시 만듦(커밋함).
+- 빌드 결과: tq fixes applied 855, already 94, nomatch 27(모두 같은 자리를 앞선 교정이 이미 고친 중복).
+- 환경 준비(작업 공간이 초기화되면): payload.json.gz gunzip → mkapp 실행하면 bout46 생김. 켈러 색인은 /home/claude/private/keller(저장소 밖).
+- 사용자 판단 목록: notes5/USER_JUDGE_1119.md (통일안 20 + 절별 131) + notes5/DECISIONS.md. 답이 없으면 지금 본문 유지.
+- 남은 것: 카드의 책 이름 없는 장:절 표기 일괄 수정, src URL 5곳, 최종 점검(linkaudit), 배포 1회(곽준영키우기+설교 서가 books-wip 병합, 유엘이키우기 export_yuel.py), 배포 뒤 카드 없는 148장·얇은 책 보강.

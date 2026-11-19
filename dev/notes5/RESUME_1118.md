@@ -55,3 +55,8 @@
 - 빌드: python3 tools/mkapp.py (루트 mkapp.py는 같은 내용 복사본). 배포: app/bible의 mz·nt·x·he·smt·*.json을 main/bible로 복사 + X_VER·sw 올림. 유엘이는 같은 복사 + y 번호 3곳.
 - 시험: /opt/pw-browsers/chromium-1243/chrome-linux64/chrome, dbg.html(`const $` 뒤 window.__ev) — 읽기 화면·밑줄·해설 열림, JS 오류 0.
 - 남은 선택 과제: 사용자 판단 131건(notes5/USER_JUDGE_1119.md, 지금 본문 유지), 새 카드 tq 약 150건 미검증, 요 4장 '예배' 유지, 이와→하와·하가→하갈 확인 대기, 강화 안 한 카드 50장, 독일성서공회 스캔(받으면 비공개로).
+
+## 11-20 06시 후속 3건
+- 설교 서가(main a8f4d2f, sbk-app-6): 곽준영키우기 계정 연동 코드 전부 삭제(로그인·기록 맞추기·게임 저장소 읽기). 켈러 세 권 34편은 books/kp.bin(AES-GCM, PBKDF2 60만 회)으로 넣음 — 저장소가 공개라 평문은 올리지 않음. 열쇠말은 대화로만 전달(저장소에 없음, 작업 공간 /home/claude/private/kp_pass.txt). 앱은 열쇠를 localStorage(sbk-kp1)에 두고, 폰 저장이 지워져도 다시 열면 저절로 꽂음.
+- 켈러 1·2권(19편·ver2 17편) 팩은 작업 공간·드라이브에 없음. 곽준영키우기 계정 비공개 칸(kjy_private.packs key=keller, 4조각)에만 있고 여기서는 꺼낼 길이 없음(외부 접속 막힘) → 사용자가 팩 파일을 주면 kp.bin에 합쳐 다시 잠금.
+- 함께 걷는 길(together-walk, 비공개, 앱 코드는 sites-import 가지): bible-56a 가지에 성경 본문만 56a로 교체(3850f4f). scripts/import-renewal-bible-56a.py, docs/RENEWAL-BIBLE.md 맨 위 기록. 검사 19개 통과(지문 값 갱신). 실제 앱 배포는 그쪽 배포 절차(appgdep) 필요 — 깃허브 푸시만으로는 안 바뀜. K07 풀이 속 '복 받은 사람' 인용은 본문('복 있는 사람')과 어긋난 채 남음(검수된 원고라 손대지 않음).

@@ -1,11 +1,11 @@
 {
 "stats": {
-"anchor": 3846,
-"ok": 17621,
+"anchor": 3844,
+"ok": 17635,
 "drop": 98,
 "chap": 169,
-"noorig": 95,
-"xt_unk": 63,
+"noorig": 94,
+"xt_unk": 64,
 "xt_ok": 392,
 "xt_drop": 4,
 "nokey": 1
@@ -717,14 +717,6 @@
 29,
 "bg-people-053",
 "모세",
-"noorig"
-],
-[
-2,
-8,
-29,
-"bg-things-079",
-"파라오",
 "noorig"
 ],
 [
@@ -1765,6 +1757,14 @@
 8,
 "king-dict-032",
 "사마리아",
+"xt"
+],
+[
+44,
+2,
+9,
+"bg-places-035",
+"엘림",
 "xt"
 ],
 [

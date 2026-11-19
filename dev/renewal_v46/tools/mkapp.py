@@ -139,6 +139,53 @@ for key, ms in memos.items():
 print('alt merged', nalt, 'note memos', sum(1 for ms in memos.values() for m in ms if m.get('ix')))
 print('tq fixes applied', tq_ap, 'already', tq_already, 'bad/nomatch', tq_bad)
 
+# ---------- 2e) 11-19 2차 전면 검토(rev2/out: 말투·어감·중복·오류·오타) — 검토 당시 본문(was)이 그대로일 때만 덮음 ----------
+r2_ap = r2_sk = r2_h = 0
+for f in sorted(glob.glob(f'{R0}/rev2/out/*.jsonl')):
+    for l in open(f):
+        l = l.strip()
+        if not l: continue
+        try: o = json.loads(l); b, c = int(o.get('b', 0)), int(o.get('c', 0))
+        except Exception: r2_sk += 1; continue
+        p = f'{B46}/{b:02d}/{c:03d}.json'
+        if not os.path.exists(p): r2_sk += 1; continue
+        j = json.load(open(p))
+        if o.get('h') is not None and isinstance(o['h'], list) and not o.get('v'):
+            j['h'] = [[int(x[0]), str(x[1])] for x in o['h'] if x and str(x[1]).strip()]; r2_h += 1
+        else:
+            try: v = int(o.get('v', 0))
+            except Exception: r2_sk += 1; continue
+            t2 = o.get('fix')
+            if not (1 <= v <= len(j['v'])) or not isinstance(t2, str) or not t2.strip() or '"' in t2: r2_sk += 1; continue
+            if j['v'][v - 1] == t2: continue
+            if j['v'][v - 1] != o.get('was'): r2_sk += 1; continue
+            j['v'][v - 1] = t2; r2_ap += 1
+        json.dump(j, open(p, 'w'), ensure_ascii=False)
+print('2차 검토 반영', r2_ap, '소제목', r2_h, '건너뜀', r2_sk)
+# ---------- 2f) 11-19 낱말 통일(tqfix2/out: old→new 부분 바꿈, 한 절에 여러 번 나오면 모두) + 표기 일괄 ----------
+u_ap = u_sk = 0
+for f in sorted(glob.glob(f'{R0}/tqfix2/out/*.jsonl')):
+    for l in open(f):
+        l = l.strip()
+        if not l: continue
+        try: o = json.loads(l); b, c, v = int(o['b']), int(o['c']), int(o['v']); old, new = o['old'], o['new']
+        except Exception: u_sk += 1; continue
+        p = f'{B46}/{b:02d}/{c:03d}.json'
+        if not os.path.exists(p) or not old or '"' in new: u_sk += 1; continue
+        j = json.load(open(p))
+        if o.get('head'):
+            j['h'] = [[x[0], x[1].replace(old, new)] for x in j.get('h', [])]; json.dump(j, open(p, 'w'), ensure_ascii=False); continue
+        if not (1 <= v <= len(j['v'])) or old not in j['v'][v - 1]:
+            u_sk += 1; continue
+        j['v'][v - 1] = j['v'][v - 1].replace(old, new); u_ap += 1
+        json.dump(j, open(p, 'w'), ensure_ascii=False)
+GLOBAL = [('유프라테스', '유브라데')]
+g_n = 0
+for p in glob.glob(f'{B46}/*/*.json'):
+    s = open(p).read(); s2 = s
+    for a, b_ in GLOBAL: s2 = s2.replace(a, b_)
+    if s2 != s: open(p, 'w').write(s2); g_n += 1
+print('낱말 통일 반영', u_ap, '건너뜀', u_sk, '표기 일괄 바꾼 장', g_n)
 # ---------- 3) 앱 폴더 + mz + lin ----------
 os.makedirs(f'{APP}/bible/mz', exist_ok=True)
 MZ = {}

@@ -506,7 +506,7 @@ mark.hl.has-note { border-bottom: 1.5px dotted var(--acc); }
    데이터: ../bible/sm.json · ../bible/smt/*.json · ../bible/smv.json · ../bible/krv · ../bible/mz
    켈러 원고는 저장소에 없음 → 앱에 잠긴 채 들어 있는 kp.bin을 열쇠말로 열거나 고른 팩 파일을 이 폰에만 둠
    ===================================================================== */
-const VER = "1.0";
+const VER = "1.1";
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const RM = matchMedia("(prefers-reduced-motion: reduce)");
@@ -689,7 +689,7 @@ async function kpUnlock(pass) {
     const k = await kpKeyFrom(pass); let pack;
     try { pack = await kpOpen(k); } catch (e) { if (e && e.message === "net") throw e; throw new Error("bad"); }
     try { localStorage.setItem(KP_KEY, hex(k)); localStorage.setItem(KP_KEY + "v", KP_VER); } catch (e) {}
-    await kelMergeStore(pack); kel.msg = ""; toast(`켈러 설교 ${kel.list.length}편을 서가에 꽂았어요`);
+    if (!kelLoad(pack)) throw new Error("bad"); try { await kelDbDo("readwrite", st => st.put(pack, "main")); } catch (e) {} kel.msg = ""; toast(`켈러 설교 ${kel.list.length}편을 서가에 꽂았어요`);
   } catch (e) { kel.msg = e && e.message === "bad" ? "열쇠말이 맞지 않아요. 띄어쓰기 없이 다시 넣어 주세요." : "원고를 받지 못했어요. 인터넷 연결을 확인해 주세요."; }
   kel.busy = false; rerender();
 }
@@ -1517,7 +1517,8 @@ const off = { busy: false, msg: "" };
 function setHtml() {
   let h = `<h1 class="pg-h">설정</h1>`;
   h += `<section class="set-s"><h2>읽기 모양</h2><div class="pv thm" id="pv"><p><b>처음 사랑을 회복하라.</b> 주님은 수고와 인내를 다 아시면서도 처음 사랑을 버린 교회를 다시 부르십니다. 어디서 떨어졌는지 기억하고, 돌아오라고요.</p></div><div class="set-opts" id="setOpts">${optsHtml(true)}</div></section>`;
-  h += `<section class="set-s"><h2>팀 켈러 원고</h2><p>${kel.busy || kel.msg ? esc(kel.msg || "읽는 중…") : kel.ready ? `서가에 ${kel.list.length}편이 꽂혀 있어요. 앱에 잠긴 채로 들어 있어서, 이 폰에서 지워져도 다시 열면 저절로 꽂혀요.` : "원고는 앱 안에 잠긴 채로 들어 있어요. 열쇠말을 한 번만 넣으면 서가에 꽂혀요."}</p>${kel.ready ? "" : `<form id="kpF" class="lgf" style="margin:0 20px"><label class="field" style="margin:0"><span>열쇠말</span><input class="inp" id="kpPw" autocomplete="off" autocapitalize="none" spellcheck="false" required></label><button class="btn pri" type="submit"${kel.busy ? " disabled" : ""}>${kel.busy ? "여는 중…" : "원고 꽂기"}</button></form>`}<div class="row-btn"><label class="btn sm">팩 파일 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label>${kel.ready ? `<button type="button" class="btn sm warn" data-kdel="1">이 폰에서 지우기</button>` : ""}</div></section>`;
+  let kpHas = false; try { kpHas = !!localStorage.getItem(KP_KEY); } catch (e) {}
+  h += `<section class="set-s"><h2>팀 켈러 원고</h2><p>${kel.busy || kel.msg ? esc(kel.msg || "읽는 중…") : kel.ready && kpHas ? `서가에 ${kel.list.length}편이 꽂혀 있어요. 앱에 잠긴 채로 들어 있어서, 이 폰에서 지워져도 다시 열면 저절로 꽂혀요.` : kel.ready ? `지금 서가에 ${kel.list.length}편이 꽂혀 있어요. 아래에 열쇠말을 한 번 넣으면 앱에 든 다섯 권 70편으로 바뀌고, 지워져도 저절로 다시 꽂혀요.` : "원고는 앱 안에 잠긴 채로 들어 있어요. 열쇠말을 한 번만 넣으면 서가에 꽂혀요."}</p>${kpHas ? "" : `<form id="kpF" class="lgf" style="margin:0 20px"><label class="field" style="margin:0"><span>열쇠말</span><input class="inp" id="kpPw" autocomplete="off" autocapitalize="none" spellcheck="false" required></label><button class="btn pri" type="submit"${kel.busy ? " disabled" : ""}>${kel.busy ? "여는 중…" : "원고 꽂기"}</button></form>`}<div class="row-btn"><label class="btn sm">팩 파일 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label>${kel.ready ? `<button type="button" class="btn sm warn" data-kdel="1">이 폰에서 지우기</button>` : ""}</div></section>`;
   h += `<section class="set-s"><h2>인터넷 없이 읽기</h2><p>${esc(off.msg || "한 번 연 원고는 저절로 저장돼요. 비행기나 지하에서도 읽으려면 원고와 성경을 미리 모두 받아 두세요(약 18MB).")}</p><div class="row-btn"><button type="button" class="btn sm" data-offline="1"${off.busy ? " disabled" : ""}>${off.busy ? "받는 중…" : "원고와 성경 모두 받기"}</button><button type="button" class="btn sm" data-offline="2"${off.busy ? " disabled" : ""}>성경 해설 카드까지 (약 55MB)</button></div></section>`;
   h += `<section class="set-s"><h2>기록</h2><p>읽은 설교 ${readCount()}편 · 밑줄 ${S.hl.length}개 · 책갈피 ${S.marks.length}개</p><div class="row-btn"><button type="button" class="btn sm warn" data-reset="1">읽은 기록 지우기</button></div></section>`;
   h += `<section class="set-s"><h2>이 앱</h2><p>설교 서가 ${VER}. 곽준영키우기의 설교 원고집을 그대로 가져와 책처럼 읽도록 만들었어요. 아이폰 사파리에서 공유 → ‘홈 화면에 추가’를 누르면 앱처럼 열려요.</p></section>`;

@@ -70,3 +70,12 @@ defer 줄: `{"card":"…","k":0,"act":"defer","why":"…","plan":"<통일안: �
   - 쓰는 법은 `/home/claude/renewal/tqfix/ALT_BRIEF.md`의 fix 항목과 같아. 그 파일을 끝까지 읽어.
 - keep 중에서 해석이 갈려 그대로 둔 것은 note 줄도 써. 형식은 ALT_BRIEF.md의 note 형식이고, 위치는 `/home/claude/renewal/tqfix/alt_out/a9.jsonl`이야.
 - WebSearch·WebFetch는 이 절과 위 지침을 합쳐 20회 이하로 써.
+
+## 11-19 추가 (이번 묶음 q10~q29)
+- 기준서 경로는 `/home/claude/wip/dev/bguide.md` 야(위 1번 경로 대신).
+- 입력에 `kind`(오류·문맥·말투·표기)와 `sure`(확실·판단 필요), `alt`가 붙은 줄이 있어. 집필자의 판단일 뿐이니 **원어로 다시 검증**해서 네가 판정해.
+- **말투 제안**(합쇼체·해라체가 해요체 본문에 섞임): 기준서 3절 '관계별 말투' 표에 비춰 틀린 절만 fix. 한 제안이 가리키는 범위 안에서 8절까지 fix 줄을 내고, 더 많으면 defer에 범위를 적어. 말투만 바꾸는 fix는 krv·he·rd·gl을 빈 문자열로 두고 why에 "말투 통일(기준서 3절)"이라고 써.
+- **명백한 오타**(예: 이와→하와, 하가→하갈)는 그 장 전체에서 같은 오타를 찾아 절마다 fix.
+- 같은 제안이 여러 카드에서 겹쳐 나오면 처음 것만 판정하고, 나머지는 `{"card":…,"k":…,"act":"keep","why":"같은 제안을 (card,k)에서 판정"}`.
+- WebSearch·WebFetch는 쓰지 마(사전은 `python3 /home/claude/renewal/notes5/lex.py G0000 full`, 원어는 tqv.py). alt 연구는 원어 형태·사전으로 가능한 범위만, note 줄은 `/home/claude/renewal/tqfix/alt_out/aN.jsonl`(N=네 묶음 번호).
+- 해석이 갈려 사용자 결정이 필요한 중요한 것(교리·사본·핵심 낱말)은 keep으로 두되 why 맨 앞에 "[사용자 판단]"을 붙여.

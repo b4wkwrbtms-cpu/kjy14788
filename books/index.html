@@ -506,7 +506,7 @@ mark.hl.has-note { border-bottom: 1.5px dotted var(--acc); }
    데이터: ../bible/sm.json · ../bible/smt/*.json · ../bible/smv.json · ../bible/krv · ../bible/mz
    켈러 원고는 저장소에 없음 → 앱에 잠긴 채 들어 있는 kp.bin을 열쇠말로 열거나 고른 팩 파일을 이 폰에만 둠
    ===================================================================== */
-const VER = "1.1";
+const VER = "1.2";
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const RM = matchMedia("(prefers-reduced-motion: reduce)");
@@ -666,18 +666,18 @@ async function kelInit() {
 }
 
 /* ---------- 잠긴 켈러 원고 (앱에 들어 있는 kp.bin · 열쇠말로만 열림) ---------- */
-const KP_KEY = "sbk-kp1", KP_VER = "2";   // KP_VER: 앱에 든 잠긴 원고가 바뀌면 올림 → 폰에 있는 옛 묶음을 새것으로 바꿈
+const KP_KEY = "sbk-kp1", KP_VER = "3";   // KP_VER: 앱에 든 잠긴 원고가 바뀌면 올림 → 폰에 있는 옛 묶음을 새것으로 바꿈
 function hex(u) { return [...u].map(x => x.toString(16).padStart(2, "0")).join(""); }
 function unhex(h) { const u = new Uint8Array(h.length / 2); for (let i = 0; i < u.length; i++) u[i] = parseInt(h.substr(i * 2, 2), 16); return u; }
 async function kpOpen(rawKey) {
-  const r = await fetch("kp.bin"); if (!r.ok) throw new Error("net");
+  const r = await fetch("kp.bin?v=" + KP_VER, { cache: "no-store" }); if (!r.ok) throw new Error("net");
   const buf = new Uint8Array(await r.arrayBuffer());
   const key = await crypto.subtle.importKey("raw", rawKey, "AES-GCM", false, ["decrypt"]);
   const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(16, 28) }, key, buf.slice(28));
   return JSON.parse(new TextDecoder().decode(pt));
 }
 async function kpKeyFrom(pass) {
-  const r = await fetch("kp.bin"); if (!r.ok) throw new Error("net");
+  const r = await fetch("kp.bin?v=" + KP_VER, { cache: "no-store" }); if (!r.ok) throw new Error("net");
   const salt = new Uint8Array(await r.arrayBuffer()).slice(0, 16);
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveBits"]);
   return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: 600000 }, base, 256));

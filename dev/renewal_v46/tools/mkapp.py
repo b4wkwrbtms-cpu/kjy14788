@@ -186,6 +186,29 @@ for p in glob.glob(f'{B46}/*/*.json'):
     for a, b_ in GLOBAL: s2 = s2.replace(a, b_)
     if s2 != s: open(p, 'w').write(s2); g_n += 1
 print('낱말 통일 반영', u_ap, '건너뜀', u_sk, '표기 일괄 바꾼 장', g_n)
+# ---------- 2g) 11-20 3차 검토(rev3/out: 글 흐름 — 매달린 문장·번역투·토막·연결·지시어) — 검토 당시 본문(was)이 그대로일 때만 덮음 ----------
+r3_ap = r3_sk = r3_h = 0
+for f in sorted(glob.glob(f'{R0}/rev3/out/*.jsonl')):
+    for l in open(f):
+        l = l.strip()
+        if not l: continue
+        try: o = json.loads(l); b, c = int(o.get('b', 0)), int(o.get('c', 0))
+        except Exception: r3_sk += 1; continue
+        p = f'{B46}/{b:02d}/{c:03d}.json'
+        if not os.path.exists(p): r3_sk += 1; continue
+        j = json.load(open(p))
+        if o.get('h') is not None and isinstance(o['h'], list) and not o.get('v'):
+            j['h'] = [[int(x[0]), str(x[1])] for x in o['h'] if x and str(x[1]).strip()]; r3_h += 1
+        else:
+            try: v = int(o.get('v', 0))
+            except Exception: r3_sk += 1; continue
+            t2 = o.get('fix')
+            if not (1 <= v <= len(j['v'])) or not isinstance(t2, str) or not t2.strip() or '"' in t2: r3_sk += 1; continue
+            if j['v'][v - 1] == t2: continue
+            if j['v'][v - 1] != o.get('was'): r3_sk += 1; continue
+            j['v'][v - 1] = t2; r3_ap += 1
+        json.dump(j, open(p, 'w'), ensure_ascii=False)
+print('3차 흐름 검토 반영', r3_ap, '소제목', r3_h, '건너뜀', r3_sk)
 # ---------- 3) 앱 폴더 + mz + lin ----------
 os.makedirs(f'{APP}/bible/mz', exist_ok=True)
 MZ = {}

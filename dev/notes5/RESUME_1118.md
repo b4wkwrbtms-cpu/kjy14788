@@ -48,3 +48,10 @@
 - 환경 준비(작업 공간이 초기화되면): payload.json.gz gunzip → mkapp 실행하면 bout46 생김. 켈러 색인은 /home/claude/private/keller(저장소 밖).
 - 사용자 판단 목록: notes5/USER_JUDGE_1119.md (통일안 20 + 절별 131) + notes5/DECISIONS.md. 답이 없으면 지금 본문 유지.
 - 남은 것: 카드의 책 이름 없는 장:절 표기 일괄 수정, src URL 5곳, 최종 점검(linkaudit), 배포 1회(곽준영키우기+설교 서가 books-wip 병합, 유엘이키우기 export_yuel.py), 배포 뒤 카드 없는 148장·얇은 책 보강.
+
+## 11-20 04시 56a 배포 끝
+- main 1a5893d·8de47b7(곽준영키우기 X_VER 56a, sw yageun-v95, XB 12~65 전부, books-wip 병합 sbk-app-5), yuel-kiugi mz y13. 게임 본체는 건드리지 않고 bible/만 갱신.
+- 들어간 것: tqfix q1~q29 반영 855, rev2(2차 전면 검토) 800 + 소제목 3, 낱말 통일 U01~U27 558(tqfix2/BRIEF.md), 유프라테스→유브라데, 해설 보충 253장(notes5/fill_plan.json, 카드 없는 장 0), 밑줄 낱말 보정 97장, 절 주소 책 이름 보충 10,762곳(notes5/fixbare.py), mkapp 99단계(_xclean·_xfill).
+- 빌드: python3 tools/mkapp.py (루트 mkapp.py는 같은 내용 복사본). 배포: app/bible의 mz·nt·x·he·smt·*.json을 main/bible로 복사 + X_VER·sw 올림. 유엘이는 같은 복사 + y 번호 3곳.
+- 시험: /opt/pw-browsers/chromium-1243/chrome-linux64/chrome, dbg.html(`const $` 뒤 window.__ev) — 읽기 화면·밑줄·해설 열림, JS 오류 0.
+- 남은 선택 과제: 사용자 판단 131건(notes5/USER_JUDGE_1119.md, 지금 본문 유지), 새 카드 tq 약 150건 미검증, 요 4장 '예배' 유지, 이와→하와·하가→하갈 확인 대기, 강화 안 한 카드 50장, 독일성서공회 스캔(받으면 비공개로).

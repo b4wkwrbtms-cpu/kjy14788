@@ -504,7 +504,7 @@ mark.hl.has-note { border-bottom: 1.5px dotted var(--acc); }
 /* =====================================================================
    설교 서가 — 곽준영키우기의 설교 원고집을 종이책처럼 읽는 앱 (books/)
    데이터: ../bible/sm.json · ../bible/smt/*.json · ../bible/smv.json · ../bible/krv · ../bible/mz
-   켈러 원고는 저장소에 없음 → 고른 팩 파일 또는 곽준영키우기 계정에서 받아 이 폰에만 둠
+   켈러 원고는 저장소에 없음 → 앱에 잠긴 채 들어 있는 kp.bin을 열쇠말로 열거나 고른 팩 파일을 이 폰에만 둠
    ===================================================================== */
 const VER = "1.0";
 const $ = id => document.getElementById(id);
@@ -631,19 +631,6 @@ function kelMentionsHtml(L, max) {
   if (!L.length) return "";
   return `<p class="vs-h" style="margin-top:1.4em">팀 켈러가 이 말씀을 다룬 곳</p>` + L.slice(0, max || 6).map(m => { const s = kel.by[m.sid]; return `<button type="button" class="sh-link" data-open="${esc(m.sid)}@${esc(m.pi)}">${esc(s ? s.title : "")}<small>${esc(kelSnip(m.t))}</small></button>`; }).join("") + (L.length > (max || 6) ? `<p class="sh-more">이 밖에 ${L.length - (max || 6)}곳 더 있어요.</p>` : "") + `<p class="n-cap">켈러 원고는 이 폰과 내 계정에만 있는 개인 학습본이에요.</p>`;
 }
-/* 사파리에서 게임이 같은 주소에 저장해 둔 팩이 있으면 읽기만 함 (없으면 만들지 않음) */
-async function kelFromGame() {
-  try {
-    if (!indexedDB.databases) return null;
-    const L = await indexedDB.databases(); if (!L.some(d => d.name === "kjy_keller")) return null;
-    return await new Promise(res => {
-      const r = indexedDB.open("kjy_keller");
-      r.onupgradeneeded = () => { try { r.transaction.abort(); } catch (e) {} };
-      r.onsuccess = () => { const db = r.result; if (!db.objectStoreNames.contains("pack")) { db.close(); res(null); return; } const q = db.transaction("pack").objectStore("pack").get("main"); q.onsuccess = () => { res(q.result || null); db.close(); }; q.onerror = () => { res(null); db.close(); }; };
-      r.onerror = () => res(null); r.onblocked = () => res(null);
-    });
-  } catch (e) { return null; }
-}
 async function kelMergeStore(pack) {
   try {
     const old = await kelDbDo("readonly", st => st.get("main"));
@@ -669,64 +656,47 @@ async function kelImport(file) {
   } catch (e) { kel.msg = "불러오지 못했어요: " + ((e && e.message) || e); }
   kel.busy = false; rerender();
 }
-async function kelDelete() { try { await kelDbDo("readwrite", st => st.delete("main")); } catch (e) {} kel.ready = false; kel.list = []; kel.by = {}; toast("켈러 원고를 이 폰에서 지웠어요"); rerender(); }
+async function kelDelete() { try { await kelDbDo("readwrite", st => st.delete("main")); } catch (e) {} try { localStorage.removeItem(KP_KEY); } catch (e) {} kel.ready = false; kel.list = []; kel.by = {}; toast("켈러 원고를 이 폰에서 지웠어요"); rerender(); }
 async function kelInit() {
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
   try { const p = await kelDbDo("readonly", st => st.get("main")); if (p && kelLoad(p)) return; } catch (e) {}
-  const g = await kelFromGame(); if (g && kelLoad(g)) { try { await kelDbDo("readwrite", st => st.put(g, "main")); } catch (e) {} }
+  await kpAuto();
 }
 
-/* ---------- 곽준영키우기 계정 (켈러 팩 받기 · 읽은 기록 맞추기) ---------- */
-const CLOUD = { url: "https://ownarhjgryafrgoouirs.supabase.co", key: "sb_publishable_MNcnBoOldNm0FN0r9G98aA_OB_gS87n" };
-const CLOUD_ERR = { bad_id: "아이디는 2~20자, 한글·영문 소문자·숫자·밑줄(_)만 돼요.", bad_pw: "비밀번호는 4자 이상이에요.", wrong: "아이디나 비밀번호가 맞지 않아요. 곽준영키우기에서 쓰는 것을 넣어 주세요.", locked: "여러 번 틀려서 10분 동안 잠겼어요. 잠시 뒤 다시 해 주세요.", auth: "로그인이 풀렸어요. 다시 로그인해 주세요." };
-async function rpc(fn, args) {
-  const h = { "Content-Type": "application/json", apikey: CLOUD.key };
-  const r = await fetch(`${CLOUD.url}/rest/v1/rpc/${fn}`, { method: "POST", headers: h, body: JSON.stringify(args) });
-  if (!r.ok) throw new Error("HTTP " + r.status);
-  return r.json();
+/* ---------- 잠긴 켈러 원고 (앱에 들어 있는 kp.bin · 열쇠말로만 열림) ---------- */
+const KP_KEY = "sbk-kp1";
+function hex(u) { return [...u].map(x => x.toString(16).padStart(2, "0")).join(""); }
+function unhex(h) { const u = new Uint8Array(h.length / 2); for (let i = 0; i < u.length; i++) u[i] = parseInt(h.substr(i * 2, 2), 16); return u; }
+async function kpOpen(rawKey) {
+  const r = await fetch("kp.bin"); if (!r.ok) throw new Error("net");
+  const buf = new Uint8Array(await r.arrayBuffer());
+  const key = await crypto.subtle.importKey("raw", rawKey, "AES-GCM", false, ["decrypt"]);
+  const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(16, 28) }, key, buf.slice(28));
+  return JSON.parse(new TextDecoder().decode(pt));
 }
-const acct = { busy: false, err: "", msg: "" };
-async function login(id, pw) {
-  if (acct.busy) return; acct.busy = true; acct.err = ""; acct.msg = ""; rerender();
+async function kpKeyFrom(pass) {
+  const r = await fetch("kp.bin"); if (!r.ok) throw new Error("net");
+  const salt = new Uint8Array(await r.arrayBuffer()).slice(0, 16);
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveBits"]);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: 600000 }, base, 256));
+}
+async function kpUnlock(pass) {
+  if (kel.busy) return; pass = (pass || "").trim().replace(/\s+/g, ""); if (!pass) return;
+  kel.busy = true; kel.msg = "원고를 여는 중…"; rerender();
   try {
-    const r = await rpc("kjy_login", { p_id: id, p_pw: pw });
-    if (!r || !r.ok) acct.err = CLOUD_ERR[r && r.err] || "잠시 뒤 다시 해 주세요.";
-    else { S.acct = { id: r.id || id, token: r.token }; save(false); acct.msg = `${S.acct.id} 계정으로 로그인했어요.`; await kelPull(true); await syncPull(); }
-  } catch (e) { acct.err = "서버에 연결하지 못했어요. 인터넷 연결을 확인해 주세요."; }
-  acct.busy = false; rerender();
-}
-async function logout() { const a = S.acct; if (!a) return; try { await rpc("kjy_logout", { p_id: a.id, p_token: a.token }); } catch (e) {} S.acct = null; save(false); acct.msg = "로그아웃했어요. 이 폰에 받은 원고와 기록은 그대로 있어요."; rerender(); }
-function authLost() { S.acct = null; save(false); acct.err = CLOUD_ERR.auth; rerender(); }
-async function packGet(key) {
-  const a = S.acct; if (!a) return null;
-  const r0 = await rpc("kjy_pack_get", { p_id: a.id, p_token: a.token, p_key: key, p_part: 0 });
-  if (r0 && r0.err === "auth") { authLost(); return null; }
-  if (!r0 || !r0.ok || r0.none || r0.have !== r0.total) return null;
-  const parts = [r0.data];
-  for (let i = 1; i < r0.total; i++) { const r = await rpc("kjy_pack_get", { p_id: a.id, p_token: a.token, p_key: key, p_part: i }); if (!r || !r.ok) return null; parts.push(r.data); }
-  return parts.join("");
-}
-async function kelPull(force) {
-  if (!S.acct || (kel.ready && !force) || kel.busy) return;
-  kel.busy = true; kel.msg = "계정에서 켈러 원고를 받는 중…"; rerender();
-  try {
-    const s = await packGet("keller");
-    if (s) { const kept = await kelMergeStore(JSON.parse(s)); kel.msg = ""; toast(`켈러 설교 ${kel.list.length}편을 받아 서가에 꽂았어요${kept ? "" : " (이 폰 저장은 못 했어요)"}`); }
-    else kel.msg = kel.ready ? "" : "이 계정에는 켈러 원고가 아직 없어요. 곽준영키우기 설정에서 팩을 한 번 불러오면 여기서도 받아요.";
-  } catch (e) { kel.msg = "켈러 원고를 받지 못했어요. 인터넷 연결을 확인해 주세요."; }
+    const k = await kpKeyFrom(pass); let pack;
+    try { pack = await kpOpen(k); } catch (e) { if (e && e.message === "net") throw e; throw new Error("bad"); }
+    try { localStorage.setItem(KP_KEY, hex(k)); } catch (e) {}
+    await kelMergeStore(pack); kel.msg = ""; toast(`켈러 설교 ${kel.list.length}편을 서가에 꽂았어요`);
+  } catch (e) { kel.msg = e && e.message === "bad" ? "열쇠말이 맞지 않아요. 띄어쓰기 없이 다시 넣어 주세요." : "원고를 받지 못했어요. 인터넷 연결을 확인해 주세요."; }
   kel.busy = false; rerender();
 }
-/* 읽은 기록 맞추기: 같은 계정의 비공개 칸 "books" */
-let syncT = 0, syncOff = false;
-function syncLater() { if (!S.acct || syncOff) return; clearTimeout(syncT); syncT = setTimeout(syncPush, 6000); }
-async function syncPush() {
-  const a = S.acct; if (!a || syncOff) return;
-  const data = JSON.stringify({ v: 1, t: S.t, pos: S.pos, done: S.done, marks: S.marks, hl: S.hl, gone: S.gone, last: S.last });
-  try { const r = await rpc("kjy_pack_put", { p_id: a.id, p_token: a.token, p_key: "books", p_part: 0, p_total: 1, p_ver: "b1", p_data: data }); if (r && r.err === "auth") authLost(); else if (!r || !r.ok) syncOff = true; } catch (e) {}
+async function kpAuto() {
+  let h = null; try { h = localStorage.getItem(KP_KEY); } catch (e) {}
+  if (!h) return false;
+  try { const pack = await kpOpen(unhex(h)); if (!kelLoad(pack)) return false; try { await kelDbDo("readwrite", st => st.put(pack, "main")); } catch (e) {} return true; } catch (e) { return false; }
 }
-async function syncPull() {
-  if (!S.acct) return;
-  try { const s = await packGet("books"); if (s) { mergeRec(JSON.parse(s)); save(false); rerender(); } } catch (e) {}
-}
+function syncLater() {}
 function mergeRec(o) {
   if (!o || typeof o !== "object") return;
   Object.assign(S.gone, o.gone || {});
@@ -792,7 +762,7 @@ function homeHtml() {
   h += `<section class="shelf-wrap" aria-labelledby="shB"><h2 class="shelf-t" id="shB">우리가 만든 성경 · 20대 말투</h2><div class="shelf" role="list">${[["ot", "구약 성경", "39권", "#3a2e28", 0, 39], ["nt", "신약 성경", "27권", "#263a33", 39, 66]].map(([k, t, n, cl, a, z], i) => { let all = 0, rd = 0; for (let b = a; b < z; b++) { all += BIB[b][1]; rd += bibBookRead(b); } const L = S.last && bibParse(S.last.sid), here = L && L.b >= a && L.b < z; return `<a class="spine" role="listitem" href="#/bible/${k}" style="--c:${cl};--w:${k === "ot" ? 92 : 70}px;--h:${k === "ot" ? 300 : 282}px" aria-label="${t}, ${n}, ${all}장 중 ${rd}장 읽음">${here ? `<i class="sp-rib" aria-hidden="true"></i>` : ""}<span class="sp-band" aria-hidden="true"></span><span class="sp-t" aria-hidden="true">${t}</span><span class="sp-w" aria-hidden="true">${n}</span>${rd ? `<span class="sp-done" aria-hidden="true">${rd}/${all}</span>` : ""}<span class="sp-band" aria-hidden="true"></span></a>`; }).join("")}</div><div class="plank" aria-hidden="true"></div></section>`;
   const kb = allBooks().filter(b => b.kel);
   h += `<section class="shelf-wrap" aria-labelledby="sh2"><h2 class="shelf-t" id="sh2">팀 켈러 설교 원고</h2><div class="shelf" role="list">${kb.length ? kb.map((b, i) => spineHtml(b, i + 2)).join("") : `<a class="spine slot" role="listitem" href="#/set" style="--w:56px;--h:190px"><span class="sp-t">켈러 원고 꽂기</span></a>`}</div><div class="plank" aria-hidden="true"></div></section>`;
-  if (!kb.length) h += `<p class="note">켈러 원고는 공개하지 않는 개인 학습본이라 이 앱에 들어 있지 않아요. 설정에서 팩 파일을 고르거나 곽준영키우기 계정으로 받아 오면 이 폰에만 꽂혀요.</p>`;
+  if (!kb.length) h += `<p class="note">켈러 원고는 공개하지 않는 개인 학습본이라 앱 안에 잠긴 채로 들어 있어요. 설정에서 열쇠말을 한 번 넣으면 서가에 꽂혀요.</p>`;
   return h;
 }
 
@@ -1116,7 +1086,7 @@ function flash(el) { el.classList.remove("flash"); void el.offsetWidth; el.class
   });
   let rsT = 0; window.addEventListener("resize", () => { clearTimeout(rsT); rsT = setTimeout(relayout, 160); });
   $("pgc").addEventListener("toggle", () => { if (paged()) { countPages(); status(); } }, true);
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") { savePos(); syncPush(); } else if (!$("reader").hidden) wakeOn(); });
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") { savePos(); } else if (!$("reader").hidden) wakeOn(); });
 })();
 function backFromReader() { savePos(); const b = R.bookId && /^bib-/.test(R.bookId) ? "bc/" + R.bookId.slice(4) : R.bookId && "b/" + R.bookId; if (history.length > 1 && sessionStorage.getItem("sbk-in")) history.back(); else go(b ? `#/${b}` : "#/"); }
 
@@ -1518,7 +1488,7 @@ async function runFind(q, quiet) {
   findState.res = out; findState.busy = false;
   o = $("findOut"); if (o) o.innerHTML = findOutHtml();
 }
-document.addEventListener("submit", e => { if (e.target && e.target.id === "findF") { e.preventDefault(); const q = $("findQ").value; $("findQ").blur(); runFind(q); } if (e.target && e.target.id === "lgF") { e.preventDefault(); login(($("lgId").value || "").trim(), $("lgPw").value || ""); } });
+document.addEventListener("submit", e => { if (e.target && e.target.id === "findF") { e.preventDefault(); const q = $("findQ").value; $("findQ").blur(); runFind(q); } if (e.target && e.target.id === "kpF") { e.preventDefault(); kpUnlock($("kpPw").value || ""); } });
 
 /* ---------- 밑줄 · 책갈피 모음 ---------- */
 function marksHtml(tab) {
@@ -1536,8 +1506,6 @@ document.addEventListener("click", e => {
   const sc = t.closest("[data-scope]"); if (sc) { findState.scope = sc.dataset.scope; findState.res = null; rerender(); if (findState.q) runFind(findState.q, true); return; }
   const md = t.closest("[data-mdel]"); if (md) { const [k, id] = md.dataset.mdel.split("|"), arr = k === "hl" ? S.hl : S.marks, i = arr.findIndex(x => x.id === id); if (i >= 0) { const x = arr.splice(i, 1)[0]; S.gone[x.id] = Date.now(); save(); rerender(); toast("지웠어요", { label: "되돌리기", run: () => { delete S.gone[x.id]; arr.push(x); save(); rerender(); } }); } return; }
   if (t.closest("[data-kdel]")) { if (t.closest("[data-kdel]").dataset.kdel === "1") { t.closest("[data-kdel]").dataset.kdel = "2"; t.closest("[data-kdel]").textContent = "한 번 더 누르면 지워요"; return; } kelDelete(); return; }
-  if (t.closest("[data-kpull]")) { kelPull(true); return; }
-  if (t.closest("[data-logout]")) { logout(); return; }
   const ofb = t.closest("[data-offline]"); if (ofb) { offlineAll(ofb.dataset.offline === "2"); return; }
   const rs = t.closest("[data-reset]"); if (rs) { if (rs.dataset.reset === "1") { rs.dataset.reset = "2"; rs.textContent = "한 번 더 누르면 지워요"; return; } S.pos = {}; S.done = {}; S.last = null; save(); toast("읽은 기록을 지웠어요. 밑줄과 책갈피는 그대로 있어요."); rerender(); return; }
 });
@@ -1547,12 +1515,7 @@ const off = { busy: false, msg: "" };
 function setHtml() {
   let h = `<h1 class="pg-h">설정</h1>`;
   h += `<section class="set-s"><h2>읽기 모양</h2><div class="pv thm" id="pv"><p><b>처음 사랑을 회복하라.</b> 주님은 수고와 인내를 다 아시면서도 처음 사랑을 버린 교회를 다시 부르십니다. 어디서 떨어졌는지 기억하고, 돌아오라고요.</p></div><div class="set-opts" id="setOpts">${optsHtml(true)}</div></section>`;
-  h += `<section class="set-s"><h2>팀 켈러 원고</h2><p>${kel.busy || kel.msg ? esc(kel.msg || "읽는 중…") : kel.ready ? `서가에 ${kel.list.length}편이 꽂혀 있어요. 이 폰에만 저장돼 있어요.` : "아직 없어요. 받은 켈러 읽기 팩(.json)을 고르거나, 곽준영키우기 계정으로 로그인해 받아 오세요."}</p><div class="row-btn"><label class="btn sm${kel.ready ? "" : " pri"}">팩 파일 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label>${S.acct ? `<button type="button" class="btn sm" data-kpull="1">계정에서 다시 받기</button>` : ""}${kel.ready ? `<button type="button" class="btn sm warn" data-kdel="1">이 폰에서 지우기</button>` : ""}</div></section>`;
-  h += `<section class="set-s"><h2>곽준영키우기 계정</h2>`;
-  if (S.acct) h += `<p><b style="color:var(--lt)">${esc(S.acct.id)}</b>로 로그인했어요. 켈러 원고를 받고, 읽은 자리·밑줄·책갈피를 다른 폰과 맞춰요. 게임 기록은 건드리지 않아요.</p><div class="row-btn"><button type="button" class="btn sm" data-logout="1">로그아웃</button></div>`;
-  else h += `<p>게임에서 쓰는 아이디로 로그인하면 켈러 원고를 받아 오고, 읽은 기록을 다른 폰과 맞춰요. 게임 기록은 건드리지 않아요.</p><form id="lgF" class="lgf" style="margin:0 20px"><label class="field" style="margin:0"><span>아이디</span><input class="inp" id="lgId" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required></label><label class="field" style="margin:0"><span>비밀번호</span><input class="inp" id="lgPw" name="password" type="password" autocomplete="current-password" required></label><button class="btn pri" type="submit"${acct.busy ? " disabled" : ""}>${acct.busy ? "로그인하는 중…" : "로그인"}</button></form>`;
-  if (acct.err) h += `<p class="err" role="alert">${esc(acct.err)}</p>`; else if (acct.msg) h += `<p class="err ok" role="status">${esc(acct.msg)}</p>`;
-  h += `</section>`;
+  h += `<section class="set-s"><h2>팀 켈러 원고</h2><p>${kel.busy || kel.msg ? esc(kel.msg || "읽는 중…") : kel.ready ? `서가에 ${kel.list.length}편이 꽂혀 있어요. 앱에 잠긴 채로 들어 있어서, 이 폰에서 지워져도 다시 열면 저절로 꽂혀요.` : "원고는 앱 안에 잠긴 채로 들어 있어요. 열쇠말을 한 번만 넣으면 서가에 꽂혀요."}</p>${kel.ready ? "" : `<form id="kpF" class="lgf" style="margin:0 20px"><label class="field" style="margin:0"><span>열쇠말</span><input class="inp" id="kpPw" autocomplete="off" autocapitalize="none" spellcheck="false" required></label><button class="btn pri" type="submit"${kel.busy ? " disabled" : ""}>${kel.busy ? "여는 중…" : "원고 꽂기"}</button></form>`}<div class="row-btn"><label class="btn sm">팩 파일 고르기<input type="file" id="kelFile" accept=".json,.gz,application/json" hidden></label>${kel.ready ? `<button type="button" class="btn sm warn" data-kdel="1">이 폰에서 지우기</button>` : ""}</div></section>`;
   h += `<section class="set-s"><h2>인터넷 없이 읽기</h2><p>${esc(off.msg || "한 번 연 원고는 저절로 저장돼요. 비행기나 지하에서도 읽으려면 원고와 성경을 미리 모두 받아 두세요(약 18MB).")}</p><div class="row-btn"><button type="button" class="btn sm" data-offline="1"${off.busy ? " disabled" : ""}>${off.busy ? "받는 중…" : "원고와 성경 모두 받기"}</button><button type="button" class="btn sm" data-offline="2"${off.busy ? " disabled" : ""}>성경 해설 카드까지 (약 55MB)</button></div></section>`;
   h += `<section class="set-s"><h2>기록</h2><p>읽은 설교 ${readCount()}편 · 밑줄 ${S.hl.length}개 · 책갈피 ${S.marks.length}개</p><div class="row-btn"><button type="button" class="btn sm warn" data-reset="1">읽은 기록 지우기</button></div></section>`;
   h += `<section class="set-s"><h2>이 앱</h2><p>설교 서가 ${VER}. 곽준영키우기의 설교 원고집을 그대로 가져와 책처럼 읽도록 만들었어요. 아이폰 사파리에서 공유 → ‘홈 화면에 추가’를 누르면 앱처럼 열려요.</p></section>`;
@@ -1581,7 +1544,7 @@ window.addEventListener("hashchange", () => { sessionStorage.setItem("sbk-in", "
   $("view").innerHTML = `<header class="lib-h"><h1>설교 서가</h1></header><p class="note">서가를 정리하는 중…</p>`;
   await Promise.all([loadBase(), kelInit()]);
   route();
-  if (S.acct) { kelPull(false); syncPull(); }
+  if (S.acct) { S.acct = null; save(false); }
   if ("serviceWorker" in navigator && location.protocol === "https:") { try { navigator.serviceWorker.register("sw.js"); } catch (e) {} }
 })();
 </script>

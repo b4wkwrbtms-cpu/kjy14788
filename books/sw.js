@@ -1,5 +1,5 @@
 // 설교 서가 — 오프라인에서도 열리도록 앱과 읽은 원고를 저장해 둠
-const V = "sbk-app-5";
+const V = "sbk-app-6";
 const DATA = "sbk-data-1";   // 원고·성경·글꼴은 앱을 업데이트해도 지우지 않음
 const SHELL = ["./", "index.html", "manifest.webmanifest", "catalog.json", "icon-180.png", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });

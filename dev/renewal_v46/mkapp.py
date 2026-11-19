@@ -644,3 +644,48 @@ print('fx memos 13~66', nfx)
 sys.path.insert(0, f'{R0}/names')
 import namefix
 namefix.run()
+
+# ---------- 99) 11-20: 다른 책 카드로 이어지는 밑줄(연결 카드·also) — 그 카드를 이 책 nt에도 실어 준다(앱은 읽는 책의 nt에서만 카드를 찾음) ----------
+def _xfill(root):
+    import json as _j, os as _o
+    allc = {}
+    for b in range(1, 67):
+        p = f'{root}/nt/{b:02d}.json'
+        if _o.path.exists(p):
+            for k, v in _j.load(open(p)).items(): allc.setdefault(k, v)
+    n = miss = 0
+    for b in range(1, 67):
+        px, pn = f'{root}/x/{b:02d}.json', f'{root}/nt/{b:02d}.json'
+        if not _o.path.exists(px): continue
+        nt = _j.load(open(pn)) if _o.path.exists(pn) else {}
+        ch = False
+        for c, xc in _j.load(open(px)).items():
+            for v, ls in (xc.get('ln') or {}).items():
+                for l in ls:
+                    i = l[0]
+                    if i in nt or str(i).startswith(('p:', 'g:', 's:')): continue
+                    if i in allc: nt[i] = allc[i]; n += 1; ch = True
+                    else: miss += 1
+        if ch: _j.dump(nt, open(pn, 'w'), ensure_ascii=False)
+    print('다른 책 카드 실어 주기', n, '끝내 없는 카드', miss)
+def _xclean(root):
+    import json as _j, os as _o
+    n = 0
+    for b in range(1, 67):
+        px, pm = f'{root}/x/{b:02d}.json', f'{root}/mz/{b:02d}.json'
+        if not _o.path.exists(px) or not _o.path.exists(pm): continue
+        X = _j.load(open(px)); M = _j.load(open(pm)); ch = False
+        for c, xc in X.items():
+            ln = xc.get('ln') or {}
+            for v, ls in list(ln.items()):
+                try: t = M[int(c) - 1]['v'][int(v) - 1].replace('\n', ' ')
+                except Exception: continue
+                keep = [l for l in ls if str(l[1]) in t]
+                if len(keep) != len(ls):
+                    n += len(ls) - len(keep); ch = True
+                    if keep: ln[v] = keep
+                    else: del ln[v]
+        if ch: _j.dump(X, open(px, 'w'), ensure_ascii=False, separators=(',', ':'))
+    print('본문에 없는 옛 밑줄 지움', n)
+_xclean(f'{R0}/app/bible')
+_xfill(f'{R0}/app/bible')

@@ -86,6 +86,59 @@ for f in sorted(glob.glob(f'{R0}/rev/out/*.jsonl')):
         json.dump(j, open(p, 'w'), ensure_ascii=False)
 print('review fixes applied', rv_applied, 'headings', rv_h, 'skipped', rv_skipped)
 
+# ---------- 2d) 11-06 해설 카드 tq 제안 원어 검증 반영 (tqfix/out/*.jsonl) — 고친 절마다 '개역한글 → 원어 → 고친 표현' 메모 ----------
+tq_ap = tq_already = tq_bad = 0; tq_log = []
+for f in sorted(glob.glob(f'{R0}/tqfix/out/*.jsonl')):
+    for l in open(f):
+        l = l.strip()
+        if not l: continue
+        try: o = json.loads(l)
+        except Exception: tq_bad += 1; continue
+        if o.get('act') == 'head':
+            p = f'{B46}/{int(o["b"]):02d}/{int(o["c"]):03d}.json'; j = json.load(open(p))
+            j['h'] = [[x[0], x[1].replace(o['old'], o['new'])] for x in j.get('h', [])]; json.dump(j, open(p, 'w'), ensure_ascii=False); continue
+        if o.get('act') not in ('fix', 'done'): continue
+        try: b, c, v = int(o['b']), int(o['c']), int(o['v'])
+        except Exception: tq_bad += 1; continue
+        old, new = o.get('old') or '', o.get('new') or ''
+        p = f'{B46}/{b:02d}/{c:03d}.json'
+        if not new or not os.path.exists(p) or '"' in new: tq_bad += 1; tq_log.append(['bad', o]); continue
+        j = json.load(open(p))
+        if not (1 <= v <= len(j['v'])): tq_bad += 1; tq_log.append(['bad', o]); continue
+        t = j['v'][v - 1]
+        if o['act'] == 'fix' and old and t.count(old) == 1 and new not in t.replace(old, ''):
+            j['v'][v - 1] = t.replace(old, new); json.dump(j, open(p, 'w'), ensure_ascii=False); tq_ap += 1
+        elif new in t: tq_already += 1
+        else: tq_bad += 1; tq_log.append(['nomatch', o]); continue
+        if any(m.get('fx') and m.get('now') == new.replace('\n', ' ') for m in memos[(b, c, v)]): continue
+        memos[(b, c, v)].append({'he': o.get('he', ''), 'rd': o.get('rd', ''), 'm': '원어 수정', 'fx': 1,
+            'krv': o.get('krv', ''), 'gl': o.get('gl', ''), 'was': old.replace('\n', ' '), 'now': new.replace('\n', ' '), 't': o.get('why', ''), 'alt': o.get('alt') or [], 'pick': o.get('pick', '')})
+        tq_log.append(['ok', o])
+json.dump(tq_log, open(f'{R0}/tqfix/applied.json', 'w'), ensure_ascii=False, indent=0)
+# 원어로 가능한 해석(alt_out): fix 메모에 alt·pick 붙이기 + 그대로 둔 절의 해석 메모(ix)
+ALT = {}
+for f in sorted(glob.glob(f'{R0}/tqfix/alt_out/*.jsonl')):
+    for l in open(f):
+        try: o = json.loads(l)
+        except Exception: continue
+        try: key = (int(o['b']), int(o['c']), int(o['v']))
+        except Exception: continue
+        if o.get('kind') == 'fix': ALT[key + ((o.get('new') or '').replace('\n', ' '),)] = o
+        elif o.get('kind') == 'note' and o.get('alt'):
+            if any(m.get('ix') and m.get('he') == o.get('he') for m in memos[key]): continue
+            memos[key].append({'he': o.get('he', ''), 'rd': o.get('rd', ''), 'm': '원어 해석', 'ix': 1, 'gl': o.get('gl', ''), 'krv': o.get('krv', ''),
+                'now': o.get('now', ''), 'alt': o['alt'], 'pick': o.get('pick', ''), 't': ''})
+nalt = 0
+for key, ms in memos.items():
+    for m in ms:
+        if m.get('fx'):
+            o = ALT.get(key + (m['now'],))
+            if o is None:   # tqfix/out 줄 안에 alt가 들어 있는 경우(q9 이후)
+                continue
+            m['alt'] = o.get('alt') or []; m['pick'] = o.get('pick', ''); nalt += 1
+print('alt merged', nalt, 'note memos', sum(1 for ms in memos.values() for m in ms if m.get('ix')))
+print('tq fixes applied', tq_ap, 'already', tq_already, 'bad/nomatch', tq_bad)
+
 # ---------- 3) 앱 폴더 + mz + lin ----------
 os.makedirs(f'{APP}/bible/mz', exist_ok=True)
 MZ = {}
@@ -102,7 +155,7 @@ for b in range(1, 67):
     MZ[b] = arr
     if any(arr): json.dump(arr, open(f'{APP}/bible/mz/{b:02d}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 print('mz chapters', done)
-sys.path.insert(0, f'{REPO}/dev')
+sys.path.insert(0, f'{REPO}/dev'); sys.path.insert(0, '/home/claude/wip/dev')
 import lineage
 lineage.KRV = KRV; lineage.OUT = f'{APP}/bible/lin.json'
 cwd = os.getcwd(); os.chdir(R0)
@@ -523,6 +576,22 @@ for f in sorted(glob.glob('/home/claude/sermons/full/*.json')):
     json.dump({'sid': sid, 'book': d.get('book', ''), 'notes': f'{pre}-notes' if os.path.exists(f'/home/claude/sermons/full/{pre}-notes.json') else '', 'paras': paras, 'rest': rest},
               open(f'{APP}/bible/smt/{sid}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 print('sermon full texts placed', pl_ok, '/', pl_tot, '(나머지는 전문 끝 목록)')
+
+# ---------- 12b) 11-06 원어 수정 메모(2d)를 13~66권 x 파일에도 넣기 (1~12권은 7)에서 이미 들어감) ----------
+XB = set(json.load(open(f'{APP}/bible/xbooks.json'))); nfx = 0
+for b in sorted({k[0] for k, ms in memos.items() if k[0] > 12 and any(m.get('fx') or m.get('ix') for m in ms)}):
+    xp = f'{APP}/bible/x/{b:02d}.json'; X = json.load(open(xp)) if os.path.exists(xp) else {}
+    for (bb, c, v), ms in memos.items():
+        if bb != b: continue
+        cur = X.setdefault(str(c), {}).setdefault('vn', {}).setdefault(str(v), [])
+        for m in ms:
+            if m.get('fx') or m.get('ix'):
+                same = [i for i, x in enumerate(cur) if (x.get('fx') and m.get('fx') and x.get('now') == m['now']) or (x.get('ix') and m.get('ix') and x.get('he') == m.get('he'))]
+                if same: cur[same[0]] = m
+                else: cur.insert(0, m); nfx += 1
+    json.dump(X, open(xp, 'w'), ensure_ascii=False, separators=(',', ':')); XB.add(b)
+json.dump(sorted(XB), open(f'{APP}/bible/xbooks.json', 'w'))
+print('fx memos 13~66', nfx)
 
 # ---------- 13) 11-05 사용자: 해설·메모의 원어 발음 이름 → 개역한글 이름(발음은 괄호로) ----------
 sys.path.insert(0, f'{R0}/names')

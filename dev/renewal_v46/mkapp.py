@@ -155,7 +155,7 @@ for b in range(1, 67):
     MZ[b] = arr
     if any(arr): json.dump(arr, open(f'{APP}/bible/mz/{b:02d}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 print('mz chapters', done)
-sys.path.insert(0, f'{REPO}/dev')
+sys.path.insert(0, f'{REPO}/dev'); sys.path.insert(0, '/home/claude/wip/dev')
 import lineage
 lineage.KRV = KRV; lineage.OUT = f'{APP}/bible/lin.json'
 cwd = os.getcwd(); os.chdir(R0)
@@ -417,9 +417,11 @@ print('13~66 links', sum(lnk.values()), 'terms', len(lnk), 'books', len(used13),
 json.dump(dict(lnk.most_common()), open(f'{R0}/notes2/links_13_66.json', 'w'), ensure_ascii=False, indent=0)
 
 # ---------- 11) 13~66권 새 해설 카드(notes3/out): 선정한 낱말에 밑줄 + also 자리에도 ----------
-N3 = {}
+N3 = {}; LK3 = {}   # 11-18: 'link' 카드 = 새 카드 대신 이미 있는 카드로 연결(같은 원어·같은 뜻)
 for f in sorted(glob.glob(f'{R0}/notes3/out/*.json')):
-    o = json.load(open(f)); N3[o['id']] = o; N2[o['id']] = o
+    o = json.load(open(f))
+    if o.get('link'): LK3[o['id']] = o; continue
+    N3[o['id']] = o; N2[o['id']] = o
 BK = {nm: i + 1 for i, nm in enumerate(json.load(open(f'{R0}/book_names.json')))}
 def parse_ref(r):
     m = re.match(r'^\s*(.+?)\s+(\d+):(\d+)', r or '')
@@ -433,6 +435,12 @@ for nid, o in N3.items():
         if not ch or v > len(ch['v']): continue
         if findterm2(ch['v'][v - 1].replace('\n', ' '), o['term']) < 0: continue
         add3[b][c][str(v)].append([nid, o['term'], o.get('k') or 'hebrew']); n3 += 1
+for nid, o in LK3.items():
+    if o['link'] not in N2: continue
+    for bb, cc, vv in [(o['b'], o['c'], o['v'])] + [p for p in (parse_ref(r) for r in o.get('also') or []) if p]:
+        ch = MZ.get(bb) and MZ[bb][cc - 1]
+        if ch and vv <= len(ch['v']) and findterm2(ch['v'][vv - 1].replace('\n', ' '), o['term']) >= 0:
+            add3[bb][cc][str(vv)].append([o['link'], o['term'], o.get('k') or 'hebrew']); n3 += 1
 # 11b) 공통 링크(10-26 사용자: 시편에 반복되는 낱말은 새 카드 대신 기존 카드로): 카드의 우리말 낱말 + 원어(자음)가 함께 있는 다른 절에도 같은 카드 연결
 import unicodedata
 def _cons(w):
@@ -492,6 +500,26 @@ print('13~66 new cards', len(N3), 'underlines', n3)
 sys.path.insert(0, f'{R0}/tools')
 import linkaudit
 linkaudit.run(write=True, report=f'{R0}/notes3/linkaudit.json')
+
+# ---------- 11d) 11-18 장 층(notes6/out): 13~66권 t·q·g·one·sp·fold, 1~12권 q·one ----------
+N6 = f'{R0}/notes6/out'
+if os.path.isdir(N6):
+    ch6 = collections.defaultdict(dict)
+    for fp in sorted(glob.glob(f'{N6}/*.json')):
+        b6 = int(os.path.basename(fp).split('-')[0])
+        try: d6 = json.load(open(fp))
+        except Exception as e: print('notes6 읽기 실패', fp, e); continue
+        if isinstance(d6.get('장'), dict): d6 = d6['장']
+        for c6, v6 in d6.items(): ch6[b6][str(int(c6))] = v6
+    for b6, chs in ch6.items():
+        xp = f'{APP}/bible/x/{b6:02d}.json'; X = json.load(open(xp)) if os.path.exists(xp) else {}
+        keys = ('q', 'one') if b6 <= 12 else ('t', 'q', 'g', 'one', 'sp', 'fold')
+        for c6, v6 in chs.items():
+            cx = X.setdefault(c6, {})
+            for k6 in keys:
+                if v6.get(k6): cx[k6] = v6[k6]; stats['ch6_' + k6] += 1
+        json.dump(X, open(xp, 'w'), ensure_ascii=False, separators=(',', ':'))
+    print('장 층 반영:', {k: v for k, v in stats.items() if k.startswith('ch6_')})
 
 # ---------- 12) 설교 카드(10-25, 사용자 설교 원고집 → 요약 카드, 원고 전문은 싣지 않음) ----------
 SM = []

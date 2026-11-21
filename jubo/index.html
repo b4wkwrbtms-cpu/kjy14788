@@ -440,6 +440,19 @@ const CAL_CONTEXT = `2026 목회 캘린더(요약): 비전 표어 "복음의 뿌
 DEFAULT.v=2;
 DEFAULT.rotation="곽준영, 모정희, 이경";
 DEFAULT.ignore=[];
+DEFAULT.thisWeek={dawn:"모정희 전도사",wed:"산자의 동산",fri:"정철홍 목사"};
+// 11월 사역 계획표(한눈에 보기): 주일 날짜 → 그 주(월~토) 새벽·금요 인도자. '○○ 전도사 인도' 칸은 그 사람, 설교 제목이 적힌 칸은 담임목사.
+const WEEK_PLAN={"2026-11-01":{dawn:"모정희 전도사",fri:"정철홍 목사"},"2026-11-08":{dawn:"정철홍 목사",fri:"모정희 전도사"},"2026-11-15":{dawn:"모정희 전도사",fri:"정철홍 목사"},"2026-11-22":{dawn:"정철홍 목사",fri:"정철홍 목사"},"2026-11-29":{dawn:"모정희 전도사"}};
+const WEEK_RE=/^\s*새벽(?:예배|기도회)\s*(.+?)\s*\/\s*수요\s*(.+?)\s*\/\s*금요(?:예배|기도회)\s*(.+?)\s*$/;
+const WEEK_LINE2="이 모든 것이 복음을 전하고 영혼을 구원하는 일에 쓰임받도록 간구합시다.";
+const weekIdx=d=>d.news.findIndex(n=>/금주\s*예배/.test(n.title));
+const weekLine=t=>`새벽예배 ${t.dawn} / 수요 ${t.wed} / 금요예배 ${t.fri}`;
+function syncWeekly(d){ // '금주 예배'는 항상 소식 01번, 첫 줄은 담당 칸에서 만든다
+  let i=weekIdx(d);
+  if(i<0){d.news.unshift({title:"금주 예배",badge:"",body:weekLine(d.thisWeek)+"\n"+WEEK_LINE2});return;}
+  if(i>0){const [it]=d.news.splice(i,1);d.news.unshift(it);}
+  const L=d.news[0].body.split("\n");L[0]=weekLine(d.thisWeek);if(L.length<2||!L.slice(1).join("").trim())L.splice(1,L.length,WEEK_LINE2);d.news[0].body=L.join("\n");
+}
 const BUILTIN_SNIPS=[
   {title:"성찬식",badge:"",body:"다음 주일 예배 중에 성찬식이 있습니다. 기도로 준비해 주세요."},
   {title:"○월 생일 축하",badge:"",body:"이달에 생일을 맞은 성도님들을 축하합니다. ○○○, ○○○"},
@@ -479,6 +492,10 @@ function normalize(d){
   out.prayers=out.prayers.map(x=>String(x??""));
   out.schedule=out.schedule.filter(o=>o&&typeof o==="object").map(o=>({label:String(o.label??""),value:String(o.value??"")}));
   out.nextWeek.rows=out.nextWeek.rows.filter(o=>o&&typeof o==="object").map(o=>({label:String(o.label??""),value:String(o.value??"")}));
+  if(!d||!d.thisWeek){const i=weekIdx(out);const m=i>=0?WEEK_RE.exec(out.news[i].body.split("\n")[0]):null;
+    out.thisWeek=m?{dawn:m[1],wed:m[2],fri:m[3]}:{...DEFAULT.thisWeek,...(WEEK_PLAN[out.date]||{})};}
+  ["dawn","wed","fri"].forEach(k=>{out.thisWeek[k]=String(out.thisWeek[k]??"");});
+  syncWeekly(out);
   out.v=2;return out;
 }
 
@@ -656,7 +673,7 @@ function textFields(){const f=[];const add=(p,l)=>{const v=getPath(S,p);if(typeo
   ["title","badge","body"].forEach(k=>add("highlight."+k,"보라색 카드"));
   S.schedule.forEach((r,i)=>{add(`schedule.${i}.label`,"예배와 모임");add(`schedule.${i}.value`,"예배와 모임");});
   add("staff","섬기는 이");return f;}
-const SEC_OF={date:"sec-date",dayName:"sec-date",worship:"sec-date",sermon:"sec-sermon",order:"sec-order",nextWeek:"sec-next",feature:"sec-news",news:"sec-news",notice:"sec-news",prayers:"sec-prayer",intercession:"sec-prayer",highlight:"sec-prayer",schedule:"sec-sched",offering:"sec-sched",staff:"sec-fixed",church:"sec-fixed",yearMotto:"sec-fixed",quarterMotto:"sec-fixed",rotation:"sec-next"};
+const SEC_OF={date:"sec-date",dayName:"sec-date",worship:"sec-date",sermon:"sec-sermon",order:"sec-order",nextWeek:"sec-next",feature:"sec-news",news:"sec-news",notice:"sec-news",prayers:"sec-prayer",intercession:"sec-prayer",highlight:"sec-prayer",schedule:"sec-sched",offering:"sec-sched",staff:"sec-fixed",church:"sec-fixed",yearMotto:"sec-fixed",quarterMotto:"sec-fixed",rotation:"sec-next",thisWeek:"sec-news"};
 const secOf=p=>SEC_OF[p.split(".")[0]]||"sec-date";
 const TEXT_RULES=[
   {id:"prep",level:"err",msg:"‘준비찬양’ → ‘예배 전 찬양’",fn:v=>v.replace(/준비\s*찬양/g,"예배 전 찬양")},
@@ -696,6 +713,11 @@ function validate(){
   S.nextWeek.rows.forEach((r,i)=>{if(!r.value.trim())add({id:"next-empty-"+i,level:"warn",msg:`다음 주 ${r.label} 담당이 비어 있어요`,go:"sec-next",path:`nextWeek.rows.${i}.value`});});
   const qm=/(\d{1,2})\s*~\s*(\d{1,2})월/.exec(S.quarterMotto.label);const mo=d.getMonth()+1;
   if(qm&&(mo<+qm[1]||mo>+qm[2]))add({id:"quarter",level:"warn",msg:`분기 표어가 ‘${S.quarterMotto.label}’인데 주보는 ${mo}월이에요`,go:"sec-fixed",path:"quarterMotto.label"});
+  // 금주 예배
+  {const pl=WEEK_PLAN[S.date],wk=`${md(addDays(S.date,1))}~${md(addDays(S.date,6))}`;
+    if(pl){["dawn","fri"].forEach(k=>{if(pl[k]&&S.thisWeek[k].trim()!==pl[k])add({id:`week-${k}-${S.date}`,level:"warn",msg:`사역 계획표에는 이번 주(${wk}) ${k==="dawn"?"새벽예배":"금요예배"} 인도가 ${pl[k]}예요 (지금: ${S.thisWeek[k]||"비어 있음"})`,fix:()=>{S.thisWeek[k]=pl[k];},fixLabel:"계획표대로",safe:1});});}
+    if(!pl||!pl.dawn||!pl.fri)add({id:"week-check-"+S.date,level:"warn",msg:`금주 예배(${wk}) 인도자를 사역 계획표로 확인해 주세요`,small:weekLine(S.thisWeek),goq:"thisWeek.dawn"});
+    ["dawn","fri"].forEach(k=>{if(!S.thisWeek[k].trim())add({id:"week-empty-"+k,level:"err",msg:`금주 ${k==="dawn"?"새벽예배":"금요예배"} 인도자를 넣어 주세요`,goq:"thisWeek."+k,noignore:1});});}
   // 글자 규칙
   const fields=textFields();
   TEXT_RULES.forEach(r=>{const hits=fields.map(f=>({f,nv:r.fn(f.v)})).filter(x=>x.nv!==x.f.v);if(!hits.length)return;
@@ -703,7 +725,7 @@ function validate(){
       fix:()=>{hits.forEach(h=>setPath(S,h.f.p,h.nv));},go:secOf(hits[0].f.p),path:hits[0].f.p});});
   // 지난 날짜
   if(S.feature.show){const p=pastDatesIn([S.feature.when,S.feature.title,S.feature.body].join(" "));if(p.length)add({id:"past-feat-"+S.feature.title,level:"warn",msg:`소식 강조 박스에 지난 날짜가 있어요 (${p.join(", ")})`,small:S.feature.title,fix:()=>{S.feature.show=false;},fixLabel:"박스 숨기기",go:"sec-news",path:"feature.title",kind:"past"});}
-  S.news.forEach((n,i)=>{const p=pastDatesIn([n.title,n.badge,n.body].join(" "));if(p.length)add({id:"past-news-"+n.title,level:"warn",msg:`소식 ${pad(i+1)}에 지난 날짜가 있어요 (${p.join(", ")})`,small:n.title,fix:()=>{S.news.splice(i,1);},fixLabel:"이 소식 빼기",go:"sec-news",path:`news.${i}.title`,kind:"past"});});
+  S.news.forEach((n,i)=>{const p=pastDatesIn([n.title,n.badge,n.body].join(" "));if(p.length)add({id:"past-news-"+n.title,level:"warn",msg:`소식 ${pad(i+1)}에 지난 날짜가 있어요 (${p.join(", ")})`,small:n.title,fix:i===0?null:()=>{S.news.splice(i,1);},fixLabel:"이 소식 빼기",go:"sec-news",path:`news.${i}.title`,kind:"past"});});
   if(S.notice.show){const p=pastDatesIn([S.notice.title,S.notice.body].join(" "));if(p.length)add({id:"past-notice-"+S.notice.title,level:"warn",msg:`노란 안내 박스에 지난 날짜가 있어요 (${p.join(", ")})`,small:S.notice.title,fix:()=>{S.notice.show=false;},fixLabel:"박스 숨기기",go:"sec-news",path:"notice.title",kind:"past"});}
   S.prayers.forEach((x,i)=>{const p=pastDatesIn(x);if(p.length)add({id:"past-pray-"+x,level:"warn",msg:`기도 ${i+1}에 지난 날짜가 있어요 (${p.join(", ")})`,small:x,fix:()=>{S.prayers.splice(i,1);},fixLabel:"이 기도 빼기",go:"sec-prayer",path:`prayers.${i}`,kind:"past"});});
   S.news.forEach((n,i)=>{const m=/오늘은\s*([^.\n,]*?주일)/.exec(n.title+" "+n.body);if(m&&m[1].trim()!==(S.dayName||"").trim())add({id:"today-"+n.title,level:"warn",msg:`소식 ${pad(i+1)}에 ‘오늘은 ${m[1].trim()}’이라고 적혀 있어요. 이번 주와 맞는지 보세요`,small:n.title,fix:()=>{S.news.splice(i,1);},fixLabel:"이 소식 빼기",go:"sec-news",path:`news.${i}.body`,kind:"past"});});
@@ -774,6 +796,7 @@ function renderQuick(){
   h+=`<div class="f2">${fld("sermon.passage","본문",{pre:"q",ph:"예: 골로새서 3:15~17"})}${fld("sermon.preacher","설교자",{pre:"q"})}</div>`;
   songRows().forEach(s=>{h+=fld(`order.${s.i}.content`,s.o.item,{pre:"q",sub:s.pos,ph:"찬송가는 ‘589장 제목’, 복음성가는 제목만"});});
   h+=`<div class="f2">${pre>=0?fld(`order.${pre}.content`,"예배 전 찬양",{pre:"q"}):""}${pi>=0?fld(`order.${pi}.by`,"대표기도",{pre:"q",after:exp&&curPrayerName()!==exp?`<div class="hint">순번은 ${exp} 전도사 <button type="button" data-setp="${exp} 전도사">넣기</button></div>`:""}):""}</div>`;
+  h+=`<div class="f2">${fld("thisWeek.dawn","금주 새벽예배",{pre:"q",sub:"인도"})}${fld("thisWeek.fri","금주 금요예배",{pre:"q",sub:"인도"})}</div>`;
   h+=fld("dayName","주일 이름",{pre:"q",sub:"절기나 특별 주일일 때만",ph:"비우면 ‘주일’"});
   $("#quick").innerHTML=h;
 }
@@ -796,7 +819,8 @@ function renderEditor(){
   h+=sec("sec-next","다음 주 섬기는 이",esc(S.nextWeek.date),fld("nextWeek.date","날짜 표시",{ph:md(addDays(S.date,7))})+S.nextWeek.rows.map((r,i)=>`<div class="f2">${fld(`nextWeek.rows.${i}.label`,"")}${fld(`nextWeek.rows.${i}.value`,"")}</div>`).join("")+fld("rotation","대표기도 순번",{sub:"쉼표로 구분, 이 순서로 돌아가요"}));
   h+=sec("sec-news","교회 소식",`${S.news.length}개`,
     `<div class="item"><div class="item-h">맨 위 강조 박스</div>${tog("feature.show","주보에 보이기")}${fld("feature.when","일시")}${fld("feature.title","제목")}${fld("feature.body","내용",{area:true})}</div>`+
-    S.news.map((n,i)=>`<div class="item">${itemHead("news",i,`소식 ${pad(i+1)}`,`<button class="ib" data-act="star" data-i="${i}" type="button">자주 쓰는 광고로</button>`)}${fld(`news.${i}.title`,"제목")}${fld(`news.${i}.badge`,"날짜 배지",{sub:"없으면 비워 두기",ph:"예: 11월 22일(주일) 오후 3시"})}${fld(`news.${i}.body`,"내용",{area:true})}</div>`).join("")+
+    `<div class="item"><div class="item-h">소식 01 · 금주 예배 <span class="sp"></span><span style="font-weight:500;color:var(--mute)">항상 맨 앞, 삭제 안 됨</span></div><div class="f2">${fld("thisWeek.dawn","새벽예배 인도")}${fld("thisWeek.fri","금요예배 인도")}</div>${fld("thisWeek.wed","수요")}${fld("news.0.body","내용",{area:true,sub:"첫 줄은 위 칸에서 자동으로 만들어져요"})}</div>`+
+    S.news.map((n,i)=>i===0?"":`<div class="item">${itemHead("news",i,`소식 ${pad(i+1)}`,`<button class="ib" data-act="star" data-i="${i}" type="button">자주 쓰는 광고로</button>`)}${fld(`news.${i}.title`,"제목")}${fld(`news.${i}.badge`,"날짜 배지",{sub:"없으면 비워 두기",ph:"예: 11월 22일(주일) 오후 3시"})}${fld(`news.${i}.body`,"내용",{area:true})}</div>`).join("")+
     `<div><div class="note" style="margin-bottom:6px">소식 추가 — 빈 칸 또는 자주 쓰는 광고</div><div class="chips" style="margin:0"><button class="chip" data-act="add" data-arr="news" type="button">빈 소식</button>${allSnips().map((s,i)=>`<button class="chip" data-snip="${i}" type="button">${esc(s.title)}</button>`).join("")}</div></div>`+
     `<div class="item"><div class="item-h">맨 아래 노란 안내 박스</div>${tog("notice.show","주보에 보이기")}<div class="f2">${fld("notice.icon","아이콘")}${fld("notice.title","제목")}</div>${fld("notice.body","내용",{area:true})}</div><p class="note">**굵게**처럼 별표 두 개로 감싸면 굵은 글씨가 돼요.</p>`);
   h+=sec("sec-prayer","함께 드리는 기도",`${S.prayers.length}개`,S.prayers.map((p,i)=>`<div class="item">${itemHead("prayers",i,`기도 ${i+1}`)}<input data-p="prayers.${i}" id="e-prayers.${i}" value="${esc(p)}" aria-label="기도제목 ${i+1}"></div>`).join("")+`<div class="row"><button class="btn sm" data-act="add" data-arr="prayers" type="button">기도제목 추가</button></div>
@@ -820,6 +844,8 @@ $("#app").addEventListener("input",e=>{
   if(Date.now()-typingAt>4000)pushHist();typingAt=Date.now();
   setPath(S,p,t.value);
   document.querySelectorAll(`[data-p="${p}"]`).forEach(o=>{if(o!==t)o.value=t.value;});
+  if(p.startsWith("thisWeek.")){syncWeekly(S);const b=document.getElementById("e-news.0.body");if(b)b.value=S.news[0].body;}
+  if(p==="news.0.body"){const m=WEEK_RE.exec(t.value.split("\n")[0]);if(m){S.thisWeek={dawn:m[1],wed:m[2],fri:m[3]};["dawn","wed","fri"].forEach(k=>document.querySelectorAll(`[data-p="thisWeek.${k}"]`).forEach(o=>{o.value=S.thisWeek[k];}));}}
   afterChange(false);
 });
 $("#app").addEventListener("change",e=>{const t=e.target;if(t.type==="checkbox"&&t.dataset.p){pushHist();setPath(S,t.dataset.p,t.checked);afterChange(false);}
@@ -830,7 +856,9 @@ $("#editor").addEventListener("click",e=>{
   const b=e.target.closest("[data-act]");if(!b)return;
   const act=b.dataset.act,i=+b.dataset.i;
   if(act==="star"){const n=S.news[i];if(!n.title.trim()){toast("제목이 있어야 저장할 수 있어요");return;}SNIPS=[{title:n.title,badge:"",body:n.body},...SNIPS.filter(s=>s.title!==n.title)].slice(0,12);saveSnips();renderEditor();toast("자주 쓰는 광고에 넣었어요");return;}
-  const a=S[b.dataset.arr];pushHist();
+  const a=S[b.dataset.arr];
+  if(b.dataset.arr==="news"&&act==="up"&&i===1){toast("‘금주 예배’는 항상 맨 앞이에요");return;}
+  pushHist();
   if(act==="add")a.push(b.dataset.arr==="order"?{item:"",content:"",by:""}:b.dataset.arr==="news"?{title:"",badge:"",body:""}:b.dataset.arr==="schedule"?{label:"",value:""}:"");
   if(act==="del")a.splice(i,1);
   if(act==="up"&&i>0)[a[i-1],a[i]]=[a[i],a[i-1]];
@@ -845,6 +873,7 @@ function rollover(){
   const nwv=l=>(old.nextWeek.rows.find(r=>r.label.replace(/\s/g,"")===l)||{}).value||"";
   const curName=curPrayerName();
   n.date=nd;n.dayName=SPECIAL_DAYS[nd]||"";n.ignore=[];
+  n.thisWeek={...old.thisWeek,...(WEEK_PLAN[nd]||{})};
   n.sermon={title:"",passage:"",preacher:nwv("설교")||old.sermon.preacher};
   const thisPray=nwv("기도")||((nextInRot(curName)||anchorPrayer(nd))+" 전도사");
   n.order=n.order.map(o=>{const it=o.item.trim();
@@ -873,15 +902,16 @@ const RULES=`[유엘인교회 주보 표기 규칙]
 7. 지면: news는 최대 6개, 각 body는 2~3줄(약 90자) 이내. prayers는 최대 5개, 한 줄.
 8. 짧은 강조는 **굵게**, 줄바꿈은 \\n.
 9. order에서 item이 "설교"인 행의 content·by는 비워 둠(자동). "성경봉독" content도 비워 두면 sermon.passage가 자동으로 들어감.
+11. news 맨 앞의 "금주 예배" 항목은 매주 싣는 고정 소식이다. 절대 삭제하거나 뒤로 옮기지 않는다. 인도자는 thisWeek{dawn(새벽예배), wed(수요), fri(금요예배)}에서 관리하고 body 첫 줄은 앱이 자동으로 만든다. 사역 계획표(첨부 이미지나 지시)에 이 주보 주일 바로 다음 월~토의 새벽기도회·금요기도회 인도자가 있으면 thisWeek.dawn, thisWeek.fri만 고친다. 표에서 "○○ 전도사 인도"라고 적힌 칸은 그 사람이고, 설교 제목이 적힌 칸은 담임목사(정철홍 목사)다. 수요는 "산자의 동산".
 10. 날짜(date)를 바꾸면 dayName, nextWeek.date(다음 주일 M/D), 대표기도 순번(order의 대표기도 by, nextWeek.rows의 기도)도 함께 맞춤.`;
-const ROOTS=["date","dayName","worship","yearMotto","quarterMotto","sermon","order","nextWeek","feature","news","notice","prayers","intercession","highlight","schedule","offering","church","staff","rotation"];
+const ROOTS=["date","dayName","worship","yearMotto","quarterMotto","sermon","order","nextWeek","feature","news","notice","prayers","intercession","highlight","schedule","offering","church","staff","rotation","thisWeek"];
 function buildPrompt(text,mode){
   const iss=ISSUES.filter(i=>i.level!=="info").map(i=>"- "+i.msg+(i.small?` (${i.small})`:"")).join("\n")||"- 없음";
   const img=pickedImgs.length?" 첨부 이미지(계획표·메모)의 내용도 읽어 반영하라.":"";
   const task=mode==="spell"?"아래 주보 데이터에서 내용은 바꾸지 말고 맞춤법·띄어쓰기·표기 규칙 위반·찬송가 번호와 제목 불일치만 찾아 고쳐라."
    :mode==="full"?`[사용자 지시]에 담긴 이번 주 내용으로 ${S.date} 주일 주보 '전체'를 완성하라. 이번 작업에서는 규칙 6보다 아래가 우선한다.
  (1) 받은 내용을 알맞은 칸 모두에 나눠 넣는다: 설교(제목·본문·설교자), 예배 순서의 찬양 곡과 담당, 교회 소식, 강조 박스, 안내 박스, 기도제목, 중보기도, 다음 주 섬기는 이.
- (2) [자동 점검이 찾은 것]을 모두 해결한다. 지난 날짜가 남은 소식·기도제목·박스는 빼거나 받은 내용에 맞게 새로 쓰고, '오늘은 ○○주일' 같은 지난주 문구도 정리한다. 매주 반복되는 '금주 예배' 같은 소식은 남긴다.
+ (2) [자동 점검이 찾은 것]을 모두 해결한다. 지난 날짜가 남은 소식·기도제목·박스는 빼거나 받은 내용에 맞게 새로 쓰고, '오늘은 ○○주일' 같은 지난주 문구도 정리한다. '금주 예배'는 규칙 11대로 반드시 남긴다.
  (3) 새 소식은 주보 문체(‘~합니다’, ‘~해 주세요’)로 짧게 다듬고, 날짜가 있으면 badge에 "11월 22일(주일) 오후 3시"처럼 넣는다. 소식은 중요한 순서로 배열한다.
  (4) 받은 내용에 없는 필수 정보(설교 제목·본문·찬양 곡 등)는 지어내지 말고 비워 둔 채 questions에 적는다.
  (5) 전체 맞춤법과 표기 규칙을 점검한다.${img}`
@@ -910,7 +940,7 @@ ${mode==="spell"?"":`[사용자 지시]\n${text}\n`}
 - news 항목은 {"title","badge","body"}, order 항목은 {"item","content","by"}, schedule·nextWeek.rows 항목은 {"label","value"}, prayers 항목은 문자열.
 - 바꿀 것이 없으면 ops는 빈 배열.`;
 }
-const LABELS={date:"주일 날짜",dayName:"주일 이름","sermon.title":"설교 제목","sermon.passage":"설교 본문","sermon.preacher":"설교자",order:"예배 순서",nextWeek:"다음 주 섬기는 이","nextWeek.date":"다음 주 날짜","nextWeek.rows":"다음 주 섬기는 이",feature:"소식 강조 박스",news:"교회 소식",notice:"노란 안내 박스",prayers:"기도제목",intercession:"중보기도",highlight:"보라색 카드",schedule:"예배와 모임",offering:"헌금 안내",church:"교회 정보",staff:"섬기는 이",yearMotto:"연간 표어",quarterMotto:"분기 표어",worship:"예배 정보",rotation:"대표기도 순번"};
+const LABELS={date:"주일 날짜",dayName:"주일 이름","sermon.title":"설교 제목","sermon.passage":"설교 본문","sermon.preacher":"설교자",order:"예배 순서",nextWeek:"다음 주 섬기는 이","nextWeek.date":"다음 주 날짜","nextWeek.rows":"다음 주 섬기는 이",feature:"소식 강조 박스",news:"교회 소식",notice:"노란 안내 박스",prayers:"기도제목",intercession:"중보기도",highlight:"보라색 카드",schedule:"예배와 모임",offering:"헌금 안내",church:"교회 정보",staff:"섬기는 이",yearMotto:"연간 표어",quarterMotto:"분기 표어",worship:"예배 정보",rotation:"대표기도 순번",thisWeek:"금주 예배 인도","thisWeek.dawn":"금주 예배 · 새벽예배 인도","thisWeek.fri":"금주 예배 · 금요예배 인도","thisWeek.wed":"금주 예배 · 수요"};
 function labelOf(p,snap){const ks=p.split(".");
   if(ks[0]==="order"&&ks[1]!==undefined)return `예배 순서 · ${(snap.order[+ks[1]]||{}).item||(+ks[1]+1)+"번째"}`;
   if(ks[0]==="news"&&ks[1]!==undefined)return `소식 ${pad(+ks[1]+1)}${ks[2]?" · "+({title:"제목",badge:"날짜 배지",body:"내용"}[ks[2]]||ks[2]):""}`;
@@ -1174,7 +1204,7 @@ let rsT;window.addEventListener("resize",()=>{clearTimeout(rsT);rsT=setTimeout(r
 })();
 /* ============ 홈 화면 앱(Claude 밖) ============ */
 function standalone(hadDraft){
-  $("#ai-card").innerHTML='<h2>내용 한 번에 넣기(AI)</h2><p class="help" style="margin:0">받은 내용을 붙여넣어 주보 전체를 만드는 기능은 Claude 안의 주보 메이커에서 쓸 수 있어요. 거기서 만든 뒤 내보내기 탭의 ‘데이터 복사(백업)’로 이 앱에 가져올 수 있어요. <a href="https://claude.ai/artifact/MVcvxsXNkaMZwjZTUdE6Gr" style="color:var(--rose);font-weight:700">Claude에서 열기</a></p>';
+  $("#ai-card").innerHTML='<h2>내용 한 번에 넣기(AI)</h2><p class="help" style="margin:0">받은 내용을 붙여넣어 주보 전체를 만드는 기능은 Claude 안의 주보 메이커에서 쓸 수 있어요. 거기서 만든 뒤 내보내기 탭의 ‘데이터 복사(백업)’로 이 앱에 가져올 수 있어요. <a href="https://claude.ai/artifact/MVcvxsXNkaMZwjZTUdE6Gr" style="color:var(--rose);font-weight:700">Claude에서 열기</a></p><div class="status" id="ai-status" style="display:none"></div><div id="ai-result"></div><div id="ai-hist" style="display:none"></div>';
   const LS="uelin-jubo-store";
   const read=()=>{try{return JSON.parse(lsGet(LS)||"{}");}catch(e){return {};}};
   const write=o=>lsSet(LS,JSON.stringify(o));

@@ -1,5 +1,5 @@
 // 오프라인에서도 열리도록 앱 파일과 글꼴을 저장해 둠
-const CACHE = "yageun-v97";
+const CACHE = "yageun-v98";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 const BIBLE = "yageun-bible-1";  // 성경 본문은 앱을 업데이트해도 지우지 않음
@@ -7,6 +7,7 @@ self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Pr
 self.addEventListener("fetch", e => {
   const req = e.request; if (req.method !== "GET") return;
   const url = new URL(req.url);
+  if (url.pathname.indexOf("/jubo/") >= 0) return;   // 주보 메이커(jubo/)도 자기 서비스워커가 맡음
   if (url.pathname.indexOf("/books/") >= 0) return;   // 설교 서가 앱(books/)은 자기 서비스워커가 맡음
   const isFont = url.host === "fonts.googleapis.com" || url.host === "fonts.gstatic.com";
   if (url.origin === location.origin && (req.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith("/"))) {

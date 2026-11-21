@@ -300,23 +300,24 @@ details.sec>summary small{font-weight:500;color:var(--mute);font-size:12.5px}
 <div class="wrap" id="app">
   <section class="panel on" id="p-home">
     <div class="week" id="week"></div>
-    <div class="card"><h2>꼭 바뀌는 것</h2><p class="help">매주 달라지는 칸만 모았어요. 여기에 적으면 표지와 예배 순서에 함께 들어가요.</p><div class="q" id="quick"></div></div>
     <div class="card" id="ai-card">
-      <h2>말로 고치기</h2>
-      <p class="help">광고 추가·삭제, 문구 수정, 순서 변경을 한꺼번에 적어도 돼요. 바뀐 곳만 골라 고치고, 고친 곳마다 따로 취소할 수 있어요.</p>
-      <textarea id="ai-input" placeholder="예) 광고 5번 빼고, 12월 6일 성찬식 광고 추가. 기도제목 3번은 ‘성탄 축하 발표회 준비’로 바꿔 줘."></textarea>
+      <h2>이번 주 내용 한 번에 넣기</h2>
+      <p class="help">받은 내용을 그대로 붙여넣으세요. 설교, 찬양, 광고, 기도제목, 다음 주 섬기는 이까지 주보 전체에 나눠 넣고, 지난 광고 정리와 맞춤법 교정까지 한 번에 해요. 끝나면 바꾼 곳을 하나씩 확인하고 취소할 수 있어요.</p>
+      <textarea id="ai-input" placeholder="예) 설교 ‘감사의 사람’ 골로새서 3:15~17. 설교 전 찬송 589장, 봉헌 ‘감사해요’, 설교 후 ‘주님께 감사’. 광고: 12월 6일 성찬식, 29일 초청주일 초청장 배부. 다음 주 예배 전 찬양 한반도찬양단, 봉헌 ○○○ 집사.""></textarea>
       <div class="chips" id="chips"></div>
       <div class="row">
         <label class="btn sm" id="img-btn" style="display:none">사진 첨부<input type="file" id="ai-img" accept="image/*" multiple hidden></label>
         <span id="thumbs" class="hint" style="margin:0"></span>
         <span class="grow"></span>
-        <button class="btn" id="btn-spell" type="button">맞춤법만 점검</button>
-        <button class="btn pri" id="btn-ai" type="button">주보에 반영</button>
+        <button class="btn sm" id="btn-spell" type="button">맞춤법만 점검</button>
+        <button class="btn" id="btn-part" type="button">이 부분만 고치기</button>
+        <button class="btn pri" id="btn-ai" type="button">주보 전체 만들기</button>
       </div>
       <div class="status" id="ai-status"></div>
       <div id="ai-result"></div>
       <div id="ai-hist"></div>
     </div>
+    <div class="card"><h2>꼭 바뀌는 것</h2><p class="help">매주 달라지는 칸만 모았어요. 여기에 적으면 표지와 예배 순서에 함께 들어가요.</p><div class="q" id="quick"></div></div>
     <div class="card" id="iss-card"><h2>자동 점검</h2><div id="issues"></div></div>
   </section>
 
@@ -337,9 +338,9 @@ details.sec>summary small{font-weight:500;color:var(--mute);font-size:12.5px}
       <div class="exp-imgs" id="exp-imgs"></div>
     </div>
     <div class="card">
-      <h2>PDF</h2>
-      <p class="help">인쇄용은 A4 가로 2장이에요. 바깥면에 4쪽과 1쪽, 안쪽면에 2쪽과 3쪽이 놓여서 반으로 접으면 주보가 돼요.</p>
-      <div class="row"><button class="btn dark" id="btn-pdf-print" type="button">인쇄용 접지 PDF</button><button class="btn" id="btn-pdf" type="button">4쪽 PDF</button></div>
+      <h2>PDF·워드</h2>
+      <p class="help">인쇄용은 A4 가로 2장이에요. 바깥면에 4쪽과 1쪽, 안쪽면에 2쪽과 3쪽이 놓여서 반으로 접으면 주보가 돼요. 워드 원본도 같은 A4 가로 2장이고, 열어서 글을 직접 고칠 수 있어요.</p>
+      <div class="row"><button class="btn dark" id="btn-pdf-print" type="button">인쇄용 접지 PDF</button><button class="btn" id="btn-pdf" type="button">4쪽 PDF</button><button class="btn" id="btn-docx" type="button">워드 원본(.docx)</button></div>
       <div class="status" id="pdf-status"></div>
     </div>
     <div class="card">
@@ -876,7 +877,15 @@ const RULES=`[유엘인교회 주보 표기 규칙]
 const ROOTS=["date","dayName","worship","yearMotto","quarterMotto","sermon","order","nextWeek","feature","news","notice","prayers","intercession","highlight","schedule","offering","church","staff","rotation"];
 function buildPrompt(text,mode){
   const iss=ISSUES.filter(i=>i.level!=="info").map(i=>"- "+i.msg+(i.small?` (${i.small})`:"")).join("\n")||"- 없음";
-  const task=mode==="spell"?"아래 주보 데이터에서 내용은 바꾸지 말고 맞춤법·띄어쓰기·표기 규칙 위반·찬송가 번호와 제목 불일치만 찾아 고쳐라.":`아래 [사용자 지시]를 현재 주보 데이터에 반영하라. 지시가 여러 개면 모두 처리하라.${pickedImgs.length?" 첨부 이미지(계획표·메모)의 내용도 읽어 반영하라.":""}`;
+  const img=pickedImgs.length?" 첨부 이미지(계획표·메모)의 내용도 읽어 반영하라.":"";
+  const task=mode==="spell"?"아래 주보 데이터에서 내용은 바꾸지 말고 맞춤법·띄어쓰기·표기 규칙 위반·찬송가 번호와 제목 불일치만 찾아 고쳐라."
+   :mode==="full"?`[사용자 지시]에 담긴 이번 주 내용으로 ${S.date} 주일 주보 '전체'를 완성하라. 이번 작업에서는 규칙 6보다 아래가 우선한다.
+ (1) 받은 내용을 알맞은 칸 모두에 나눠 넣는다: 설교(제목·본문·설교자), 예배 순서의 찬양 곡과 담당, 교회 소식, 강조 박스, 안내 박스, 기도제목, 중보기도, 다음 주 섬기는 이.
+ (2) [자동 점검이 찾은 것]을 모두 해결한다. 지난 날짜가 남은 소식·기도제목·박스는 빼거나 받은 내용에 맞게 새로 쓰고, '오늘은 ○○주일' 같은 지난주 문구도 정리한다. 매주 반복되는 '금주 예배' 같은 소식은 남긴다.
+ (3) 새 소식은 주보 문체(‘~합니다’, ‘~해 주세요’)로 짧게 다듬고, 날짜가 있으면 badge에 "11월 22일(주일) 오후 3시"처럼 넣는다. 소식은 중요한 순서로 배열한다.
+ (4) 받은 내용에 없는 필수 정보(설교 제목·본문·찬양 곡 등)는 지어내지 말고 비워 둔 채 questions에 적는다.
+ (5) 전체 맞춤법과 표기 규칙을 점검한다.${img}`
+   :`아래 [사용자 지시]를 현재 주보 데이터에 반영하라. 지시가 여러 개면 모두 처리하라. 지시하지 않은 칸은 건드리지 않는다.${img}`;
   return `너는 기독교대한성결교회 유엘인교회(담임목사 정철홍)의 주보 편집자다. 오늘은 ${todayISO()}, 이 주보의 주일은 ${S.date}이다.
 ${task}
 
@@ -950,9 +959,10 @@ async function runAI(mode){
   if(aiCtl){aiCtl.abort();return;}
   if(!sample){toast("여기서는 말로 고치기를 쓸 수 없어요. 편집 탭에서 고쳐 주세요.");return;}
   const text=$("#ai-input").value.trim();
-  if(mode!=="spell"&&!text&&!pickedImgs.length){toast("고칠 내용을 적어 주세요");$("#ai-input").focus();return;}
-  const st=$("#ai-status");const btn=mode==="spell"?$("#btn-spell"):$("#btn-ai");const other=mode==="spell"?$("#btn-ai"):$("#btn-spell");
-  aiCtl=new AbortController();const old=btn.textContent;btn.textContent="멈추기";other.disabled=true;
+  if(mode!=="spell"&&!text&&!pickedImgs.length){toast("넣을 내용을 적어 주세요");$("#ai-input").focus();return;}
+  const st=$("#ai-status");const BT={full:$("#btn-ai"),apply:$("#btn-part"),spell:$("#btn-spell")};const btn=BT[mode];const others=Object.values(BT).filter(x=>x!==btn);
+  if(mode==="full"&&S.date<todayISO()){rollover();recalc();}
+  aiCtl=new AbortController();const old=btn.textContent;btn.textContent="멈추기";others.forEach(o=>o.disabled=true);
   const t0=Date.now();const tick=setInterval(()=>{st.textContent=`고치는 중이에요… ${Math.round((Date.now()-t0)/1000)}초`;},1000);st.textContent="고치는 중이에요…";
   try{
     const opts={signal:aiCtl.signal,modelTier:"default",cache:false};
@@ -960,12 +970,12 @@ async function runAI(mode){
     const res=await sample.json(buildPrompt(text,mode),opts);
     if(!res||typeof res!=="object"||!Array.isArray(res.ops))throw {code:"invalid_json"};
     pushHist();lastOps=applyOps(res.ops);afterChange(true);renderOps(res);
-    st.textContent=`${lastOps.length}건 반영 (${Math.round((Date.now()-t0)/1000)}초)`;
+    st.textContent=`${lastOps.length}건 반영 (${Math.round((Date.now()-t0)/1000)}초). 아래에서 바꾼 곳을 확인하고, 미리보기에서 고칠 곳을 누르면 그 칸으로 가요.`;
     if(mode!=="spell"){if(text){lsSet("uelin-jubo-cmds",JSON.stringify([text,...histList().filter(x=>x!==text)].slice(0,6)));renderHist();}$("#ai-input").value="";pickedImgs=[];$("#thumbs").textContent="";}
     toast(lastOps.length?`${lastOps.length}건을 주보에 반영했어요`:"바꿀 곳이 없었어요");
   }catch(e){const c=e&&e.code;
     st.textContent=c==="cancelled"?"멈췄어요. 주보는 그대로예요.":(c==="not_granted"||c==="sampling_disabled")?"AI 사용이 허용되지 않았어요. 편집 탭에서 직접 고칠 수 있어요.":c==="rate_limited"?"요청이 많아요. 잠시 뒤 다시 눌러 주세요.":c==="invalid_json"?"답을 읽지 못했어요. 한 번 더 눌러 주세요. 지시를 둘로 나누면 더 잘 돼요.":c==="prompt_too_large"?"내용이 너무 길어요. 나눠서 넣어 주세요.":"연결에 문제가 생겼어요. 다시 눌러 주세요. 주보는 그대로예요.";
-  }finally{clearInterval(tick);aiCtl=null;btn.textContent=old;other.disabled=false;}
+  }finally{clearInterval(tick);aiCtl=null;btn.textContent=old;others.forEach(o=>o.disabled=false);}
 }
 
 /* ============ 내보내기 ============ */
@@ -1021,6 +1031,92 @@ function shareText(){
   L.push("",`유튜브 ‘${S.church.youtube}’ · ${S.church.homepage}`);return L.join("\n");
 }
 
+/* ============ 워드(.docx) ============ */
+const DX=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const HP=px=>Math.max(8,Math.round(px*0.36*2)); // 화면 px → 반포인트
+function dR(t,o={}){const f=o.serif?"UELIN Serif":"UELIN Sans";
+  return `<w:r><w:rPr><w:rFonts w:ascii="${f}" w:hAnsi="${f}" w:eastAsia="${f}" w:cs="${f}"/>${o.b?"<w:b/><w:bCs/>":""}<w:color w:val="${o.c||"2B2230"}"/>${o.sp?`<w:spacing w:val="${o.sp}"/>`:""}<w:sz w:val="${HP(o.px||22)}"/><w:szCs w:val="${HP(o.px||22)}"/></w:rPr><w:t xml:space="preserve">${DX(t)}</w:t></w:r>`;}
+function dRich(text,o={}){return String(text||"").split("\n").map((line,i)=>(i?`<w:r><w:br/></w:r>`:"")+line.split(/(\*\*.+?\*\*)/).filter(Boolean).map(seg=>/^\*\*.+\*\*$/.test(seg)?dR(seg.slice(2,-2),{...o,b:true}):dR(seg,o)).join("")).join("");}
+function dP(runs,o={}){return `<w:p><w:pPr><w:spacing w:before="${o.before||0}" w:after="${o.after||0}" w:line="${o.line||264}" w:lineRule="auto"/>${o.al?`<w:jc w:val="${o.al}"/>`:""}${o.rule?`<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="4" w:color="${o.rule}"/></w:pBdr>`:""}</w:pPr>${runs}</w:p>`;}
+const dGap=tw=>`<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="${tw}" w:lineRule="exact"/></w:pPr><w:r><w:rPr><w:sz w:val="2"/></w:rPr><w:t></w:t></w:r></w:p>`;
+function dCell(xml,w,o={}){const b=(side,v)=>v?`<w:${side} w:val="${v[2]||"single"}" w:sz="${v[1]||6}" w:space="0" w:color="${v[0]}"/>`:`<w:${side} w:val="nil"/>`;
+  const box=o.box?[o.box,o.boxSz||8]:null;const m=o.mar||[60,80,60,80];
+  return `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${o.span?`<w:gridSpan w:val="${o.span}"/>`:""}<w:tcBorders>${b("top",o.bt||box)}${b("left",o.bl||box)}${b("bottom",o.bb||box)}${b("right",o.br||box)}</w:tcBorders>${o.shd?`<w:shd w:val="clear" w:color="auto" w:fill="${o.shd}"/>`:""}<w:tcMar><w:top w:w="${m[0]}" w:type="dxa"/><w:left w:w="${m[1]}" w:type="dxa"/><w:bottom w:w="${m[2]}" w:type="dxa"/><w:right w:w="${m[3]}" w:type="dxa"/></w:tcMar><w:vAlign w:val="${o.va||"center"}"/></w:tcPr>${xml||dP("")}</w:tc>`;}
+function dTbl(rows,widths,o={}){const sum=widths.reduce((a,b)=>a+b,0);
+  return `<w:tbl><w:tblPr><w:tblW w:w="${sum}" w:type="dxa"/>${o.al?`<w:jc w:val="${o.al}"/>`:""}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w=>`<w:gridCol w:w="${w}"/>`).join("")}</w:tblGrid>${rows.map(r=>`<w:tr><w:trPr><w:cantSplit/>${r.h?`<w:trHeight w:val="${r.h}" w:hRule="atLeast"/>`:""}</w:trPr>${r.cells.join("")}</w:tr>`).join("")}</w:tbl>`;}
+function dImg(rid,id,mmW,mmH){const cx=Math.round(mmW*36000),cy=Math.round(mmH*36000);
+  return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${id}" name="img${id}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${id}" name="img${id}.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;}
+const DW=7300, MG="B0186D", PL="4A1942", SB="6B5D68", LN="EAD6E3", PK="F7ECF3";
+function dHead(eb,title,small){return dP(dR(eb,{px:17,b:true,c:MG,sp:60}))+dP(dR(title,{px:50,b:true,c:PL})+(small?dR("   "+small,{px:21,c:SB}):""),{rule:"C43D86",after:140});}
+function dFoot(n){return dTbl([{cells:[dCell(dP(dR(`${S.church.en} · ${dotDate(S.date)}`,{px:16,c:"A59AA3",sp:10})),DW-900,{mar:[0,0,0,0]}),dCell(dP(dR(`${n} / 4`,{px:16,c:"A59AA3"}),{al:"right"}),900,{mar:[0,0,0,0]})]}],[DW-900,900]);}
+function dPage1(){const c=S.church,y=S.yearMotto,s=S.sermon;
+  const hero=dP(dR(c.denom,{px:15,c:"5B3A55",sp:60}),{al:"center",before:60})+dP(dImg("rId1",1,6.2,10.2)+dR("  "+c.name,{px:60,b:true,serif:true,c:"3A1636",sp:40}),{al:"center"})+dP(dR(c.en,{px:15,b:true,c:"7A1F5C",sp:120}),{al:"center",after:160})+
+    dP(dR(`${y.year} 교회 표어`,{px:17,b:true,serif:true,c:MG,sp:60}),{al:"center",after:60})+dP(dR(y.title,{px:50,b:true,serif:true,c:"3A1636",sp:40}),{al:"center",after:80})+dP(dR(y.verse,{px:22,serif:true,c:"3B2A38"}),{al:"center",after:60})+dP(dR(y.ref+(y.sub?`  ·  ${y.sub}`:""),{px:15.5,serif:true,c:"86677C",sp:20}),{al:"center",after:120});
+  const card=dP(dR("이번 주 말씀",{px:18,b:true,c:MG,sp:60}),{al:"center",before:140,after:80})+dP(dR(s.title||"(설교 제목)",{px:s.title.length>14?48:62,b:true,serif:true,c:"3A1636",sp:30}),{al:"center",after:100})+dP(dR(`${s.passage||"(본문)"}  ·  ${s.preacher}`,{px:25,c:SB}),{al:"center",after:160});
+  const lk=(k,v,d)=>dP(dR(k,{px:16,b:true,c:MG,sp:40}))+dP(dR(v,{px:27,b:true}))+dP(dRich(d,{px:15.5,c:SB}),{line:240});
+  return dTbl([{cells:[dCell(hero,DW,{shd:"F3D4EC",mar:[160,120,160,120]})]}],[DW])+dGap(260)+dTbl([{cells:[dCell(card,DW,{shd:PK,mar:[120,120,120,120]})]}],[DW])+
+    dP(dR(`${dotDate(S.date)} ${S.dayName||"주일"}`,{px:27,b:true})+dR("   |   ",{px:27,c:"DFB6CC"})+dR(S.worship.time,{px:27,b:true})+dR("   |   ",{px:27,c:"DFB6CC"})+dR(S.worship.placeFull,{px:27,b:true}),{al:"center",before:340,after:200})+
+    dP(dR(S.quarterMotto.label+"   ",{px:20,c:SB})+dR(S.quarterMotto.title,{px:34,b:true,serif:true,c:MG,sp:20}),{al:"center",after:240})+
+    dP(dR(c.welcome,{px:30,serif:true,c:"3B2A38"}),{al:"center",after:100})+dP(dR(`담임목사 ${c.pastor} · 설립 ${c.founded}`,{px:18,c:SB}),{al:"center",after:900})+
+    dTbl([{cells:[dCell(lk("YOUTUBE",c.youtube,c.youtubeDesc),3300,{box:"EFDFE8",mar:[140,180,140,120]}),dCell("",150),dCell(lk("HOMEPAGE",c.homepage,c.homepageDesc),2800,{bt:["EFDFE8",8],bl:["EFDFE8",8],bb:["EFDFE8",8],mar:[140,180,140,60]}),dCell(dP(dImg("rId2",2,15,15),{al:"right"}),1050,{bt:["EFDFE8",8],br:["EFDFE8",8],bb:["EFDFE8",8],mar:[100,0,100,120]})]}],[3300,150,2800,1050])+dGap(200)+dFoot(1);
+}
+function dPage2(){const bb=[LN,6];
+  const rows=S.order.map(o=>{const it=o.item.trim();const sm=it==="설교";let ct=o.content;if(it.replace(/\s/g,"")==="성경봉독"&&!ct)ct=S.sermon.passage;
+    const sh=sm?{shd:PK}:{};const mar=[110,80,110,80];
+    if(sm)return {cells:[dCell(dP(dR("설교",{px:24,b:true,c:PL})),1250,{bb,mar,...sh}),dCell(dP(dR(S.sermon.title||"(설교 제목)",{px:34,b:true,serif:true,c:MG})),4250,{bb,mar,...sh}),dCell(dP(dR(S.sermon.preacher,{px:22,c:SB}),{al:"right"}),1800,{bb,mar,...sh})]};
+    return {cells:[dCell(dP(dR(it,{px:24,b:true,c:PL})),1250,{bb,mar}),dCell(dP(dR(ct,{px:it==="교제"?21:25,c:it==="교제"?SB:undefined})),4250,{bb,mar}),dCell(dP(dR(o.by,{px:22,c:SB}),{al:"right"}),1800,{bb,mar})]};});
+  const nw=S.nextWeek.rows;const nrows=[{cells:[dCell(dP(dR(`다음 주 섬기는 이 · ${S.nextWeek.date}`,{px:22,b:true,c:MG})),DW,{span:4,shd:PK,mar:[160,220,60,220]})]}];
+  for(let i=0;i<nw.length;i+=2){const a=nw[i],b=nw[i+1]||{label:"",value:""};const last=i+2>=nw.length;const mb=last?160:50;
+    nrows.push({cells:[dCell(dP(dR(a.label,{px:20,c:SB})),1250,{shd:PK,mar:[50,220,mb,40]}),dCell(dP(dR(a.value,{px:24,b:true,c:PL})),2400,{shd:PK,mar:[50,40,mb,40]}),dCell(dP(dR(b.label,{px:20,c:SB})),1250,{shd:PK,mar:[50,40,mb,40]}),dCell(dP(dR(b.value,{px:24,b:true,c:PL})),2400,{shd:PK,mar:[50,40,mb,220]})]});}
+  return dHead("SUNDAY WORSHIP","주일예배",`${S.worship.time} · ${S.worship.place} · 인도 ${S.worship.leader}`)+
+    dTbl([{cells:[dCell(dP(dR(S.quarterMotto.label+"   ",{px:20,b:true,c:MG})+dR(S.quarterMotto.title,{px:31,b:true,serif:true,c:PL,sp:20}),{al:"center"}),DW,{box:LN,shd:"FBF5F9",mar:[120,80,120,80]})]}],[DW])+dGap(160)+
+    dTbl(rows,[1250,4250,1800])+dGap(420)+dTbl(nrows,[1250,2400,1250,2400])+dGap(200)+dFoot(2);
+}
+function dPage3(){let x=dHead("CHURCH NEWS","교회 소식");const f=S.feature,nt=S.notice;
+  if(f.show)x+=dTbl([{cells:[dCell(dP(dR(f.when+"  ",{px:22,b:true,c:MG})+dR(f.title,{px:31,b:true,c:PL}),{after:60})+dP(dRich(f.body,{px:22,c:"352B37"}),{line:300}),DW,{shd:PK,bl:[MG,36],mar:[160,220,160,200]})]}],[DW])+dGap(100);
+  x+=dTbl(S.news.map((n,i)=>({cells:[dCell(dP(dR(pad(i+1),{px:28,b:true,c:MG})),560,{va:"top",bb:[LN,6,"dashed"],mar:[130,0,130,0]}),dCell(dP(dR(n.title,{px:27,b:true,c:PL})+(n.badge?dR("   "+n.badge,{px:19,b:true,c:MG}):""),{after:50})+(n.body?dP(dRich(n.body,{px:21,c:"3F3640"}),{line:290}):""),DW-560,{va:"top",bb:[LN,6,"dashed"],mar:[130,0,130,0]})]})),[560,DW-560]);
+  if(nt.show)x+=dGap(260)+dTbl([{cells:[dCell(dP(dR(`${nt.icon||""} ${nt.title}`.trim(),{px:22,b:true,c:"B9860F"}),{after:60})+dP(dRich(nt.body,{px:23}),{line:300}),DW,{box:"E8C766",boxSz:14,shd:"FFFAF0",mar:[160,220,160,200]})]}],[DW]);
+  return x+dGap(200)+dFoot(3);
+}
+function dPage4(){const it=S.intercession,h=S.highlight,o=S.offering,c=S.church;let x=dHead("PRAYER","함께 드리는 기도");
+  x+=dTbl(S.prayers.map((p,i)=>({cells:[dCell(dP(dR(String(i+1),{px:20,b:true,c:"FFFFFF"}),{al:"center"}),420,{shd:MG,mar:[40,0,40,0]}),dCell(dP(dRich(p,{px:26})),DW-420,{mar:[90,160,90,0]})]})),[420,DW-420])+dGap(120);
+  if(it.show)x+=dTbl([{cells:[dCell(dP(dR(it.title,{px:22,b:true,c:MG})+(it.by?dR(" · "+it.by,{px:21,c:SB}):""),{after:40})+dP(dRich(it.body,{px:20.5,c:"3F3640"}),{line:290}),DW,{shd:"FBF5F9",mar:[140,200,140,200]})]}],[DW])+dGap(140);
+  if(h.show)x+=dTbl([{cells:[dCell(dP(dR(h.title,{px:28,b:true,c:"FFFFFF"})+(h.badge?dR("   "+h.badge,{px:19,b:true,c:"F3D4EC"}):""),{after:40})+dP(dRich(h.body,{px:20.5,c:"F6EAF2"}),{line:290}),DW,{shd:"5E1A4E",mar:[140,220,140,200]})]}],[DW]);
+  x+=dP(dR("SCHEDULE",{px:17,b:true,c:MG,sp:60}),{before:260,after:80});
+  x+=dTbl(S.schedule.map(r=>({cells:[dCell(dP(dR(r.label,{px:23,b:true,c:PL})),1900,{bb:[LN,6],mar:[80,40,80,40]}),dCell(dP(dR(r.value,{px:23})),DW-1900,{bb:[LN,6],mar:[80,40,80,40]})]})),[1900,DW-1900])+dGap(220);
+  x+=dTbl([{cells:[dCell(dP(dR(o.title,{px:21,b:true,c:MG}))+dP(dR(o.bank,{px:18.5,c:SB}))+dP(dR(o.account,{px:30,b:true,c:PL}),{before:40})+dP(dR(o.holder,{px:18.5,c:SB})),3000,{box:"EFDFE8",mar:[130,180,130,100]}),dCell("",150),dCell(dP(dR(c.name+" ",{px:20.5,b:true,c:PL})+dR(c.en,{px:18.5,c:"4A3D48"}))+dP(dR(c.address,{px:18.5,c:"4A3D48"}),{line:290})+dP(dR(c.branchName+" ",{px:18.5,b:true,c:PL})+dR(c.branchAddress,{px:18.5,c:"4A3D48"}),{line:290}),DW-3150,{shd:"F5E8F1",mar:[130,180,130,160]})]}],[3000,150,DW-3150]);
+  x+=dP(dR("섬기는 이  ",{px:19,b:true,c:MG})+dR(S.staff.replace(/\s*\|\s*/g,"   |   "),{px:19,c:SB}),{before:160,line:290});
+  return x+dGap(160)+dFoot(4);
+}
+const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC_T[(c^u8[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function zipStore(files){const enc=new TextEncoder();const parts=[],cen=[];let off=0;
+  for(const f of files){const name=enc.encode(f.name);const data=typeof f.data==="string"?enc.encode(f.data):f.data;const crc=crc32(data);
+    const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(10,0,true);h.setUint16(12,0x21,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);h.setUint16(28,0,true);
+    parts.push(new Uint8Array(h.buffer),name,data);
+    const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);c.setUint16(12,0,true);c.setUint16(14,0x21,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
+    cen.push(new Uint8Array(c.buffer),name);off+=30+name.length+data.length;}
+  const cs=cen.reduce((a,b)=>a+b.length,0);const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  return new Blob([...parts,...cen,new Uint8Array(e.buffer)],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});}
+function b64bytes(uri){const b=atob(uri.split(",")[1]);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}
+function qrPng(){return new Promise((ok,no)=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=405;const x=c.getContext("2d");x.imageSmoothingEnabled=false;x.fillStyle="#fff";x.fillRect(0,0,405,405);x.drawImage(im,0,0,405,405);ok(b64bytes(c.toDataURL("image/png")));};im.onerror=no;im.src=QR;});}
+async function makeDocx(){
+  const NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
+  const HALF=8019,m=[0,360,0,360];const cellO={va:"top",mar:m};
+  const sheet=(l,r)=>({h:10700,cells:[dCell(l+dGap(20),HALF,cellO),dCell(r+dGap(20),HALF,cellO)]});
+  const body=dTbl([sheet(dPage4(),dPage1()),sheet(dPage2(),dPage3())],[HALF,HALF])+dGap(20)+`<w:sectPr><w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/><w:pgMar w:top="500" w:right="400" w:bottom="300" w:left="400" w:header="0" w:footer="0" w:gutter="0"/></w:sectPr>`;
+  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${NS}><w:body>${body}</w:body></w:document>`;
+  return zipStore([
+    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`},
+    {name:"_rels/.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`},
+    {name:"word/document.xml",data:doc},
+    {name:"word/_rels/document.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo.png"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/qr.png"/></Relationships>`},
+    {name:"word/media/logo.png",data:b64bytes(LOGO)},{name:"word/media/qr.png",data:await qrPng()}]);
+}
+async function doDocx(){const st=$("#pdf-status");st.textContent="워드 파일을 만드는 중…";
+  try{const blob=await makeDocx();const fn=`${ymd(S.date)}_주보_유엘인교회.docx`;const ok=await saveFile(fn,blob);st.textContent=ok?`저장했어요: ${fn}`:"워드 파일은 만들었지만 저장하지 않았어요.";if(ok)markExported();}
+  catch(e){st.textContent="워드 파일을 만들지 못했어요. 다시 눌러 주세요.";}}
+
 /* ============ 저장 ============ */
 let db=null;
 async function dbSave(silent){const st=$("#save-status");
@@ -1047,9 +1143,9 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>goTab(b.dataset.tab))
 const CHIPS=[["광고 추가","광고 추가: "],["광고 빼기","광고 번 빼 줘"],["지난 광고 정리","지난 날짜 광고와 기도제목은 빼고 정리해 줘"],["교우 소식","교우 소식 추가: "],["기도제목","기도제목 바꿔 줘: 1. 2. 3."],["다음 주 섬기는 이","다음 주 예배 전 찬양 , 봉헌 "],["문장 다듬기","교회 소식 문장을 짧고 자연스럽게 다듬어 줘"]];
 $("#chips").innerHTML=CHIPS.map((c,i)=>`<button class="chip" data-chip="${i}" type="button">${c[0]}</button>`).join("");
 $("#chips").onclick=e=>{const c=e.target.closest("[data-chip]");if(!c)return;const ta=$("#ai-input");ta.value=(ta.value?ta.value.replace(/\s*$/,"")+"\n":"")+CHIPS[+c.dataset.chip][1];ta.focus();};
-$("#ai-input").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter")runAI("apply");});
-$("#btn-ai").onclick=()=>runAI("apply");$("#btn-spell").onclick=()=>runAI("spell");
-$("#btn-png").onclick=doPNG;$("#btn-png-save").onclick=doPNGSave;$("#btn-pdf").onclick=()=>doPDF(false);$("#btn-pdf-print").onclick=()=>doPDF(true);
+$("#ai-input").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter")runAI("full");});
+$("#btn-ai").onclick=()=>runAI("full");$("#btn-part").onclick=()=>runAI("apply");$("#btn-spell").onclick=()=>runAI("spell");
+$("#btn-png").onclick=doPNG;$("#btn-png-save").onclick=doPNGSave;$("#btn-pdf").onclick=()=>doPDF(false);$("#btn-pdf-print").onclick=()=>doPDF(true);$("#btn-docx").onclick=doDocx;
 $("#btn-text").onclick=()=>{const b=$("#text-box");b.value=shareText();b.style.display="block";$("#btn-text-copy").style.display="";};
 $("#btn-text-copy").onclick=async()=>{try{await navigator.clipboard.writeText($("#text-box").value);toast("안내글을 복사했어요");}catch(e){$("#text-box").select();toast("글을 길게 눌러 복사해 주세요");}};
 $("#btn-save").onclick=()=>dbSave(false);$("#btn-load").onclick=dbList;$("#btn-undo").onclick=undo;
@@ -1067,7 +1163,7 @@ let rsT;window.addEventListener("resize",()=>{clearTimeout(rsT);rsT=setTimeout(r
   S=normalize(d||DEFAULT);renderQuick();renderEditor();recalc();renderHist();
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>recalc());
   if(window.claude&&window.claude.use){
-    claude.use("sample").then(async s=>{sample=s;if(!s){$("#btn-ai").disabled=true;$("#btn-spell").disabled=true;$("#ai-status").textContent="여기서는 말로 고치기를 쓸 수 없어요. 위 칸과 편집 탭으로 고칠 수 있어요.";return;}
+    claude.use("sample").then(async s=>{sample=s;if(!s){$("#btn-ai").disabled=true;$("#btn-part").disabled=true;$("#btn-spell").disabled=true;$("#ai-status").textContent="여기서는 말로 고치기를 쓸 수 없어요. 위 칸과 편집 탭으로 고칠 수 있어요.";return;}
       try{const l=await s.limits();if(l&&l.images){sampleImgs=true;$("#img-btn").style.display="";$("#ai-img").accept=(l.images.mediaTypes||["image/*"]).join(",");}}catch(e){}});
     claude.use("downloads").then(x=>{downloads=x;});
     claude.use("db").then(async x=>{db=x;if(!x)return;
@@ -1078,7 +1174,7 @@ let rsT;window.addEventListener("resize",()=>{clearTimeout(rsT);rsT=setTimeout(r
 })();
 /* ============ 홈 화면 앱(Claude 밖) ============ */
 function standalone(hadDraft){
-  $("#ai-card").style.display="none";
+  $("#ai-card").innerHTML='<h2>내용 한 번에 넣기(AI)</h2><p class="help" style="margin:0">받은 내용을 붙여넣어 주보 전체를 만드는 기능은 Claude 안의 주보 메이커에서 쓸 수 있어요. 거기서 만든 뒤 내보내기 탭의 ‘데이터 복사(백업)’로 이 앱에 가져올 수 있어요. <a href="https://claude.ai/artifact/MVcvxsXNkaMZwjZTUdE6Gr" style="color:var(--rose);font-weight:700">Claude에서 열기</a></p>';
   const LS="uelin-jubo-store";
   const read=()=>{try{return JSON.parse(lsGet(LS)||"{}");}catch(e){return {};}};
   const write=o=>lsSet(LS,JSON.stringify(o));
@@ -1093,7 +1189,7 @@ function standalone(hadDraft){
   const bar=document.createElement("div");bar.style.cssText="position:fixed;left:12px;right:12px;bottom:14px;z-index:98;display:none;background:var(--plum);color:#fff;border-radius:14px;padding:12px 14px;align-items:center;gap:10px;font-size:14px;box-shadow:0 6px 24px rgba(74,25,66,.35)";
   bar.innerHTML='<span style="flex:1;min-width:0">파일이 준비됐어요.</span><button class="btn sm" type="button" data-go>저장하기</button><button class="btn sm" type="button" data-x style="background:none;color:#fff;border-color:rgba(255,255,255,.4)">닫기</button>';
   document.body.appendChild(bar);
-  const mime=n=>/\.png$/i.test(n)?"image/png":/\.pdf$/i.test(n)?"application/pdf":"application/octet-stream";
+  const mime=n=>/\.png$/i.test(n)?"image/png":/\.pdf$/i.test(n)?"application/pdf":/\.docx$/i.test(n)?"application/vnd.openxmlformats-officedocument.wordprocessingml.document":"application/octet-stream";
   async function give(files){
     const fs=files.map(f=>new File([f.data],f.filename,{type:mime(f.filename)}));
     if(navigator.canShare&&navigator.canShare({files:fs})){await navigator.share({files:fs});return;}

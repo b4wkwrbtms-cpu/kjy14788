@@ -339,7 +339,7 @@ details.sec>summary small{font-weight:500;color:var(--mute);font-size:12.5px}
     </div>
     <div class="card">
       <h2>PDF·워드</h2>
-      <p class="help">인쇄용은 A4 가로 2장이에요. 바깥면에 4쪽과 1쪽, 안쪽면에 2쪽과 3쪽이 놓여서 반으로 접으면 주보가 돼요. 워드 원본도 같은 A4 가로 2장이고, 열어서 글을 직접 고칠 수 있어요.</p>
+      <p class="help">인쇄용은 A4 가로 2장이에요. 바깥면에 4쪽과 1쪽, 안쪽면에 2쪽과 3쪽이 놓여서 반으로 접으면 주보가 돼요. 워드 원본은 기존 유엘인 주보 워드 파일의 디자인 그대로이고 내용만 이번 주 것으로 바뀌어요.</p>
       <div class="row"><button class="btn dark" id="btn-pdf-print" type="button">인쇄용 접지 PDF</button><button class="btn" id="btn-pdf" type="button">4쪽 PDF</button><button class="btn" id="btn-docx" type="button">워드 원본(.docx)</button></div>
       <div class="status" id="pdf-status"></div>
     </div>
@@ -1061,91 +1061,60 @@ function shareText(){
   L.push("",`유튜브 ‘${S.church.youtube}’ · ${S.church.homepage}`);return L.join("\n");
 }
 
-/* ============ 워드(.docx) ============ */
+/* ============ 워드(.docx): 원본 주보 파일을 틀로 쓰고 글만 바꾼다 ============ */
 const DX=s=>String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
-const HP=px=>Math.max(8,Math.round(px*0.36*2)); // 화면 px → 반포인트
-function dR(t,o={}){const f=o.serif?"UELIN Serif":"UELIN Sans";
-  return `<w:r><w:rPr><w:rFonts w:ascii="${f}" w:hAnsi="${f}" w:eastAsia="${f}" w:cs="${f}"/>${o.b?"<w:b/><w:bCs/>":""}<w:color w:val="${o.c||"2B2230"}"/>${o.sp?`<w:spacing w:val="${o.sp}"/>`:""}<w:sz w:val="${HP(o.px||22)}"/><w:szCs w:val="${HP(o.px||22)}"/></w:rPr><w:t xml:space="preserve">${DX(t)}</w:t></w:r>`;}
-function dRich(text,o={}){return String(text||"").split("\n").map((line,i)=>(i?`<w:r><w:br/></w:r>`:"")+line.split(/(\*\*.+?\*\*)/).filter(Boolean).map(seg=>/^\*\*.+\*\*$/.test(seg)?dR(seg.slice(2,-2),{...o,b:true}):dR(seg,o)).join("")).join("");}
-function dP(runs,o={}){return `<w:p><w:pPr><w:spacing w:before="${o.before||0}" w:after="${o.after||0}" w:line="${o.line||264}" w:lineRule="auto"/>${o.al?`<w:jc w:val="${o.al}"/>`:""}${o.rule?`<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="4" w:color="${o.rule}"/></w:pBdr>`:""}</w:pPr>${runs}</w:p>`;}
-const dGap=tw=>`<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="${tw}" w:lineRule="exact"/></w:pPr><w:r><w:rPr><w:sz w:val="2"/></w:rPr><w:t></w:t></w:r></w:p>`;
-function dCell(xml,w,o={}){const b=(side,v)=>v?`<w:${side} w:val="${v[2]||"single"}" w:sz="${v[1]||6}" w:space="0" w:color="${v[0]}"/>`:`<w:${side} w:val="nil"/>`;
-  const box=o.box?[o.box,o.boxSz||8]:null;const m=o.mar||[60,80,60,80];
-  return `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${o.span?`<w:gridSpan w:val="${o.span}"/>`:""}<w:tcBorders>${b("top",o.bt||box)}${b("left",o.bl||box)}${b("bottom",o.bb||box)}${b("right",o.br||box)}</w:tcBorders>${o.shd?`<w:shd w:val="clear" w:color="auto" w:fill="${o.shd}"/>`:""}<w:tcMar><w:top w:w="${m[0]}" w:type="dxa"/><w:left w:w="${m[1]}" w:type="dxa"/><w:bottom w:w="${m[2]}" w:type="dxa"/><w:right w:w="${m[3]}" w:type="dxa"/></w:tcMar><w:vAlign w:val="${o.va||"center"}"/></w:tcPr>${xml||dP("")}</w:tc>`;}
-function dTbl(rows,widths,o={}){const sum=widths.reduce((a,b)=>a+b,0);
-  return `<w:tbl><w:tblPr><w:tblW w:w="${sum}" w:type="dxa"/>${o.al?`<w:jc w:val="${o.al}"/>`:""}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w=>`<w:gridCol w:w="${w}"/>`).join("")}</w:tblGrid>${rows.map(r=>`<w:tr><w:trPr><w:cantSplit/>${r.h?`<w:trHeight w:val="${r.h}" w:hRule="atLeast"/>`:""}</w:trPr>${r.cells.join("")}</w:tr>`).join("")}</w:tbl>`;}
-function dImg(rid,id,mmW,mmH){const cx=Math.round(mmW*36000),cy=Math.round(mmH*36000);
-  return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${id}" name="img${id}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${id}" name="img${id}.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;}
-const DW=7300, MG="B0186D", PL="4A1942", SB="6B5D68", LN="EAD6E3", PK="F7ECF3";
-function dHead(eb,title,small){return dP(dR(eb,{px:17,b:true,c:MG,sp:60}))+dP(dR(title,{px:50,b:true,c:PL})+(small?dR("   "+small,{px:21,c:SB}):""),{rule:"C43D86",after:140});}
-function dFoot(n){return dTbl([{cells:[dCell(dP(dR(`${S.church.en} · ${dotDate(S.date)}`,{px:16,c:"A59AA3",sp:10})),DW-900,{mar:[0,0,0,0]}),dCell(dP(dR(`${n} / 4`,{px:16,c:"A59AA3"}),{al:"right"}),900,{mar:[0,0,0,0]})]}],[DW-900,900]);}
-function dPage1(){const c=S.church,y=S.yearMotto,s=S.sermon;
-  const hero=dP(dR(c.denom,{px:15,c:"5B3A55",sp:60}),{al:"center",before:60})+dP(dImg("rId1",1,6.2,10.2)+dR("  "+c.name,{px:60,b:true,serif:true,c:"3A1636",sp:40}),{al:"center"})+dP(dR(c.en,{px:15,b:true,c:"7A1F5C",sp:120}),{al:"center",after:160})+
-    dP(dR(`${y.year} 교회 표어`,{px:17,b:true,serif:true,c:MG,sp:60}),{al:"center",after:60})+dP(dR(y.title,{px:50,b:true,serif:true,c:"3A1636",sp:40}),{al:"center",after:80})+dP(dR(y.verse,{px:22,serif:true,c:"3B2A38"}),{al:"center",after:60})+dP(dR(y.ref+(y.sub?`  ·  ${y.sub}`:""),{px:15.5,serif:true,c:"86677C",sp:20}),{al:"center",after:120});
-  const card=dP(dR("이번 주 말씀",{px:18,b:true,c:MG,sp:60}),{al:"center",before:140,after:80})+dP(dR(s.title||"(설교 제목)",{px:s.title.length>14?48:62,b:true,serif:true,c:"3A1636",sp:30}),{al:"center",after:100})+dP(dR(`${s.passage||"(본문)"}  ·  ${s.preacher}`,{px:25,c:SB}),{al:"center",after:160});
-  const lk=(k,v,d)=>dP(dR(k,{px:16,b:true,c:MG,sp:40}))+dP(dR(v,{px:27,b:true}))+dP(dRich(d,{px:15.5,c:SB}),{line:240});
-  return dTbl([{cells:[dCell(hero,DW,{shd:"F3D4EC",mar:[160,120,160,120]})]}],[DW])+dGap(260)+dTbl([{cells:[dCell(card,DW,{shd:PK,mar:[120,120,120,120]})]}],[DW])+
-    dP(dR(`${dotDate(S.date)} ${S.dayName||"주일"}`,{px:27,b:true})+dR("   |   ",{px:27,c:"DFB6CC"})+dR(S.worship.time,{px:27,b:true})+dR("   |   ",{px:27,c:"DFB6CC"})+dR(S.worship.placeFull,{px:27,b:true}),{al:"center",before:340,after:200})+
-    dP(dR(S.quarterMotto.label+"   ",{px:20,c:SB})+dR(S.quarterMotto.title,{px:34,b:true,serif:true,c:MG,sp:20}),{al:"center",after:240})+
-    dP(dR(c.welcome,{px:30,serif:true,c:"3B2A38"}),{al:"center",after:100})+dP(dR(`담임목사 ${c.pastor} · 설립 ${c.founded}`,{px:18,c:SB}),{al:"center",after:900})+
-    dTbl([{cells:[dCell(lk("YOUTUBE",c.youtube,c.youtubeDesc),3300,{box:"EFDFE8",mar:[140,180,140,120]}),dCell("",150),dCell(lk("HOMEPAGE",c.homepage,c.homepageDesc),2800,{bt:["EFDFE8",8],bl:["EFDFE8",8],bb:["EFDFE8",8],mar:[140,180,140,60]}),dCell(dP(dImg("rId2",2,15,15),{al:"right"}),1050,{bt:["EFDFE8",8],br:["EFDFE8",8],bb:["EFDFE8",8],mar:[100,0,100,120]})]}],[3300,150,2800,1050])+dGap(200)+dFoot(1);
-}
-function dPage2(){const bb=[LN,6];
-  const rows=S.order.map(o=>{const it=o.item.trim();const sm=it==="설교";let ct=o.content;if(it.replace(/\s/g,"")==="성경봉독"&&!ct)ct=S.sermon.passage;
-    const sh=sm?{shd:PK}:{};const mar=[110,80,110,80];
-    if(sm)return {cells:[dCell(dP(dR("설교",{px:24,b:true,c:PL})),1250,{bb,mar,...sh}),dCell(dP(dR(S.sermon.title||"(설교 제목)",{px:34,b:true,serif:true,c:MG})),4250,{bb,mar,...sh}),dCell(dP(dR(S.sermon.preacher,{px:22,c:SB}),{al:"right"}),1800,{bb,mar,...sh})]};
-    return {cells:[dCell(dP(dR(it,{px:24,b:true,c:PL})),1250,{bb,mar}),dCell(dP(dR(ct,{px:it==="교제"?21:25,c:it==="교제"?SB:undefined})),4250,{bb,mar}),dCell(dP(dR(o.by,{px:22,c:SB}),{al:"right"}),1800,{bb,mar})]};});
-  const nw=S.nextWeek.rows;const nrows=[{cells:[dCell(dP(dR(`다음 주 섬기는 이 · ${S.nextWeek.date}`,{px:22,b:true,c:MG})),DW,{span:4,shd:PK,mar:[160,220,60,220]})]}];
-  for(let i=0;i<nw.length;i+=2){const a=nw[i],b=nw[i+1]||{label:"",value:""};const last=i+2>=nw.length;const mb=last?160:50;
-    nrows.push({cells:[dCell(dP(dR(a.label,{px:20,c:SB})),1250,{shd:PK,mar:[50,220,mb,40]}),dCell(dP(dR(a.value,{px:24,b:true,c:PL})),2400,{shd:PK,mar:[50,40,mb,40]}),dCell(dP(dR(b.label,{px:20,c:SB})),1250,{shd:PK,mar:[50,40,mb,40]}),dCell(dP(dR(b.value,{px:24,b:true,c:PL})),2400,{shd:PK,mar:[50,40,mb,220]})]});}
-  return dHead("SUNDAY WORSHIP","주일예배",`${S.worship.time} · ${S.worship.place} · 인도 ${S.worship.leader}`)+
-    dTbl([{cells:[dCell(dP(dR(S.quarterMotto.label+"   ",{px:20,b:true,c:MG})+dR(S.quarterMotto.title,{px:31,b:true,serif:true,c:PL,sp:20}),{al:"center"}),DW,{box:LN,shd:"FBF5F9",mar:[120,80,120,80]})]}],[DW])+dGap(160)+
-    dTbl(rows,[1250,4250,1800])+dGap(420)+dTbl(nrows,[1250,2400,1250,2400])+dGap(200)+dFoot(2);
-}
-function dPage3(){let x=dHead("CHURCH NEWS","교회 소식");const f=S.feature,nt=S.notice;
-  if(f.show)x+=dTbl([{cells:[dCell(dP(dR(f.when+"  ",{px:22,b:true,c:MG})+dR(f.title,{px:31,b:true,c:PL}),{after:60})+dP(dRich(f.body,{px:22,c:"352B37"}),{line:300}),DW,{shd:PK,bl:[MG,36],mar:[160,220,160,200]})]}],[DW])+dGap(100);
-  x+=dTbl(S.news.map((n,i)=>({cells:[dCell(dP(dR(pad(i+1),{px:28,b:true,c:MG})),560,{va:"top",bb:[LN,6,"dashed"],mar:[130,0,130,0]}),dCell(dP(dR(n.title,{px:27,b:true,c:PL})+(n.badge?dR("   "+n.badge,{px:19,b:true,c:MG}):""),{after:50})+(n.body?dP(dRich(n.body,{px:21,c:"3F3640"}),{line:290}):""),DW-560,{va:"top",bb:[LN,6,"dashed"],mar:[130,0,130,0]})]})),[560,DW-560]);
-  if(nt.show)x+=dGap(260)+dTbl([{cells:[dCell(dP(dR(`${nt.icon||""} ${nt.title}`.trim(),{px:22,b:true,c:"B9860F"}),{after:60})+dP(dRich(nt.body,{px:23}),{line:300}),DW,{box:"E8C766",boxSz:14,shd:"FFFAF0",mar:[160,220,160,200]})]}],[DW]);
-  return x+dGap(200)+dFoot(3);
-}
-function dPage4(){const it=S.intercession,h=S.highlight,o=S.offering,c=S.church;let x=dHead("PRAYER","함께 드리는 기도");
-  x+=dTbl(S.prayers.map((p,i)=>({cells:[dCell(dP(dR(String(i+1),{px:20,b:true,c:"FFFFFF"}),{al:"center"}),420,{shd:MG,mar:[40,0,40,0]}),dCell(dP(dRich(p,{px:26})),DW-420,{mar:[90,160,90,0]})]})),[420,DW-420])+dGap(120);
-  if(it.show)x+=dTbl([{cells:[dCell(dP(dR(it.title,{px:22,b:true,c:MG})+(it.by?dR(" · "+it.by,{px:21,c:SB}):""),{after:40})+dP(dRich(it.body,{px:20.5,c:"3F3640"}),{line:290}),DW,{shd:"FBF5F9",mar:[140,200,140,200]})]}],[DW])+dGap(140);
-  if(h.show)x+=dTbl([{cells:[dCell(dP(dR(h.title,{px:28,b:true,c:"FFFFFF"})+(h.badge?dR("   "+h.badge,{px:19,b:true,c:"F3D4EC"}):""),{after:40})+dP(dRich(h.body,{px:20.5,c:"F6EAF2"}),{line:290}),DW,{shd:"5E1A4E",mar:[140,220,140,200]})]}],[DW]);
-  x+=dP(dR("SCHEDULE",{px:17,b:true,c:MG,sp:60}),{before:260,after:80});
-  x+=dTbl(S.schedule.map(r=>({cells:[dCell(dP(dR(r.label,{px:23,b:true,c:PL})),1900,{bb:[LN,6],mar:[80,40,80,40]}),dCell(dP(dR(r.value,{px:23})),DW-1900,{bb:[LN,6],mar:[80,40,80,40]})]})),[1900,DW-1900])+dGap(220);
-  x+=dTbl([{cells:[dCell(dP(dR(o.title,{px:21,b:true,c:MG}))+dP(dR(o.bank,{px:18.5,c:SB}))+dP(dR(o.account,{px:30,b:true,c:PL}),{before:40})+dP(dR(o.holder,{px:18.5,c:SB})),3000,{box:"EFDFE8",mar:[130,180,130,100]}),dCell("",150),dCell(dP(dR(c.name+" ",{px:20.5,b:true,c:PL})+dR(c.en,{px:18.5,c:"4A3D48"}))+dP(dR(c.address,{px:18.5,c:"4A3D48"}),{line:290})+dP(dR(c.branchName+" ",{px:18.5,b:true,c:PL})+dR(c.branchAddress,{px:18.5,c:"4A3D48"}),{line:290}),DW-3150,{shd:"F5E8F1",mar:[130,180,130,160]})]}],[3000,150,DW-3150]);
-  x+=dP(dR("섬기는 이  ",{px:19,b:true,c:MG})+dR(S.staff.replace(/\s*\|\s*/g,"   |   "),{px:19,c:SB}),{before:160,line:290});
-  return x+dGap(160)+dFoot(4);
+const tText=s=>DX(s).replace(/\n/g,'</w:t><w:br/><w:t xml:space="preserve">');
+function tFill(x,m){
+  x=x.replace(/<w:r>((?:<w:rPr>(?:(?!<\/w:rPr>)[\s\S])*<\/w:rPr>)?)((?:<w:tab\/>|<w:br\/>)?)<w:t xml:space="preserve">\{\{\*([\w.]+)\}\}<\/w:t><\/w:r>/g,(all,rpr,pre,k)=>{
+    const segs=String(m[k]??"").split(/(\*\*.+?\*\*)/).filter(Boolean);if(!segs.length)segs.push("");
+    return segs.map((seg,i)=>{const b=/^\*\*.+\*\*$/.test(seg);const t=b?seg.slice(2,-2):seg;let rp=rpr;
+      if(b&&!/<w:b\/>/.test(rp))rp=rp?(/<w:rFonts[^>]*\/>/.test(rp)?rp.replace(/(<w:rFonts[^>]*\/>)/,"$1<w:b/><w:bCs/>"):rp.replace("<w:rPr>","<w:rPr><w:b/><w:bCs/>")):"<w:rPr><w:b/><w:bCs/></w:rPr>";
+      return `<w:r>${rp}${i?"":pre}<w:t xml:space="preserve">${tText(t)}</w:t></w:r>`;}).join("");});
+  return x.replace(/\{\{([\w.]+)\}\}/g,(a,k)=>tText(String(m[k]??"")));
 }
 const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
 function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC_T[(c^u8[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
-function zipStore(files){const enc=new TextEncoder();const parts=[],cen=[];let off=0;
-  for(const f of files){const name=enc.encode(f.name);const data=typeof f.data==="string"?enc.encode(f.data):f.data;const crc=crc32(data);
-    const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(10,0,true);h.setUint16(12,0x21,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);h.setUint16(28,0,true);
+function zipWrite(files){ // files: {name,data(Uint8Array),method,crc,usize}
+  const enc=new TextEncoder();const parts=[],cen=[];let off=0;
+  for(const f of files){const name=enc.encode(f.name),data=f.data,method=f.method||0,crc=f.crc??crc32(data),usize=f.usize??data.length;
+    const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,method,true);h.setUint16(12,0x21,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,usize,true);h.setUint16(26,name.length,true);
     parts.push(new Uint8Array(h.buffer),name,data);
-    const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);c.setUint16(12,0,true);c.setUint16(14,0x21,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
+    const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,method,true);c.setUint16(14,0x21,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,usize,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
     cen.push(new Uint8Array(c.buffer),name);off+=30+name.length+data.length;}
   const cs=cen.reduce((a,b)=>a+b.length,0);const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
   return new Blob([...parts,...cen,new Uint8Array(e.buffer)],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});}
-function b64bytes(uri){const b=atob(uri.split(",")[1]);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}
-function qrPng(){return new Promise((ok,no)=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=405;const x=c.getContext("2d");x.imageSmoothingEnabled=false;x.fillStyle="#fff";x.fillRect(0,0,405,405);x.drawImage(im,0,0,405,405);ok(b64bytes(c.toDataURL("image/png")));};im.onerror=no;im.src=QR;});}
+function b64u8(b64){const b=atob(b64);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}
 async function makeDocx(){
-  const NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
-  const HALF=8019,m=[0,360,0,360];const cellO={va:"top",mar:m};
-  const sheet=(l,r)=>({h:10700,cells:[dCell(l+dGap(20),HALF,cellO),dCell(r+dGap(20),HALF,cellO)]});
-  const body=dTbl([sheet(dPage4(),dPage1()),sheet(dPage2(),dPage3())],[HALF,HALF])+dGap(20)+`<w:sectPr><w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/><w:pgMar w:top="500" w:right="400" w:bottom="300" w:left="400" w:header="0" w:footer="0" w:gutter="0"/></w:sectPr>`;
-  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${NS}><w:body>${body}</w:body></w:document>`;
-  return zipStore([
-    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`},
-    {name:"_rels/.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`},
-    {name:"word/document.xml",data:doc},
-    {name:"word/_rels/document.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo.png"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/qr.png"/></Relationships>`},
-    {name:"word/media/logo.png",data:b64bytes(LOGO)},{name:"word/media/qr.png",data:await qrPng()}]);
+  if(!window.DOCX_TPL)await loadScript("tpl.js");
+  const T=window.DOCX_TPL,F=T.frag,c=S.church,lines=s=>String(s||"").split("\n").filter(l=>l.trim());
+  const staff=S.staff.split("|").map(x=>x.trim());
+  const G={"staff1":staff[0]||"","staff2":staff.slice(1).join(" · "),"c.name":c.name,"c.en":c.en,"c.address":c.address.replace(/\s*·\s*/g,"    "),"c.branch":`${c.branchName}  ${c.branchAddress}`,"c.welcome":c.welcome,
+    "s.title":S.sermon.title,"s.sub":`${S.sermon.passage}  ·  ${S.sermon.preacher}`,"dateline":`${dotDate(S.date)} ${S.dayName||"주일"}`,"w.time":S.worship.time,"w.place":S.worship.place,"w.placeFull":S.worship.placeFull,
+    "founded":`담임목사 ${c.pastor}  ·  설립 ${c.founded}`,"leader":`인도 ${S.worship.leader}`,"q.label":S.quarterMotto.label,"q.title":S.quarterMotto.title,"nw.date":S.nextWeek.date,
+    "o.title":S.offering.title,"o.bank":S.offering.bank,"o.account":S.offering.account,"o.holder":S.offering.holder};
+  const B={
+    PRAYERS:S.prayers.map((p,i)=>tFill(F.prayer,{n:i+1,t:p})).join(""),
+    INTER:S.intercession.show?tFill(F.inter,{it:S.intercession.title,ib:S.intercession.by,x:S.intercession.body.replace(/\n/g," ")}):"",
+    HIGHLIGHT:S.highlight.show?tFill(F.hl.replace("[[HLB]]",()=>lines(S.highlight.body).map(l=>tFill(F.hlBody,{x:l})).join("")||tFill(F.hlBody,{x:""})),{t:S.highlight.title,b:S.highlight.badge?"   "+S.highlight.badge:""}):"",
+    SCHED:S.schedule.map(r=>tFill(F.sched,{l:r.label,v:r.value})).join(""),
+    ORDER:S.order.map(o=>{const it=o.item.trim();
+      if(it==="설교")return tFill(F.rowS,{i:it,c:S.sermon.title,b:S.sermon.preacher});
+      if(it==="교제")return tFill(F.rowF,{i:it,c:o.content.replace(/\s*\|\s*/g,"  |  ")+(o.by?"   "+o.by:"")});
+      return tFill(F.rowN,{i:it,c:(it.replace(/\s/g,"")==="성경봉독"&&!o.content)?S.sermon.passage:o.content,b:o.by});}).join(""),
+    FEATURE:S.feature.show?tFill(F.feat.replace("[[FB]]",()=>lines(S.feature.body).map(l=>tFill(F.featBody,{x:l})).join("")||tFill(F.featBody,{x:""})),{w:[S.feature.when,S.feature.title].filter(Boolean).join(" · ")}):"",
+    NEWS:S.news.map((n,i)=>tFill((i||!S.feature.show)?F.newsT:F.newsT1,{n:pad(i+1),t:n.title+(n.badge?` (${n.badge})`:"")})+(lines(n.body).length?tFill(F.newsB,{x:lines(n.body).join("\n")}):"")).join(""),
+    NOTICE:S.notice.show?tFill(F.notice.replace("[[NB]]",()=>lines(S.notice.body).map(l=>tFill(F.noticeBody,{x:l})).join("")||tFill(F.noticeBody,{x:""})),{t:S.notice.title}):"",
+    NEXT:S.nextWeek.rows.map(r=>tFill(F.next,{l:r.label,v:r.value})).join("")
+  };
+  const doc=tFill(T.doc.replace(/\[\[(\w+)\]\]/g,(a,k)=>B[k]??""),G);
+  const files=T.parts.map(p=>({name:p.name,data:b64u8(p.b64),method:p.method,crc:p.crc>>>0,usize:p.usize}));
+  const at=files.findIndex(f=>f.name==="word/_rels/document.xml.rels");
+  files.splice(at<0?files.length:at+1,0,{name:"word/document.xml",data:new TextEncoder().encode(doc)});
+  return zipWrite(files);
 }
 async function doDocx(){const st=$("#pdf-status");st.textContent="워드 파일을 만드는 중…";
   try{const blob=await makeDocx();const fn=`${ymd(S.date)}_주보_유엘인교회.docx`;const ok=await saveFile(fn,blob);st.textContent=ok?`저장했어요: ${fn}`:"워드 파일은 만들었지만 저장하지 않았어요.";if(ok)markExported();}
-  catch(e){st.textContent="워드 파일을 만들지 못했어요. 다시 눌러 주세요.";}}
+  catch(e){st.textContent="워드 파일을 만들지 못했어요. 인터넷 연결을 확인하고 다시 눌러 주세요.";}}
 
 /* ============ 저장 ============ */
 let db=null;

@@ -1,3 +1,4 @@
+import re
 # v46 앱 데이터 만들기
 #  bible/mz/NN.json  : 20대 말투 본문(v45) + 원어 교정 반영
 #  bible/lin.json    : 계보 이름(빨간 밑줄, 구약)
@@ -209,6 +210,32 @@ for f in sorted(glob.glob(f'{R0}/rev3/out/*.jsonl')):
             j['v'][v - 1] = t2; r3_ap += 1
         json.dump(j, open(p, 'w'), ensure_ascii=False)
 print('3차 흐름 검토 반영', r3_ap, '소제목', r3_h, '건너뜀', r3_sk)
+# ---------- 2h) 11-24 4차 검토(rev4/out: 원어 결 살리기 — 문화어·뭉갠 낱말·끊긴 핵심어 고리·무게) — 검토 당시 본문(was)이 그대로일 때만 덮음 ----------
+r4_ap = r4_sk = r4_h = r4_m = 0
+for f in sorted(glob.glob(f'{R0}/rev4/out/*.jsonl')):
+    for l in open(f):
+        l = l.strip()
+        if not l: continue
+        try: o = json.loads(l); b, c = int(o.get('b', 0)), int(o.get('c', 0))
+        except Exception: r4_sk += 1; continue
+        p = f'{B46}/{b:02d}/{c:03d}.json'
+        if not os.path.exists(p): r4_sk += 1; continue
+        j = json.load(open(p))
+        if o.get('h') is not None and isinstance(o['h'], list) and not o.get('v'):
+            j['h'] = [[int(x[0]), str(x[1])] for x in o['h'] if x and str(x[1]).strip()]; r4_h += 1
+        else:
+            try: v = int(o.get('v', 0))
+            except Exception: r4_sk += 1; continue
+            t2 = o.get('fix')
+            if not (1 <= v <= len(j['v'])) or not isinstance(t2, str) or not t2.strip() or '"' in t2: r4_sk += 1; continue
+            if j['v'][v - 1] == t2: continue
+            if j['v'][v - 1] != o.get('was'): r4_sk += 1; continue
+            j['v'][v - 1] = t2; r4_ap += 1
+            if o.get('old') and o.get('new'):
+                memos[(b, c, v)].append({'he': o.get('he', ''), 'rd': o.get('rd', ''), 'm': '원어 수정', 'fx': 1, 'krv': o.get('krv', ''), 'gl': o.get('gl', ''),
+                    'was': o['old'].replace('\n', ' '), 'now': o['new'].replace('\n', ' '), 't': re.sub(r'^(문화어|뭉갬|고리|무게|장면):\s*', '', o.get('why', '')), 'alt': [], 'pick': ''}); r4_m += 1
+        json.dump(j, open(p, 'w'), ensure_ascii=False)
+print('4차 원어 결 검토 반영', r4_ap, '흔적 메모', r4_m, '소제목', r4_h, '건너뜀', r4_sk)
 # ---------- 3) 앱 폴더 + mz + lin ----------
 os.makedirs(f'{APP}/bible/mz', exist_ok=True)
 MZ = {}

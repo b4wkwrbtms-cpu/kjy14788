@@ -80,6 +80,17 @@ button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .kl-enote { margin: -.5em 0 1.2em; padding: 6px 10px; font-size: .78em; line-height: 1.55; color: var(--ked); background: var(--kedbg); border-radius: 8px; }
 .kl-enote span { font-weight: 700; margin-right: 6px; font-size: .9em; }
 .kl-part{margin:12px 0 4px;font-size:12px;font-weight:700;color:var(--accent,#8a5a2b);letter-spacing:.02em}.kl-book p{font-size:13px;line-height:1.6}.kl-gl{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:12.5px}.kl-gl span{opacity:.7}.kl-flow ol{margin:6px 0 4px 1.2em;padding:0;font-size:13.5px;line-height:1.6}.kl-flow li{margin:2px 0}
+
+/* 11-25 절 번호 색: 빨강 개역한글과 달라진 곳 · 파랑 원어로 본 중요한 의미·해석 · 보라 사본 차이 · 초록 설교에서 다룬 절 */
+sup.vk::after { content: none !important; }
+sup.vk.k-kr { color: #d63a3a !important; font-weight: 800; }
+sup.vk.k-ix { color: #2f6fdb !important; font-weight: 800; }
+sup.vk.k-ms { color: #8b5cf6 !important; font-weight: 700; }
+sup.vk.k-sm { color: #2f9e5b !important; font-weight: 800; }
+i.vd { display: inline-block; width: .42em; height: .42em; border-radius: 50%; margin-left: 2px; vertical-align: .18em; font-style: normal; }
+i.vd.kr { background: #d63a3a; } i.vd.ix { background: #2f6fdb; } i.vd.ms { background: #8b5cf6; } i.vd.sm { background: #2f9e5b; }
+h4.vk-h.kr { color: #d63a3a; } h4.vk-h.ix { color: #2f6fdb; } h4.vk-h.ms { color: #8b5cf6; } h4.vk-h.sm { color: #2f9e5b; }
+p.vk-legend { font-size: .78em; opacity: .8; margin-top: 1.2em; line-height: 1.9; } p.vk-legend i.vd { margin: 0 3px 0 8px; }
 </style>
 <title>곽준영 키우기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15706,7 +15717,8 @@ function rdChapterHtml(b, c, mz, krvVerses, lin) {
       if (n === folds[fi][0]) html += `<button type="button" class="rd-fold-close" data-r="fold-close" data-i="${fi}">▲ ${escapeHtml(folds[fi][3])} · 다시 접기</button>`;
     }
     const sv = smvOf(b, c), hasS = !!(sv && sv.v && sv.v[n]), hasM = !!(x && x.vn && x.vn[n]), hasF = hasM && x.vn[n].some(m => m.fx), canTap = b <= 11 || hasM || hasS;
-    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasF ? " fx" : ""}${hasS ? " sm" : ""}"${hasF ? ' title="원어 기준으로 고친 절"' : ""}${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}</sup>`;
+    const vkM = hasM ? x.vn[n] : [], kKr = vkM.some(m => m.fx), kIx = vkM.some(m => m.ix || (!m.fx && m.m !== "사본 차이")), kMs = vkM.some(m => m.m === "사본 차이"), vkDots = (kKr ? '<i class="vd kr"></i>' : "") + (kIx ? '<i class="vd ix"></i>' : "") + (kMs ? '<i class="vd ms"></i>' : "") + (hasS ? '<i class="vd sm"></i>' : ""), vkCls = " vk" + (kKr ? " k-kr" : kIx ? " k-ix" : kMs ? " k-ms" : hasS ? " k-sm" : "");
+    const num = o.nonum ? "" : `<sup class="${canTap ? "vn-t" : ""}${hasM ? " has" : ""}${hasF ? " fx" : ""}${hasS ? " sm" : ""}${vkCls}"${canTap ? ` data-vn="${n}" role="button" tabindex="0"` : ""}>${n}${vkDots}</sup>`;
     if (mz) {
       const labs = {}; if (o.sp && x && x.sp && x.sp[n]) x.sp[n].forEach(l => { if (!labs[l[0]]) labs[l[0]] = l; });
       const links = o.ln && x && x.ln ? x.ln[n] : null;
@@ -15898,7 +15910,7 @@ function openRef(go) {
       h += `<p class="nt-cap">우리 앱 20대 말투 본문이에요. 읽던 자리는 그대로 있어요.</p>`;
       const sv = (bibleSmv || {})[`${b + 1}:${c}`], seen = new Set(), ms = [];
       if (sv) { for (let n = v1; n <= Math.min(v2, vs.length); n++) (sv.v && sv.v[n] || []).forEach(m => { const k = m.join("#"); if (!seen.has(k)) { seen.add(k); ms.push(m); } }); (sv.ch || []).forEach(m => { const k = m.join("#"); if (!seen.has(k)) { seen.add(k); ms.push(m); } }); }
-      if (ms.length) h += `<h4>설교에서 이 말씀</h4>` + ms.map(m => smMentionHtml(m, true)).join("");
+      if (ms.length) h += `<h4 class="vk-h sm">설교에서 이 말씀</h4>` + ms.map(m => smMentionHtml(m, true)).join("");
     } else h += `<p class="muted">이 주소의 본문을 찾지 못했어요. 주소가 맞는지 편집자 확인이 필요해요.</p>`;
     rdSheet(h, sh.dataset.label || "");
   };
@@ -16086,14 +16098,15 @@ function openVerse(n) {
     let h = `<div class="nt-head"><span class="nt-badge k-hebrew">${ot ? "원어로 보기" : "본문 메모"}</span><small>${escapeHtml(ref)}</small></div>`;
     if (heV) h += `<p class="he-verse" dir="rtl" lang="he">${escapeHtml(heV)}</p><p class="nt-cap">히브리어 본문: 레닌그라드 사본(WLC). 오른쪽에서 왼쪽으로 읽어요.</p>`;
     const ms0 = x && x.vn && x.vn[n] || [], fx = ms0.filter(m => m.fx), ix = ms0.filter(m => m.ix), ms = ms0.filter(m => !m.fx && !m.ix);
-    if (fx.length) h += `<h4>개역한글과 달라진 곳</h4>` + fx.map(m => `<div class="vm fxm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.was && m.was !== m.now ? `<p class="fx-row"><b>고치기 전</b> <s>${escapeHtml(m.was)}</s></p>` : ""}<p class="fx-row"><b>${m.mk ? "우리 본문" : "원어대로 고침"}</b> <mark>${escapeHtml(m.now)}</mark></p><p>${refHtml(m.t)}</p>${altHtml(m)}</div>`).join("") + `<p class="nt-cap">개역한글과 원어(${b <= 39 ? "히브리어·아람어" : "헬라어"})를 맞대어 보고, 원어 뜻에 더 가깝게 고쳤거나, 개역한글과 다르게 옮긴 표현이에요.</p>`;
-    if (ix.length) h += `<h4>원어로 읽으면 가능한 해석</h4>` + ix.map(m => `<div class="vm fxm ixm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.now ? `<p class="fx-row"><b>우리 본문</b> ${escapeHtml(m.now)}</p>` : ""}${altHtml(m, true)}</div>`).join("");
-    if (ms.length) h += `<h4>${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${refHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
+    if (fx.length) h += `<h4 class="vk-h kr">개역한글과 달라진 곳</h4>` + fx.map(m => `<div class="vm fxm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.was && m.was !== m.now ? `<p class="fx-row"><b>고치기 전</b> <s>${escapeHtml(m.was)}</s></p>` : ""}<p class="fx-row"><b>${m.mk ? "우리 본문" : "원어대로 고침"}</b> <mark>${escapeHtml(m.now)}</mark></p><p>${refHtml(m.t)}</p>${altHtml(m)}</div>`).join("") + `<p class="nt-cap">개역한글과 원어(${b <= 39 ? "히브리어·아람어" : "헬라어"})를 맞대어 보고, 원어 뜻에 더 가깝게 고쳤거나, 개역한글과 다르게 옮긴 표현이에요.</p>`;
+    if (ix.length) h += `<h4 class="vk-h ix">원어로 읽으면 가능한 해석</h4>` + ix.map(m => `<div class="vm fxm ixm">${m.he ? `<div class="tms">${b <= 39 ? heTerm([m.he, m.rd, m.gl || "원어"]) : `<span class="tm"><bdi lang="el">${escapeHtml(m.he)}</bdi><small><b>${escapeHtml(m.rd || "")}</b>${escapeHtml(m.gl || "")}</small></span>`}</div>` : ""}${m.krv ? `<p class="fx-row"><b>개역한글</b> “${escapeHtml(m.krv)}”</p>` : ""}${m.now ? `<p class="fx-row"><b>우리 본문</b> ${escapeHtml(m.now)}</p>` : ""}${altHtml(m, true)}</div>`).join("");
+    if (ms.length) h += `<h4 class="vk-h ${ot ? "ix" : "ms"}">${ot ? "원어 메모" : "사본 메모"}</h4>` + ms.map(m => `<div class="vm">${m.he || m.rd ? `<div class="tms">${heTerm([m.he, m.rd, m.m])}</div>` : (m.m ? `<p class="nt-form">${escapeHtml(m.m)}</p>` : "")}<p>${refHtml(m.t)}</p></div>`).join("") + (ot ? "" : `<p class="nt-cap">사본마다 조금씩 다른 곳을 적어 둔 메모예요. 본문의 [ ] 안 말은 가장 오래된 사본 몇몇에 없는 말인데, 지우지 않고 그대로 두었어요.</p>`);
     else if (ot) h += `<p class="muted">이 절에는 따로 단 원어 메모가 없어요.</p>`;
     const ln = x && x.ln && x.ln[n] || [];
     if (ln.length) { const nt = bibleNt.get(b); h += `<h4>이 절의 해설</h4><div class="nt-chips">${ln.map(l => `<button type="button" class="nt-chip ${NK[l[2]] ? NK[l[2]][1] : ""}" data-nt="${escapeHtml(l[0])}">${escapeHtml(nt && nt[l[0]] ? nt[l[0]].t : l[1])}</button>`).join("")}</div>`; }
     const svv = (smvOf(b, c) || {}).v, sml = svv && svv[n] || [];
-    if (sml.length) h += `<h4>설교에서 이 말씀</h4>` + sml.map(m => smMentionHtml(m, true)).join("");
+    if (sml.length) h += `<h4 class="vk-h sm">설교에서 이 말씀</h4>` + sml.map(m => smMentionHtml(m, true)).join("");
+    h += `<p class="vk-legend"><i class="vd kr"></i>빨강: 개역한글과 달라진 곳<i class="vd ix"></i>파랑: 원어로 본 중요한 의미·해석<i class="vd ms"></i>보라: 사본 차이<i class="vd sm"></i>초록: 설교에서 다룬 절</p>`;
     rdSheet(h, ref);
   };
   if (bibleHe.has(b) && bibleNt.has(b)) show(); else { rdSheet(`<p class="muted">원어를 불러오는 중…</p>`, ref); Promise.all([loadHe(b), loadNt(b)]).then(show); }

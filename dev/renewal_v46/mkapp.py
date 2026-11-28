@@ -236,6 +236,22 @@ for f in sorted(glob.glob(f'{R0}/rev4/out/*.jsonl')):
                     'was': o['old'].replace('\n', ' '), 'now': o['new'].replace('\n', ' '), 't': re.sub(r'^(문화어|뭉갬|고리|무게|장면):\s*', '', o.get('why', '')), 'alt': [], 'pick': ''}); r4_m += 1
         json.dump(j, open(p, 'w'), ensure_ascii=False)
 print('4차 원어 결 검토 반영', r4_ap, '흔적 메모', r4_m, '소제목', r4_h, '건너뜀', r4_sk)
+# ---------- 2i) 11-24 개역한글과 달라진 곳 표시(rev4/marks) — 본문은 그대로, 절 번호 ✎ 메모만 ----------
+mk_n = mk_sk = 0
+for f in sorted(glob.glob(f'{R0}/rev4/marks/*.jsonl')):
+    for l in open(f):
+        l = l.strip()
+        if not l: continue
+        try: o = json.loads(l); b, c, v = int(o['b']), int(o['c']), int(o['v'])
+        except Exception: mk_sk += 1; continue
+        p = f'{B46}/{b:02d}/{c:03d}.json'
+        if not os.path.exists(p): mk_sk += 1; continue
+        j = json.load(open(p)); now = (o.get('now') or '').strip(); krv = (o.get('krv') or '').strip()
+        if not (1 <= v <= len(j['v'])) or not now or not krv or now.replace('\n', ' ') not in j['v'][v - 1].replace('\n', ' '): mk_sk += 1; continue
+        if any(m.get('fx') and (m.get('now') == now or (o.get('he') and m.get('he') == o.get('he'))) for m in memos[(b, c, v)]): continue
+        memos[(b, c, v)].append({'he': o.get('he', ''), 'rd': o.get('rd', ''), 'm': '개역과 달라진 곳', 'fx': 1, 'mk': 1, 'krv': krv, 'gl': o.get('gl', ''),
+            'was': '', 'now': now.replace('\n', ' '), 't': o.get('why', ''), 'alt': [], 'pick': ''}); mk_n += 1
+print('개역과 달라진 곳 표시', mk_n, '건너뜀', mk_sk)
 # ---------- 3) 앱 폴더 + mz + lin ----------
 os.makedirs(f'{APP}/bible/mz', exist_ok=True)
 MZ = {}

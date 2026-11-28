@@ -11,7 +11,7 @@ N=$(grep -o 'yageun-v[0-9]*' sw.js | head -1 | sed 's/yageun-v//'); sed -i "s/ya
 sed -i "s/sbk-bib-[0-9a-z]*/sbk-bib-$VER/" books/sw.js; S=$(grep -o 'sbk-app-[0-9]*' books/sw.js | head -1 | sed 's/sbk-app-//'); sed -i "s/sbk-app-$S/sbk-app-$((S+1))/" books/sw.js
 git add -A && git commit -qm "$VER: $MSG, sw yageun-v$((N+1))
 
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01F8jn36rJ2Yy86BxJJDZ5Eb" && git push -q origin main && git log --oneline -1 | cut -c1-60
 cd /home/claude/yuel-kiugi && git pull -q origin main
 for d in mz nt x he smt; do cp -r /home/claude/renewal/app/bible/$d/. bible/$d/; done; cp /home/claude/renewal/app/bible/*.json bible/
@@ -19,9 +19,9 @@ Y=$(grep -o 'MZ_VER = "y[0-9]*"' bible_mz.js | sed 's/.*y\([0-9]*\)"/\1/'); Z=$(
 sed -i "s/MZ_VER = \"y$Y\"/MZ_VER = \"y$Z\"/" bible_mz.js; sed -i "s/bible_mz.js?v=y$Y/bible_mz.js?v=y$Z/" index.html; sed -i "s/yuel-mz-y$Y/yuel-mz-y$Z/" sw.js
 git add -A && git commit -qm "말씀 읽기 $VER 동기화: $MSG, mz y$Z
 
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01F8jn36rJ2Yy86BxJJDZ5Eb" && git -c push.negotiate=true push -q origin HEAD && git log --oneline -1 | cut -c1-60
 cd /home/claude/wip && git add -A dev && git commit -qm "$VER 배포본: $MSG
 
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01F8jn36rJ2Yy86BxJJDZ5Eb" && git push -q origin v30-wip && echo wip-saved
